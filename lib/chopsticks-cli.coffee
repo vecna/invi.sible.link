@@ -4,7 +4,7 @@ winston = require 'winston'
 {join} = require 'path'
 
 plugins = require '../plugins'
-profiles = require './profiles'
+urllist = require './urllist'
 {history} = require './history'
 {nestedOption, assertEnv} = require './utils'
 
@@ -12,7 +12,7 @@ debug = require('debug')('cli')
 
 yargs = require 'yargs'
   .nargs('p', 1).alias('p', 'plugins').string('p').describe('p', 'A list of plugins')
-  .nargs('i', 1).alias('i', 'profile').describe('i', 'The id of the profile.')
+  .nargs('i', 1).alias('s', 'sources').describe('s', 'source, form config/url/')
   .config('c')
   .help 'h'
   .alias 'h', 'help'
@@ -34,6 +34,11 @@ _(argv)
 winston.remove winston.transports.Console
 winston.add winston.transports.Console, timestamp: true, colorize: true
 
+try
+  assert argv.c, argv.s
+catch
+  winston.info 'No config -c or source -s: use -c config/test_SINGLE.json -s italy'
+
 # Initialize the mongodb configuration
 try
   assertEnv ['MONGODB_URI']
@@ -41,8 +46,9 @@ try
 catch
   winston.info 'No MongoDB connection string found.'
 
+debugger
 
-profiles.get argv.profile
+urllist.all argv.c, argv.s
 .then (profile) ->
   throw new Error("Profile #{argv.profile} not found.")  unless profile?
 
@@ -58,7 +64,7 @@ profiles.get argv.profile
       .then -> plugins[p](val)
     , {profile: profile, data: [], stats: {}}
 .then (v) ->
-  winston.info 'Finished the LSD.'
+  winston.info 'Pipeline completed.'
   process.exit 0
 .catch (e) ->
   winston.error 'Our pipeline broke: %s', e.message

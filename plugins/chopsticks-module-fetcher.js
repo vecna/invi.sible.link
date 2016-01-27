@@ -25,7 +25,7 @@ var Ghostbuster = function (executable, command, MaxExecTime) {
 
 var WebFetcher = function(inPlaceObj, URL, LSFiles, MaxExecTime) {
 
-    var phantomjs_command = "phantomjs external/fetcher/phjsrender.js "
+    var phantomjs_command = "phantomjs crawl/phjsrender.js "
         + "'" + URL + "'"
         + " "
         + LSFiles.savedir
@@ -100,36 +100,43 @@ var GetRelativePaths = function(TargetDir, shortHash, URL) {
     };
 };
 
-var retrievePages = function(Entry) {
+/* "ITA": [ { "url" ... }. {"url" ..} ], so if we split
+    the dict, can be managed currency. every task here is not in parallel */
+var retrievePages = function(urlList) {
 
-    Promise.map(Entry._ls_links, function(linkObject) {
+    return Promise.each(urlList, function(siteEntry) {
 
-        if(linkObject.type == 'self') {
-            return undefined;
+        if (siteEntry._ls_links.length !== 1) {
+            console.log(JSON.stringify(siteEntry, undefined, 2));
+            throw new Error("a Link object in " + siteEntry.source +
+                " has more than one _ls_links");
         }
 
-        var href = linkObject.href,
+        /* every time that chopsticks runs has to run in a dedicated directory,
+           so different content x time */
+        var linkObject = siteEntry._ls_links[0],
+            href = linkObject.href,
             Paths = GetRelativePaths(
                 process.env.FETCHER_TARGET,
-                _.trunc(linkObject._ls_id_hash,
-                    { length: 6, omission: '' }),
+                _.trunc(linkObject._ls_id_hash, { length: 6, omission: '' }),
                 href);
 
         /* next improvement is extend the mongodb query
-         and time comparison, to understand if the crawl is late than 1 day or now (or
-         other indicator per page) */
+         and time comparison, to understand if the crawl is late than 1 day or not
+         (or other indicator per page) */
         return fs
             .statAsync(Paths.savedir)
             .then(function(presence) {
                 debug("Directory %s already present: skipping", Paths.files.render);
                 linkObject._ls_fetch = {
                     status: 'skipped',
+                    when: moment().format('YYMMDDHHmm'),
                     savedir: Paths.savedir
                 }
             })
             .catch(function(failure) {
                 return WebFetcher(
-                    linkObject,
+                    siteEntry,
                     href,
                     Paths,
                     process.env.FETCHER_MAXTIME );
@@ -137,17 +144,28 @@ var retrievePages = function(Entry) {
     });
 };
 
-module.exports = function(val) {
+module.exports = function(siteObject) {
     var fetchPromises = [];
-    debug("val.data starts with %d elements", val.data.length);
-    _.each(val.data, function(Entry) {
-        if(Entry._ls_links.length) {
-            fetchPromises.push(retrievePages(Entry));
-        }
+
+    if (!_.has(siteObject, '1')) {
+        throw new Error("Invalid dataformat, (urlops plugin has to be called before)")
+    }
+    debug("Sources %j ", siteObject);
+
+    /* in theory, we have only "type": "target" kind of href */
+    _.each(siteObject, function(siteList, order) {
+        debug("Order %d sitelist %j", order, siteList);
+        fetchPromises.push(retrievePages(siteList));
     });
     return Promise
         .all(fetchPromises) // , { concurrency: process.env.FETCHER_CONCURRENCY})
-        .return(val);
+        .then(function(results) {
+            console.log(JSON.stringify(results, undefined, 2));
+            return results;
+        });
+
+    /* This is a side effect only plugin:
+        creates file, but do not change the content */
 };
 
 module.exports.argv = {

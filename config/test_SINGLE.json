@@ -1,0 +1,10 @@
+{
+  "mongodb": {
+    "uri": "mongodb://localhost/trackography"
+  },
+  "sources": {
+    "italy" : "config/url/italy.json",
+    "china" :"config/url/china.json"
+  }
+}
+
