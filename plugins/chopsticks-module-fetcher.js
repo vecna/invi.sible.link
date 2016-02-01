@@ -3,16 +3,17 @@ var _ = require('lodash'),
     debug = require('debug')('plugin.fetcher'),
     moment = require('moment'),
     child_process = require('child_process'),
-    fs = require('fs');
+    fs = require('fs'),
+    fileStruct = require('../lib/fslogic').fileStruct;
 
 Promise.promisifyAll(fs);
 
-var Ghostbuster = function (executable, command, MaxExecTime) {
+var Ghostbuster = function (executable, command, maxExecTime) {
     /* execute phantoms, lynx and curl */
     debug("\tExecuting %s", command);
     try {
         child_process
-            .execSync(command, {timeout: MaxExecTime });
+            .execSync(command, {timeout: maxExecTime });
         debug("\tExecution of %s completed", executable);
     } catch(error) {
         if (error.code != 'ETIMEDOUT') {
@@ -23,149 +24,78 @@ var Ghostbuster = function (executable, command, MaxExecTime) {
     }
 };
 
-var WebFetcher = function(inPlaceObj, URL, LSFiles, MaxExecTime) {
+var WebFetcher = function(siteEntry, maxExecTime) {
 
-    var phantomjs_command = "phantomjs crawl/phjsrender.js "
-        + "'" + URL + "'"
-        + " "
-        + LSFiles.savedir
-        + " "
-        + LSFiles.rootname
-        + " "
-        + MaxExecTime;
-    var lynx_command = "lynx -dump "
-        + "'" + URL + "'"
-        + " > "
-        + LSFiles.files.text;
-    /* Important to take content-type and true location against redirect */
-    var curl_command = "curl -N -L --head "
-        + "'" + URL + "'"
-        + " -o "
-        + LSFiles.files.headers;
-
-    var command_list = [
-        Ghostbuster('phantom', phantomjs_command, MaxExecTime * 1000 + 5000),
-        Ghostbuster('lynx', lynx_command, MaxExecTime * 1000),
-        Ghostbuster('curl', curl_command, MaxExecTime * 1000)
-    ];
+    var fN = fileStruct(siteEntry._ls_dir.location, siteEntry._ls_dir.timeString),
+        mkdirp_command = "mkdir -p " + siteEntry._ls_dir.location,
+        phantomjs_command = "phantomjs crawl/phjsrender.js "
+            + "'" + siteEntry._ls_links[0].href + "'"
+            + " "
+            + siteEntry._ls_dir.location
+            + " "
+            + siteEntry._ls_dir.timeString
+            + " "
+            + maxExecTime
+            + " 2>&1 "
+            + siteEntry._ls_dir.location + "phantom.stderr",
+        lynx_command = "lynx -dump "
+            + "'" + siteEntry._ls_links[0].href + "'"
+            + " > "
+            + fN.text,
+        curl_command = "curl -N -L --head "
+            + "'" + siteEntry._ls_links[0].href + "'"
+            + " -o "
+            + fN.headers
+            + " 2>&1 "
+            + siteEntry._ls_dir.location + "curl.stderr",
+        command_list = [
+            Ghostbuster('mkdir', mkdirp_command, maxExecTime * 1000),
+            Ghostbuster('phantom', phantomjs_command, maxExecTime * 1000 + 5000),
+            Ghostbuster('lynx', lynx_command, maxExecTime * 1000),
+            Ghostbuster('curl', curl_command, maxExecTime * 1000)
+        ],
+        date = new Date(),
+        startTime = date.getTime();
 
     return Promise
         .all(command_list)
         .then(function() {
-            return fs.writeFileSync(LSFiles.savedir + "/" + 'URLinfo.txt', URL, {flag: 'w+'});
+            var endTime = date.getTime(),
+                resultLogF = siteEntry._ls_dir.location + 'executions.json';
+            fs.writeFileSync(resultLogF, JSON.stringify({
+                    url: siteEntry._ls_links[0].href,
+                    startTime: startTime,
+                    endTime: endTime,
+                    executions: endTime - startTime
+            }, undefined, 2), {flag: 'w+'});
+            return resultLogF;
         })
         /* this goes in _ls_fetch */
-        .then(function() {
-            inPlaceObj._ls_fetch = {
+        .then(function(writtenLog) {
+            siteEntry._ls_fetch = {
                 status: 'done',
-                host: LSFiles.host,
-                savedir: LSFiles.savedir,
-                when: LSFiles.rootname
+                where: writtenLog
             };
         });
 };
 
-var GetRelativePaths = function(TargetDir, shortHash, URL) {
-    /* is important for a complex URL get the parameter and save it,
-     * because maybe duckduckgo or twitter return a different URL with the same content ?
-     * and because we can get multiple URL from the same domain */
 
-    if (TargetDir.charAt(TargetDir.length -1) != '/') {
-        TargetDir = TargetDir + "/";
-    }
 
-    var Host = URL.split('/')[2];
+module.exports = function(siteList) {
 
-    /* so, is created BOHdir/www.ilpost.it/331231/www.ilpost.it_331231_1512041131.*
-     at the 11:31 of 04 December 2015, so when the time increment is possible use ">"
-     comparison to check for the last. the separation in subdir is to avoid that very
-     well frequent domain can fillup the directory inodes
-     */
-    var SubDir = TargetDir + Host + "/" + shortHash + "/";
-    var RootFname = moment().format('YYMMDDHHmm');
+    debug("Chain of fetch ready: %d fetches, concurrency %d",
+        siteList.length, process.env.FETCHER_CONCURRENCY );
 
-    return {
-        host: Host,
-        hash: shortHash,
-        savedir: SubDir,
-        rootname: RootFname,
-        files : {
-            dom: SubDir + RootFname + '.html',
-            timeout: SubDir + RootFname + '.timeout',
-            render: SubDir + RootFname + '.jpeg',
-            io: SubDir + RootFname + '.details',
-            text: SubDir + RootFname + '.text',
-            headers: SubDir + RootFname + '.headers'
-        }
-    };
-};
-
-/* "ITA": [ { "url" ... }. {"url" ..} ], so if we split
-    the dict, can be managed currency. every task here is not in parallel */
-var retrievePages = function(urlList) {
-
-    return Promise.each(urlList, function(siteEntry) {
-
-        if (siteEntry._ls_links.length !== 1) {
-            console.log(JSON.stringify(siteEntry, undefined, 2));
-            throw new Error("a Link object in " + siteEntry.source +
-                " has more than one _ls_links");
-        }
-
-        /* every time that chopsticks runs has to run in a dedicated directory,
-           so different content x time */
-        var linkObject = siteEntry._ls_links[0],
-            href = linkObject.href,
-            Paths = GetRelativePaths(
-                process.env.FETCHER_TARGET,
-                _.trunc(linkObject._ls_id_hash, { length: 6, omission: '' }),
-                href);
-
-        /* next improvement is extend the mongodb query
-         and time comparison, to understand if the crawl is late than 1 day or not
-         (or other indicator per page) */
-        return fs
-            .statAsync(Paths.savedir)
-            .then(function(presence) {
-                debug("Directory %s already present: skipping", Paths.files.render);
-                linkObject._ls_fetch = {
-                    status: 'skipped',
-                    when: moment().format('YYMMDDHHmm'),
-                    savedir: Paths.savedir
-                }
-            })
-            .catch(function(failure) {
-                return WebFetcher(
-                    siteEntry,
-                    href,
-                    Paths,
-                    process.env.FETCHER_MAXTIME );
-            });
-    });
-};
-
-module.exports = function(siteObject) {
-    var fetchPromises = [];
-
-    if (!_.has(siteObject, '1')) {
-        throw new Error("Invalid dataformat, (urlops plugin has to be called before)")
-    }
-    debug("Sources %j ", siteObject);
-
-    /* in theory, we have only "type": "target" kind of href */
-    _.each(siteObject, function(siteList, order) {
-        debug("Order %d sitelist %j", order, siteList);
-        fetchPromises.push(retrievePages(siteList));
-    });
     return Promise
-        .all(fetchPromises) // , { concurrency: process.env.FETCHER_CONCURRENCY})
+        .map(siteList, function(siteEntry) {
+            /* in theory, we have here only "type": "target" kind of href
+             * in theory, we have _ls_dir present: these elements can be assert-ed */
+            debug("\t%s", siteEntry._ls_links[0].href);
+            WebFetcher( siteEntry, process.env.FETCHER_MAXTIME )
+        } , { concurrency: process.env.FETCHER_CONCURRENCY})
         .then(function(results) {
-            console.log(JSON.stringify(results, undefined, 2));
             return results;
         });
-
-    /* This is a side effect only plugin:
-        creates file, but do not change the content */
 };
 
 module.exports.argv = {

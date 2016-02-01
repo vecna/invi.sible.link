@@ -4,7 +4,7 @@ winston = require 'winston'
 {join} = require 'path'
 
 plugins = require '../plugins'
-urllist = require './urllist'
+targetsite = require './targetsite'
 {history} = require './history'
 {nestedOption, assertEnv} = require './utils'
 
@@ -34,10 +34,9 @@ _(argv)
 winston.remove winston.transports.Console
 winston.add winston.transports.Console, timestamp: true, colorize: true
 
-try
-  assert argv.c, argv.s
-catch
-  winston.info 'No config -c or source -s: use -c config/test_SINGLE.json -s italy'
+if ! (typeof argv.c == "string" && typeof argv.s == "string")
+  winston.info "No config -c or source -s, use:\n\t -c config/test_SINGLE.json -s italy"
+  return
 
 # Initialize the mongodb configuration
 try
@@ -46,9 +45,7 @@ try
 catch
   winston.info 'No MongoDB connection string found.'
 
-debugger
-
-urllist.all argv.c, argv.s
+targetsite.all argv.c, argv.s
 .then (profile) ->
   throw new Error("Profile #{argv.profile} not found.")  unless profile?
 

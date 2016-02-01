@@ -2,6 +2,7 @@
 var system = require('system'),
     Promise = require('bluebird'),
     fs = require('fs'),
+    fileStruct = require('../lib/fslogic').fileStruct,
     page = require('webpage').create(),
     iodetails = [], /* global variables, back in the MS-DOS style! */
     errordetails = [],
@@ -14,27 +15,16 @@ if (system.args.length === 1) {
     phantom.exit(1);
 }
 
-var URL = system.args[1];
-var DestDir = system.args[2];
-var RootFname = system.args[3];
-var MAX_DURATION = (system.args[4] * 1);
+var URL = system.args[1],
+    locationDir = system.args[2],
+    fname = system.args[3],
+    MAX_DURATION = (system.args[4] * 1),
+    RelativeFullPaths = fileStruct(locationDir, fname);
 
 if (MAX_DURATION > 120 || MAX_DURATION < 5) {
     console.log("The paramenter in MAX_DURATION probably is wrong?");
     phantom.exit(1);
 }
-
-/*
-   warning redundancy! has to be put in a library shared across this file and
-   littlespoon-module-fetcher.js -- not yet done 'cos relative path are unclear:
-   which would be the CWD of phantom execution ? littlespoon-pipiline/ ?
- */
-var RelativeFullPaths = {
-    dom: DestDir + RootFname + '.html',
-    timeout: DestDir + RootFname + '.timeout',
-    render: DestDir + RootFname + '.jpeg',
-    io: DestDir + RootFname + '.details'
-};
 
 
 /* Phantom Page hooking */

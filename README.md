@@ -37,4 +37,12 @@ The data that get updates here are three:
   * the tracking company files
   * the daily (or based on your periodic testing) output of the pipeline 'fetcher' process
 
+# Basic rules
 
+  * the target URLs are pick from config/url/*.json files, as defined in the config/file.json given 
+
+# Plugins kind
+
+all the plugins are in 'plugins/' directory, they can be used in the pipeline, the formalisation of indepotent/potent functions is ongoing.
+
+  * 
