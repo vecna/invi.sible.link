@@ -2,9 +2,10 @@
   "mongodb": {
     "uri": "mongodb://localhost/trackography"
   },
-  "sources": {
+  "inputs": {
     "italy" : "config/url/italy.json",
-    "china" :"config/url/china.json"
+    "china" :"config/url/china.json",
+    "companies": "config/companies/companymap.json"
   }
 }
 

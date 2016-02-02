@@ -1,7 +1,7 @@
 
 var _ = require('lodash'),
     Promise = require('bluebird'),
-    debug = require('debug')('plugin.urlops'),
+    debug = require('debug')('plugin.companies'),
     moment = require('moment'),
     fs = require('fs'),
     linkIdHash = require('../lib/transformer').linkIdHash,
@@ -12,9 +12,13 @@ Promise.promisifyAll(fs);
 
 module.exports = function(datainput) {
 
-    var siteList = datainput.profile,
-        retVal = [];
+    var siteList = datainput.profile;
 
+    /* this can eventually change the "1"/"2" based on other info,
+       can be renamed as urlsequencer
+     */
+
+    var retVal = [];
     return Promise.map(siteList, function(siteEntry) {
 
         var i = _.merge(

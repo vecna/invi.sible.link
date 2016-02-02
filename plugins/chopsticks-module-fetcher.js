@@ -10,16 +10,18 @@ Promise.promisifyAll(fs);
 
 var Ghostbuster = function (executable, command, maxExecTime) {
     /* execute phantoms, lynx and curl */
-    debug("\tExecuting %s", command);
+    debug(" Executing %s", command);
     try {
         child_process
             .execSync(command, {timeout: maxExecTime });
-        debug("\tExecution of %s completed", executable);
+        debug(" ... %s completed", executable);
     } catch(error) {
         if (error.code != 'ETIMEDOUT') {
             console.error(error);
             console.log(JSON.stringify(error, undefined, 2));
-            debug("\tExecution of %s failed", executable);
+            debug(" ... %s failed", executable);
+        } else {
+            debug(" ... %s interrupted by timeout", executable);
         }
     }
 };
@@ -79,8 +81,6 @@ var WebFetcher = function(siteEntry, maxExecTime) {
         });
 };
 
-
-
 module.exports = function(siteList) {
 
     debug("Chain of fetch ready: %d fetches, concurrency %d",
@@ -92,7 +92,9 @@ module.exports = function(siteList) {
              * in theory, we have _ls_dir present: these elements can be assert-ed */
             debug("\t%s", siteEntry._ls_links[0].href);
             WebFetcher( siteEntry, process.env.FETCHER_MAXTIME )
-        } , { concurrency: process.env.FETCHER_CONCURRENCY})
+        } , // { concurrency: process.env.FETCHER_CONCURRENCY}
+            { concurrency: 5}
+        )
         .then(function(results) {
             return results;
         });
@@ -107,7 +109,7 @@ module.exports.argv = {
     },
     'fetcher.maxtime': {
         nargs: 1,
-        default: 10,
+        default: 30,
         desc: 'Max amount of seconds which a web fetcher can run'
     },
     'fetcher.concurrency': {

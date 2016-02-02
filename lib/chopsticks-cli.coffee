@@ -4,15 +4,17 @@ winston = require 'winston'
 {join} = require 'path'
 
 plugins = require '../plugins'
-targetsite = require './targetsite'
+{confsource} = require './confinput'
 {history} = require './history'
 {nestedOption, assertEnv} = require './utils'
 
 debug = require('debug')('cli')
 
 yargs = require 'yargs'
-  .nargs('p', 1).alias('p', 'plugins').string('p').describe('p', 'A list of plugins')
-  .nargs('i', 1).alias('s', 'sources').describe('s', 'source, form config/url/')
+  .nargs('p', 1).alias('p', 'plugins').string('p')
+            .describe('p', 'A list of plugins')
+  .nargs('i', 1).alias('i', 'input')
+            .describe('i', 'input, a key from the config, section "inputs"')
   .config('c')
   .help 'h'
   .alias 'h', 'help'
@@ -34,8 +36,10 @@ _(argv)
 winston.remove winston.transports.Console
 winston.add winston.transports.Console, timestamp: true, colorize: true
 
-if ! (typeof argv.c == "string" && typeof argv.s == "string")
-  winston.info "No config -c or source -s, use:\n\t -c config/test_SINGLE.json -s italy"
+if ! (typeof argv.c == "string" && typeof argv.i == "string")
+  winston.info "No config -c and input -i, use:"
+  console.log "\tfetch:   \t-c config/test_SINGLE.json -i italy -p urlops,fetcher"
+  console.log "\tanalysis:\t-c config/test_SIGNLE.json -i companies -p tpa"
   return
 
 # Initialize the mongodb configuration
@@ -45,7 +49,7 @@ try
 catch
   winston.info 'No MongoDB connection string found.'
 
-targetsite.all argv.c, argv.s
+confsource argv.c, argv.input
 .then (profile) ->
   throw new Error("Profile #{argv.profile} not found.")  unless profile?
 

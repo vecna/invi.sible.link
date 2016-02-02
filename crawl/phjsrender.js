@@ -2,11 +2,21 @@
 var system = require('system'),
     Promise = require('bluebird'),
     fs = require('fs'),
-    fileStruct = require('../lib/fslogic').fileStruct,
     page = require('webpage').create(),
     iodetails = [], /* global variables, back in the MS-DOS style! */
     errordetails = [],
-    counter = 0;
+    counter = 0,
+    /* dirty this copy paste, but the inclusion was impossible */
+    fileStruct = function(location, fname) {
+        return {
+            dom: location + fname + '.html',
+            timeout: location +  fname +".timeout",
+            render: location +  fname +'.jpeg',
+            io: location +  fname +'.json',
+            text: location +  fname +'.txt',
+            headers: location +  fname +'.head'
+        };
+    };
 
 if (system.args.length === 1) {
     console.log('phantomjs phjsrender.js URL destination_directory basefilename MAX_DURATION');
