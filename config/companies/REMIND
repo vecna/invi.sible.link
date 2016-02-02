@@ -1,0 +1,8 @@
+if a company domain ends with a "." means that is just a domain
+  applied to every TLD, so I never have to used with startsWith or
+  I can match wrongly someone calling google.something.js 
+  (that I don't know if exists)
+
+
+  that's way I removed 'tld' package for
+  npm install domain-name-parser
