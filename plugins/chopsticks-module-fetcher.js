@@ -19,7 +19,7 @@ var Ghostbuster = function (executable, command, maxExecTime) {
         if (error.code != 'ETIMEDOUT') {
             console.error(error);
             console.log(JSON.stringify(error, undefined, 2));
-            debug(" ... %s failed", executable);
+            debug(" ... %s failed %s", executable, command);
         } else {
             debug(" ... %s interrupted by timeout", executable);
         }
@@ -30,16 +30,14 @@ var WebFetcher = function(siteEntry, maxExecTime) {
 
     var fN = fileStruct(siteEntry._ls_dir.location, siteEntry._ls_dir.timeString),
         mkdirp_command = "mkdir -p " + siteEntry._ls_dir.location,
-        phantomjs_command = "phantomjs crawl/phjsrender.js "
+        phantomjs_command = "node_modules/.bin/phantomjs crawl/phjsrender.js "
             + "'" + siteEntry._ls_links[0].href + "'"
             + " "
             + siteEntry._ls_dir.location
             + " "
             + siteEntry._ls_dir.timeString
             + " "
-            + maxExecTime
-            + " 2>&1 "
-            + siteEntry._ls_dir.location + "phantom.stderr",
+            + maxExecTime,
         lynx_command = "lynx -dump "
             + "'" + siteEntry._ls_links[0].href + "'"
             + " > "
@@ -47,9 +45,7 @@ var WebFetcher = function(siteEntry, maxExecTime) {
         curl_command = "curl -N -L --head "
             + "'" + siteEntry._ls_links[0].href + "'"
             + " -o "
-            + fN.headers
-            + " 2>&1 "
-            + siteEntry._ls_dir.location + "curl.stderr",
+            + fN.headers,
         command_list = [
             Ghostbuster('mkdir', mkdirp_command, maxExecTime * 1000),
             Ghostbuster('phantom', phantomjs_command, maxExecTime * 1000 + 5000),
