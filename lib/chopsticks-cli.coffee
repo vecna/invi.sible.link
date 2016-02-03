@@ -50,20 +50,20 @@ catch
   winston.info 'No MongoDB connection string found.'
 
 confsource argv.c, argv.input
-.then (profile) ->
-  throw new Error("Profile #{argv.profile} not found.")  unless profile?
+.then (source) ->
+  throw new Error("Profile #{argv.source} not found.")  unless source?
 
-  Promise.using history(profile), ({step}) ->
+  Promise.using history(source), ({step}) ->
     Promise.reduce argv.plugins.split(','), (val, p) ->
       winston.info "Calling the #{p} plugin."
-      winston.info "#{JSON.stringify(profile[p])}"  if profile[p]?
+      winston.info "#{JSON.stringify(source[p])}" if source[p]?
       # debug JSON.stringify(val)
       unless plugins[p]?
         throw new Error("Invalid plug name: #{p}")
 
       step p
       .then -> plugins[p](val)
-    , {profile: profile, data: [], stats: {}}
+    , {source: source, companies: [], data: [], stats: {}}
 .then (v) ->
   winston.info 'Pipeline completed.'
   process.exit 0

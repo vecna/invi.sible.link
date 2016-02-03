@@ -59,7 +59,7 @@ var WebFetcher = function(siteEntry, maxExecTime) {
         .all(command_list)
         .then(function() {
             var endTime = date.getTime(),
-                resultLogF = siteEntry._ls_dir.location + 'executions.json';
+                resultLogF = siteEntry._ls_dir.location + 'executions.log';
             fs.writeFileSync(resultLogF, JSON.stringify({
                     url: siteEntry._ls_links[0].href,
                     startTime: startTime,
