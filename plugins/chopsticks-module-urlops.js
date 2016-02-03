@@ -12,7 +12,7 @@ Promise.promisifyAll(fs);
 
 module.exports = function(datainput) {
 
-    var siteList = datainput.profile,
+    var siteList = datainput.source,
         retVal = [];
 
     return Promise.map(siteList, function(siteEntry) {

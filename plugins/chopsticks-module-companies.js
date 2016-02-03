@@ -12,7 +12,7 @@ Promise.promisifyAll(fs);
 
 module.exports = function(datainput) {
 
-    var siteList = datainput.profile;
+    var siteList = datainput.source;
 
     /* this can eventually change the "1"/"2" based on other info,
        can be renamed as urlsequencer

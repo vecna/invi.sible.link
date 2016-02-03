@@ -3,11 +3,15 @@ var _ = require('lodash'),
     Promise = require('bluebird'),
     debug = require('debug')('plugin.json'),
     moment = require('moment'),
+    phIOimport = require('../lib/phantomutils'),
     dirToJson = require('dir-to-json');
 
-var recursiveLook = function(objectWithChild, basePath) {
-    var nextP = basePath + "/" + objectWithChild.path,
+var recursiveLook = function(objectWithChild, basePath)
+{
+    var p = objectWithChild.path,
+        nextP = ( (p.split("/").length - 1) > 1) ? (basePath + "/" + p) : basePath,
         retVal = "";
+
     if (objectWithChild.type === "file") {
         if (_.endsWith(objectWithChild.name, '.json')) {
             retVal += nextP + ",";
@@ -29,14 +33,14 @@ module.exports = function(datainput) {
         .then( function( dirTree ) {
             var jsonIoList = recursiveLook(dirTree, sourceDir)
                 .split(",");
-            return _.remove(jsonIoList, function(e) { return e === ""; });
+            return _.remove(jsonIoList, function(e) { return e !== ""; });
         })
         .catch( function( err ){
             throw err;
         })
         .then(function(jsonFiles) {
-            debug("\x0FD3 Read %d phantom/JSON output files", jsonFiles.length);
-            _.each(jsonFiles, )
+            debug("found %d phantom/JSON output files to be imported...", jsonFiles.length);
+            return _.map(jsonFiles, phIOimport.importJson);
         })
         .then(function(scanData) {
             /* rebuild the envelope properly */
