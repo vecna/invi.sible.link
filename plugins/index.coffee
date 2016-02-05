@@ -4,4 +4,4 @@ module.exports =
   mongodb: require './chopsticks-module-mongodb'
   urlops: require './chopsticks-module-urlops'
   json: require './chopsticks-module-json'
-  company: require './chopsticks-module-companies'
+  companies: require './chopsticks-module-companies'

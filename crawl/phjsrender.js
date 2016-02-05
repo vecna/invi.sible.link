@@ -93,7 +93,7 @@ var HappyEnding = function() {
         });
 
         /* is essential fix the same size otherwise image diffing fails */
-        page.viewportSize = { width: 1920, height: 1080 };
+        // page.viewportSize = { width: 1920, height: 1080 };
         page.render(RelativeFullPaths.render, {format: 'jpeg', quality: '50'});
 
         console.log("Done render!");

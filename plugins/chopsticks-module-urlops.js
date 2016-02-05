@@ -5,8 +5,8 @@ var _ = require('lodash'),
     moment = require('moment'),
     fs = require('fs'),
     linkIdHash = require('../lib/transformer').linkIdHash,
-    domainTLDinfo = require('../lib/fslogic').domainTLDinfo,
-    directoryStruct = require('../lib/fslogic').directoryStruct;
+    domainTLDinfo = require('../lib/domain').domainTLDinfo,
+    directoryStruct = require('../lib/jsonfiles').directoryStruct;
 
 Promise.promisifyAll(fs);
 

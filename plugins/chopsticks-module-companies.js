@@ -5,20 +5,19 @@ var _ = require('lodash'),
     moment = require('moment'),
     fs = require('fs'),
     linkIdHash = require('../lib/transformer').linkIdHash,
-    domainTLDinfo = require('../lib/fslogic').domainTLDinfo,
-    directoryStruct = require('../lib/fslogic').directoryStruct;
+    domainTLDinfo = require('../lib/domain').domainTLDinfo,
+    directoryStruct = require('../lib/jsonfiles').directoryStruct;
 
 Promise.promisifyAll(fs);
 
 module.exports = function(datainput) {
 
-    var siteList = datainput.source;
+    var siteList = datainput.source,
+        retVal = [];
 
     /* this can eventually change the "1"/"2" based on other info,
-       can be renamed as urlsequencer
-     */
+       can be renamed as urlsequencer */
 
-    var retVal = [];
     return Promise.map(siteList, function(siteEntry) {
 
         var i = _.merge(

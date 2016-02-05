@@ -4,7 +4,7 @@ var _ = require('lodash'),
     moment = require('moment'),
     child_process = require('child_process'),
     fs = require('fs'),
-    fileStruct = require('../lib/fslogic').fileStruct;
+    fileStruct = require('../lib/jsonfiles').fileStruct;
 
 Promise.promisifyAll(fs);
 
@@ -14,14 +14,14 @@ var Ghostbuster = function (executable, command, maxExecTime) {
     try {
         child_process
             .execSync(command, {timeout: maxExecTime });
-        debug(" ... %s completed", executable);
+        debug(" … %s completed", executable);
     } catch(error) {
         if (error.code != 'ETIMEDOUT') {
             console.error(error);
             console.log(JSON.stringify(error, undefined, 2));
-            debug(" ... %s failed %s", executable, command);
+            debug(" … %s failed %s", executable, command);
         } else {
-            debug(" ... %s interrupted by timeout", executable);
+            debug(" … %s interrupted by timeout", executable);
         }
     }
 };
