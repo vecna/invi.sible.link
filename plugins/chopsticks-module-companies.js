@@ -10,12 +10,18 @@ var _ = require('lodash'),
     directoryStruct = require('../lib/jsonfiles').directoryStruct;
 
 var _replace = function(str, aim, what) {
-    var x = str.indexOf(aim);
-    debug("%s %d %s", str, x, aim);
-    if (x !== -1) {
-        str[x] = what;
-        console.log(str);
+    var x;
+    if (str === undefined || str === null) {
+        return undefined;
     }
+
+    do {
+        x = str.indexOf(aim);
+        if (x !== -1) {
+            str = str.substr(0, x ) + what + str.substr(x + 1, str.length -1);
+        }
+    }
+    while (x !== -1);
     return str;
 };
 
@@ -31,7 +37,9 @@ module.exports = function(datainput) {
     _.each(datainput.companies, function(compadomains, cname) {
         debugger;
         _.each(compadomains, function(domain) {
-            _.set(invertedCompany, domain, _replace(cname, '.', 'ł'));
+            _.set(invertedCompany,
+                _replace(domain, '.', 'ł'),
+                _replace(cname, '.', 'ł'));
         });
     });
     debug("From companies list of %d a mapped %d",
@@ -40,7 +48,7 @@ module.exports = function(datainput) {
 
     _.each(datainput.data, function(siteTested) {
         _.each(siteTested.rr, function(inclusion) {
-            _.set(domainMap, inclusion.domain, null);
+            _.set(domainMap, _replace(inclusion.domain, '.', 'ł'), null);
         });
     });
     debug("Reduced domain map from %d sites to %d domains",
@@ -49,17 +57,36 @@ module.exports = function(datainput) {
     _.each(domainMap, function(_null, domainKey) {
         _.find(invertedCompany, function(cname, domain) {
             if (_.startsWith(domainKey, domain)) {
-                debug("Found %s in %s", cname, domainKey);
+                // debug("Found %s in %s", cname, domainKey);
                 domainMap[domainKey] = _replace(cname, 'ł', '.');
                 return true;
             }
         });
     });
 
-    debug("mapped companies per uniqe domain included");
+    debug("mapped companies per unique domain included");
 
-    return datainput;
+    _.each(datainput.data, function(siteTested) {
 
+        _.each(siteTested.rr, function(inclusion, ndx, sT) {
+            var kd = _replace(inclusion.domain, '.', 'ł');
+            if (domainMap[kd] !== null && domainMap[])  {
+                sT[ndx].company = domainMap[kd];
+            }
+        });
 
+        var companyNumber = _.countBy(_.map(siteTested.rr, function(incl) {
+            return incl.company;
+        }));
+
+        siteTested.stats.companies = companyNumber;
+        newData.push(siteTested);
+    });
+
+    datainput.data = newData;
+
+    return fs
+        .writeFileAsync("/tmp/FINALE.json", JSON.stringify(datainput, undefined, 2))
+        .return(datainput);
 };
 
