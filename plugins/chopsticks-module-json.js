@@ -4,7 +4,7 @@ var _ = require('lodash'),
     debug = require('debug')('plugin.json'),
     moment = require('moment'),
     fs = require('fs'),
-    phIOimport = require('../lib/phantomutils'),
+    importer = require('../lib/importer'),
     dirToJson = require('dir-to-json');
 
 Promise.promisifyAll(fs);
@@ -53,7 +53,7 @@ module.exports = function(datainput) {
         })
         .then(function(jsonFiles) {
             debug("found %d phantom/JSON output files to be imported...", jsonFiles.length);
-            return Promise.map(jsonFiles, phIOimport.importJson);
+            return Promise.map(jsonFiles, importer.importJson);
         })
         .then(function(scanData) {
             /* rebuild the envelope properly */

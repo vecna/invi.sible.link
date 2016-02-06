@@ -6,38 +6,60 @@ var _ = require('lodash'),
     fs = require('fs'),
     linkIdHash = require('../lib/transformer').linkIdHash,
     domainTLDinfo = require('../lib/domain').domainTLDinfo,
+    company = require('../lib/companies'),
     directoryStruct = require('../lib/jsonfiles').directoryStruct;
+
+var _replace = function(str, aim, what) {
+    var x = str.indexOf(aim);
+    debug("%s %d %s", str, x, aim);
+    if (x !== -1) {
+        str[x] = what;
+        console.log(str);
+    }
+    return str;
+};
 
 Promise.promisifyAll(fs);
 
 module.exports = function(datainput) {
 
-    var siteList = datainput.source,
-        retVal = [];
+    /* A single key for every domain in datainput. */
+    var invertedCompany = {},
+        newData = [],
+        domainMap = {};
 
-    /* this can eventually change the "1"/"2" based on other info,
-       can be renamed as urlsequencer */
+    _.each(datainput.companies, function(compadomains, cname) {
+        debugger;
+        _.each(compadomains, function(domain) {
+            _.set(invertedCompany, domain, _replace(cname, '.', 'ł'));
+        });
+    });
+    debug("From companies list of %d a mapped %d",
+        _.size(datainput.companies), _.size(invertedCompany));
 
-    return Promise.map(siteList, function(siteEntry) {
 
-        var i = _.merge(
-                linkIdHash(siteEntry)._ls_links,
-                domainTLDinfo(siteEntry._ls_links)
-            ),
-            d = directoryStruct(i, process.env.FETCHER_TARGET);
+    _.each(datainput.data, function(siteTested) {
+        _.each(siteTested.rr, function(inclusion) {
+            _.set(domainMap, inclusion.domain, null);
+        });
+    });
+    debug("Reduced domain map from %d sites to %d domains",
+        _.size(datainput.data), _.size(domainMap));
 
-            return fs
-                .statAsync(d.location)
-                .then(function(presence) {
-                    debug("%s exists: ignored re-execution", d.location);
-                })
-                .catch(function(error) {
-                    debug("%s do not exists: will be fetch", d.location);
-                    siteEntry._ls_links = i;
-                    siteEntry._ls_dir = d;
-                    retVal.push(siteEntry);
-                });
+    _.each(domainMap, function(_null, domainKey) {
+        _.find(invertedCompany, function(cname, domain) {
+            if (_.startsWith(domainKey, domain)) {
+                debug("Found %s in %s", cname, domainKey);
+                domainMap[domainKey] = _replace(cname, 'ł', '.');
+                return true;
+            }
+        });
+    });
 
-    }).return(retVal);
+    debug("mapped companies per uniqe domain included");
+
+    return datainput;
+
+
 };
 
