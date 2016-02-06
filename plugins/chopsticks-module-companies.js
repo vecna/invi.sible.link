@@ -70,14 +70,12 @@ module.exports = function(datainput) {
 
         _.each(siteTested.rr, function(inclusion, ndx, sT) {
             var kd = _replace(inclusion.domain, '.', 'ł');
-            if (domainMap[kd] !== null && domainMap[])  {
-                sT[ndx].company = domainMap[kd];
-            }
+            sT[ndx].company = domainMap[kd];
         });
 
-        var companyNumber = _.countBy(_.map(siteTested.rr, function(incl) {
+        var companyNumber = _.countBy(_.filter(_.map(siteTested.rr, function(incl) {
             return incl.company;
-        }));
+        }), undefined));
 
         siteTested.stats.companies = companyNumber;
         newData.push(siteTested);
