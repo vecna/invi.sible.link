@@ -2,6 +2,7 @@
   "mongodb": {
     "uri": "mongodb://localhost/trackography"
   },
+  "debug": "debugflow",
   "inputs": {
     "italy" : "config/url/italy.json",
     "italy2" : "config/url/italy2.json",

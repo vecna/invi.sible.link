@@ -2,13 +2,14 @@ _ = require 'lodash'
 Promise = require 'bluebird'
 winston = require 'winston'
 {join} = require 'path'
-
+fs = require 'fs'
 plugins = require '../plugins'
 {confsource} = require './confinput'
 {history} = require './history'
 {nestedOption, assertEnv} = require './utils'
-
 debug = require('debug')('cli')
+
+Promise.promisifyAll fs
 
 yargs = require 'yargs'
   .nargs('p', 1).alias('p', 'plugins').string('p')
@@ -57,12 +58,13 @@ confsource argv.c, argv.input
     Promise.reduce argv.plugins.split(','), (val, p) ->
       winston.info "Calling the #{p} plugin."
       winston.info "#{JSON.stringify(source[p])}" if source[p]?
-      # debug JSON.stringify(val)
       unless plugins[p]?
         throw new Error("Invalid plug name: #{p}")
 
       step p
       .then -> plugins[p](val)
+      # Note: debugflow is hardcoded als of there is space, in the config file for it
+      .tap -> fs.writeFileAsync ('debugflow/' + p), JSON.stringify(val, undefined, 3)
     , {source: source, companies: [], data: [], stats: {}}
 .then (v) ->
   winston.info 'Pipeline completed.'

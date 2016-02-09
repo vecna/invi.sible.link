@@ -1,2 +1,5 @@
 
 DEBUG=* bin/chopsticks -c config/test_SINGLE.json -i companies -p json,companies --json.detail 16020
+
+
+DEBUG=* bin/chopsticks -c config/test_SINGLE.json -i companies -p json,companies

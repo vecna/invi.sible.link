@@ -4,17 +4,18 @@ var _ = require('lodash'),
     debug = require('debug')('plugin.companies'),
     moment = require('moment'),
     fs = require('fs'),
-    linkIdHash = require('../lib/transformer').linkIdHash,
-    domainTLDinfo = require('../lib/domain').domainTLDinfo,
-    company = require('../lib/companies'),
-    directoryStruct = require('../lib/jsonfiles').directoryStruct;
+    company = require('../lib/companies');
 
+Promise.promisifyAll(fs);
+
+/* I don't know if a better solution here was avaial. I was just looking
+   to replace a "." with a special character and vice-versa. This because
+   if a assign a key with a "." is considered a PATH of keys by lodash, therefore
+   a key "google.com": "evil", becomes "google": { "com": "evil" }
+ */
 var _replace = function(str, aim, what) {
     var x;
-    if (str === undefined || str === null) {
-        return undefined;
-    }
-
+    if (str === undefined || str === null) { return undefined; }
     do {
         x = str.indexOf(aim);
         if (x !== -1) {
@@ -25,7 +26,6 @@ var _replace = function(str, aim, what) {
     return str;
 };
 
-Promise.promisifyAll(fs);
 
 module.exports = function(datainput) {
 
@@ -83,8 +83,6 @@ module.exports = function(datainput) {
 
     datainput.data = newData;
 
-    return fs
-        .writeFileAsync("/tmp/FINALE.json", JSON.stringify(datainput, undefined, 2))
-        .return(datainput);
+    return datainput;
 };
 
