@@ -52,48 +52,42 @@ var WebFetcher = function(siteEntry, maxExecTime) {
             Ghostbuster('lynx', lynx_command, maxExecTime * 1000),
             Ghostbuster('curl', curl_command, maxExecTime * 1000)
         ],
-        date = new Date(),
-        startTime = date.getTime();
+        startTime = (new Date()).getTime();
 
     return Promise
         .all(command_list)
         .then(function() {
-            var endTime = date.getTime(),
-                resultLogF = siteEntry._ls_dir.location + 'executions.log';
-            fs.writeFileSync(resultLogF, JSON.stringify({
+            var resultLogF = siteEntry._ls_dir.location + 'executions.log';
+            return fs
+                .writeFileAsync(resultLogF, JSON.stringify({
                     url: siteEntry._ls_links[0].href,
                     startTime: startTime,
-                    endTime: endTime,
-                    executions: endTime - startTime
-            }, undefined, 2), {flag: 'w+'});
-            return resultLogF;
-        })
-        /* this goes in _ls_fetch */
-        .then(function(writtenLog) {
-            siteEntry._ls_fetch = {
-                status: 'done',
-                where: writtenLog
-            };
+                    endTime: (new Date()).getTime(),
+                    executions: (new Date()).getTime() - startTime
+            }, undefined, 2), {flag: 'w+'})
+                .tap(function(resultLogF) {
+                    debug("Written %s", resultLogF);
+                });
         });
 };
 
-module.exports = function(siteList) {
+module.exports = function(val) {
+    /* this is an idempotent module, do not change val */
 
     debug("Chain of fetch ready: %d fetches, concurrency %d",
-        siteList.length, process.env.FETCHER_CONCURRENCY );
+        val.source.length, process.env.FETCHER_CONCURRENCY );
 
     return Promise
-        .map(siteList, function(siteEntry) {
+        .map(val.source, function(siteEntry) {
             /* in theory, we have here only "type": "target" kind of href
              * in theory, we have _ls_dir present: these elements can be assert-ed */
             debug("\t%s", siteEntry._ls_links[0].href);
-            WebFetcher( siteEntry, process.env.FETCHER_MAXTIME )
+            WebFetcher( siteEntry, process.env.FETCHER_MAXTIME );
+            return null;
         } , // { concurrency: process.env.FETCHER_CONCURRENCY}
             { concurrency: 5}
         )
-        .then(function(results) {
-            return results;
-        });
+        .return(val);
 };
 
 module.exports.argv = {

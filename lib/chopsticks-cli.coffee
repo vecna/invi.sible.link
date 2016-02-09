@@ -40,7 +40,6 @@ winston.add winston.transports.Console, timestamp: true, colorize: true
 if ! (typeof argv.c == "string" && typeof argv.i == "string")
   winston.info "No config -c and input -i, use:"
   console.log "\tfetch:   \t-c config/test_SINGLE.json -i italy -p urlops,fetcher"
-  console.log "\tanalysis:\t-c config/test_SIGNLE.json -i companies -p tpa"
   return
 
 # Initialize the mongodb configuration
@@ -50,14 +49,15 @@ try
 catch
   winston.info 'No MongoDB connection string found.'
 
-confsource argv.c, argv.input
-.then (source) ->
-  throw new Error("Profile #{argv.source} not found.")  unless source?
+confsource argv.c, argv.i
+.then (inputs) ->
+  throw new Error("Targets #{argv.i} not found.")  unless inputs.source?
+  throw new Error("Companies not found.")  unless inputs.companies?
 
-  Promise.using history(source), ({step}) ->
+  Promise.using history(inputs.source), ({step}) ->
     Promise.reduce argv.plugins.split(','), (val, p) ->
       winston.info "Calling the #{p} plugin."
-      winston.info "#{JSON.stringify(source[p])}" if source[p]?
+      winston.info "#{JSON.stringify(inputs.source[p])}" if inputs.source[p]?
       unless plugins[p]?
         throw new Error("Invalid plug name: #{p}")
 
@@ -65,7 +65,7 @@ confsource argv.c, argv.input
       .then -> plugins[p](val)
       # Note: debugflow is hardcoded als of there is space, in the config file for it
       .tap -> fs.writeFileAsync ('debugflow/' + p), JSON.stringify(val, undefined, 3)
-    , {source: source, companies: [], data: [], stats: {}}
+    , { source: inputs.source, companies: inputs.companies, data: [], stats: {}, analytics: {} }
 .then (v) ->
   winston.info 'Pipeline completed.'
   process.exit 0

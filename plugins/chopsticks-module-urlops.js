@@ -13,8 +13,12 @@ Promise.promisifyAll(fs);
 module.exports = function(datainput) {
 
     var siteList = datainput.source,
-        retVal = [];
+        newData = [];
 
+    /*
+    TODO removing companies website from the target list
+     */
+    debug("processing %d URL entries", _.size(siteList) );
     return Promise.map(siteList, function(siteEntry) {
 
         var i = _.merge(
@@ -27,14 +31,22 @@ module.exports = function(datainput) {
                 .statAsync(d.location)
                 .then(function(presence) {
                     debug("%s exists: ignored re-execution", d.location);
+                    /* TODO verify */
+                    siteEntry._ls_links = i;
+                    siteEntry._ls_dir = d;
+                    newData.push(siteEntry);
                 })
                 .catch(function(error) {
                     debug("%s do not exists: will be fetch", d.location);
                     siteEntry._ls_links = i;
                     siteEntry._ls_dir = d;
-                    retVal.push(siteEntry);
+                    newData.push(siteEntry);
                 });
 
-    }).return(retVal);
+    }).then(function(_null) {
+        //console.log(JSON.stringify(newData, undefined, 2));
+        datainput.source = newData;
+        return datainput;
+    });
 };
 

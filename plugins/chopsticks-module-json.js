@@ -29,7 +29,7 @@ var recursiveLook = function(objectWithChild, basePath, siteFilter)
                 retVal += nextP + ",";
             }
         }
-    } else { /* is a directory, then, recursion */
+    } else { // is a directory, then, recursion
         _.each(objectWithChild.children, function(elem) {
             retVal += recursiveLook(elem, nextP, siteFilter) + ",";
         });
@@ -51,24 +51,19 @@ module.exports = function(datainput) {
         .catch( function( err ){
             throw err;
         })
+        /* TODO apply here filter based on .source */
         .then(function(jsonFiles) {
             debug("found %d phantom/JSON output files to be imported...", jsonFiles.length);
             return Promise.map(jsonFiles, importer.importJson);
         })
         .then(function(scanData) {
-            /* rebuild the envelope properly */
             return {
-                companies: datainput.source,
-                source: [],
+                companies: datainput.companies,
+                source: datainput.source,
                 data: scanData,
                 stats: datainput.stats
             }
         })
-        .tap(function(debugCnt) {
-            debug ("writing! /tmp/module-json-ret.json");
-            return fs.
-                writeFileAsync("/tmp/module-json-ret.json", JSON.stringify(debugCnt, undefined, 2));
-        });
 };
 
 module.exports.argv = {
