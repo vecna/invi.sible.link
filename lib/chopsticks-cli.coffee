@@ -32,6 +32,7 @@ _(argv)
     _(nestedOption k, v).pairs().each((e) ->
       process.env[e[0]] = e[1] unless process.env[e[0]]?).value()
   .value()
+# The section above do not work if you update lodash to 4.3.x
 
 # Configure logging.
 winston.remove winston.transports.Console

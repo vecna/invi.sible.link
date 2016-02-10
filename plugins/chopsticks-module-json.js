@@ -37,7 +37,21 @@ var recursiveLook = function(objectWithChild, basePath, siteFilter)
     return retVal;
 };
 
+
+
 module.exports = function(datainput) {
+
+    var urlMatch = function(jsonPath) {
+        /* return True if the json path fit one of the configured-target-website */
+        var hash = jsonPath.split('/')[3], retVal = false;
+        _.each(datainput.source, function(siteEntry) {
+            if ( _.trunc( siteEntry._ls_links[0]._ls_id_hash,
+                            { length: 6, omission: '' }) === hash) {
+                retVal = true;
+            }
+        });
+        return retVal;
+    };
 
     var sourceDir = process.env.JSON_SOURCE + "/" + process.env.JSON_DETAIL;
     debug("reading from directory %s", sourceDir);
@@ -50,6 +64,13 @@ module.exports = function(datainput) {
         })
         .catch( function( err ){
             throw err;
+        })
+        .then(function(jsonFiles) {
+            debug("found %d phantom output files, filtering...", jsonFiles.length);
+            return _.partition(jsonFiles, urlMatch)[0];
+        })
+        .tap(function(filterJF) {
+            debug("The source specified let kept %d files", filterJF.length);
         })
         /* TODO apply here filter based on .source */
         .then(function(jsonFiles) {

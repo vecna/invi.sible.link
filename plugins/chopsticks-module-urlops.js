@@ -16,7 +16,8 @@ module.exports = function(datainput) {
         newData = [];
 
     /*
-    TODO removing companies website from the target list
+    TODO removing companies website from the target list,
+    TODO think pararellization and distribution of large amount of URLs
      */
     debug("processing %d URL entries", _.size(siteList) );
     return Promise.map(siteList, function(siteEntry) {
