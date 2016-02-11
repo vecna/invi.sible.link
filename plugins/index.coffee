@@ -5,3 +5,4 @@ module.exports =
   urlops: require './chopsticks-module-urlops'
   json: require './chopsticks-module-json'
   companies: require './chopsticks-module-companies'
+  analysis: require './chopsticks-module-analysis'

@@ -52,19 +52,21 @@ var WebFetcher = function(siteEntry, maxExecTime) {
             Ghostbuster('lynx', lynx_command, maxExecTime * 1000),
             Ghostbuster('curl', curl_command, maxExecTime * 1000)
         ],
-        startTime = (new Date()).getTime();
+        startTime = moment().format('HH:mm:SS'); // (new Date()).getTime();
 
     return Promise
         .all(command_list)
         .then(function() {
-            var resultLogF = siteEntry._ls_dir.location + 'executions.log';
-            return fs
-                .writeFileAsync(resultLogF, JSON.stringify({
+            var resultLogF = siteEntry._ls_dir.location + 'executions.log',
+                content = JSON.stringify({
                     url: siteEntry._ls_links[0].href,
                     startTime: startTime,
-                    endTime: (new Date()).getTime(),
-                    executions: (new Date()).getTime() - startTime
-            }, undefined, 2), {flag: 'w+'})
+                    endTime: moment().format('HH:mm:SS'),
+                    hash: siteEntry._ls_links[0]._ls_id_hash
+                }, undefined, 2);
+            return fs
+                .writeFileAsync(resultLogF, content, {flag: 'w+'})
+                .return(resultLogF)
                 .tap(function(resultLogF) {
                     debug("Written %s", resultLogF);
                 });
