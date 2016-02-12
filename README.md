@@ -46,3 +46,10 @@ The data that get updates here are three:
 all the plugins are in 'plugins/' directory, they can be used in the pipeline, the formalisation of indepotent/potent functions is ongoing.
 
   * 
+
+
+
+# Cool external resources
+
+
+https://webcookies.org

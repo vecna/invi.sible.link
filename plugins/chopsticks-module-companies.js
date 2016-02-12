@@ -36,8 +36,8 @@ module.exports = function(datainput) {
         _.size(datainput.data), _.size(domainMap));
 
     _.each(domainMap, function(_null, domainKey) {
-        _.find(invertedCompany, function(cname, domain) {
-            if (_.startsWith(domainKey, domain)) {
+        _.find(invertedCompany, function(cname, cdomain) {
+            if (_.startsWith(domainKey, cdomain) || _.endsWith(domainKey, cdomain)) {
                 // debug("Found %s in %s", cname, domainKey);
                 domainMap[domainKey] = analytics._reputDot(cname);
                 return true;

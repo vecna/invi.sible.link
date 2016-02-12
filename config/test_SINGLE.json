@@ -7,7 +7,6 @@
     "italy" : "config/url/italy.json",
     "italy2" : "config/url/italy2.json",
     "china" :"config/url/china.json",
-    "_companies": "config/companies/TopTwo.json",
     "companies": "config/companies/companymap.json"
   }
 }
