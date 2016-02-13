@@ -31,18 +31,13 @@ module.exports = function(datainput) {
             return fs
                 .statAsync(d.location)
                 .then(function(presence) {
-                    debugger;
-                    if(process.env.URLOPS_REDO === '1') {
-                        debug("%s exists: not imported", d.location);
-                    } else {
-                        // debug("is %s present, but forced import anyway", d.location);
-                        siteEntry._ls_links = i;
-                        siteEntry._ls_dir = d;
-                        newData.push(siteEntry);
-                    }
+                    siteEntry.is_present = true;
+                    siteEntry._ls_links = i;
+                    siteEntry._ls_dir = d;
+                    newData.push(siteEntry);
                 })
                 .catch(function(error) {
-                    debug("%s do not exists: marked for fetch", d.location);
+                    siteEntry.is_present = false;
                     siteEntry._ls_links = i;
                     siteEntry._ls_dir = d;
                     newData.push(siteEntry);

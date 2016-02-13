@@ -61,7 +61,7 @@ module.exports = function(datainput) {
     if(process.env.JSON_DETAILS) {
       whenWant = process.env.JSON_DETAILS;
       debug("Imported option --json.detail %s", whenWant);
-    } else if(process.env.JSON_DAY !== 0) {
+    } else if(process.env.JSON_DAY !== "0") {
       whenWant = moment(whenWant-(process.env.JSON_DAY*24*3600000)).format('YYMMDD');
       debug("Imported option --json.day %s", whenWant);
     }
@@ -115,8 +115,8 @@ module.exports.argv = {
     },
     'json.day': {
         nargs: 1,
-        type: 'int',
-        default: 0,
+        type: 'string',
+        default: "0",
         desc: 'Day in the past to fetch the data.'
     },
     'json.sitefilter': {

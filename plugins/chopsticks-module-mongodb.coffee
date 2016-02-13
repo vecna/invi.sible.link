@@ -104,7 +104,7 @@ storeNewRelations = (relation, collection, units) ->
 module.exports = (val) ->
   envData =
     _ls_created: val.created or moment().toISOString()
-    _ls_profile: val.profile.profileId
+    _ls_profile: val.source[0].source # profile.profileId
 
   units = _(val.data)
     .uniq '_ls_id_hash'
