@@ -93,12 +93,6 @@ module.exports = function(val) {
 };
 
 module.exports.argv = {
-    'fetcher.target': {
-        nargs: 1,
-        type: 'string',
-        default: 'tempdump',
-        desc: 'Save URL directories into this directory.'
-    },
     'fetcher.maxtime': {
         nargs: 1,
         default: 30,

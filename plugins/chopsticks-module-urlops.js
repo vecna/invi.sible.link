@@ -26,19 +26,23 @@ module.exports = function(datainput) {
                 linkIdHash(siteEntry)._ls_links,
                 domainTLDinfo(siteEntry._ls_links)
             ),
-            d = directoryStruct(i, process.env.FETCHER_TARGET);
+            d = directoryStruct(i, process.env.URLOPS_TARGET);
 
             return fs
                 .statAsync(d.location)
                 .then(function(presence) {
-                    debug("%s exists: ignored re-execution", d.location);
-                    /* TODO verify */
-                    siteEntry._ls_links = i;
-                    siteEntry._ls_dir = d;
-                    newData.push(siteEntry);
+                    debugger;
+                    if(process.env.URLOPS_REDO === '1') {
+                        debug("%s exists: not imported", d.location);
+                    } else {
+                        // debug("is %s present, but forced import anyway", d.location);
+                        siteEntry._ls_links = i;
+                        siteEntry._ls_dir = d;
+                        newData.push(siteEntry);
+                    }
                 })
                 .catch(function(error) {
-                    debug("%s do not exists: will be fetch", d.location);
+                    debug("%s do not exists: marked for fetch", d.location);
                     siteEntry._ls_links = i;
                     siteEntry._ls_dir = d;
                     newData.push(siteEntry);
@@ -49,5 +53,19 @@ module.exports = function(datainput) {
         datainput.source = newData;
         return datainput;
     });
+};
+
+module.exports.argv = {
+  'urlops.target': {
+    nargs: 1,
+    type: 'string',
+    default: 'tempdump',
+    desc: 'directory for idempotent functions.'
+  },
+  'urlops.redo': {
+    nargs: 1,
+    default: 0,
+    desc: 'Repeat also if directory existRepeat also if directory existss'
+  }
 };
 

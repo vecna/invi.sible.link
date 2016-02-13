@@ -9,6 +9,10 @@ var _ = require('lodash'),
 
 Promise.promisifyAll(fs);
 
+/* This is an interesting double check, but is bad that urlops is not providing
+  all these info in the pipeline for good, ignoring recursive operationg like this.
+  maybe this can be reused for a different source of input , urlops become "confInput"
+  and this "checkDir" and they both produce in the envelope "source"  */
 var recursiveLook = function(objectWithChild, basePath, siteFilter)
 {
     var p = objectWithChild.path,
@@ -17,7 +21,7 @@ var recursiveLook = function(objectWithChild, basePath, siteFilter)
 
     if (objectWithChild.type === "file") {
         if (_.endsWith(objectWithChild.name, '.json')) {
-            if (siteFilter !== "" ) {
+            if (siteFilter !== "") {
                 if (nextP.indexOf(siteFilter) !== -1) {
                     debug("sitefilter %s in %s", siteFilter, objectWithChild.name);
                     retVal += nextP + ",";
@@ -51,10 +55,19 @@ module.exports = function(datainput) {
             }
         });
         return retVal;
-    };
+    },
+        whenWant = moment();
 
-    var sourceDir = process.env.JSON_SOURCE + "/" + process.env.JSON_DETAIL;
-    debug("reading from directory %s", sourceDir);
+    if(process.env.JSON_DETAILS) {
+      whenWant = process.env.JSON_DETAILS;
+      debug("Imported option --json.detail %s", whenWant);
+    } else if(process.env.JSON_DAY !== 0) {
+      whenWant = moment(whenWant-(process.env.JSON_DAY*24*3600000)).format('YYMMDD');
+      debug("Imported option --json.day %s", whenWant);
+    }
+    
+    var sourceDir = process.env.JSON_SOURCE + "/" + whenWant;
+    debug("Reading from directory %s", sourceDir);
 
     return dirToJson( sourceDir)
         .then( function( dirTree ) {
@@ -97,7 +110,14 @@ module.exports.argv = {
     'json.detail': {
         nargs: 1,
         type: 'string',
-        default: moment().format('YYMMDD')
+        default: null,
+        desc: 'Specify the sub-directorny [default, now(YYMMDD)]'
+    },
+    'json.day': {
+        nargs: 1,
+        type: 'int',
+        default: 0,
+        desc: 'Day in the past to fetch the data.'
     },
     'json.sitefilter': {
         nargs: 1,
