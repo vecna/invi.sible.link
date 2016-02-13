@@ -6,3 +6,4 @@ module.exports =
   json: require './chopsticks-module-json'
   companies: require './chopsticks-module-companies'
   analysis: require './chopsticks-module-analysis'
+  ranks: require './chopsticks-module-ranks'

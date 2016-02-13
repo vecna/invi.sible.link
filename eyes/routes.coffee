@@ -1,5 +1,6 @@
 path = require 'path'
 instances = require './routes/instances'
+debug = require('debug')('eyes.routes')
 
 module.exports = (app) ->
   app.get '/api/collections', instances.list
