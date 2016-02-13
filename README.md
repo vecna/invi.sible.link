@@ -1,9 +1,15 @@
 # Trackography-2
 
-Trackography is a project Claudio Agosti made with Tactical Tech, started in the 2013 and completed in 2014. We realize togheder the importance of this mapping, as explained in [MyShadow](https://myshadow.org/trackography), but we realize also a couple of limits in this approach:
+Trackography is an app permiting to monitor the trackers exposure. Runs in desktop environment, using a node.js pipeline and the output of the setup can be seen at https://trackers.exposed
 
-  * We were dedicated to analyze the national and local Media(s), and this somehow has caused the increase of overall costs to the the list of [the webiste to test](https://github.com/vecna/trackmap/tree/master/verified_media), 
+### code small intro 
 
+This code repository want to be Nice with code. Some naming may sounds unusual for the readers, but I'm part of a network that influenced my of these thougths. Code has to be treat nicely, whenever you see an imperative in your naming: reframe ;)
+### Project really short history
+
+This project get the first serious fresh life with in [MyShadow](https://myshadow.org/trackography), as part of TacticalTech. Now is a new second version done with the lesson learnt from [the past](http://trackography.github.io/).
+
+In the first release, ee were dedicated to analyze the national and local Media(s). In this second release a more generic approach has been adopted. In this release the network mapping with traceroute is removed too. It is far more dedicated in third party trackers measurement, instead of exposure of users.
 
 ### Install
 

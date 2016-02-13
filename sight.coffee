@@ -41,14 +41,14 @@ app.use (req, res, next) ->
   res.setHeader "Connection", "close"
   res.send 502
 
-app.use serveStatic(path.join(__dirname, 'dist'),
+app.use serveStatic(path.join(__dirname, 'eyes', 'dist'),
   'index': ['index.html'])
 
 # Configure access to mongodb
 require('./lib/mongodb').initialize nconf.get('mongodb:uri')
 
 # Set up our routes
-require('./routes')(app)
+require('./eyes/routes')(app)
 
 app.use logger.errorLogger
   transports: [new winston.transports.Console json: true, colorize: true]

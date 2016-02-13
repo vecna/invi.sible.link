@@ -1,6 +1,6 @@
-{handleRequest} = require '../lib/routes-helpers'
-{NotValid, NotFound} = require '../lib/errors'
-profiles = require '../lib/profiles'
+{handleRequest} = require '../../lib/routes-helpers'
+{NotValid, NotFound} = require '../../lib/errors'
+profiles = require '../../lib/profiles'
 
 create = (profile) ->
   # FIXME: Add better data validation

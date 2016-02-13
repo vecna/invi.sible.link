@@ -4,12 +4,12 @@ import { Router, Route, IndexRoute } from 'react-router';
 import createBrowserHistory from 'history/lib/createBrowserHistory';
 
 // Views
-import App from './components/App';
-import History from './components/History';
-import ProfileList from './components/ProfileList';
-import ProfileCreate from './components/ProfileCreate';
-import ProfileEdit from './components/ProfileEdit';
-import ProfileDetails from './components/ProfileDetails';
+import App from './eyes/components/App';
+import History from './eyes/components/History';
+import ProfileList from './eyes/components/ProfileList';
+import ProfileCreate from './eyes/components/ProfileCreate';
+import ProfileEdit from './eyes/components/ProfileEdit';
+import ProfileDetails from './eyes/components/ProfileDetails';
 
 render((
   <Router history={createBrowserHistory()}>
