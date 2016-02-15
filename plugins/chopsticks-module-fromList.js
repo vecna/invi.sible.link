@@ -15,18 +15,14 @@ module.exports = function(datainput) {
     var siteList = datainput.source,
         newData = [];
 
-    /*
-    TODO removing companies website from the target list,
-    TODO think pararellization and distribution of large amount of URLs
-     */
-    debug("processing %d URL entries", _.size(siteList) );
+    debug("Processing %d URL entries", _.size(siteList) );
     return Promise.map(siteList, function(siteEntry) {
 
         var i = _.merge(
                 linkIdHash(siteEntry)._ls_links,
                 domainTLDinfo(siteEntry._ls_links)
             ),
-            d = directoryStruct(i, process.env.URLOPS_TARGET);
+            d = directoryStruct(i, process.env.FROMLIST_TARGET);
 
             return fs
                 .statAsync(d.location)
@@ -51,16 +47,34 @@ module.exports = function(datainput) {
 };
 
 module.exports.argv = {
-  'urlops.target': {
-    nargs: 1,
-    type: 'string',
-    default: 'tempdump',
-    desc: 'directory for idempotent functions.'
-  },
-  'urlops.redo': {
-    nargs: 1,
-    default: 0,
-    desc: 'Repeat also if directory existRepeat also if directory existss'
-  }
+    'fromList.target': {
+        nargs: 1,
+        type: 'string',
+        default: 'tempdump',
+        desc: 'directory for idempotent functions.'
+    },
+    'fromList.redo': {
+        nargs: 1,
+        default: 0,
+        desc: 'Repeat also if directory existRepeat also if directory existss'
+    },
+    'fromList.date': {
+        nargs: 1,
+        type: 'string',
+        default: null,
+        desc: 'Specify the date used as subdir'
+    },
+    'fromList.day': {
+        nargs: 1,
+        type: 'string',
+        default: "0",
+        desc: '(relative) day in the past to fetch the data.'
+    },
+    'fromList.siteselector': {
+        nargs: 1,
+        type: 'string',
+        default: "",
+        desc: 'Filter string for file (e.g. "vice".)'
+    }
 };
 

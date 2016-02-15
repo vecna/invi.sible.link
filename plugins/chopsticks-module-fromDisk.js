@@ -9,7 +9,12 @@ var _ = require('lodash'),
 
 Promise.promisifyAll(fs);
 
+/*
+still to be done, fill sources based on what is on the disk
+*/
 module.exports = function(datainput) {
+
+    throw new Error("Not really implemented yet, just a bunch of code commented on the bottom");
 
     return new Promise.map(datainput.source, function(siteEntry) {
         return siteEntry._ls_dir.location + siteEntry._ls_dir.timeString + '.json';

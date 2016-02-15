@@ -1,19 +1,19 @@
 var _ = require('lodash'),
-    debug = require('debug')('plugin.analysis'),
-    analytics = require('../lib/analytics');
+    debug = require('debug')('plugin.ranks');
 
 module.exports = function(datainput) {
-    datainput.analytics = {
-        compareImpact: analytics.compareImpact(datainput),
-        sharedUnrecognized: analytics.sharedUnrecognized(datainput)
-    };
+
+    /* this is an indepotent plugin, dump in the filesystem
+      some stuff, and the stuff are used to feed the twitter plugin
+      later, do not require .analytics value */
+
     return datainput;
 };
 
 module.exports.argv = {
-    'analysis.kind': {
+    'aaaa.aaaa': {
         nargs: 1,
         default: 1,
-        desc: 'do some kind of special analysis ? not used ATM.'
+        desc: 'aaaa'
     }
 };

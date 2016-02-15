@@ -7,6 +7,14 @@ module.exports = function(datainput) {
         compareImpact: analytics.compareImpact(datainput),
         sharedUnrecognized: analytics.sharedUnrecognized(datainput)
     };
+    debug("compareImpact: mesured impact of %d target sites, the highest impact is:", _.size(datainput.analytics.compareImpact))
+    console.log(JSON.stringify(_.sortBy(datainput.analytics.compareImpact, function(elem) {
+                return elem.impact;
+         })[0], undefined, 2));
+
+    /* I collect the unrecognized because if a website is present many times, maybe is
+       a tracking company not recognized yet. So I use this feedback to update my company List */
+    debug("sharedUnrecognized: %d", _.size(datainput.analytics.sharedUnrecognized));
     return datainput;
 };
 
