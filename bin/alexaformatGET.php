@@ -8,7 +8,7 @@ class TopSites {
     protected static $ResponseGroupName = 'Country';
     protected static $ServiceHost      = 'ats.amazonaws.com';
     protected static $NumReturn         = 2;
-    protected static $StartNum          = 10;
+    protected static $StartNum          = 50;
     protected static $SigVersion        = '2';
     protected static $HashAlgorithm     = 'HmacSHA256';   
 
