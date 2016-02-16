@@ -8,3 +8,4 @@ module.exports =
   ranks: require './chopsticks-module-ranks'
   fromList: require './chopsticks-module-fromList'
   fromDisk: require './chopsticks-module-fromDisk'
+  ATS: require './chopsticks-module-ATS'
