@@ -10,4 +10,4 @@ module.exports = (app) ->
   app.delete '/api/collections/:instance', instances.remove
 
   app.get '*', (req, res) ->
-    res.sendFile path.resolve(__dirname, 'dist', 'index.html')
+    res.sendFile path.resolve(__dirname, 'eyes', 'dist', 'index.html')
