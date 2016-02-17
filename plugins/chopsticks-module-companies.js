@@ -52,13 +52,11 @@ module.exports = function(datainput) {
             var kd = analytics._awayDot(inclusion.domain);
             sT[ndx].company = domainMap[kd];
         });
-
         siteTested.stats.companies = _.countBy(
             _.filter(
                 _.map(siteTested.rr, function(incl) {
                     return incl.company;
                 }), undefined));
-
         newData.push(siteTested);
     });
     datainput.data = newData;
