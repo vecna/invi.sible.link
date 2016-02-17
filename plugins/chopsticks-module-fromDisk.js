@@ -37,25 +37,25 @@ module.exports = function(datainput) {
 };
 
 module.exports.argv = {
-    'json.source': {
+    'fromDisk.source': {
         nargs: 1,
         type: 'string',
         default: 'tempdump',
         desc: 'Read URL directories from this directory.'
     },
-    'json.detail': {
+    'fromDisk.detail': {
         nargs: 1,
         type: 'string',
         default: null,
         desc: 'Specify the sub-directorny [default, now(YYMMDD)]'
     },
-    'json.day': {
+    'fromDisk.day': {
         nargs: 1,
         type: 'string',
         default: "0",
         desc: 'Day in the past to fetch the data.'
     },
-    'json.sitefilter': {
+    'fromDisk.sitefilter': {
         nargs: 1,
         type: 'string',
         default: "",

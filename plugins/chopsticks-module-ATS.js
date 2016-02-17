@@ -1,11 +1,6 @@
 var _ = require('lodash'),
     Promise = require('bluebird'),
     debug = require('debug')('plugin.ATS'),
-    moment = require('moment'),
-//  cheerio = require('cheerio'),
-    linkIdHash = require('../lib/transformer').linkIdHash,
-    baseHasher = require('../lib/transformer').baseHasher,
-    defaultFields = require('../lib/transformer').defaultFields,
     jsonReader = require('../lib/jsonfiles').jsonReader,
     exec = require('child_process').exec,
     xml2js = Promise.promisifyAll(require('xml2js')),
@@ -18,22 +13,13 @@ var _ = require('lodash'),
  * the proper configuration settings
  */
 
-/*
-var parser = new xml2js.Parser();
-parser.addListener('end', function(result) {
-    console.dir(result);
-    console.log('Done.');
-});
-fs.readFile(__dirname + '/foo.xml', function(err, data) {
-    parser.parseString(data);
-});
-*/
-
 var alexasFountain = function(countryDict) {
  /* please, feel free to drink a bit from alexa's fountain */
     var command = "php -f bin/alexaformatGET.php " +
         process.env.ALEXA_ACCESSKEY + " " +
         process.env.ALEXA_SECRET + " " +
+        process.env.ATS_START + " " +
+        process.env.ATS_NUMBER + " " +
         countryDict.code;
 
     debug("Generating for %s, %d ppl", countryDict.country, countryDict.ppl);
@@ -50,7 +36,7 @@ var alexasFountain = function(countryDict) {
         countryDict.alexaURL = amazonURL;
     })
     .return(countryDict);
-}
+};
 
 var weListenAlexa = function(preciousContent) {
     /* Yes, it is precious, I lost ~ 30$ for the wrong development test */
@@ -74,12 +60,38 @@ var weListenAlexa = function(preciousContent) {
         .writeFileAsync(fname, fcontent)
         .tap(function(__ignore) {
             debug("Written file %s", fname);
-            console.log(JSON.stringify(fcontent, undefined, 2))
+            console.log(JSON.stringify(fcontent, undefined, 2));
         })
         .then(function(__ignore) {
             fcontent.savedFile = fname;
             return fcontent;
         });
+};
+
+var argumentFiltering = function(newList, formattedCountry, index, size) {
+
+    var acceptableCountries;
+
+    if (process.env.ATS_CC === "") {
+        console.error("You can't use plugin ATS without explicitly put a country codes or 'ALL' ");
+        throw new Error("lacking of magic words before spend money!");
+    }
+
+    if (process.env.ATS_CC.indexOf(',') !== -1) {
+        acceptableCountries = process.env.ATS_CC.split(',');
+    } else if(process.env.ATS_CC === 'ALL') {
+        acceptableCountries = true;
+    } else if(process.env.ATS_CC.length === 2) {
+        acceptableCountries = [ process.env.ATS_CC ];
+    } else {
+        throw new Error("Invalid code? not two letter, not 'ALL', not a list...");
+    }
+
+    if (acceptableCountries === true || acceptableCountries.indexOf(formattedCountry.code) !== -1) {
+        debug("Accepted %s (%s) as country to be fetched", formattedCountry.code, formattedCountry.country);
+        newList.push(formattedCountry);
+    }
+    return newList;
 };
 
 module.exports = function(datainput) {
@@ -106,17 +118,18 @@ module.exports = function(datainput) {
                     'code': country.codes.substr(0, 2)
                 }
             })
-            .reduce
+            .reduce(argumentFiltering, [])
             .map(alexasFountain)
-            .then(function(bah) {
-                bah.alexaURL = "http://localhost:8000/XML_official";
+            .map(function(countryObj) {
+                countryObj.alexaURL = "http://localhost:8000/XML_official";
+                return countryObj;
             })
-            .map(function(alexaURL) {
+            .map(function(countryObj) {
                 return request
-                    .getAsync(alexaURL)
+                    .getAsync(countryObj.alexaURL)
                     .then(function(preciousContent) {
                         return weListenAlexa(JSON.parse(preciousContent.body));
-                    })
+                    });
                     /*
                     .then(function (response) {
                         var parser = new xml2js.Parser();
@@ -141,3 +154,23 @@ module.exports = function(datainput) {
             })
             .return(datainput);
 };
+
+
+module.exports.argv = {
+    'ATS.CC': {
+        nargs: 1,
+        type: 'string',
+        default: "",
+        desc: 'two letter country code to import: IT,CN,US,...'
+    },
+    'ATS.start': {
+        nargs: 1,
+        default: 1,
+        desc: 'In the Alexa top sites per Country, start from'
+    },
+    'ATS.number': {
+        nargs: 1,
+        default: 80,
+        desc: 'The number of sites to retrieve'
+    }
+}
