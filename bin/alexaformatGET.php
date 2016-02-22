@@ -7,15 +7,17 @@ class TopSites {
     protected static $ActionName        = 'TopSites';
     protected static $ResponseGroupName = 'Country';
     protected static $ServiceHost      = 'ats.amazonaws.com';
-    protected static $NumReturn         = 2;
-    protected static $StartNum          = 50;
     protected static $SigVersion        = '2';
     protected static $HashAlgorithm     = 'HmacSHA256';   
 
-    public function TopSites($accessKeyId, $secretAccessKey, $countryCode) {
+    public function TopSites($accessKeyId, $secretAccessKey, 
+      $countryCode, $start, $elemC) 
+    {
         $this->accessKeyId = $accessKeyId;
         $this->secretAccessKey = $secretAccessKey;
         $this->countryCode = $countryCode;
+        $this->NumReturn = $elemC;
+        $this->StartNum = $start;
     }
 
     /**
@@ -48,8 +50,8 @@ class TopSites {
             'AWSAccessKeyId'    => $this->accessKeyId,
             'Timestamp'         => self::getTimestamp(),
             'CountryCode'       => $this->countryCode,
-            'Count'             => self::$NumReturn,
-            'Start'             => self::$StartNum,
+            'Count'             => $this->NumReturn,
+            'Start'             => $this->StartNum,
             'SignatureVersion'  => self::$SigVersion,
             'SignatureMethod'   => self::$HashAlgorithm
         );
@@ -77,15 +79,13 @@ class TopSites {
 }
 
 if (count($argv) < 3) {
-    echo "Usage: $argv[0] ACCESS_KEY_ID SECRET_ACCESS_KEY [COUNTRY_CODE]\n";
+    echo "Usage: $argv[0] ACCESS_KEY_ID SECRET_ACCESS_KEY COUNTRY_CODE START ELEMENTS\n";
     exit(-1);
 }
 else {
-    $accessKeyId = $argv[1];
-    $secretAccessKey = $argv[2];
-    $countryCode = count($argv) > 3 ? $argv[3] : "";
+    $topSites = new TopSites( $argv[1], $argv[2],
+                              $argv[3], $argv[4], $argv[5] );
+    $topSites->getTopSites();
 }
 
-$topSites = new TopSites($accessKeyId, $secretAccessKey, $countryCode);
-$topSites->getTopSites();
 ?>

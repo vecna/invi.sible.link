@@ -1,0 +1,1762 @@
+[
+  {
+    "href": "google.com.tr",
+    "nationalRank": 1,
+    "nationalReach": [
+      {
+        "aws:PerMillion": [
+          "819000"
+        ]
+      }
+    ],
+    "nationalPV": [
+      {
+        "aws:PerMillion": [
+          "100670"
+        ],
+        "aws:PerUser": [
+          "15.82"
+        ]
+      }
+    ],
+    "globalRank": 61
+  },
+  {
+    "href": "facebook.com",
+    "nationalRank": 2,
+    "nationalReach": [
+      {
+        "aws:PerMillion": [
+          "594000"
+        ]
+      }
+    ],
+    "nationalPV": [
+      {
+        "aws:PerMillion": [
+          "78700"
+        ],
+        "aws:PerUser": [
+          "17.06"
+        ]
+      }
+    ],
+    "globalRank": 2
+  },
+  {
+    "href": "google.com",
+    "nationalRank": 3,
+    "nationalReach": [
+      {
+        "aws:PerMillion": [
+          "533000"
+        ]
+      }
+    ],
+    "nationalPV": [
+      {
+        "aws:PerMillion": [
+          "84900"
+        ],
+        "aws:PerUser": [
+          "20.52"
+        ]
+      }
+    ],
+    "globalRank": 1
+  },
+  {
+    "href": "youtube.com",
+    "nationalRank": 4,
+    "nationalReach": [
+      {
+        "aws:PerMillion": [
+          "549000"
+        ]
+      }
+    ],
+    "nationalPV": [
+      {
+        "aws:PerMillion": [
+          "25390"
+        ],
+        "aws:PerUser": [
+          "5.96"
+        ]
+      }
+    ],
+    "globalRank": 3
+  },
+  {
+    "href": "eksisozluk.com",
+    "nationalRank": 5,
+    "nationalReach": [
+      {
+        "aws:PerMillion": [
+          "372424.1"
+        ]
+      }
+    ],
+    "nationalPV": [
+      {
+        "aws:PerMillion": [
+          "24278.88"
+        ],
+        "aws:PerUser": [
+          "8.4"
+        ]
+      }
+    ],
+    "globalRank": 299
+  },
+  {
+    "href": "twitter.com",
+    "nationalRank": 6,
+    "nationalReach": [
+      {
+        "aws:PerMillion": [
+          "204500"
+        ]
+      }
+    ],
+    "nationalPV": [
+      {
+        "aws:PerMillion": [
+          "10320"
+        ],
+        "aws:PerUser": [
+          "6.5"
+        ]
+      }
+    ],
+    "globalRank": 10
+  },
+  {
+    "href": "sahibinden.com",
+    "nationalRank": 7,
+    "nationalReach": [
+      {
+        "aws:PerMillion": [
+          "131600"
+        ]
+      }
+    ],
+    "nationalPV": [
+      {
+        "aws:PerMillion": [
+          "29640"
+        ],
+        "aws:PerUser": [
+          "29"
+        ]
+      }
+    ],
+    "globalRank": 366
+  },
+  {
+    "href": "sabah.com.tr",
+    "nationalRank": 8,
+    "nationalReach": [
+      {
+        "aws:PerMillion": [
+          "318047.3"
+        ]
+      }
+    ],
+    "nationalPV": [
+      {
+        "aws:PerMillion": [
+          "13933.37"
+        ],
+        "aws:PerUser": [
+          "5.64"
+        ]
+      }
+    ],
+    "globalRank": 342
+  },
+  {
+    "href": "milliyet.com.tr",
+    "nationalRank": 9,
+    "nationalReach": [
+      {
+        "aws:PerMillion": [
+          "134300"
+        ]
+      }
+    ],
+    "nationalPV": [
+      {
+        "aws:PerMillion": [
+          "19240"
+        ],
+        "aws:PerUser": [
+          "18.4"
+        ]
+      }
+    ],
+    "globalRank": 361
+  },
+  {
+    "href": "hurriyet.com.tr",
+    "nationalRank": 10,
+    "nationalReach": [
+      {
+        "aws:PerMillion": [
+          "138600"
+        ]
+      }
+    ],
+    "nationalPV": [
+      {
+        "aws:PerMillion": [
+          "9160"
+        ],
+        "aws:PerUser": [
+          "8.51"
+        ]
+      }
+    ],
+    "globalRank": 410
+  },
+  {
+    "href": "haber7.com",
+    "nationalRank": 11,
+    "nationalReach": [
+      {
+        "aws:PerMillion": [
+          "206105.5"
+        ]
+      }
+    ],
+    "nationalPV": [
+      {
+        "aws:PerMillion": [
+          "22934.45"
+        ],
+        "aws:PerUser": [
+          "14.33"
+        ]
+      }
+    ],
+    "globalRank": 465
+  },
+  {
+    "href": "live.com",
+    "nationalRank": 12,
+    "nationalReach": [
+      {
+        "aws:PerMillion": [
+          "142200"
+        ]
+      }
+    ],
+    "nationalPV": [
+      {
+        "aws:PerMillion": [
+          "5460"
+        ],
+        "aws:PerUser": [
+          "4.94"
+        ]
+      }
+    ],
+    "globalRank": 11
+  },
+  {
+    "href": "yandex.com.tr",
+    "nationalRank": 13,
+    "nationalReach": [
+      {
+        "aws:PerMillion": [
+          "109400"
+        ]
+      }
+    ],
+    "nationalPV": [
+      {
+        "aws:PerMillion": [
+          "6960"
+        ],
+        "aws:PerUser": [
+          "8.2"
+        ]
+      }
+    ],
+    "globalRank": 571
+  },
+  {
+    "href": "wikipedia.org",
+    "nationalRank": 14,
+    "nationalReach": [
+      {
+        "aws:PerMillion": [
+          "116100"
+        ]
+      }
+    ],
+    "nationalPV": [
+      {
+        "aws:PerMillion": [
+          "3180"
+        ],
+        "aws:PerUser": [
+          "3.53"
+        ]
+      }
+    ],
+    "globalRank": 7
+  },
+  {
+    "href": "instagram.com",
+    "nationalRank": 15,
+    "nationalReach": [
+      {
+        "aws:PerMillion": [
+          "89500"
+        ]
+      }
+    ],
+    "nationalPV": [
+      {
+        "aws:PerMillion": [
+          "6690"
+        ],
+        "aws:PerUser": [
+          "9.63"
+        ]
+      }
+    ],
+    "globalRank": 24
+  },
+  {
+    "href": "ensonhaber.com",
+    "nationalRank": 16,
+    "nationalReach": [
+      {
+        "aws:PerMillion": [
+          "142379.8"
+        ]
+      }
+    ],
+    "nationalPV": [
+      {
+        "aws:PerMillion": [
+          "13163.89"
+        ],
+        "aws:PerUser": [
+          "11.91"
+        ]
+      }
+    ],
+    "globalRank": 630
+  },
+  {
+    "href": "r10.net",
+    "nationalRank": 17,
+    "nationalReach": [
+      {
+        "aws:PerMillion": [
+          "72600"
+        ]
+      }
+    ],
+    "nationalPV": [
+      {
+        "aws:PerMillion": [
+          "8130"
+        ],
+        "aws:PerUser": [
+          "14.4"
+        ]
+      }
+    ],
+    "globalRank": 776
+  },
+  {
+    "href": "mackolik.com",
+    "nationalRank": 18,
+    "nationalReach": [
+      {
+        "aws:PerMillion": [
+          "138005.5"
+        ]
+      }
+    ],
+    "nationalPV": [
+      {
+        "aws:PerMillion": [
+          "13314.69"
+        ],
+        "aws:PerUser": [
+          "12.43"
+        ]
+      }
+    ],
+    "globalRank": 771
+  },
+  {
+    "href": "gittigidiyor.com",
+    "nationalRank": 19,
+    "nationalReach": [
+      {
+        "aws:PerMillion": [
+          "70500"
+        ]
+      }
+    ],
+    "nationalPV": [
+      {
+        "aws:PerMillion": [
+          "7710"
+        ],
+        "aws:PerUser": [
+          "14.1"
+        ]
+      }
+    ],
+    "globalRank": 857
+  },
+  {
+    "href": "n11.com",
+    "nationalRank": 20,
+    "nationalReach": [
+      {
+        "aws:PerMillion": [
+          "75900"
+        ]
+      }
+    ],
+    "nationalPV": [
+      {
+        "aws:PerMillion": [
+          "5330"
+        ],
+        "aws:PerUser": [
+          "9.04"
+        ]
+      }
+    ],
+    "globalRank": 874
+  },
+  {
+    "href": "hepsiburada.com",
+    "nationalRank": 21,
+    "nationalReach": [
+      {
+        "aws:PerMillion": [
+          "73700"
+        ]
+      }
+    ],
+    "nationalPV": [
+      {
+        "aws:PerMillion": [
+          "5220"
+        ],
+        "aws:PerUser": [
+          "9.12"
+        ]
+      }
+    ],
+    "globalRank": 885
+  },
+  {
+    "href": "blogspot.com.tr",
+    "nationalRank": 22,
+    "nationalReach": [
+      {
+        "aws:PerMillion": [
+          "97400"
+        ]
+      }
+    ],
+    "nationalPV": [
+      {
+        "aws:PerMillion": [
+          "2138"
+        ],
+        "aws:PerUser": [
+          "2.83"
+        ]
+      }
+    ],
+    "globalRank": 832
+  },
+  {
+    "href": "linkedin.com",
+    "nationalRank": 23,
+    "nationalReach": [
+      {
+        "aws:PerMillion": [
+          "74900"
+        ]
+      }
+    ],
+    "nationalPV": [
+      {
+        "aws:PerMillion": [
+          "3340"
+        ],
+        "aws:PerUser": [
+          "5.75"
+        ]
+      }
+    ],
+    "globalRank": 16
+  },
+  {
+    "href": "yenisafak.com",
+    "nationalRank": 24,
+    "nationalReach": [
+      {
+        "aws:PerMillion": [
+          "157783.8"
+        ]
+      }
+    ],
+    "nationalPV": [
+      {
+        "aws:PerMillion": [
+          "3748.9"
+        ],
+        "aws:PerUser": [
+          "3.06"
+        ]
+      }
+    ],
+    "globalRank": 870
+  },
+  {
+    "href": "internethaber.com",
+    "nationalRank": 25,
+    "nationalReach": [
+      {
+        "aws:PerMillion": [
+          "133484.5"
+        ]
+      }
+    ],
+    "nationalPV": [
+      {
+        "aws:PerMillion": [
+          "6097.58"
+        ],
+        "aws:PerUser": [
+          "5.88"
+        ]
+      }
+    ],
+    "globalRank": 909
+  },
+  {
+    "href": "t.co",
+    "nationalRank": 26,
+    "nationalReach": [
+      {
+        "aws:PerMillion": [
+          "84300"
+        ]
+      }
+    ],
+    "nationalPV": [
+      {
+        "aws:PerMillion": [
+          "2211"
+        ],
+        "aws:PerUser": [
+          "3.38"
+        ]
+      }
+    ],
+    "globalRank": 31
+  },
+  {
+    "href": "mynet.com",
+    "nationalRank": 27,
+    "nationalReach": [
+      {
+        "aws:PerMillion": [
+          "66000"
+        ]
+      }
+    ],
+    "nationalPV": [
+      {
+        "aws:PerMillion": [
+          "4330"
+        ],
+        "aws:PerUser": [
+          "8.47"
+        ]
+      }
+    ],
+    "globalRank": 982
+  },
+  {
+    "href": "garanti.com.tr",
+    "nationalRank": 28,
+    "nationalReach": [
+      {
+        "aws:PerMillion": [
+          "57500"
+        ]
+      }
+    ],
+    "nationalPV": [
+      {
+        "aws:PerMillion": [
+          "6650"
+        ],
+        "aws:PerUser": [
+          "14.9"
+        ]
+      }
+    ],
+    "globalRank": 1024
+  },
+  {
+    "href": "donanimhaber.com",
+    "nationalRank": 29,
+    "nationalReach": [
+      {
+        "aws:PerMillion": [
+          "74100"
+        ]
+      }
+    ],
+    "nationalPV": [
+      {
+        "aws:PerMillion": [
+          "2554"
+        ],
+        "aws:PerUser": [
+          "4.44"
+        ]
+      }
+    ],
+    "globalRank": 1058
+  },
+  {
+    "href": "sozcu.com.tr",
+    "nationalRank": 30,
+    "nationalReach": [
+      {
+        "aws:PerMillion": [
+          "59800"
+        ]
+      }
+    ],
+    "nationalPV": [
+      {
+        "aws:PerMillion": [
+          "3730"
+        ],
+        "aws:PerUser": [
+          "8.03"
+        ]
+      }
+    ],
+    "globalRank": 984
+  },
+  {
+    "href": "haberturk.com",
+    "nationalRank": 31,
+    "nationalReach": [
+      {
+        "aws:PerMillion": [
+          "50500"
+        ]
+      }
+    ],
+    "nationalPV": [
+      {
+        "aws:PerMillion": [
+          "5640"
+        ],
+        "aws:PerUser": [
+          "14.4"
+        ]
+      }
+    ],
+    "globalRank": 1090
+  },
+  {
+    "href": "onclickads.net",
+    "nationalRank": 32,
+    "nationalReach": [
+      {
+        "aws:PerMillion": [
+          "73100"
+        ]
+      }
+    ],
+    "nationalPV": [
+      {
+        "aws:PerMillion": [
+          "1640"
+        ],
+        "aws:PerUser": [
+          "2.89"
+        ]
+      }
+    ],
+    "globalRank": 45
+  },
+  {
+    "href": "kizlarsoruyor.com",
+    "nationalRank": 33,
+    "nationalReach": [
+      {
+        "aws:PerMillion": [
+          "114253.3"
+        ]
+      }
+    ],
+    "nationalPV": [
+      {
+        "aws:PerMillion": [
+          "3818.94"
+        ],
+        "aws:PerUser": [
+          "4.31"
+        ]
+      }
+    ],
+    "globalRank": 1230
+  },
+  {
+    "href": "haberler.com",
+    "nationalRank": 34,
+    "nationalReach": [
+      {
+        "aws:PerMillion": [
+          "41800"
+        ]
+      }
+    ],
+    "nationalPV": [
+      {
+        "aws:PerMillion": [
+          "2870"
+        ],
+        "aws:PerUser": [
+          "8.8"
+        ]
+      }
+    ],
+    "globalRank": 1456
+  },
+  {
+    "href": "onedio.com",
+    "nationalRank": 35,
+    "nationalReach": [
+      {
+        "aws:PerMillion": [
+          "49500"
+        ]
+      }
+    ],
+    "nationalPV": [
+      {
+        "aws:PerMillion": [
+          "1448"
+        ],
+        "aws:PerUser": [
+          "3.76"
+        ]
+      }
+    ],
+    "globalRank": 1583
+  },
+  {
+    "href": "whatsapp.com",
+    "nationalRank": 36,
+    "nationalReach": [
+      {
+        "aws:PerMillion": [
+          "74700"
+        ]
+      }
+    ],
+    "nationalPV": [
+      {
+        "aws:PerMillion": [
+          "614"
+        ],
+        "aws:PerUser": [
+          "1.06"
+        ]
+      }
+    ],
+    "globalRank": 95
+  },
+  {
+    "href": "wmaraci.com",
+    "nationalRank": 37,
+    "nationalReach": [
+      {
+        "aws:PerMillion": [
+          "35600"
+        ]
+      }
+    ],
+    "nationalPV": [
+      {
+        "aws:PerMillion": [
+          "2780"
+        ],
+        "aws:PerUser": [
+          "10.1"
+        ]
+      }
+    ],
+    "globalRank": 1820
+  },
+  {
+    "href": "stackoverflow.com",
+    "nationalRank": 38,
+    "nationalReach": [
+      {
+        "aws:PerMillion": [
+          "39700"
+        ]
+      }
+    ],
+    "nationalPV": [
+      {
+        "aws:PerMillion": [
+          "1598"
+        ],
+        "aws:PerUser": [
+          "5.18"
+        ]
+      }
+    ],
+    "globalRank": 55
+  },
+  {
+    "href": "wordpress.com",
+    "nationalRank": 39,
+    "nationalReach": [
+      {
+        "aws:PerMillion": [
+          "47800"
+        ]
+      }
+    ],
+    "nationalPV": [
+      {
+        "aws:PerMillion": [
+          "977"
+        ],
+        "aws:PerUser": [
+          "2.63"
+        ]
+      }
+    ],
+    "globalRank": 41
+  },
+  {
+    "href": "radikal.com.tr",
+    "nationalRank": 40,
+    "nationalReach": [
+      {
+        "aws:PerMillion": [
+          "36200"
+        ]
+      }
+    ],
+    "nationalPV": [
+      {
+        "aws:PerMillion": [
+          "1885"
+        ],
+        "aws:PerUser": [
+          "6.72"
+        ]
+      }
+    ],
+    "globalRank": 1817
+  },
+  {
+    "href": "ajanshaber.com",
+    "nationalRank": 41,
+    "nationalReach": [
+      {
+        "aws:PerMillion": [
+          "69042.3"
+        ]
+      }
+    ],
+    "nationalPV": [
+      {
+        "aws:PerMillion": [
+          "2663.07"
+        ],
+        "aws:PerUser": [
+          "4.97"
+        ]
+      }
+    ],
+    "globalRank": 1952
+  },
+  {
+    "href": "msn.com",
+    "nationalRank": 42,
+    "nationalReach": [
+      {
+        "aws:PerMillion": [
+          "40900"
+        ]
+      }
+    ],
+    "nationalPV": [
+      {
+        "aws:PerMillion": [
+          "1130"
+        ],
+        "aws:PerUser": [
+          "3.55"
+        ]
+      }
+    ],
+    "globalRank": 14
+  },
+  {
+    "href": "tumblr.com",
+    "nationalRank": 43,
+    "nationalReach": [
+      {
+        "aws:PerMillion": [
+          "35300"
+        ]
+      }
+    ],
+    "nationalPV": [
+      {
+        "aws:PerMillion": [
+          "1458"
+        ],
+        "aws:PerUser": [
+          "5.32"
+        ]
+      }
+    ],
+    "globalRank": 44
+  },
+  {
+    "href": "yahoo.com",
+    "nationalRank": 44,
+    "nationalReach": [
+      {
+        "aws:PerMillion": [
+          "31200"
+        ]
+      }
+    ],
+    "nationalPV": [
+      {
+        "aws:PerMillion": [
+          "2118"
+        ],
+        "aws:PerUser": [
+          "8.8"
+        ]
+      }
+    ],
+    "globalRank": 5
+  },
+  {
+    "href": "imdb.com",
+    "nationalRank": 45,
+    "nationalReach": [
+      {
+        "aws:PerMillion": [
+          "31600"
+        ]
+      }
+    ],
+    "nationalPV": [
+      {
+        "aws:PerMillion": [
+          "1960"
+        ],
+        "aws:PerUser": [
+          "8"
+        ]
+      }
+    ],
+    "globalRank": 48
+  },
+  {
+    "href": "aliexpress.com",
+    "nationalRank": 46,
+    "nationalReach": [
+      {
+        "aws:PerMillion": [
+          "27000"
+        ]
+      }
+    ],
+    "nationalPV": [
+      {
+        "aws:PerMillion": [
+          "3140"
+        ],
+        "aws:PerUser": [
+          "15"
+        ]
+      }
+    ],
+    "globalRank": 49
+  },
+  {
+    "href": "gazetevatan.com",
+    "nationalRank": 47,
+    "nationalReach": [
+      {
+        "aws:PerMillion": [
+          "24900"
+        ]
+      }
+    ],
+    "nationalPV": [
+      {
+        "aws:PerMillion": [
+          "3570"
+        ],
+        "aws:PerUser": [
+          "18.5"
+        ]
+      }
+    ],
+    "globalRank": 2145
+  },
+  {
+    "href": "fanatik.com.tr",
+    "nationalRank": 48,
+    "nationalReach": [
+      {
+        "aws:PerMillion": [
+          "28300"
+        ]
+      }
+    ],
+    "nationalPV": [
+      {
+        "aws:PerMillion": [
+          "2085"
+        ],
+        "aws:PerUser": [
+          "9.5"
+        ]
+      }
+    ],
+    "globalRank": 2189
+  },
+  {
+    "href": "amazon.com",
+    "nationalRank": 49,
+    "nationalReach": [
+      {
+        "aws:PerMillion": [
+          "28900"
+        ]
+      }
+    ],
+    "nationalPV": [
+      {
+        "aws:PerMillion": [
+          "1852"
+        ],
+        "aws:PerUser": [
+          "8.2"
+        ]
+      }
+    ],
+    "globalRank": 6
+  },
+  {
+    "href": "turkiye.gov.tr",
+    "nationalRank": 50,
+    "nationalReach": [
+      {
+        "aws:PerMillion": [
+          "30900"
+        ]
+      }
+    ],
+    "nationalPV": [
+      {
+        "aws:PerMillion": [
+          "1459"
+        ],
+        "aws:PerUser": [
+          "6.07"
+        ]
+      }
+    ],
+    "globalRank": 2467
+  },
+  {
+    "href": "zaman.com.tr",
+    "nationalRank": 51,
+    "nationalReach": [
+      {
+        "aws:PerMillion": [
+          "66535.7"
+        ]
+      }
+    ],
+    "nationalPV": [
+      {
+        "aws:PerMillion": [
+          "1521.3"
+        ],
+        "aws:PerUser": [
+          "2.95"
+        ]
+      }
+    ],
+    "globalRank": 1996
+  },
+  {
+    "href": "microsoft.com",
+    "nationalRank": 52,
+    "nationalReach": [
+      {
+        "aws:PerMillion": [
+          "38700"
+        ]
+      }
+    ],
+    "nationalPV": [
+      {
+        "aws:PerMillion": [
+          "793"
+        ],
+        "aws:PerUser": [
+          "2.64"
+        ]
+      }
+    ],
+    "globalRank": 40
+  },
+  {
+    "href": "yemeksepeti.com",
+    "nationalRank": 53,
+    "nationalReach": [
+      {
+        "aws:PerMillion": [
+          "29600"
+        ]
+      }
+    ],
+    "nationalPV": [
+      {
+        "aws:PerMillion": [
+          "1450"
+        ],
+        "aws:PerUser": [
+          "6.31"
+        ]
+      }
+    ],
+    "globalRank": 2624
+  },
+  {
+    "href": "hizliresim.com",
+    "nationalRank": 54,
+    "nationalReach": [
+      {
+        "aws:PerMillion": [
+          "37400"
+        ]
+      }
+    ],
+    "nationalPV": [
+      {
+        "aws:PerMillion": [
+          "736"
+        ],
+        "aws:PerUser": [
+          "2.53"
+        ]
+      }
+    ],
+    "globalRank": 2463
+  },
+  {
+    "href": "ntv.com.tr",
+    "nationalRank": 55,
+    "nationalReach": [
+      {
+        "aws:PerMillion": [
+          "26200"
+        ]
+      }
+    ],
+    "nationalPV": [
+      {
+        "aws:PerMillion": [
+          "1779"
+        ],
+        "aws:PerUser": [
+          "8.8"
+        ]
+      }
+    ],
+    "globalRank": 2496
+  },
+  {
+    "href": "kariyer.net",
+    "nationalRank": 56,
+    "nationalReach": [
+      {
+        "aws:PerMillion": [
+          "26000"
+        ]
+      }
+    ],
+    "nationalPV": [
+      {
+        "aws:PerMillion": [
+          "1807"
+        ],
+        "aws:PerUser": [
+          "9"
+        ]
+      }
+    ],
+    "globalRank": 2647
+  },
+  {
+    "href": "hdfilmifullizle.com.tr",
+    "nationalRank": 57,
+    "nationalReach": [
+      {
+        "aws:PerMillion": [
+          "61546.5"
+        ]
+      }
+    ],
+    "nationalPV": [
+      {
+        "aws:PerMillion": [
+          "856.88"
+        ],
+        "aws:PerUser": [
+          "1.79"
+        ]
+      }
+    ],
+    "globalRank": 1188
+  },
+  {
+    "href": "meb.gov.tr",
+    "nationalRank": 58,
+    "nationalReach": [
+      {
+        "aws:PerMillion": [
+          "27300"
+        ]
+      }
+    ],
+    "nationalPV": [
+      {
+        "aws:PerMillion": [
+          "1422"
+        ],
+        "aws:PerUser": [
+          "6.7"
+        ]
+      }
+    ],
+    "globalRank": 2775
+  },
+  {
+    "href": "paypal.com",
+    "nationalRank": 59,
+    "nationalReach": [
+      {
+        "aws:PerMillion": [
+          "27700"
+        ]
+      }
+    ],
+    "nationalPV": [
+      {
+        "aws:PerMillion": [
+          "1123"
+        ],
+        "aws:PerUser": [
+          "5.22"
+        ]
+      }
+    ],
+    "globalRank": 39
+  },
+  {
+    "href": "pinterest.com",
+    "nationalRank": 60,
+    "nationalReach": [
+      {
+        "aws:PerMillion": [
+          "26200"
+        ]
+      }
+    ],
+    "nationalPV": [
+      {
+        "aws:PerMillion": [
+          "1278"
+        ],
+        "aws:PerUser": [
+          "6.28"
+        ]
+      }
+    ],
+    "globalRank": 32
+  },
+  {
+    "href": "apple.com",
+    "nationalRank": 61,
+    "nationalReach": [
+      {
+        "aws:PerMillion": [
+          "29300"
+        ]
+      }
+    ],
+    "nationalPV": [
+      {
+        "aws:PerMillion": [
+          "908"
+        ],
+        "aws:PerUser": [
+          "3.99"
+        ]
+      }
+    ],
+    "globalRank": 53
+  },
+  {
+    "href": "gsgazete.com",
+    "nationalRank": 62,
+    "nationalReach": [
+      {
+        "aws:PerMillion": [
+          "54590.4"
+        ]
+      }
+    ],
+    "nationalPV": [
+      {
+        "aws:PerMillion": [
+          "1466.42"
+        ],
+        "aws:PerUser": [
+          "3.46"
+        ]
+      }
+    ],
+    "globalRank": 2618
+  },
+  {
+    "href": "github.com",
+    "nationalRank": 63,
+    "nationalReach": [
+      {
+        "aws:PerMillion": [
+          "25200"
+        ]
+      }
+    ],
+    "nationalPV": [
+      {
+        "aws:PerMillion": [
+          "1297"
+        ],
+        "aws:PerUser": [
+          "6.64"
+        ]
+      }
+    ],
+    "globalRank": 75
+  },
+  {
+    "href": "cumhuriyet.com.tr",
+    "nationalRank": 64,
+    "nationalReach": [
+      {
+        "aws:PerMillion": [
+          "27500"
+        ]
+      }
+    ],
+    "nationalPV": [
+      {
+        "aws:PerMillion": [
+          "939"
+        ],
+        "aws:PerUser": [
+          "4.41"
+        ]
+      }
+    ],
+    "globalRank": 2605
+  },
+  {
+    "href": "junbi-tracker.com",
+    "nationalRank": 65,
+    "nationalReach": [
+      {
+        "aws:PerMillion": [
+          "40400"
+        ]
+      }
+    ],
+    "nationalPV": [
+      {
+        "aws:PerMillion": [
+          "405"
+        ],
+        "aws:PerUser": [
+          "1.29"
+        ]
+      }
+    ],
+    "globalRank": 1275
+  },
+  {
+    "href": "vatanbilgisayar.com",
+    "nationalRank": 66,
+    "nationalReach": [
+      {
+        "aws:PerMillion": [
+          "25200"
+        ]
+      }
+    ],
+    "nationalPV": [
+      {
+        "aws:PerMillion": [
+          "1076"
+        ],
+        "aws:PerUser": [
+          "5.5"
+        ]
+      }
+    ],
+    "globalRank": 3221
+  },
+  {
+    "href": "isbank.com.tr",
+    "nationalRank": 67,
+    "nationalReach": [
+      {
+        "aws:PerMillion": [
+          "27400"
+        ]
+      }
+    ],
+    "nationalPV": [
+      {
+        "aws:PerMillion": [
+          "815"
+        ],
+        "aws:PerUser": [
+          "3.83"
+        ]
+      }
+    ],
+    "globalRank": 3200
+  },
+  {
+    "href": "dizibox.com",
+    "nationalRank": 68,
+    "nationalReach": [
+      {
+        "aws:PerMillion": [
+          "26400"
+        ]
+      }
+    ],
+    "nationalPV": [
+      {
+        "aws:PerMillion": [
+          "834"
+        ],
+        "aws:PerUser": [
+          "4.07"
+        ]
+      }
+    ],
+    "globalRank": 3033
+  },
+  {
+    "href": "blogger.com",
+    "nationalRank": 69,
+    "nationalReach": [
+      {
+        "aws:PerMillion": [
+          "22900"
+        ]
+      }
+    ],
+    "nationalPV": [
+      {
+        "aws:PerMillion": [
+          "1238"
+        ],
+        "aws:PerUser": [
+          "7"
+        ]
+      }
+    ],
+    "globalRank": 73
+  },
+  {
+    "href": "popads.net",
+    "nationalRank": 70,
+    "nationalReach": [
+      {
+        "aws:PerMillion": [
+          "29600"
+        ]
+      }
+    ],
+    "nationalPV": [
+      {
+        "aws:PerMillion": [
+          "586"
+        ],
+        "aws:PerUser": [
+          "2.55"
+        ]
+      }
+    ],
+    "globalRank": 135
+  },
+  {
+    "href": "morpakampus.com",
+    "nationalRank": 71,
+    "nationalReach": [
+      {
+        "aws:PerMillion": [
+          "32864"
+        ]
+      }
+    ],
+    "nationalPV": [
+      {
+        "aws:PerMillion": [
+          "5497.74"
+        ],
+        "aws:PerUser": [
+          "21.55"
+        ]
+      }
+    ],
+    "globalRank": 3557
+  },
+  {
+    "href": "haber3.com",
+    "nationalRank": 72,
+    "nationalReach": [
+      {
+        "aws:PerMillion": [
+          "47761.7"
+        ]
+      }
+    ],
+    "nationalPV": [
+      {
+        "aws:PerMillion": [
+          "1248.76"
+        ],
+        "aws:PerUser": [
+          "3.37"
+        ]
+      }
+    ],
+    "globalRank": 3348
+  },
+  {
+    "href": "vidyomani.tv",
+    "nationalRank": 73,
+    "nationalReach": [
+      {
+        "aws:PerMillion": [
+          "57787.3"
+        ]
+      }
+    ],
+    "nationalPV": [
+      {
+        "aws:PerMillion": [
+          "785.65"
+        ],
+        "aws:PerUser": [
+          "1.75"
+        ]
+      }
+    ],
+    "globalRank": 3285
+  },
+  {
+    "href": "tureng.com",
+    "nationalRank": 74,
+    "nationalReach": [
+      {
+        "aws:PerMillion": [
+          "20500"
+        ]
+      }
+    ],
+    "nationalPV": [
+      {
+        "aws:PerMillion": [
+          "1311"
+        ],
+        "aws:PerUser": [
+          "8.3"
+        ]
+      }
+    ],
+    "globalRank": 3268
+  },
+  {
+    "href": "filmifullizle.org",
+    "nationalRank": 75,
+    "nationalReach": [
+      {
+        "aws:PerMillion": [
+          "23300"
+        ]
+      }
+    ],
+    "nationalPV": [
+      {
+        "aws:PerMillion": [
+          "834"
+        ],
+        "aws:PerUser": [
+          "4.62"
+        ]
+      }
+    ],
+    "globalRank": 3243
+  },
+  {
+    "href": "ligtv.com.tr",
+    "nationalRank": 76,
+    "nationalReach": [
+      {
+        "aws:PerMillion": [
+          "22800"
+        ]
+      }
+    ],
+    "nationalPV": [
+      {
+        "aws:PerMillion": [
+          "863"
+        ],
+        "aws:PerUser": [
+          "4.87"
+        ]
+      }
+    ],
+    "globalRank": 3184
+  },
+  {
+    "href": "kanald.com.tr",
+    "nationalRank": 77,
+    "nationalReach": [
+      {
+        "aws:PerMillion": [
+          "20800"
+        ]
+      }
+    ],
+    "nationalPV": [
+      {
+        "aws:PerMillion": [
+          "1134"
+        ],
+        "aws:PerUser": [
+          "7"
+        ]
+      }
+    ],
+    "globalRank": 2754
+  },
+  {
+    "href": "mgm.gov.tr",
+    "nationalRank": 78,
+    "nationalReach": [
+      {
+        "aws:PerMillion": [
+          "24500"
+        ]
+      }
+    ],
+    "nationalPV": [
+      {
+        "aws:PerMillion": [
+          "695"
+        ],
+        "aws:PerUser": [
+          "3.65"
+        ]
+      }
+    ],
+    "globalRank": 3738
+  },
+  {
+    "href": "iha.com.tr",
+    "nationalRank": 79,
+    "nationalReach": [
+      {
+        "aws:PerMillion": [
+          "18600"
+        ]
+      }
+    ],
+    "nationalPV": [
+      {
+        "aws:PerMillion": [
+          "1622"
+        ],
+        "aws:PerUser": [
+          "11.2"
+        ]
+      }
+    ],
+    "globalRank": 3679
+  },
+  {
+    "href": "anadolu.edu.tr",
+    "nationalRank": 80,
+    "nationalReach": [
+      {
+        "aws:PerMillion": [
+          "20000"
+        ]
+      }
+    ],
+    "nationalPV": [
+      {
+        "aws:PerMillion": [
+          "1244"
+        ],
+        "aws:PerUser": [
+          "8"
+        ]
+      }
+    ],
+    "globalRank": 3693
+  }
+]

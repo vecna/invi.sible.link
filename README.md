@@ -57,5 +57,8 @@ all the plugins are in 'plugins/' directory, they can be used in the pipeline, t
 
 # Cool external resources
 
+https://www.ghostery.com/support/global-opt-out/
+
+https://app.ghosteryenterprise.com/TM/PI2VVQ
 
 https://webcookies.org

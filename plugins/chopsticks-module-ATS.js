@@ -2,6 +2,7 @@ var _ = require('lodash'),
     Promise = require('bluebird'),
     debug = require('debug')('plugin.ATS'),
     jsonReader = require('../lib/jsonfiles').jsonReader,
+    moment = require('moment'),
     exec = require('child_process').exec,
     xml2js = Promise.promisifyAll(require('xml2js')),
     request = Promise.promisifyAll(require('request')),
@@ -18,9 +19,9 @@ var alexasFountain = function(countryDict) {
     var command = "php -f bin/alexaformatGET.php " +
         process.env.ALEXA_ACCESSKEY + " " +
         process.env.ALEXA_SECRET + " " +
+        countryDict.code + " " +
         process.env.ATS_START + " " +
-        process.env.ATS_NUMBER + " " +
-        countryDict.code;
+        process.env.ATS_NUMBER;
 
     debug("Generating for %s, %d ppl", countryDict.country, countryDict.ppl);
     return new Promise(function(resolve, reject) {
@@ -43,7 +44,7 @@ var weListenAlexa = function(preciousContent) {
 
     var fname = "config/world/" + preciousContent['aws:TopSitesResponse']['aws:Response'][0]
                             ['aws:TopSitesResult'][0]['aws:Alexa'][0]
-                            ['aws:TopSites'][0]['aws:Country'][0]['aws:CountryCode'][0],
+                            ['aws:TopSites'][0]['aws:Country'][0]['aws:CountryCode'][0] + '.json',
         dirtyC = preciousContent['aws:TopSitesResponse']['aws:Response'][0]['aws:TopSitesResult']
                     [0]['aws:Alexa'][0]['aws:TopSites'][0]['aws:Country'][0]['aws:Sites'][0],
         fcontent = _.map(dirtyC['aws:Site'], function(ds) {
@@ -57,15 +58,11 @@ var weListenAlexa = function(preciousContent) {
         });
 
     return fs
-        .writeFileAsync(fname, fcontent)
+        .writeFileAsync(fname, JSON.stringify(fcontent, undefined, 2))
         .tap(function(__ignore) {
             debug("Written file %s", fname);
-            console.log(JSON.stringify(fcontent, undefined, 2));
         })
-        .then(function(__ignore) {
-            fcontent.savedFile = fname;
-            return fcontent;
-        });
+        .return(fname);
 };
 
 var argumentFiltering = function(newList, formattedCountry, index, size) {
@@ -112,6 +109,7 @@ module.exports = function(datainput) {
             .map(function(country) {
                 /* The codes are "codes": "CN / CHN" I need just two letter code here */
                 return {
+                    'when': moment().format('YYMMDD'),
                     'receivedContent': 'config/world/.notprocessed/' + country.country,
                     'country': country.country,
                     'ppl': _.parseInt(country.ppl),
@@ -120,37 +118,32 @@ module.exports = function(datainput) {
             })
             .reduce(argumentFiltering, [])
             .map(alexasFountain)
+            /*
             .map(function(countryObj) {
-                countryObj.alexaURL = "http://localhost:8000/XML_official";
+                debug("%s", countryObj.alexaURL);
+                countryObj.alexaURL = "http://localhost:8000/" + country.;
                 return countryObj;
             })
+            */
             .map(function(countryObj) {
                 return request
                     .getAsync(countryObj.alexaURL)
-                    .then(function(preciousContent) {
-                        return weListenAlexa(JSON.parse(preciousContent.body));
-                    });
-                    /*
                     .then(function (response) {
                         var parser = new xml2js.Parser();
                         return parser.parseStringAsync(response.body);
                     })
-                    .tap(function(receivedContent) {
-                        var rfname = "/tmp/" + _.parseInt(Math.random() * 0xffff);
+                    .tap(function(preciousContent) {
                         return fs
-                            .writeFileAsync( rfname,
-                                JSON.stringify(receivedContent, undefined, 2))
-                            .then(function(_spare) {
-                                debug("Written temporary file %s", rfname);
+                            .writeFileAsync( countryObj.receivedContent,
+                                JSON.stringify(preciousContent, undefined, 2))
+                            .then(function(__ignore) {
+                                debug("Written temporary file %s",
+                                    countryObj.receivedContent);
                             })
                     })
                     .then(function(preciousContent) {
                         return weListenAlexa(preciousContent);
                     })
-                    */
-            })
-            .then(function(dumpInfo) {
-                debug("Dump done properly in %j", dumpInfo);
             })
             .return(datainput);
 };
@@ -172,5 +165,10 @@ module.exports.argv = {
         nargs: 1,
         default: 80,
         desc: 'The number of sites to retrieve'
+    },
+    'ATS.redo' : {
+        nargs: 1,
+        default: 0,
+        desc: 'Repeat the request independently from the presence of the answers (maybe to be done when is old)'
     }
 }

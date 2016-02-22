@@ -1,7 +1,7 @@
 
 var _ = require('lodash'),
     Promise = require('bluebird'),
-    debug = require('debug')('plugin.urlops'),
+    debug = require('debug')('plugin.fromList'),
     moment = require('moment'),
     fs = require('fs'),
     linkIdHash = require('../lib/transformer').linkIdHash,
@@ -15,7 +15,11 @@ module.exports = function(datainput) {
     var siteList = datainput.source,
         newData = [];
 
+    if(_.size(siteList) === 0) {
+        throw new Error("Error in the import process, lacking of sources URL");
+    }
     debug("Processing %d URL entries", _.size(siteList) );
+
     return Promise.map(siteList, function(siteEntry) {
 
         var i = _.merge(

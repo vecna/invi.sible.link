@@ -1,0 +1,1762 @@
+[
+  {
+    "href": "google.co.za",
+    "nationalRank": 1,
+    "nationalReach": [
+      {
+        "aws:PerMillion": [
+          "607000"
+        ]
+      }
+    ],
+    "nationalPV": [
+      {
+        "aws:PerMillion": [
+          "91900"
+        ],
+        "aws:PerUser": [
+          "10.48"
+        ]
+      }
+    ],
+    "globalRank": 152
+  },
+  {
+    "href": "google.com",
+    "nationalRank": 2,
+    "nationalReach": [
+      {
+        "aws:PerMillion": [
+          "508000"
+        ]
+      }
+    ],
+    "nationalPV": [
+      {
+        "aws:PerMillion": [
+          "168300"
+        ],
+        "aws:PerUser": [
+          "22.9"
+        ]
+      }
+    ],
+    "globalRank": 1
+  },
+  {
+    "href": "facebook.com",
+    "nationalRank": 3,
+    "nationalReach": [
+      {
+        "aws:PerMillion": [
+          "408000"
+        ]
+      }
+    ],
+    "nationalPV": [
+      {
+        "aws:PerMillion": [
+          "76400"
+        ],
+        "aws:PerUser": [
+          "12.95"
+        ]
+      }
+    ],
+    "globalRank": 2
+  },
+  {
+    "href": "youtube.com",
+    "nationalRank": 4,
+    "nationalReach": [
+      {
+        "aws:PerMillion": [
+          "333000"
+        ]
+      }
+    ],
+    "nationalPV": [
+      {
+        "aws:PerMillion": [
+          "52100"
+        ],
+        "aws:PerUser": [
+          "10.83"
+        ]
+      }
+    ],
+    "globalRank": 3
+  },
+  {
+    "href": "yahoo.com",
+    "nationalRank": 5,
+    "nationalReach": [
+      {
+        "aws:PerMillion": [
+          "84000"
+        ]
+      }
+    ],
+    "nationalPV": [
+      {
+        "aws:PerMillion": [
+          "9470"
+        ],
+        "aws:PerUser": [
+          "7.8"
+        ]
+      }
+    ],
+    "globalRank": 5
+  },
+  {
+    "href": "fnb.co.za",
+    "nationalRank": 6,
+    "nationalReach": [
+      {
+        "aws:PerMillion": [
+          "91000"
+        ]
+      }
+    ],
+    "nationalPV": [
+      {
+        "aws:PerMillion": [
+          "4990"
+        ],
+        "aws:PerUser": [
+          "3.81"
+        ]
+      }
+    ],
+    "globalRank": 1436
+  },
+  {
+    "href": "wikipedia.org",
+    "nationalRank": 7,
+    "nationalReach": [
+      {
+        "aws:PerMillion": [
+          "93000"
+        ]
+      }
+    ],
+    "nationalPV": [
+      {
+        "aws:PerMillion": [
+          "4360"
+        ],
+        "aws:PerUser": [
+          "3.26"
+        ]
+      }
+    ],
+    "globalRank": 7
+  },
+  {
+    "href": "linkedin.com",
+    "nationalRank": 8,
+    "nationalReach": [
+      {
+        "aws:PerMillion": [
+          "76000"
+        ]
+      }
+    ],
+    "nationalPV": [
+      {
+        "aws:PerMillion": [
+          "6730"
+        ],
+        "aws:PerUser": [
+          "6.13"
+        ]
+      }
+    ],
+    "globalRank": 16
+  },
+  {
+    "href": "twitter.com",
+    "nationalRank": 9,
+    "nationalReach": [
+      {
+        "aws:PerMillion": [
+          "81000"
+        ]
+      }
+    ],
+    "nationalPV": [
+      {
+        "aws:PerMillion": [
+          "5620"
+        ],
+        "aws:PerUser": [
+          "4.83"
+        ]
+      }
+    ],
+    "globalRank": 10
+  },
+  {
+    "href": "amazon.com",
+    "nationalRank": 10,
+    "nationalReach": [
+      {
+        "aws:PerMillion": [
+          "75000"
+        ]
+      }
+    ],
+    "nationalPV": [
+      {
+        "aws:PerMillion": [
+          "6590"
+        ],
+        "aws:PerUser": [
+          "6.11"
+        ]
+      }
+    ],
+    "globalRank": 6
+  },
+  {
+    "href": "gumtree.co.za",
+    "nationalRank": 11,
+    "nationalReach": [
+      {
+        "aws:PerMillion": [
+          "62300"
+        ]
+      }
+    ],
+    "nationalPV": [
+      {
+        "aws:PerMillion": [
+          "11100"
+        ],
+        "aws:PerUser": [
+          "12.3"
+        ]
+      }
+    ],
+    "globalRank": 1570
+  },
+  {
+    "href": "msn.com",
+    "nationalRank": 12,
+    "nationalReach": [
+      {
+        "aws:PerMillion": [
+          "67400"
+        ]
+      }
+    ],
+    "nationalPV": [
+      {
+        "aws:PerMillion": [
+          "5010"
+        ],
+        "aws:PerUser": [
+          "5.14"
+        ]
+      }
+    ],
+    "globalRank": 14
+  },
+  {
+    "href": "news24.com",
+    "nationalRank": 13,
+    "nationalReach": [
+      {
+        "aws:PerMillion": [
+          "72000"
+        ]
+      }
+    ],
+    "nationalPV": [
+      {
+        "aws:PerMillion": [
+          "3070"
+        ],
+        "aws:PerUser": [
+          "2.95"
+        ]
+      }
+    ],
+    "globalRank": 1767
+  },
+  {
+    "href": "takealot.com",
+    "nationalRank": 14,
+    "nationalReach": [
+      {
+        "aws:PerMillion": [
+          "38300"
+        ]
+      }
+    ],
+    "nationalPV": [
+      {
+        "aws:PerMillion": [
+          "5080"
+        ],
+        "aws:PerUser": [
+          "9.2"
+        ]
+      }
+    ],
+    "globalRank": 2838
+  },
+  {
+    "href": "standardbank.co.za",
+    "nationalRank": 15,
+    "nationalReach": [
+      {
+        "aws:PerMillion": [
+          "41500"
+        ]
+      }
+    ],
+    "nationalPV": [
+      {
+        "aws:PerMillion": [
+          "3820"
+        ],
+        "aws:PerUser": [
+          "6.4"
+        ]
+      }
+    ],
+    "globalRank": 2897
+  },
+  {
+    "href": "live.com",
+    "nationalRank": 16,
+    "nationalReach": [
+      {
+        "aws:PerMillion": [
+          "42800"
+        ]
+      }
+    ],
+    "nationalPV": [
+      {
+        "aws:PerMillion": [
+          "2560"
+        ],
+        "aws:PerUser": [
+          "4.14"
+        ]
+      }
+    ],
+    "globalRank": 11
+  },
+  {
+    "href": "bing.com",
+    "nationalRank": 17,
+    "nationalReach": [
+      {
+        "aws:PerMillion": [
+          "44300"
+        ]
+      }
+    ],
+    "nationalPV": [
+      {
+        "aws:PerMillion": [
+          "2320"
+        ],
+        "aws:PerUser": [
+          "3.62"
+        ]
+      }
+    ],
+    "globalRank": 19
+  },
+  {
+    "href": "junkmail.co.za",
+    "nationalRank": 18,
+    "nationalReach": [
+      {
+        "aws:PerMillion": [
+          "28700"
+        ]
+      }
+    ],
+    "nationalPV": [
+      {
+        "aws:PerMillion": [
+          "10180"
+        ],
+        "aws:PerUser": [
+          "24.5"
+        ]
+      }
+    ],
+    "globalRank": 3230
+  },
+  {
+    "href": "absa.co.za",
+    "nationalRank": 19,
+    "nationalReach": [
+      {
+        "aws:PerMillion": [
+          "38400"
+        ]
+      }
+    ],
+    "nationalPV": [
+      {
+        "aws:PerMillion": [
+          "2920"
+        ],
+        "aws:PerUser": [
+          "5.3"
+        ]
+      }
+    ],
+    "globalRank": 3391
+  },
+  {
+    "href": "pinterest.com",
+    "nationalRank": 20,
+    "nationalReach": [
+      {
+        "aws:PerMillion": [
+          "33900"
+        ]
+      }
+    ],
+    "nationalPV": [
+      {
+        "aws:PerMillion": [
+          "2750"
+        ],
+        "aws:PerUser": [
+          "5.6"
+        ]
+      }
+    ],
+    "globalRank": 32
+  },
+  {
+    "href": "mybroadband.co.za",
+    "nationalRank": 21,
+    "nationalReach": [
+      {
+        "aws:PerMillion": [
+          "35100"
+        ]
+      }
+    ],
+    "nationalPV": [
+      {
+        "aws:PerMillion": [
+          "2450"
+        ],
+        "aws:PerUser": [
+          "4.8"
+        ]
+      }
+    ],
+    "globalRank": 3541
+  },
+  {
+    "href": "olx.co.za",
+    "nationalRank": 22,
+    "nationalReach": [
+      {
+        "aws:PerMillion": [
+          "22700"
+        ]
+      }
+    ],
+    "nationalPV": [
+      {
+        "aws:PerMillion": [
+          "8790"
+        ],
+        "aws:PerUser": [
+          "26.7"
+        ]
+      }
+    ],
+    "globalRank": 3898
+  },
+  {
+    "href": "instagram.com",
+    "nationalRank": 23,
+    "nationalReach": [
+      {
+        "aws:PerMillion": [
+          "28200"
+        ]
+      }
+    ],
+    "nationalPV": [
+      {
+        "aws:PerMillion": [
+          "3370"
+        ],
+        "aws:PerUser": [
+          "8.3"
+        ]
+      }
+    ],
+    "globalRank": 24
+  },
+  {
+    "href": "kat.cr",
+    "nationalRank": 24,
+    "nationalReach": [
+      {
+        "aws:PerMillion": [
+          "28400"
+        ]
+      }
+    ],
+    "nationalPV": [
+      {
+        "aws:PerMillion": [
+          "3080"
+        ],
+        "aws:PerUser": [
+          "7.5"
+        ]
+      }
+    ],
+    "globalRank": 77
+  },
+  {
+    "href": "property24.com",
+    "nationalRank": 25,
+    "nationalReach": [
+      {
+        "aws:PerMillion": [
+          "24700"
+        ]
+      }
+    ],
+    "nationalPV": [
+      {
+        "aws:PerMillion": [
+          "3890"
+        ],
+        "aws:PerUser": [
+          "10.9"
+        ]
+      }
+    ],
+    "globalRank": 4314
+  },
+  {
+    "href": "t.co",
+    "nationalRank": 26,
+    "nationalReach": [
+      {
+        "aws:PerMillion": [
+          "31800"
+        ]
+      }
+    ],
+    "nationalPV": [
+      {
+        "aws:PerMillion": [
+          "1290"
+        ],
+        "aws:PerUser": [
+          "2.81"
+        ]
+      }
+    ],
+    "globalRank": 31
+  },
+  {
+    "href": "wordpress.com",
+    "nationalRank": 27,
+    "nationalReach": [
+      {
+        "aws:PerMillion": [
+          "31800"
+        ]
+      }
+    ],
+    "nationalPV": [
+      {
+        "aws:PerMillion": [
+          "1110"
+        ],
+        "aws:PerUser": [
+          "2.42"
+        ]
+      }
+    ],
+    "globalRank": 41
+  },
+  {
+    "href": "microsoft.com",
+    "nationalRank": 28,
+    "nationalReach": [
+      {
+        "aws:PerMillion": [
+          "28500"
+        ]
+      }
+    ],
+    "nationalPV": [
+      {
+        "aws:PerMillion": [
+          "1250"
+        ],
+        "aws:PerUser": [
+          "3.04"
+        ]
+      }
+    ],
+    "globalRank": 40
+  },
+  {
+    "href": "imdb.com",
+    "nationalRank": 29,
+    "nationalReach": [
+      {
+        "aws:PerMillion": [
+          "23400"
+        ]
+      }
+    ],
+    "nationalPV": [
+      {
+        "aws:PerMillion": [
+          "2130"
+        ],
+        "aws:PerUser": [
+          "6.3"
+        ]
+      }
+    ],
+    "globalRank": 48
+  },
+  {
+    "href": "iol.co.za",
+    "nationalRank": 30,
+    "nationalReach": [
+      {
+        "aws:PerMillion": [
+          "29300"
+        ]
+      }
+    ],
+    "nationalPV": [
+      {
+        "aws:PerMillion": [
+          "1160"
+        ],
+        "aws:PerUser": [
+          "2.74"
+        ]
+      }
+    ],
+    "globalRank": 4838
+  },
+  {
+    "href": "ask.com",
+    "nationalRank": 31,
+    "nationalReach": [
+      {
+        "aws:PerMillion": [
+          "26700"
+        ]
+      }
+    ],
+    "nationalPV": [
+      {
+        "aws:PerMillion": [
+          "1290"
+        ],
+        "aws:PerUser": [
+          "3.34"
+        ]
+      }
+    ],
+    "globalRank": 52
+  },
+  {
+    "href": "reddit.com",
+    "nationalRank": 32,
+    "nationalReach": [
+      {
+        "aws:PerMillion": [
+          "22700"
+        ]
+      }
+    ],
+    "nationalPV": [
+      {
+        "aws:PerMillion": [
+          "1630"
+        ],
+        "aws:PerUser": [
+          "5"
+        ]
+      }
+    ],
+    "globalRank": 35
+  },
+  {
+    "href": "blogspot.co.za",
+    "nationalRank": 33,
+    "nationalReach": [
+      {
+        "aws:PerMillion": [
+          "30300"
+        ]
+      }
+    ],
+    "nationalPV": [
+      {
+        "aws:PerMillion": [
+          "810"
+        ],
+        "aws:PerUser": [
+          "1.84"
+        ]
+      }
+    ],
+    "globalRank": 5999
+  },
+  {
+    "href": "onclickads.net",
+    "nationalRank": 34,
+    "nationalReach": [
+      {
+        "aws:PerMillion": [
+          "24300"
+        ]
+      }
+    ],
+    "nationalPV": [
+      {
+        "aws:PerMillion": [
+          "1250"
+        ],
+        "aws:PerUser": [
+          "3.5"
+        ]
+      }
+    ],
+    "globalRank": 45
+  },
+  {
+    "href": "bidorbuy.co.za",
+    "nationalRank": 35,
+    "nationalReach": [
+      {
+        "aws:PerMillion": [
+          "17900"
+        ]
+      }
+    ],
+    "nationalPV": [
+      {
+        "aws:PerMillion": [
+          "3140"
+        ],
+        "aws:PerUser": [
+          "12.2"
+        ]
+      }
+    ],
+    "globalRank": 5641
+  },
+  {
+    "href": "timeslive.co.za",
+    "nationalRank": 36,
+    "nationalReach": [
+      {
+        "aws:PerMillion": [
+          "26800"
+        ]
+      }
+    ],
+    "nationalPV": [
+      {
+        "aws:PerMillion": [
+          "910"
+        ],
+        "aws:PerUser": [
+          "2.36"
+        ]
+      }
+    ],
+    "globalRank": 5615
+  },
+  {
+    "href": "stackoverflow.com",
+    "nationalRank": 37,
+    "nationalReach": [
+      {
+        "aws:PerMillion": [
+          "23000"
+        ]
+      }
+    ],
+    "nationalPV": [
+      {
+        "aws:PerMillion": [
+          "1310"
+        ],
+        "aws:PerUser": [
+          "4"
+        ]
+      }
+    ],
+    "globalRank": 55
+  },
+  {
+    "href": "dropbox.com",
+    "nationalRank": 38,
+    "nationalReach": [
+      {
+        "aws:PerMillion": [
+          "22000"
+        ]
+      }
+    ],
+    "nationalPV": [
+      {
+        "aws:PerMillion": [
+          "1210"
+        ],
+        "aws:PerUser": [
+          "3.8"
+        ]
+      }
+    ],
+    "globalRank": 91
+  },
+  {
+    "href": "nedsecure.co.za",
+    "nationalRank": 39,
+    "nationalReach": [
+      {
+        "aws:PerMillion": [
+          "24900"
+        ]
+      }
+    ],
+    "nationalPV": [
+      {
+        "aws:PerMillion": [
+          "780"
+        ],
+        "aws:PerUser": [
+          "2.17"
+        ]
+      }
+    ],
+    "globalRank": 7138
+  },
+  {
+    "href": "mmmoffice.com",
+    "nationalRank": 40,
+    "nationalReach": [
+      {
+        "aws:PerMillion": [
+          "16800"
+        ]
+      }
+    ],
+    "nationalPV": [
+      {
+        "aws:PerMillion": [
+          "2290"
+        ],
+        "aws:PerUser": [
+          "9.4"
+        ]
+      }
+    ],
+    "globalRank": 2798
+  },
+  {
+    "href": "tumblr.com",
+    "nationalRank": 41,
+    "nationalReach": [
+      {
+        "aws:PerMillion": [
+          "17800"
+        ]
+      }
+    ],
+    "nationalPV": [
+      {
+        "aws:PerMillion": [
+          "1860"
+        ],
+        "aws:PerUser": [
+          "7.2"
+        ]
+      }
+    ],
+    "globalRank": 44
+  },
+  {
+    "href": "office.com",
+    "nationalRank": 42,
+    "nationalReach": [
+      {
+        "aws:PerMillion": [
+          "21000"
+        ]
+      }
+    ],
+    "nationalPV": [
+      {
+        "aws:PerMillion": [
+          "1110"
+        ],
+        "aws:PerUser": [
+          "3.7"
+        ]
+      }
+    ],
+    "globalRank": 63
+  },
+  {
+    "href": "pornhub.com",
+    "nationalRank": 43,
+    "nationalReach": [
+      {
+        "aws:PerMillion": [
+          "16200"
+        ]
+      }
+    ],
+    "nationalPV": [
+      {
+        "aws:PerMillion": [
+          "2250"
+        ],
+        "aws:PerUser": [
+          "9.7"
+        ]
+      }
+    ],
+    "globalRank": 65
+  },
+  {
+    "href": "bbc.com",
+    "nationalRank": 44,
+    "nationalReach": [
+      {
+        "aws:PerMillion": [
+          "19400"
+        ]
+      }
+    ],
+    "nationalPV": [
+      {
+        "aws:PerMillion": [
+          "1230"
+        ],
+        "aws:PerUser": [
+          "4.4"
+        ]
+      }
+    ],
+    "globalRank": 118
+  },
+  {
+    "href": "xvideos.com",
+    "nationalRank": 45,
+    "nationalReach": [
+      {
+        "aws:PerMillion": [
+          "14800"
+        ]
+      }
+    ],
+    "nationalPV": [
+      {
+        "aws:PerMillion": [
+          "3000"
+        ],
+        "aws:PerUser": [
+          "14"
+        ]
+      }
+    ],
+    "globalRank": 51
+  },
+  {
+    "href": "jobmail.co.za",
+    "nationalRank": 46,
+    "nationalReach": [
+      {
+        "aws:PerMillion": [
+          "12500"
+        ]
+      }
+    ],
+    "nationalPV": [
+      {
+        "aws:PerMillion": [
+          "6220"
+        ],
+        "aws:PerUser": [
+          "34"
+        ]
+      }
+    ],
+    "globalRank": 7469
+  },
+  {
+    "href": "indeed.co.za",
+    "nationalRank": 47,
+    "nationalReach": [
+      {
+        "aws:PerMillion": [
+          "18500"
+        ]
+      }
+    ],
+    "nationalPV": [
+      {
+        "aws:PerMillion": [
+          "1380"
+        ],
+        "aws:PerUser": [
+          "5.1"
+        ]
+      }
+    ],
+    "globalRank": 7294
+  },
+  {
+    "href": "ebay.com",
+    "nationalRank": 48,
+    "nationalReach": [
+      {
+        "aws:PerMillion": [
+          "13900"
+        ]
+      }
+    ],
+    "nationalPV": [
+      {
+        "aws:PerMillion": [
+          "2950"
+        ],
+        "aws:PerUser": [
+          "14.7"
+        ]
+      }
+    ],
+    "globalRank": 23
+  },
+  {
+    "href": "dailymail.co.uk",
+    "nationalRank": 49,
+    "nationalReach": [
+      {
+        "aws:PerMillion": [
+          "20200"
+        ]
+      }
+    ],
+    "nationalPV": [
+      {
+        "aws:PerMillion": [
+          "850"
+        ],
+        "aws:PerUser": [
+          "2.91"
+        ]
+      }
+    ],
+    "globalRank": 132
+  },
+  {
+    "href": "outbrain.com",
+    "nationalRank": 50,
+    "nationalReach": [
+      {
+        "aws:PerMillion": [
+          "23900"
+        ]
+      }
+    ],
+    "nationalPV": [
+      {
+        "aws:PerMillion": [
+          "570"
+        ],
+        "aws:PerUser": [
+          "1.64"
+        ]
+      }
+    ],
+    "globalRank": 80
+  },
+  {
+    "href": "privateproperty.co.za",
+    "nationalRank": 51,
+    "nationalReach": [
+      {
+        "aws:PerMillion": [
+          "13500"
+        ]
+      }
+    ],
+    "nationalPV": [
+      {
+        "aws:PerMillion": [
+          "2220"
+        ],
+        "aws:PerUser": [
+          "11.4"
+        ]
+      }
+    ],
+    "globalRank": 8496
+  },
+  {
+    "href": "imgur.com",
+    "nationalRank": 52,
+    "nationalReach": [
+      {
+        "aws:PerMillion": [
+          "11300"
+        ]
+      }
+    ],
+    "nationalPV": [
+      {
+        "aws:PerMillion": [
+          "4530"
+        ],
+        "aws:PerUser": [
+          "28"
+        ]
+      }
+    ],
+    "globalRank": 47
+  },
+  {
+    "href": "fin24.com",
+    "nationalRank": 53,
+    "nationalReach": [
+      {
+        "aws:PerMillion": [
+          "21700"
+        ]
+      }
+    ],
+    "nationalPV": [
+      {
+        "aws:PerMillion": [
+          "590"
+        ],
+        "aws:PerUser": [
+          "1.88"
+        ]
+      }
+    ],
+    "globalRank": 8221
+  },
+  {
+    "href": "paypal.com",
+    "nationalRank": 54,
+    "nationalReach": [
+      {
+        "aws:PerMillion": [
+          "16500"
+        ]
+      }
+    ],
+    "nationalPV": [
+      {
+        "aws:PerMillion": [
+          "1130"
+        ],
+        "aws:PerUser": [
+          "4.8"
+        ]
+      }
+    ],
+    "globalRank": 39
+  },
+  {
+    "href": "unisa.ac.za",
+    "nationalRank": 55,
+    "nationalReach": [
+      {
+        "aws:PerMillion": [
+          "13900"
+        ]
+      }
+    ],
+    "nationalPV": [
+      {
+        "aws:PerMillion": [
+          "1830"
+        ],
+        "aws:PerUser": [
+          "9.1"
+        ]
+      }
+    ],
+    "globalRank": 7656
+  },
+  {
+    "href": "netflix.com",
+    "nationalRank": 56,
+    "nationalReach": [
+      {
+        "aws:PerMillion": [
+          "14300"
+        ]
+      }
+    ],
+    "nationalPV": [
+      {
+        "aws:PerMillion": [
+          "1610"
+        ],
+        "aws:PerUser": [
+          "7.8"
+        ]
+      }
+    ],
+    "globalRank": 33
+  },
+  {
+    "href": "googleusercontent.com",
+    "nationalRank": 57,
+    "nationalReach": [
+      {
+        "aws:PerMillion": [
+          "20500"
+        ]
+      }
+    ],
+    "nationalPV": [
+      {
+        "aws:PerMillion": [
+          "600"
+        ],
+        "aws:PerUser": [
+          "2.04"
+        ]
+      }
+    ],
+    "globalRank": 86
+  },
+  {
+    "href": "discovery.co.za",
+    "nationalRank": 58,
+    "nationalReach": [
+      {
+        "aws:PerMillion": [
+          "14900"
+        ]
+      }
+    ],
+    "nationalPV": [
+      {
+        "aws:PerMillion": [
+          "1240"
+        ],
+        "aws:PerUser": [
+          "5.8"
+        ]
+      }
+    ],
+    "globalRank": 9195
+  },
+  {
+    "href": "apple.com",
+    "nationalRank": 59,
+    "nationalReach": [
+      {
+        "aws:PerMillion": [
+          "17100"
+        ]
+      }
+    ],
+    "nationalPV": [
+      {
+        "aws:PerMillion": [
+          "660"
+        ],
+        "aws:PerUser": [
+          "2.68"
+        ]
+      }
+    ],
+    "globalRank": 53
+  },
+  {
+    "href": "pnet.co.za",
+    "nationalRank": 60,
+    "nationalReach": [
+      {
+        "aws:PerMillion": [
+          "13800"
+        ]
+      }
+    ],
+    "nationalPV": [
+      {
+        "aws:PerMillion": [
+          "1180"
+        ],
+        "aws:PerUser": [
+          "5.9"
+        ]
+      }
+    ],
+    "globalRank": 9089
+  },
+  {
+    "href": "whatsapp.com",
+    "nationalRank": 61,
+    "nationalReach": [
+      {
+        "aws:PerMillion": [
+          "22800"
+        ]
+      }
+    ],
+    "nationalPV": [
+      {
+        "aws:PerMillion": [
+          "363"
+        ],
+        "aws:PerUser": [
+          "1.1"
+        ]
+      }
+    ],
+    "globalRank": 95
+  },
+  {
+    "href": "pricecheck.co.za",
+    "nationalRank": 62,
+    "nationalReach": [
+      {
+        "aws:PerMillion": [
+          "12600"
+        ]
+      }
+    ],
+    "nationalPV": [
+      {
+        "aws:PerMillion": [
+          "1260"
+        ],
+        "aws:PerUser": [
+          "6.9"
+        ]
+      }
+    ],
+    "globalRank": 9905
+  },
+  {
+    "href": "supersport.com",
+    "nationalRank": 63,
+    "nationalReach": [
+      {
+        "aws:PerMillion": [
+          "14000"
+        ]
+      }
+    ],
+    "nationalPV": [
+      {
+        "aws:PerMillion": [
+          "910"
+        ],
+        "aws:PerUser": [
+          "4.5"
+        ]
+      }
+    ],
+    "globalRank": 6673
+  },
+  {
+    "href": "telkom.co.za",
+    "nationalRank": 64,
+    "nationalReach": [
+      {
+        "aws:PerMillion": [
+          "13600"
+        ]
+      }
+    ],
+    "nationalPV": [
+      {
+        "aws:PerMillion": [
+          "910"
+        ],
+        "aws:PerUser": [
+          "4.6"
+        ]
+      }
+    ],
+    "globalRank": 10673
+  },
+  {
+    "href": "thepiratebay.se",
+    "nationalRank": 65,
+    "nationalReach": [
+      {
+        "aws:PerMillion": [
+          "11800"
+        ]
+      }
+    ],
+    "nationalPV": [
+      {
+        "aws:PerMillion": [
+          "1210"
+        ],
+        "aws:PerUser": [
+          "7.1"
+        ]
+      }
+    ],
+    "globalRank": 209
+  },
+  {
+    "href": "booking.com",
+    "nationalRank": 66,
+    "nationalReach": [
+      {
+        "aws:PerMillion": [
+          "12300"
+        ]
+      }
+    ],
+    "nationalPV": [
+      {
+        "aws:PerMillion": [
+          "940"
+        ],
+        "aws:PerUser": [
+          "5.3"
+        ]
+      }
+    ],
+    "globalRank": 105
+  },
+  {
+    "href": "github.com",
+    "nationalRank": 67,
+    "nationalReach": [
+      {
+        "aws:PerMillion": [
+          "12100"
+        ]
+      }
+    ],
+    "nationalPV": [
+      {
+        "aws:PerMillion": [
+          "960"
+        ],
+        "aws:PerUser": [
+          "5.5"
+        ]
+      }
+    ],
+    "globalRank": 75
+  },
+  {
+    "href": "zando.co.za",
+    "nationalRank": 68,
+    "nationalReach": [
+      {
+        "aws:PerMillion": [
+          "9500"
+        ]
+      }
+    ],
+    "nationalPV": [
+      {
+        "aws:PerMillion": [
+          "2150"
+        ],
+        "aws:PerUser": [
+          "15.6"
+        ]
+      }
+    ],
+    "globalRank": 11145
+  },
+  {
+    "href": "makro.co.za",
+    "nationalRank": 69,
+    "nationalReach": [
+      {
+        "aws:PerMillion": [
+          "11000"
+        ]
+      }
+    ],
+    "nationalPV": [
+      {
+        "aws:PerMillion": [
+          "1200"
+        ],
+        "aws:PerUser": [
+          "7.6"
+        ]
+      }
+    ],
+    "globalRank": 11428
+  },
+  {
+    "href": "mweb.co.za",
+    "nationalRank": 70,
+    "nationalReach": [
+      {
+        "aws:PerMillion": [
+          "13300"
+        ]
+      }
+    ],
+    "nationalPV": [
+      {
+        "aws:PerMillion": [
+          "680"
+        ],
+        "aws:PerUser": [
+          "3.5"
+        ]
+      }
+    ],
+    "globalRank": 11204
+  },
+  {
+    "href": "adobe.com",
+    "nationalRank": 71,
+    "nationalReach": [
+      {
+        "aws:PerMillion": [
+          "14400"
+        ]
+      }
+    ],
+    "nationalPV": [
+      {
+        "aws:PerMillion": [
+          "540"
+        ],
+        "aws:PerUser": [
+          "2.6"
+        ]
+      }
+    ],
+    "globalRank": 92
+  },
+  {
+    "href": "sport24.co.za",
+    "nationalRank": 72,
+    "nationalReach": [
+      {
+        "aws:PerMillion": [
+          "15400"
+        ]
+      }
+    ],
+    "nationalPV": [
+      {
+        "aws:PerMillion": [
+          "470"
+        ],
+        "aws:PerUser": [
+          "2.1"
+        ]
+      }
+    ],
+    "globalRank": 10909
+  },
+  {
+    "href": "tripadvisor.co.za",
+    "nationalRank": 73,
+    "nationalReach": [
+      {
+        "aws:PerMillion": [
+          "13400"
+        ]
+      }
+    ],
+    "nationalPV": [
+      {
+        "aws:PerMillion": [
+          "600"
+        ],
+        "aws:PerUser": [
+          "3.1"
+        ]
+      }
+    ],
+    "globalRank": 10220
+  },
+  {
+    "href": "dstv.com",
+    "nationalRank": 74,
+    "nationalReach": [
+      {
+        "aws:PerMillion": [
+          "11900"
+        ]
+      }
+    ],
+    "nationalPV": [
+      {
+        "aws:PerMillion": [
+          "820"
+        ],
+        "aws:PerUser": [
+          "4.7"
+        ]
+      }
+    ],
+    "globalRank": 8244
+  },
+  {
+    "href": "microsoftonline.com",
+    "nationalRank": 75,
+    "nationalReach": [
+      {
+        "aws:PerMillion": [
+          "15700"
+        ]
+      }
+    ],
+    "nationalPV": [
+      {
+        "aws:PerMillion": [
+          "423"
+        ],
+        "aws:PerUser": [
+          "1.87"
+        ]
+      }
+    ],
+    "globalRank": 96
+  },
+  {
+    "href": "autotrader.co.za",
+    "nationalRank": 76,
+    "nationalReach": [
+      {
+        "aws:PerMillion": [
+          "9000"
+        ]
+      }
+    ],
+    "nationalPV": [
+      {
+        "aws:PerMillion": [
+          "1900"
+        ],
+        "aws:PerUser": [
+          "14.6"
+        ]
+      }
+    ],
+    "globalRank": 11943
+  },
+  {
+    "href": "theguardian.com",
+    "nationalRank": 77,
+    "nationalReach": [
+      {
+        "aws:PerMillion": [
+          "14000"
+        ]
+      }
+    ],
+    "nationalPV": [
+      {
+        "aws:PerMillion": [
+          "490"
+        ],
+        "aws:PerUser": [
+          "2.45"
+        ]
+      }
+    ],
+    "globalRank": 164
+  },
+  {
+    "href": "sa-venues.com",
+    "nationalRank": 78,
+    "nationalReach": [
+      {
+        "aws:PerMillion": [
+          "7300"
+        ]
+      }
+    ],
+    "nationalPV": [
+      {
+        "aws:PerMillion": [
+          "4850"
+        ],
+        "aws:PerUser": [
+          "46"
+        ]
+      }
+    ],
+    "globalRank": 12064
+  },
+  {
+    "href": "automart.co.za",
+    "nationalRank": 79,
+    "nationalReach": [
+      {
+        "aws:PerMillion": [
+          "8800"
+        ]
+      }
+    ],
+    "nationalPV": [
+      {
+        "aws:PerMillion": [
+          "1980"
+        ],
+        "aws:PerUser": [
+          "15.6"
+        ]
+      }
+    ],
+    "globalRank": 12463
+  },
+  {
+    "href": "uct.ac.za",
+    "nationalRank": 80,
+    "nationalReach": [
+      {
+        "aws:PerMillion": [
+          "10000"
+        ]
+      }
+    ],
+    "nationalPV": [
+      {
+        "aws:PerMillion": [
+          "1160"
+        ],
+        "aws:PerUser": [
+          "8"
+        ]
+      }
+    ],
+    "globalRank": 11388
+  }
+]
