@@ -17,8 +17,8 @@ module.exports = function(datainput) {
     _.each(datainput.companies, function(compadomains, cname) {
         _.each(compadomains, function(domain) {
             _.set(invertedCompany,
-                analytics._awayDot(domain),
-                analytics._awayDot(cname)
+                analytics.awayDot(domain),
+                analytics.awayDot(cname)
             );
         });
     });
@@ -28,7 +28,7 @@ module.exports = function(datainput) {
 
     _.each(datainput.data, function(siteTested) {
         _.each(siteTested.rr, function(inclusion) {
-            _.set(domainMap, analytics._awayDot(inclusion.domain), null);
+            _.set(domainMap, analytics.awayDot(inclusion.domain), null);
         });
     });
 
@@ -39,7 +39,7 @@ module.exports = function(datainput) {
         _.find(invertedCompany, function(cname, cdomain) {
             if (_.startsWith(domainKey, cdomain) || _.endsWith(domainKey, cdomain)) {
                 // debug("Found %s in %s", cname, domainKey);
-                domainMap[domainKey] = analytics._reputDot(cname);
+                domainMap[domainKey] = analytics.reputDot(cname);
                 return true;
             }
         });
@@ -49,7 +49,7 @@ module.exports = function(datainput) {
     _.each(datainput.data, function(siteTested) {
 
         _.each(siteTested.rr, function(inclusion, ndx, sT) {
-            var kd = analytics._awayDot(inclusion.domain);
+            var kd = analytics.awayDot(inclusion.domain);
             sT[ndx].company = domainMap[kd];
         });
         siteTested.stats.companies = _.countBy(
