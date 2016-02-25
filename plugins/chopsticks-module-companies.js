@@ -3,54 +3,37 @@ var _ = require('lodash'),
     debug = require('debug')('plugin.companies'),
     moment = require('moment'),
     fs = require('fs'),
-    analytics = require('../lib/analytics');
+    analytics = require('../lib/analytics'),
+    companies = require('../lib/companies');
 
 Promise.promisifyAll(fs);
 
 module.exports = function(datainput) {
 
     /* A single key for every domain in datainput. */
-    var invertedCompany = {},
-        newData = [],
-        domainMap = {};
+    var newData = [],
+        iCm;
 
-    _.each(datainput.companies, function(compadomains, cname) {
-        _.each(compadomains, function(domain) {
-            _.set(invertedCompany,
-                analytics.awayDot(domain),
-                analytics.awayDot(cname)
-            );
-        });
-    });
-
-    debug("From companies list of %d a mapped %d",
-        _.size(datainput.companies), _.size(invertedCompany));
-
-    _.each(datainput.data, function(siteTested) {
+    iCm = _.reduce(datainput.data, function(memo, siteTested) {
         _.each(siteTested.rr, function(inclusion) {
-            _.set(domainMap, analytics.awayDot(inclusion.domain), null);
-        });
-    });
-
-    debug("Reduced domain map from %d sites to %d domains",
-        _.size(datainput.data), _.size(domainMap));
-
-    _.each(domainMap, function(_null, domainKey) {
-        _.find(invertedCompany, function(cname, cdomain) {
-            if (_.startsWith(domainKey, cdomain) || _.endsWith(domainKey, cdomain)) {
-                // debug("Found %s in %s", cname, domainKey);
-                domainMap[domainKey] = analytics.reputDot(cname);
-                return true;
+            if (_.isUndefined(memo[inclusion.domain])) {
+                debug("Testing domain %s", inclusion.domain);
+                memo[inclusion.domain] = companies.associatedCompany(
+                    datainput.companies, inclusion.domain);
             }
         });
-    });
+        return memo
+    }, {});
+
+    debug("Reduced Request/Response list from %d entries to %d inclusions",
+        _.size(datainput.data), _.size(iCm));
 
     debug("Mapped companies per unique domain included (%d)", _.size(domainMap) );
     _.each(datainput.data, function(siteTested) {
 
+        /* Instead of this 'each', can be a reduce and removed all the target site details? */
         _.each(siteTested.rr, function(inclusion, ndx, sT) {
-            var kd = analytics.awayDot(inclusion.domain);
-            sT[ndx].company = domainMap[kd];
+            sT[ndx].company = domainMap[inclusion.domain];
         });
         siteTested.stats.companies = _.countBy(
             _.filter(

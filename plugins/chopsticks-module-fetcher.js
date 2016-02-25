@@ -22,6 +22,8 @@ var executer = function(command, milliSec, cmdID, siteEntry) {
     var child = exec(command),
         startTime = moment();
 
+    debug("%s\tlaunched: [%s]", cmdID, command);
+
     promiseFromChildProcess(child)
         .delay(milliSec)
         .then(function (result) {
@@ -73,6 +75,7 @@ var pageFetch = function(siteEntry, cnt) {
 
     var milliSec = (process.env.FETCHER_MAXTIME * 1000) + 5000,
         mkdirc = "/bin/mkdir " + [ "-p", siteEntry._ls_dir.location ].join(" "),
+        hackishDelay = _.round((cnt * 0.8) + 1),
         phantc = [ "node_modules/.bin/phantomjs",
                     "--config=crawl/phantomcfg.json",
                     "crawl/phjsrender.js",
@@ -84,22 +87,30 @@ var pageFetch = function(siteEntry, cnt) {
         currentLoad = os.loadavg()[0];
 
     currentLoad = (currentLoad < 1) ? 1 : currentLoad;
-    debug("Site %s, Load %d %s", siteEntry._ls_links[0].href, currentLoad, cnt);
-    executer(mkdirc + " ; " + phantc, milliSec, "K" + cnt) // _.round(currentLoad * maxExecTime),
-    debug("Returning now!");
-    return siteEntry;
+    debug("Site %s, Load %d %s (hackish delay %d)", siteEntry._ls_links[0].href, currentLoad, cnt, hackishDelay);
+    return executer(   " sleep " + hackishDelay + ";" + mkdirc + " ; " + phantc,
+                milliSec, "K" + cnt)
+  //  return siteEntry;
 };
 
 
 
 module.exports = function(val) {
+    /* this is not indepotent anymore! fromDisk has to supply the same info,
+        which is: val.source.[siteEntry].savedLog = {} */
 
     debug("Chain of fetch ready: %d fetches, concurrency %d",
         val.source.length, process.env.FETCHER_CONCURRENCY );
 
     return Promise
-        .map(val.source, pageFetch, { concurrency : process.env.FETCHER_CONCURRENCY })
-        .delay(20000)
+        .map(val.source, pageFetch, { concurrency : 1 /* process.env.FETCHER_CONCURRENCY */ })
+        .tap(function() {
+            debug("all the fetch process channelled: waiting %d seconds",
+                ((  _.size(val.source) * 800 +
+                    (process.env.FETCHER_MAXTIME + 5) * 1000) / 1000)
+                );
+        })
+        .delay(_.size(val.source) * 800 + (process.env.FETCHER_MAXTIME + 5) * 1000)
         .then(function(updatedSource) {
             debug("Yes!");
         //    console.log(JSON.stringify(filesGenerated, undefined, 3));
