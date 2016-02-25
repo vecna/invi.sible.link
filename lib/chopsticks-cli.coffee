@@ -4,7 +4,7 @@ winston = require 'winston'
 {join} = require 'path'
 fs = require 'fs'
 plugins = require '../plugins'
-{confsource} = require './confinput'
+{initialize} = require './init'
 {history} = require './history'
 {nestedOption, assertEnv} = require './utils'
 debug = require('debug')('cli')
@@ -14,6 +14,8 @@ Promise.promisifyAll fs
 yargs = require 'yargs'
   .nargs('p', 1).alias('p', 'plugins').string('p')
             .describe('p', 'A list of plugins')
+  .nargs('r', 1).alias('r', 'random').string('r')
+            .describe('r', 'pick a random sample of sites')
   .config('c')
   .help 'h'
   .alias 'h', 'help'
@@ -47,7 +49,7 @@ try
 catch
   winston.info 'No MongoDB connection string found.'
 
-confsource argv.c
+initialize argv.c, argv.r
 .then (inputs) ->
 
   Promise.using history(inputs.source), ({step}) ->

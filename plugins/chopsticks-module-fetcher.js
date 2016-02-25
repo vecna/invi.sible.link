@@ -2,61 +2,30 @@ var _ = require('lodash'),
     Promise = require('bluebird'),
     debug = require('debug')('plugin.fetcher'),
     moment = require('moment'),
-    child_process = require('child_process'),
-    fs = require('fs'),
-    fileStruct = require('../lib/jsonfiles').fileStruct;
+    exec = require('child_process').exec;
+    fs = Promise.promisifyAll(require('fs'));
+    os = require('os');
 
-Promise.promisifyAll(fs);
 
-var Ghostbuster = function (executable, command, maxExecTime) {
-    /* execute phantoms, lynx and curl */
-    debug(" Executing %s", command);
-    try {
-        child_process
-            .execSync(command, {timeout: maxExecTime });
-        debug(" … %s completed", executable);
-    } catch(error) {
-        if (error.code != 'ETIMEDOUT') {
-            console.error(error);
-            console.log(JSON.stringify(error, undefined, 2));
-            debug(" … %s failed %s", executable, command);
-        } else {
-            debug(" … %s interrupted by timeout", executable);
-        }
-    }
-};
+/* at least 24 hours lost with child_process.spawn until I found this:
+http://stackoverflow.com/questions/35062031/complexe-child-process-not-working-with-promise-bluebird
+... enjoy! https://soundcloud.com/majorlazer/major-lazer-dj-snake-lean-on-feat-mo */
+function promiseFromChildProcess(child) {
+    return new Promise(function (resolve, reject) {
+        child.addListener("error", reject);
+        child.addListener("exit", resolve);
+    });
+}
 
-var WebFetcher = function(siteEntry, maxExecTime) {
+var executer = function(command, milliSec, cmdID, siteEntry) {
 
-    var fN = fileStruct(siteEntry._ls_dir.location, siteEntry._ls_dir.timeString),
-        mkdirp_command = "mkdir -p " + siteEntry._ls_dir.location,
-        phantomjs_command = "node_modules/.bin/phantomjs crawl/phjsrender.js "
-            + "'" + siteEntry._ls_links[0].href + "'"
-            + " "
-            + siteEntry._ls_dir.location
-            + " "
-            + siteEntry._ls_dir.timeString
-            + " "
-            + maxExecTime,
-        lynx_command = "lynx -dump "
-            + "'" + siteEntry._ls_links[0].href + "'"
-            + " > "
-            + fN.text,
-        curl_command = "curl -N -L --head "
-            + "'" + siteEntry._ls_links[0].href + "'"
-            + " -o "
-            + fN.headers,
-        command_list = [
-            Ghostbuster('mkdir', mkdirp_command, maxExecTime * 1000),
-            Ghostbuster('phantom', phantomjs_command, maxExecTime * 1000 + 5000),
-            Ghostbuster('lynx', lynx_command, maxExecTime * 1000),
-            Ghostbuster('curl', curl_command, maxExecTime * 1000)
-        ],
-        startTime = moment().format('HH:mm:SS'); // (new Date()).getTime();
+    var child = exec(command),
+        startTime = moment();
 
-    return Promise
-        .all(command_list)
-        .then(function() {
+    promiseFromChildProcess(child)
+        .delay(milliSec)
+        .then(function (result) {
+
             var resultLogF = siteEntry._ls_dir.location + 'executions.log',
                 content = JSON.stringify({
                     url: siteEntry._ls_links[0].href,
@@ -64,32 +33,81 @@ var WebFetcher = function(siteEntry, maxExecTime) {
                     endTime: moment().format('HH:mm:SS'),
                     hash: siteEntry._ls_links[0]._ls_id_hash
                 }, undefined, 2);
+
+            debug("Promise %s complete (%d ms) [diff: %s]",
+                cmdID, milliSec, moment().diff(startTime));
             return fs
                 .writeFileAsync(resultLogF, content, {flag: 'w+'})
-                .return(resultLogF)
-                .tap(function(resultLogF) {
-                    debug("Written %s", resultLogF);
-                });
-        });
+                .then(function() {
+                    debug("Written %s from %s", resultLogF, cmdID );
+                    siteEntry.is_present = true;
+                    siteEntry.savedLog = resultLogF;
+                    return siteEntry;
+                })
+
+        }, function (err) {
+            debug("Promise %s rejected (%d ms) with error: %s [diff: %s]",
+                cmdID, milliSec, err, moment().diff(startTime));
+            siteEntry.savedLog = null;
+            return siteEntry;
+        })
+        .tap(function(updatedSource) {
+            console.log(JSON.stringify(updatedSource, undefined, 2));
+        })
+        .delay(1000);
+
+
+    child.stdout.on('data', function (data) {
+        // console.log('stdout: ' + data);
+    });
+    child.stderr.on('data', function (data) {
+        // console.log('stderr: ' + data);
+    });
+    child.on('close', function (code) {
+        debug("Closing %s (%d) with code: %s [diff: %s]",
+            cmdID, milliSec, code, moment().diff(startTime));
+    });
+}
+
+var pageFetch = function(siteEntry, cnt) {
+
+    var milliSec = (process.env.FETCHER_MAXTIME * 1000) + 5000,
+        mkdirc = "/bin/mkdir " + [ "-p", siteEntry._ls_dir.location ].join(" "),
+        phantc = [ "node_modules/.bin/phantomjs",
+                    "--config=crawl/phantomcfg.json",
+                    "crawl/phjsrender.js",
+                    "'" + siteEntry._ls_links[0].href + "'",
+                    siteEntry._ls_dir.location,
+                    siteEntry._ls_dir.timeString,
+                    process.env.FETCHER_MAXTIME
+                 ].join(" "),
+        currentLoad = os.loadavg()[0];
+
+    currentLoad = (currentLoad < 1) ? 1 : currentLoad;
+    debug("Site %s, Load %d %s", siteEntry._ls_links[0].href, currentLoad, cnt);
+    executer(mkdirc + " ; " + phantc, milliSec, "K" + cnt) // _.round(currentLoad * maxExecTime),
+    debug("Returning now!");
+    return siteEntry;
 };
 
+
+
 module.exports = function(val) {
-    /* this is an idempotent module, do not change val */
 
     debug("Chain of fetch ready: %d fetches, concurrency %d",
         val.source.length, process.env.FETCHER_CONCURRENCY );
 
     return Promise
-        .map(val.source, function(siteEntry) {
-            /* in theory, we have here only "type": "target" kind of href
-             * in theory, we have _ls_dir present: these elements can be assert-ed */
-            debug("\t%s", siteEntry._ls_links[0].href);
-            WebFetcher( siteEntry, process.env.FETCHER_MAXTIME );
-            return null;
-        } , // { concurrency: process.env.FETCHER_CONCURRENCY}
-            { concurrency: 5}
-        )
+        .map(val.source, pageFetch, { concurrency : process.env.FETCHER_CONCURRENCY })
+        .delay(20000)
+        .then(function(updatedSource) {
+            debug("Yes!");
+        //    console.log(JSON.stringify(filesGenerated, undefined, 3));
+        })
+        .delay(3000)
+        .then()
         .return(val);
+
 };
 
 module.exports.argv = {

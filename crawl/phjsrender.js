@@ -3,6 +3,7 @@ var system = require('system'),
     Promise = require('bluebird'),
     fs = require('fs'),
     page = require('webpage').create(),
+    _ = require('lodash'),
     iodetails = [], /* global variables, back in the MS-DOS style! */
     errordetails = [],
     counter = 0,
@@ -26,7 +27,7 @@ if (system.args.length === 1) {
 }
 
 var URL = system.args[1],
-    locationDir = system.args[2],
+    locationDir = _.endsWith(system.args[2], '/') ? system.args[2] : system.args[2] + "/",
     fname = system.args[3],
     MAX_DURATION = (system.args[4] * 1),
     RelativeFullPaths = fileStruct(locationDir, fname);
@@ -37,7 +38,6 @@ if (MAX_DURATION > 120 || MAX_DURATION < 5) {
 }
 
 
-/* Phantom Page hooking */
 page.onResourceError = function(resourceError) {
     page.reason = resourceError.errorString;
     page.reason_url = resourceError.url;
