@@ -26,7 +26,7 @@ module.exports = function(datainput) {
                 );
             siteEntry._ls_links = linkSection;
             siteEntry._ls_dir = directoryStruct(linkSection, process.env.FROMLIST_TARGET);
-            siteEntry.log = siteEntry._ls_dir.location + 'executions.log'
+            siteEntry.logFile = siteEntry._ls_dir.location + 'executions.log'
             return siteEntry;
         })
         .map(function(siteEntry) {

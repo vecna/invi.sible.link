@@ -34,6 +34,7 @@
     "dir-to-json": "0.0.3",
     "domain-name-parser": "^2.2.0",
     "errorhandler": "^1.4.2",
+    "exec-chainable": "0.0.3",
     "express": "^4.13.3",
     "express-winston": "^0.4.1",
     "facebook-complete": "1.0.4",

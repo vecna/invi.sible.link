@@ -11,8 +11,8 @@ module.exports = function(datainput) {
 
     return new Promise.map(datainput.source, function(siteEntry) {
         return {
-            phfile: siteEntry._ls_dir.location + siteEntry._ls_dir.timeString + '.json',
-            log : siteEntry._ls_dir.location + 'executions.log'
+            phantomFile: siteEntry._ls_dir.location + siteEntry._ls_dir.timeString + '.json',
+            logFile : siteEntry._ls_dir.location + 'executions.log'
         };
     })
     .then(function(fileEntries) {
@@ -26,15 +26,15 @@ module.exports = function(datainput) {
 
         return _.reduce(fileEntries, function(memo, jFE) {
 
-            if (_.isUndefined(jFE.log) || _.isUndefined(jFE.rr)) {
+            if (_.isUndefined(jFE.fetchInfo) || _.isUndefined(jFE.rr)) {
                 debug("Incomplete content from %s (or missing log!): loading skipped", jFE.log);
                 return memo;
             }
             memo.push({
                 rr: jFE.rr,
                 stats: importer.computeStats(jFE.rr),
-                phfile: jFE.file,
-                fetchInfo: jFE.log,
+                phantomFile: jFE.phantomFile,
+                fetchInfo: jFE.fetchInfo
             });
             return memo;
         }, []);

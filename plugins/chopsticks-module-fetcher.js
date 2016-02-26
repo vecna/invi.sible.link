@@ -4,78 +4,15 @@ var _ = require('lodash'),
     moment = require('moment'),
     exec = require('child_process').exec;
     fs = Promise.promisifyAll(require('fs'));
-    os = require('os');
+    os = require('os'),
+    exec  = require('exec-chainable');
 
-
-/* at least 24 hours lost with child_process.spawn until I found this:
-http://stackoverflow.com/questions/35062031/complexe-child-process-not-working-with-promise-bluebird
-... enjoy! https://soundcloud.com/majorlazer/major-lazer-dj-snake-lean-on-feat-mo */
-function promiseFromChildProcess(child) {
-    return new Promise(function (resolve, reject) {
-        child.addListener("error", reject);
-        child.addListener("exit", resolve);
-    });
-}
-
-var executer = function(command, milliSec, cmdID, siteEntry) {
-
-    var child = exec(command),
-        startTime = moment();
-
-    // debug("%s\tlaunched: [%s]", cmdID, command);
-
-    promiseFromChildProcess(child)
-        .delay(milliSec)
-        .then(function (result) {
-
-            var resultLogF = siteEntry._ls_dir.location + 'executions.log',
-                content = {
-                    href: siteEntry._ls_links[0].href,
-                    href_hash: siteEntry._ls_links[0]._ls_id_hash,
-                    startTime: startTime,
-                    endTime: moment().format('HH:mm:SS'),
-                    completed: moment().toISOString(),
-                };
-
-            debug("Promise %s complete (%d ms) [diff: %s]",
-                cmdID, milliSec, moment().diff(startTime));
-            return fs
-                .writeFileAsync(resultLogF, JSON.stringify(content), {flag: 'w+'})
-                .then(function() {
-                    debug("Written %s from %s", resultLogF, cmdID );
-                    siteEntry.is_present = true;
-                    siteEntry.logFile = resultLogF;
-                    return siteEntry;
-                })
-
-        }, function (err) {
-            debug("Promise %s rejected (%d ms) with error: %s [diff: %s]",
-                cmdID, milliSec, err, moment().diff(startTime));
-            siteEntry.logFile = null;
-            return siteEntry;
-        })
-        .tap(function(updatedSource) {
-            console.log(JSON.stringify(updatedSource, undefined, 2));
-        });
-
-
-    child.stdout.on('data', function (data) {
-        // console.log('stdout: ' + data);
-    });
-    child.stderr.on('data', function (data) {
-        // console.log('stderr: ' + data);
-    });
-    child.on('close', function (code) {
-        debug("Closing %s (%d) with code: %s [diff: %s]",
-            cmdID, milliSec, code, moment().diff(startTime));
-    });
-}
 
 var pageFetch = function(siteEntry, cnt) {
 
     var milliSec = (process.env.FETCHER_MAXTIME * 1000) + 5000,
         mkdirc = "/bin/mkdir " + [ "-p", siteEntry._ls_dir.location ].join(" "),
-        hackishDelay = _.round((cnt * 2.9) + 1),
+        hackishDelay = _.round( (0.3 * (cnt % process.env.FETCHER_CONCURRENCY)) + 1),
         phantc = [ "node_modules/.bin/phantomjs",
                     "--config=crawl/phantomcfg.json",
                     "crawl/phjsrender.js",
@@ -84,40 +21,51 @@ var pageFetch = function(siteEntry, cnt) {
                     siteEntry._ls_dir.timeString,
                     process.env.FETCHER_MAXTIME
                  ].join(" "),
-        currentLoad = os.loadavg()[0];
+        currentLoad = os.loadavg()[0],
+        startTime = moment();
 
-    currentLoad = (currentLoad < 1) ? 1 : currentLoad;
-    // debug("Site %s, Load %d %s (hackish delay %d)",
-    // siteEntry._ls_links[0].href, currentLoad, cnt, hackishDelay);
-    return executer(   " sleep " + hackishDelay + ";" + mkdirc + " ; " + phantc,
-                milliSec, "K" + cnt, siteEntry);
-    //  return siteEntry;
+    return exec(mkdirc).delay(hackishDelay).then(function () {
+    return exec(phantc)
+        .then(function(stdout) {
+            var resultLogF = siteEntry._ls_dir.location + 'executions.log',
+                content = {
+                    href: siteEntry._ls_links[0].href,
+                    href_hash: siteEntry._ls_links[0]._ls_id_hash,
+                    startTime: startTime,
+                    endTime: moment().format('HH:mm:SS'),
+                    completed: moment().toISOString(),
+                };
+            debug("Fetch #%d complete [elapsed: %s]", cnt, moment().diff(startTime));
+            return fs
+                .writeFileAsync(resultLogF, JSON.stringify(content), {flag: 'w+'})
+                .then(function() {
+                    siteEntry.is_present = true;
+                    siteEntry.logFile = resultLogF;
+                    return siteEntry;
+                });
+        })
+        .catch(function(error) {
+            throw new Error("Può succedere! gestiscimi ed usami!");
+        })
+    });
 };
 
 
 
 module.exports = function(val) {
-    /* this is not indepotent anymore! fromDisk has to supply the same info,
+    /* This module, OR fromDisk, has to be used. they provide:
         which is: val.source.[siteEntry].savedLog = {} */
 
     debug("Chain of fetch ready: %d fetches, concurrency %d",
         val.source.length, process.env.FETCHER_CONCURRENCY );
 
     return Promise
-        .map(val.source, pageFetch, { concurrency : 1 /* process.env.FETCHER_CONCURRENCY */ })
-        .tap(function() {
-            debug("all the fetch process channelled: waiting %d Ms",
-                  ( _.size(val.source) * 800 ) +
-                  ( process.env.FETCHER_MAXTIME * 1000 )
-                );
-        })
-        .delay( (_.size(val.source) * 2900) + ( process.env.FETCHER_MAXTIME * 1000 ) )
+        .map(val.source, pageFetch, { concurrency : process.env.FETCHER_CONCURRENCY })
         .then(function(updatedSource) {
-            debug("Yes!");
-        //    console.log(JSON.stringify(filesGenerated, undefined, 3));
-        })
-        .return(val);
-
+            debug("all the fetch are done!");
+            val.source = updatedSource;
+            return val;
+        });
 };
 
 module.exports.argv = {
@@ -128,7 +76,7 @@ module.exports.argv = {
     },
     'fetcher.concurrency': {
         nargs: 1,
-        default: 3,
+        default: 10,
         desc: 'Concurrency in fetcher executions'
     }
 };

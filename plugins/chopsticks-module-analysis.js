@@ -4,13 +4,16 @@ var _ = require('lodash'),
 
 module.exports = function(datainput) {
     datainput.analytics = {
-        compareImpact: analytics.compareImpact(datainput),
-        sharedUnrecognized: analytics.sharedUnrecognized(datainput)
+        invasiveness: analytics.computeInvasiveness(datainput),
+        sharedUnrecognized: analytics.sharedUnrecognized(datainput),
     };
-    debug("compareImpact: mesured impact of %d target sites, the highest impact is:", _.size(datainput.analytics.compareImpact))
-    console.log(JSON.stringify(_.sortBy(datainput.analytics.compareImpact, function(elem) {
+
+/*
+    debug("invasiveness: mesured impact of %d target sites, the highest impact is:", _.size(datainput.analytics.compareImpact))
+    console.log(JSON.stringify(_.sortBy(datainput.analytics.invasiveness, function(elem) {
                 return elem.impact;
          })[0], undefined, 2));
+*/
 
     /* I collect the unrecognized because if a website is present many times, maybe is
        a tracking company not recognized yet. So I use this feedback to update my company List */

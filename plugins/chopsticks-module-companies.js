@@ -17,7 +17,6 @@ module.exports = function(datainput) {
     iCm = _.reduce(datainput.data, function(memo, siteTested) {
         _.each(siteTested.rr, function(inclusion) {
             if (_.isUndefined(memo[inclusion.domain])) {
-                debug("Testing domain %s", inclusion.domain);
                 memo[inclusion.domain] = companies.associatedCompany(
                     datainput.companies, inclusion.domain);
             }

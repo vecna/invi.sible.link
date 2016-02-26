@@ -28,11 +28,15 @@ In the first release, ee were dedicated to analyze the national and local Media(
 
 The pipeline basically process the raw input or the previously processed input
 
-### Run the collection system
+# Run the collection system
 
-    cd trackography-2
+### 1) have some websites!
 
-    bin/chopsticks -i 
+### 2) fetch 
+
+    DEBUG=* bin/chopsticks -p fromList,stripper,fetcher,jsonLoad,companies,analysis -c config/your_config.json 
+
+### 3) analysis
 
 
 # Data source
@@ -51,14 +55,15 @@ The data that get updates here are three:
 
 all the plugins are in 'plugins/' directory, they can be used in the pipeline, the formalisation of indepotent/potent functions is ongoing.
 
-  * 
+## TODO
 
-
+plugins input and output
 
 # Cool external resources
 
 https://www.ghostery.com/support/global-opt-out/
-
 https://app.ghosteryenterprise.com/TM/PI2VVQ
-
+http://staysafeonline.org/blog/50-things-a-server-can-tell-when-you-visit-a-webpage
 https://webcookies.org
+
+[Method and system for one tag trafficking in display advertising to achieve personalized ad experiences at scale](http://www.google.com/patents/US20110119125)
