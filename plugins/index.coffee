@@ -9,3 +9,4 @@ module.exports =
   fromList: require './chopsticks-module-fromList'
   fromDisk: require './chopsticks-module-fromDisk'
   ATS: require './chopsticks-module-ATS'
+  stripper: require './chopsticks-module-stripper'

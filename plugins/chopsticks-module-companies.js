@@ -28,12 +28,11 @@ module.exports = function(datainput) {
     debug("Reduced Request/Response list from %d entries to %d inclusions",
         _.size(datainput.data), _.size(iCm));
 
-    debug("Mapped companies per unique domain included (%d)", _.size(domainMap) );
     _.each(datainput.data, function(siteTested) {
 
         /* Instead of this 'each', can be a reduce and removed all the target site details? */
         _.each(siteTested.rr, function(inclusion, ndx, sT) {
-            sT[ndx].company = domainMap[inclusion.domain];
+            sT[ndx].company = iCm[inclusion.domain];
         });
         siteTested.stats.companies = _.countBy(
             _.filter(

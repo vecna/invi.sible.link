@@ -89,7 +89,7 @@ var pageFetch = function(siteEntry, cnt) {
     currentLoad = (currentLoad < 1) ? 1 : currentLoad;
     debug("Site %s, Load %d %s (hackish delay %d)", siteEntry._ls_links[0].href, currentLoad, cnt, hackishDelay);
     return executer(   " sleep " + hackishDelay + ";" + mkdirc + " ; " + phantc,
-                milliSec, "K" + cnt)
+                milliSec, "K" + cnt, siteEntry);
   //  return siteEntry;
 };
 
@@ -105,18 +105,16 @@ module.exports = function(val) {
     return Promise
         .map(val.source, pageFetch, { concurrency : 1 /* process.env.FETCHER_CONCURRENCY */ })
         .tap(function() {
-            debug("all the fetch process channelled: waiting %d seconds",
-                ((  _.size(val.source) * 800 +
-                    (process.env.FETCHER_MAXTIME + 5) * 1000) / 1000)
+            debug("all the fetch process channelled: waiting %d Ms",
+                  ( _.size(val.source) * 800 ) +
+                  ( process.env.FETCHER_MAXTIME * 1000 )
                 );
         })
-        .delay(_.size(val.source) * 800 + (process.env.FETCHER_MAXTIME + 5) * 1000)
+        .delay( (_.size(val.source) * 800) + ( process.env.FETCHER_MAXTIME * 1000 ) )
         .then(function(updatedSource) {
             debug("Yes!");
         //    console.log(JSON.stringify(filesGenerated, undefined, 3));
         })
-        .delay(3000)
-        .then()
         .return(val);
 
 };
