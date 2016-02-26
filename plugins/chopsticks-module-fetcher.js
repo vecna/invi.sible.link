@@ -22,41 +22,41 @@ var executer = function(command, milliSec, cmdID, siteEntry) {
     var child = exec(command),
         startTime = moment();
 
-    debug("%s\tlaunched: [%s]", cmdID, command);
+    // debug("%s\tlaunched: [%s]", cmdID, command);
 
     promiseFromChildProcess(child)
         .delay(milliSec)
         .then(function (result) {
 
             var resultLogF = siteEntry._ls_dir.location + 'executions.log',
-                content = JSON.stringify({
-                    url: siteEntry._ls_links[0].href,
+                content = {
+                    href: siteEntry._ls_links[0].href,
+                    href_hash: siteEntry._ls_links[0]._ls_id_hash,
                     startTime: startTime,
                     endTime: moment().format('HH:mm:SS'),
-                    hash: siteEntry._ls_links[0]._ls_id_hash
-                }, undefined, 2);
+                    completed: moment().toISOString(),
+                };
 
             debug("Promise %s complete (%d ms) [diff: %s]",
                 cmdID, milliSec, moment().diff(startTime));
             return fs
-                .writeFileAsync(resultLogF, content, {flag: 'w+'})
+                .writeFileAsync(resultLogF, JSON.stringify(content), {flag: 'w+'})
                 .then(function() {
                     debug("Written %s from %s", resultLogF, cmdID );
                     siteEntry.is_present = true;
-                    siteEntry.savedLog = resultLogF;
+                    siteEntry.logFile = resultLogF;
                     return siteEntry;
                 })
 
         }, function (err) {
             debug("Promise %s rejected (%d ms) with error: %s [diff: %s]",
                 cmdID, milliSec, err, moment().diff(startTime));
-            siteEntry.savedLog = null;
+            siteEntry.logFile = null;
             return siteEntry;
         })
         .tap(function(updatedSource) {
             console.log(JSON.stringify(updatedSource, undefined, 2));
-        })
-        .delay(1000);
+        });
 
 
     child.stdout.on('data', function (data) {
@@ -75,7 +75,7 @@ var pageFetch = function(siteEntry, cnt) {
 
     var milliSec = (process.env.FETCHER_MAXTIME * 1000) + 5000,
         mkdirc = "/bin/mkdir " + [ "-p", siteEntry._ls_dir.location ].join(" "),
-        hackishDelay = _.round((cnt * 0.8) + 1),
+        hackishDelay = _.round((cnt * 2.9) + 1),
         phantc = [ "node_modules/.bin/phantomjs",
                     "--config=crawl/phantomcfg.json",
                     "crawl/phjsrender.js",
@@ -87,10 +87,11 @@ var pageFetch = function(siteEntry, cnt) {
         currentLoad = os.loadavg()[0];
 
     currentLoad = (currentLoad < 1) ? 1 : currentLoad;
-    debug("Site %s, Load %d %s (hackish delay %d)", siteEntry._ls_links[0].href, currentLoad, cnt, hackishDelay);
+    // debug("Site %s, Load %d %s (hackish delay %d)",
+    // siteEntry._ls_links[0].href, currentLoad, cnt, hackishDelay);
     return executer(   " sleep " + hackishDelay + ";" + mkdirc + " ; " + phantc,
                 milliSec, "K" + cnt, siteEntry);
-  //  return siteEntry;
+    //  return siteEntry;
 };
 
 
@@ -110,7 +111,7 @@ module.exports = function(val) {
                   ( process.env.FETCHER_MAXTIME * 1000 )
                 );
         })
-        .delay( (_.size(val.source) * 800) + ( process.env.FETCHER_MAXTIME * 1000 ) )
+        .delay( (_.size(val.source) * 2900) + ( process.env.FETCHER_MAXTIME * 1000 ) )
         .then(function(updatedSource) {
             debug("Yes!");
         //    console.log(JSON.stringify(filesGenerated, undefined, 3));

@@ -4,6 +4,7 @@ var _ = require('lodash'),
     debug = require('debug')('plugin.fromList'),
     moment = require('moment'),
     fs = require('fs'),
+    importer = require('../lib/importer'),
     linkIdHash = require('../lib/transformer').linkIdHash,
     domainTLDinfo = require('../lib/domain').domainTLDinfo,
     directoryStruct = require('../lib/jsonfiles').directoryStruct;
@@ -12,42 +13,37 @@ Promise.promisifyAll(fs);
 
 module.exports = function(datainput) {
 
-    var siteList = datainput.source,
-        newData = [];
-
-    if(_.size(siteList) === 0) {
+    if(_.size(datainput.source) === 0) {
         throw new Error("Error in the import process, lacking of sources URL");
     }
-    debug("Processing %d URL entries", _.size(siteList) );
+    debug("Processing %d URL entries", _.size(datainput.source) );
 
-    return Promise.map(siteList, function(siteEntry) {
-
-        var i = _.merge(
-                linkIdHash(siteEntry)._ls_links,
-                domainTLDinfo(siteEntry._ls_links)
-            ),
-            d = directoryStruct(i, process.env.FROMLIST_TARGET);
-
+    return Promise
+        .map(datainput.source, function(siteEntry) {
+            var linkSection = _.merge(
+                    linkIdHash(siteEntry)._ls_links,
+                    domainTLDinfo(siteEntry._ls_links)
+                );
+            siteEntry._ls_links = linkSection;
+            siteEntry._ls_dir = directoryStruct(linkSection, process.env.FROMLIST_TARGET);
+            siteEntry.log = siteEntry._ls_dir.location + 'executions.log'
+            return siteEntry;
+        })
+        .map(function(siteEntry) {
             return fs
-                .statAsync(d.location)
+                .statAsync(siteEntry.log)
                 .then(function(presence) {
                     siteEntry.is_present = true;
-                    siteEntry._ls_links = i;
-                    siteEntry._ls_dir = d;
-                    newData.push(siteEntry);
                 })
                 .catch(function(error) {
                     siteEntry.is_present = false;
-                    siteEntry._ls_links = i;
-                    siteEntry._ls_dir = d;
-                    newData.push(siteEntry);
-                });
-
-    }).then(function(_null) {
-        //console.log(JSON.stringify(newData, undefined, 2));
-        datainput.source = newData;
-        return datainput;
-    });
+                })
+                .return(siteEntry);
+        })
+        .then(function(newData) {
+            datainput.source = newData;
+            return datainput;
+        });
 };
 
 module.exports.argv = {

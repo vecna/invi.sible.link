@@ -11,7 +11,8 @@ module.exports = function(datainput) {
 
     return new Promise.map(datainput.source, function(siteEntry) {
         return {
-            file: siteEntry._ls_dir.location + siteEntry._ls_dir.timeString + '.json'
+            phfile: siteEntry._ls_dir.location + siteEntry._ls_dir.timeString + '.json',
+            log : siteEntry._ls_dir.location + 'executions.log'
         };
     })
     .then(function(fileEntries) {
@@ -32,8 +33,8 @@ module.exports = function(datainput) {
             memo.push({
                 rr: jFE.rr,
                 stats: importer.computeStats(jFE.rr),
-                file: jFE.file,
-                log: jFE.log
+                phfile: jFE.file,
+                fetchInfo: jFE.log,
             });
             return memo;
         }, []);
@@ -65,7 +66,7 @@ module.exports.argv = {
         nargs: 1,
         type: 'string',
         default: "0",
-        desc: 'Day in the past to fetch the data.'
+        desc: 'Day in the past to look at.'
     },
     'json.sitefilter': {
         nargs: 1,
