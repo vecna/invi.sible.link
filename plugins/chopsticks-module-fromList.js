@@ -16,7 +16,8 @@ module.exports = function(datainput) {
     if(_.size(datainput.source) === 0) {
         throw new Error("Error in the import process, lacking of sources URL");
     }
-    debug("Processing %d URL entries", _.size(datainput.source) );
+    debug("Processing %d URL entries and checking disk locations/logs",
+        _.size(datainput.source) );
 
     return Promise
         .map(datainput.source, function(siteEntry) {
@@ -31,7 +32,7 @@ module.exports = function(datainput) {
         })
         .map(function(siteEntry) {
             return fs
-                .statAsync(siteEntry.log)
+                .statAsync(siteEntry.logFile)
                 .then(function(presence) {
                     siteEntry.is_present = true;
                 })
@@ -56,7 +57,7 @@ module.exports.argv = {
     'fromList.redo': {
         nargs: 1,
         default: 0,
-        desc: 'Repeat also if directory existRepeat also if directory existss'
+        desc: 'Repeat also if directory existRepeat also if directory exists'
     },
     'fromList.date': {
         nargs: 1,

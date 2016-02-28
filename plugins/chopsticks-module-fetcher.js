@@ -2,17 +2,16 @@ var _ = require('lodash'),
     Promise = require('bluebird'),
     debug = require('debug')('plugin.fetcher'),
     moment = require('moment'),
-    exec = require('child_process').exec;
     fs = Promise.promisifyAll(require('fs'));
     os = require('os'),
-    exec  = require('exec-chainable');
+    execChainable  = require('exec-chainable');
 
 
-var pageFetch = function(siteEntry, cnt) {
+var pageFetch = function(siteEntry, cnt, totalCount) {
 
     var milliSec = (process.env.FETCHER_MAXTIME * 1000) + 5000,
         mkdirc = "/bin/mkdir " + [ "-p", siteEntry._ls_dir.location ].join(" "),
-        hackishDelay = _.round( (0.3 * (cnt % process.env.FETCHER_CONCURRENCY)) + 1),
+        hackishDelay =  (process.env.FETCHER_DELAY * cnt),
         phantc = [ "node_modules/.bin/phantomjs",
                     "--config=crawl/phantomcfg.json",
                     "crawl/phjsrender.js",
@@ -21,33 +20,49 @@ var pageFetch = function(siteEntry, cnt) {
                     siteEntry._ls_dir.timeString,
                     process.env.FETCHER_MAXTIME
                  ].join(" "),
-        currentLoad = os.loadavg()[0],
+        startLoad = os.loadavg()[0],
+        startMem = os.freemem(),
         startTime = moment();
 
-    return exec(mkdirc).delay(hackishDelay).then(function () {
-    return exec(phantc)
-        .then(function(stdout) {
-            var resultLogF = siteEntry._ls_dir.location + 'executions.log',
-                content = {
-                    href: siteEntry._ls_links[0].href,
-                    href_hash: siteEntry._ls_links[0]._ls_id_hash,
-                    startTime: startTime,
-                    endTime: moment().format('HH:mm:SS'),
-                    completed: moment().toISOString(),
-                };
-            debug("Fetch #%d complete [elapsed: %s]", cnt, moment().diff(startTime));
-            return fs
-                .writeFileAsync(resultLogF, JSON.stringify(content), {flag: 'w+'})
-                .then(function() {
-                    siteEntry.is_present = true;
-                    siteEntry.logFile = resultLogF;
-                    return siteEntry;
-                });
-        })
-        .catch(function(error) {
-            throw new Error("Può succedere! gestiscimi ed usami!");
-        })
-    });
+    return execChainable(mkdirc).delay(hackishDelay * 1000).then(function () {
+        return execChainable(phantc)
+            .then(function(stdout) {
+                var resultLogF = siteEntry._ls_dir.location + 'executions.log',
+                    content = {
+                        fetch_id: cnt,
+                        href: siteEntry._ls_links[0].href,
+                        href_hash: siteEntry._ls_links[0]._ls_id_hash,
+                        startTime: startTime.format('HH:mm:SS'),
+                        endTime: moment().format('HH:mm:SS'),
+                        startLoad: startLoad,
+                        endLoad: os.loadavg()[0],
+                        startMem: startMem,
+                        endMem: os.freemem(),
+                        completed: moment().toISOString(),
+                    };
+                debug("Fetch #%d done ☞ progress since 「%s」 remaining 「%s」",
+                        cnt,
+                        moment.duration(moment().diff(startTime)).humanize(),
+                        moment.duration(
+                            process.env.FETCHER_DELAY * (totalCount - cnt),
+                            'seconds').humanize() );
+                return fs
+                    .writeFileAsync(resultLogF, JSON.stringify(content), {flag: 'w+'})
+                    .then(function() {
+                        if(siteEntry.is_present === true) {
+                            debug("Multiple fetch of %s has been done",
+                                siteEntry._ls_links[0]._ls_id_hash);
+                        }
+                        siteEntry.is_present = true;
+                        return siteEntry;
+                    });
+            })
+            .catch(function(error) {
+                debug("Error %s", error);
+                debug("Error with %s", phantc);
+                return siteEntry;
+            })
+        });
 };
 
 
@@ -56,8 +71,12 @@ module.exports = function(val) {
     /* This module, OR fromDisk, has to be used. they provide:
         which is: val.source.[siteEntry].savedLog = {} */
 
-    debug("Chain of fetch ready: %d fetches, concurrency %d",
-        val.source.length, process.env.FETCHER_CONCURRENCY );
+    debug("Chain of fetch: %d fetches, delay %d, concurrency %d, estimated: %s",
+            val.source.length,
+            process.env.FETCHER_DELAY,
+            process.env.FETCHER_CONCURRENCY,
+            moment.duration(process.env.FETCHER_DELAY * val.source.length, 'seconds').humanize()
+    );
 
     return Promise
         .map(val.source, pageFetch, { concurrency : process.env.FETCHER_CONCURRENCY })
@@ -78,5 +97,10 @@ module.exports.argv = {
         nargs: 1,
         default: 10,
         desc: 'Concurrency in fetcher executions'
+    },
+    'fetcher.delay': {
+        nargs: 1,
+        default: 3.5,
+        desc: 'Amount of seconds between one phantom dispatch and the next'
     }
 };

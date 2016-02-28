@@ -9,10 +9,10 @@ var _ = require('lodash'),
 Promise.promisifyAll(fs);
 
 module.exports = function(datainput) {
-
-    /* A single key for every domain in datainput. */
     var newData = [],
         iCm;
+
+    debug("Processing all the Request/Responses and associate to Companies...");
 
     iCm = _.reduce(datainput.data, function(memo, siteTested) {
         _.each(siteTested.rr, function(inclusion) {
