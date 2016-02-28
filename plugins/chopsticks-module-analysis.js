@@ -7,6 +7,7 @@ module.exports = function(datainput) {
     datainput.analytics = {
         intrusiveness: analytics.computeIntrusiveness(datainput),
         sharedUnrecognized: analytics.sharedUnrecognized(datainput),
+        peeks: analytics.extractPeeks(datainput)
     };
 
     /* I collect the unrecognized because if a website is present many times, maybe is

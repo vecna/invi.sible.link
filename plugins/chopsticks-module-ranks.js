@@ -18,6 +18,7 @@ module.exports = function(datainput) {
                 'value': countryIntr.value,
                 'href': siteIntr.href,
                 'href_hash': siteIntr.href_hash,
+                'debug': countryIntr.debug
             });
         });
         return memo;

@@ -19,7 +19,7 @@ module.exports = function(datainput) {
                                siteEntry._ls_dir.timeString ).io
                 ).then(function(phantomFileExists) {
                     if(phantomFileExists !== siteEntry.is_present) {
-                        debug("Ambiguous condition in %s, logF %s, IO %s",
+                        debug("Inconsistent status of %s: logF %s, IO %s",
                             siteEntry._ls_dir.location,
                             siteEntry.is_present,
                             phantomFileExists

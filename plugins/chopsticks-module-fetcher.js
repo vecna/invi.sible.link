@@ -19,12 +19,12 @@ var pageFetch = function(siteEntry, cnt, totalCount) {
                     siteEntry._ls_dir.location,
                     siteEntry._ls_dir.timeString,
                     process.env.FETCHER_MAXTIME
-                 ].join(" "),
-        startLoad = os.loadavg()[0],
-        startMem = os.freemem(),
-        startTime = moment();
+                 ].join(" ");
 
     return execChainable(mkdirc).delay(hackishDelay * 1000).then(function () {
+        var startLoad = os.loadavg()[0],
+            startMem = os.freemem(),
+            startTime = moment();
         return execChainable(phantc)
             .then(function(stdout) {
                 var resultLogF = siteEntry._ls_dir.location + 'executions.log',
@@ -40,8 +40,9 @@ var pageFetch = function(siteEntry, cnt, totalCount) {
                         endMem: os.freemem(),
                         completed: moment().toISOString(),
                     };
-                debug("Fetch #%d done ☞ progress since 「%s」 remaining 「%s」",
+                debug("Fetch #%d of %d done ☞ active 「%s」 remaining 「%s」",
                         cnt,
+                        totalCount,
                         moment.duration(moment().diff(startTime)).humanize(),
                         moment.duration(
                             process.env.FETCHER_DELAY * (totalCount - cnt),
