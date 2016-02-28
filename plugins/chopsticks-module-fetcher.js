@@ -101,7 +101,7 @@ module.exports.argv = {
     },
     'fetcher.delay': {
         nargs: 1,
-        default: 3.5,
+        default: 4.2,
         desc: 'Amount of seconds between one phantom dispatch and the next'
     }
 };

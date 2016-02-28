@@ -2,5 +2,5 @@ node_modules/
 config/*.json
 tempdump/
 debugflow/
-eyes/dist/
+dist/
 config/world/.notprocessed/*
