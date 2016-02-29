@@ -19,7 +19,7 @@ var system = require('system'),
         };
     };
 
-if (system.args.length === 1) {
+if (system.args.length < 5) {
     console.log('phantomjs phjsrender.js URL destination_directory basefilename MAX_DURATION');
     console.log('MAX_DURATION in seconds is the amount of seconds which the process can wait third party resources');
     console.log("The base filename will be appended of .jpeg, .html and .details");
@@ -29,7 +29,7 @@ if (system.args.length === 1) {
 var URL = system.args[1],
     locationDir = _.endsWith(system.args[2], '/') ? system.args[2] : system.args[2] + "/",
     fname = system.args[3],
-    MAX_DURATION = (system.args[4] * 1),
+    MAX_DURATION = _.parseInt(system.args[4]),
     RelativeFullPaths = fileStruct(locationDir, fname);
 
 if (MAX_DURATION > 120 || MAX_DURATION < 5) {
@@ -38,26 +38,27 @@ if (MAX_DURATION > 120 || MAX_DURATION < 5) {
 }
 
 
-page.onResourceError = function(resourceError) {
-    page.reason = resourceError.errorString;
-    page.reason_url = resourceError.url;
+page.onResourceError = function(e) {
+    // page.reason = e.errorString;
+    // page.reason_url = e.url;
+    errordetails.push(e.url);
 };
 page.onResourceRequested = function(request) {
-    console.log("Request done in " + counter);
+    // console.log("Request done in " + counter);
     iodetails.push(
         { 'Request' : request, 'When': counter }
     );
 };
 page.onResourceReceived = function(response) {
-    console.log("Received in " + counter);
+    // console.log("Received in " + counter);
     iodetails.push(
         { 'Response' : response, 'When': counter }
     );
 };
 
 page.onResourceTimeout = function(e) {
-    console.log("ResourceTimeout! " + e.url);
-    /* being not promises and Timeout can happen in concurrency, I just save the 'errors' to be flush at once later */
+    // console.log("ResourceTimeout! " + e.url);
+    /* I just save the 'errors' to be flush at once in HappyEnding */
     errordetails.push(e.url);
 };
 
@@ -65,29 +66,25 @@ var HappyEnding = function() {
 
     return new Promise(function (resolve, reject) {
 
-        console.log("Saving Errrs (" + errordetails.length + ") in " + RelativeFullPaths.timeout);
-
+        console.log("Saving Errors (" + errordetails.length + ") in " + RelativeFullPaths.timeout);
         fs.write(RelativeFullPaths.timeout,
             JSON.stringify(errordetails, undefined, 2),
             {flag: 'w+'}
         );
 
         console.log("Saving the DOM in " + RelativeFullPaths.dom);
-
         fs.write(RelativeFullPaths.dom,
             page.content,
             {flag: 'w+'}
         );
 
         console.log("Saving the I/O details in " + RelativeFullPaths.io);
-
         fs.write(RelativeFullPaths.io,
-            JSON.stringify(iodetails, undefined, 4),
+            JSON.stringify(iodetails, undefined, 2),
             {flag: 'w+'}
         );
 
         console.log("Starting closing session of analysis");
-
         page.evaluate(function() {
             document.body.bgColor = 'white';
         });

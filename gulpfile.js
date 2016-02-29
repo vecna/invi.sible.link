@@ -26,12 +26,7 @@ var dependencies = [
 ]
 
 gulp.task("lint", function () {
-    return gulp.src([
-        "./eyes/lib/**/*.js", 
-        "./eyes/lib/**/*.jsx",
-        "./eyes/public/**/*.js",
-        "./eyes/public/**/*.jsx",
-        "./eyes/app.jsx"])
+    return gulp.src(["src/**/*.js", "src/**/*.jsx"])
         .pipe(eslint({configFile: "./.eslintrc"}))
         .pipe(eslint.format())
         .pipe(eslint.failOnError());
@@ -48,12 +43,12 @@ gulp.task("vendor", function() {
     .bundle()
     .pipe(source("vendor.js"))
     .pipe(buffer())
-    .pipe(gulp.dest("./eyes/dist/scripts"));
+    .pipe(gulp.dest("./dist/scripts"));
 });
 
 gulp.task("scripts", ["lint"], function() {
   browserify({debug: true, extensions: ['.jsx']})
-    .add("./eyes/app.jsx", {entry: true})
+    .add("src/app.jsx", {entry: true})
     .external(getNPMPackageIds())
     .transform(babelify)
     .bundle()
@@ -62,12 +57,10 @@ gulp.task("scripts", ["lint"], function() {
     .pipe(buffer())
     .pipe(sourcemaps.init({loadMaps: true}))
     .pipe(sourcemaps.write("."))
-    .pipe(gulp.dest("./eyes/dist/scripts"));
+    .pipe(gulp.dest("./dist/scripts"));
 });
 
-
 gulp.task("symlink", function() {
-/*
     if (process.env.NODE_ENV !== 'production' && process.env.NODE_ENV !== 'staging') {
         fs = require('fs');
         try {
@@ -77,19 +70,18 @@ gulp.task("symlink", function() {
             console.error(error);
         }
     }
-    */
 });
 
 gulp.task("css", function () {
-  gulp.src('./eyes/public/css/application.css')
-      .pipe(gulp.dest('./eyes/dist/css/'));
-  gulp.src('./eyes/public/css/unit-details.css')
-      .pipe(gulp.dest('./eyes/dist/css/'));
+  gulp.src('./public/css/application.css')
+      .pipe(gulp.dest('./dist/css/'));
+  gulp.src('./public/css/unit-details.css')
+      .pipe(gulp.dest('./dist/css/'));
 });
 
 gulp.task("fonts", function () {
-  gulp.src('./eyes/public/css/fonts/*')
-      .pipe(gulp.dest('./eyes/dist/css/fonts'));
+  gulp.src('./public/css/fonts/*')
+      .pipe(gulp.dest('./dist/css/fonts'));
 });
 
 gulp.task("index", ["vendor", "scripts"], function () {
@@ -100,14 +92,14 @@ gulp.task("index", ["vendor", "scripts"], function () {
   };
   // It's not necessary to read the files (will speed up things), we're only
   //after their paths:
-  var sources = gulp.src(['./eyes/dist/scripts/d3.layout.js',
-                          './eyes/dist/scripts/vendor.js',
-                          './eyes/dist/scripts/bundle.js',
-                          './eyes/dist/css/application.css',
-                          './eyes/dist/css/unit-details.css'])
+  var sources = gulp.src(['./dist/scripts/d3.layout.js',
+                          './dist/scripts/vendor.js',
+                          './dist/scripts/bundle.js',
+                          './dist/css/application.css',
+                          './dist/css/unit-details.css'])
                     .pipe(hash(opts));
 
-  return gulp.src('./eyes/public/index.html')
+  return gulp.src('./public/index.html')
              .pipe(inject(sources, {ignorePath: 'dist'}))
              .pipe(gulp.dest('./dist'));
 });
@@ -115,7 +107,7 @@ gulp.task("index", ["vendor", "scripts"], function () {
 gulp.task("assets", ["vendor", "scripts", "css", "fonts", "index", "symlink"]);
 
 gulp.task("watch", ["assets"], function () {
-  watch(["./eyes/**/*.js", "./eyes/**/*.jsx", "public/css/*.css"],
+  watch(["src/**/*.js", "src/**/*.jsx", "public/css/*.css"],
         {verbose: true},
         function (vinyl) {
           // emacs flycheck creates temporary files, don't recompile.
@@ -131,7 +123,7 @@ gulp.task("server", ["assets"], function () {
 gulp.task("default", ["watch", "server"]);
 
 gulp.task("clean", function(k) {
-  del(["./eyes/dist"], k);
+  del(["dist"], k);
 });
 
 function getNPMPackageIds() {

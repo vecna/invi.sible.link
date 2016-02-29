@@ -19,7 +19,8 @@ gracefullyClosing = false
 # Load the app configuration
 nconf = require('nconf')
   .env separator: '_'
-  .file app.get('env'), "config/#{app.get('env')}.json"
+  .file app.get('env'), "config/test_SIMPLE.json"
+#  .file app.get('env'), "config/#{app.get('env')}.json"
 
 # Configure our node app for all environments
 app.set 'port', process.env.PORT or 8000
@@ -41,20 +42,23 @@ app.use (req, res, next) ->
   res.setHeader "Connection", "close"
   res.send 502
 
-app.use serveStatic(path.join(__dirname, 'eyes', 'dist'),
+app.use serveStatic(path.join(__dirname, 'dist'),
   'index': ['index.html'])
 
 # Configure access to mongodb
 require('./lib/mongodb').initialize nconf.get('mongodb:uri')
 
 # Set up our routes
-require('./eyes/routes')(app)
+require('./routes')(app)
 
 app.use logger.errorLogger
   transports: [new winston.transports.Console json: true, colorize: true]
 
 # Lets start our HTTP server and listen on our specified port
 httpServer = server.listen app.get('port')
+
+httpServer.on 'listening', ->
+  console.log "Server started on port #{app.get('port')}"
 
 # Gracefully shutdown on SIGTERM
 # Note: This might not work very well with websockets, in that case close
