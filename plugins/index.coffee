@@ -10,3 +10,4 @@ module.exports =
   ATS: require './chopsticks-module-ATS'
   stripper: require './chopsticks-module-stripper'
   resume: require './chopsticks-module-resume'
+  leaders: require './chopsticks-module-leaders'
