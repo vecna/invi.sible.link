@@ -19,7 +19,8 @@ var pageFetch = function(siteEntry, cnt, totalCount) {
                     siteEntry._ls_dir.location,
                     siteEntry._ls_dir.timeString,
                     process.env.FETCHER_MAXTIME
-                 ].join(" ");
+                 ].join(" "),
+        launchTime = moment();
 
     return execChainable(mkdirc).delay(hackishDelay * 1000).then(function () {
         var startLoad = os.loadavg()[0],
@@ -40,10 +41,10 @@ var pageFetch = function(siteEntry, cnt, totalCount) {
                         endMem: os.freemem(),
                         completed: moment().toISOString(),
                     };
-                debug("Fetch #%d of %d done ☞ active 「%s」 remaining 「%s」",
+                debug("Fetch #%d of %d done ☞ active 「%s」 end estimated in「%s」",
                         cnt,
                         totalCount,
-                        moment.duration(moment().diff(startTime)).humanize(),
+                        moment.duration(moment().diff(launchTime)).humanize(),
                         moment.duration(
                             process.env.FETCHER_DELAY * (totalCount - cnt),
                             'seconds').humanize() );

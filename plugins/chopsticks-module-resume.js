@@ -25,7 +25,7 @@ module.exports = function(datainput) {
                             phantomFileExists
                         );
                     }
-                    siteEntry.is_present &= phantomFileExists;
+                    siteEntry.is_present = (phantomFileExists && siteEntry.is_present) ? true : false;
                 })
                 .return(siteEntry);
             });
