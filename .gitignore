@@ -4,3 +4,4 @@ tempdump/
 debugflow/
 dist/
 config/world/.notprocessed/*
+tests/*

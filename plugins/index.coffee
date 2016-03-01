@@ -11,3 +11,4 @@ module.exports =
   stripper: require './chopsticks-module-stripper'
   resume: require './chopsticks-module-resume'
   leaders: require './chopsticks-module-leaders'
+  reducer: require './chopsticks-module-reducer'

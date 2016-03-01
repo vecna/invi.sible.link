@@ -62,7 +62,7 @@ initialize argv.c, argv.r
       step p
       .then -> plugins[p](val)
       # BUG: debugflow is hardcoded but I've to check in config if save or not, and the dest
-      .tap -> debug "Saving in debugflow/%s.output the current data envelope", p
+      .tap -> debug "  Ω Saving in debugflow/%s.output the current data envelope", p
       .tap -> fs.writeFileAsync ('debugflow/' + p + ".output"), JSON.stringify(val, undefined, 2)
     , { source: inputs.source, companies: inputs.companies, data: [], stats: {}, analytics: {} }
 .then (v) ->
