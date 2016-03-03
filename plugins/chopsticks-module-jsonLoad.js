@@ -26,8 +26,7 @@ module.exports = function(datainput) {
 
         return _.reduce(fileEntries, function(memo, jFE) {
 
-            if (_.isUndefined(jFE.fetchInfo) || _.isUndefined(jFE.rr)) {
-                debug("Incomplete content from %s (or missing log!): loading skipped", jFE.log);
+            if ((jFE.fetchInfo == null) || (jFE.rr === [])) {
                 return memo;
             }
             memo.push({
@@ -38,6 +37,12 @@ module.exports = function(datainput) {
             });
             return memo;
         }, []);
+    })
+    .tap(function(scanData) {
+        debugger;
+        if (_.size(scanData) === 0) {
+            throw new Error("are the files missing ? I found 0 complete logs");
+        }
     })
     .then(function(scanData) {
         return {
