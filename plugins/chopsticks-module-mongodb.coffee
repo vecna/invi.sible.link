@@ -38,6 +38,7 @@ fetchUnitsByIds = (collection, ids) ->
 # Store a list of units to the collection. Returns a promise that resolves
 # to the list of units including the new unit object id.
 storeUnits = (collection, units) ->
+  debug "storeUnits --> we've %j and %j", collection, units
   return Promise.resolve units  if _.isEmpty units
   mongodb.insert collection, units
 

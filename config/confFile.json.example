@@ -15,6 +15,7 @@
   },
   "companies": "config/companies/companymap.json",
   "world": {
+    "description": "Top website from all the country in the world",
     "countries": "config/world/countriesInfos.json",
     "filePrefix" : 
               [ "BD", "BR", "CN", "CO", "DE", "EG", "ES", "FR", "GB", 

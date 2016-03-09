@@ -7,7 +7,7 @@ var _ = require('lodash'),
 module.exports = function(datainput) {
 
     if ( _.size(datainput.analytics) === 0 ) {
-        throw new Error("This operation is intended to be launched after datainput.analytics is computed");
+        throw new Error("operation 'reducer' is intended to be launched after datainput.analytics is computed");
     }
 
     debug("reducer plugin iterating over datainput.data.rr, and remove everything not associated to a company");
