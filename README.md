@@ -34,10 +34,11 @@ The pipeline basically process the raw input or the previously processed input
 
 ### 2) fetch 
 
-    DEBUG=* bin/chopsticks -p fromList,stripper,fetcher,jsonLoad,companies,analysis -c config/your_config.json 
+    DEBUG=* bin/chopsticks -p fromList,stripper,fetcher -c config/your_config.json 
 
 ### 3) analysis
 
+    DEBUG=* bin/chopsticks -p fromList,stripper,resume,jsonLoad,companies,analysis,ranks,leaders -c config/test_SINGLE.json 
 
 # Data source
 

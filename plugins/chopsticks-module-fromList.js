@@ -54,11 +54,6 @@ module.exports.argv = {
         default: 'tempdump',
         desc: 'directory for idempotent functions.'
     },
-    'fromList.redo': {
-        nargs: 1,
-        default: 0,
-        desc: 'Repeat also if directory existRepeat also if directory exists'
-    },
     'fromList.date': {
         nargs: 1,
         type: 'string',

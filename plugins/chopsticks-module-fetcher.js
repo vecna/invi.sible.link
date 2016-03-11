@@ -51,9 +51,10 @@ var pageFetch = function(siteEntry, cnt, totalCount) {
                 return fs
                     .writeFileAsync(resultLogF, JSON.stringify(content), {flag: 'w+'})
                     .then(function() {
+                        /* maybe save different version ? */
                         if(siteEntry.is_present === true) {
                             debug("Multiple fetch of %s has been done",
-                                siteEntry._ls_links[0]._ls_id_hash);
+                                siteEntry._ls_links[0].href);
                         }
                         siteEntry.is_present = true;
                         return siteEntry;
@@ -68,6 +69,13 @@ var pageFetch = function(siteEntry, cnt, totalCount) {
 };
 
 
+var statusCheck = function(memo, siteEntry) {
+    if (!( (siteEntry.is_present === true) &&
+            (_.parseInt(process.env.FETCHER_REDO) === 0 ))) {
+        memo.push(siteEntry);
+    }
+    return memo;
+}
 
 module.exports = function(val) {
     /* This module, OR fromDisk, has to be used. they provide:
@@ -81,7 +89,8 @@ module.exports = function(val) {
     );
 
     return Promise
-        .map(val.source, pageFetch, { concurrency : process.env.FETCHER_CONCURRENCY })
+        .reduce(val.source, statusCheck, [])
+        .map(pageFetch, { concurrency : process.env.FETCHER_CONCURRENCY })
         .then(function(updatedSource) {
             debug("all the fetch are done!");
             val.source = updatedSource;
@@ -94,6 +103,11 @@ module.exports.argv = {
         nargs: 1,
         default: 30,
         desc: 'Max amount of seconds which a web fetcher can run'
+    },
+    'fetcher.redo': {
+      nargs: 1,
+      default: 0,
+      desc: 'Repeat if fetch is already done'
     },
     'fetcher.concurrency': {
         nargs: 1,

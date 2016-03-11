@@ -49,8 +49,6 @@ try
 catch
   winston.info 'No MongoDB connection string found.'
 
-debugger;
-
 initialize argv.c, argv.r
 .then (inputs) ->
 
