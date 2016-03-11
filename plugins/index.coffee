@@ -7,7 +7,6 @@ module.exports =
   analysis: require './chopsticks-module-analysis'
   ranks: require './chopsticks-module-ranks'
   fromList: require './chopsticks-module-fromList'
-  ATS: require './chopsticks-module-ATS'
   stripper: require './chopsticks-module-stripper'
   resume: require './chopsticks-module-resume'
   leaders: require './chopsticks-module-leaders'
