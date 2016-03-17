@@ -26,6 +26,7 @@
     "bluebird": "^3.0.5",
     "body-parser": "^1.14.1",
     "bootstrap-datepicker": "^1.6.0",
+    "cheerio": "^0.20.0",
     "coffee-script": "^1.10.0",
     "commander": "^2.9.0",
     "d3": "^3.5.10",
