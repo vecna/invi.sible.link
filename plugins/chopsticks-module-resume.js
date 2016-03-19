@@ -5,7 +5,7 @@ var _ = require('lodash'),
     fileStruct = require('../lib/jsonfiles').fileStruct,
     checkPresence = require('../lib/importer').checkPresence;
 
-module.exports = function(datainput) {
+module.exports = function(staticInput, datainput) {
     /* ignore the disk content, take the list from input and keep only the content
         properly acquired. This module is equivalent to (fromList + fetcher) */
 

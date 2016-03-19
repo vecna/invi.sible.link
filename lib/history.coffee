@@ -22,13 +22,12 @@ end = (id, stats) ->
                     {_id: id},
                     {$set: {state: 'success', end: now(), stats: stats}}
 
-openRun = (profile) ->
+openRun = (config) ->
   mongodb.insertOne 'history',
     start: now()
     state: 'started'
     plugins: []
-    profileId: profile.profileId,
-    profileName: profile.name
+    name: config.name
   .then (result) ->
     id = result._id
 
@@ -42,8 +41,8 @@ closeRun = (history, promise) ->
   else
     history.end(promise.value().stats)
 
-history = (profile) ->
-  openRun profile
+history = (config) ->
+  openRun config
   .disposer closeRun
 
 module.exports =

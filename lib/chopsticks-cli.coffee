@@ -49,24 +49,29 @@ try
 catch
   winston.info 'No MongoDB connection string found.'
 
-initialize argv.c, argv.r
+initialize argv.c
 .then (inputs) ->
 
-  Promise.using history(inputs.source), ({step}) ->
+  Promise.using history(inputs.config), ({step}) ->
     Promise.reduce argv.plugins.split(','), (val, p) ->
       winston.info "Calling the #{p} plugin."
-      winston.info "#{JSON.stringify(inputs.source[p])}" if inputs.source[p]?
+      # winston.info "#{JSON.stringify(inputs.source[p])}" if inputs.source[p]?
       unless plugins[p]?
         throw new Error("Invalid plug name: #{p}")
 
       step p
-      .then -> plugins[p](val)
+      .then -> plugins[p](inputs, val)
       .then -> 
-        val.debugfile = join process.env.DEBUG, p + ".json"
+        val.debugfile = join inputs.config.debug, p + ".json"
         debug "  Ω Saving in %s the current data envelope", val.debugfile
         return val
       .tap -> fs.writeFileAsync val.debugfile, JSON.stringify(val, undefined, 2)
-    , { source: inputs.source, companies: inputs.companies, data: [], stats: {}, analytics: {} }
+    , {
+        source: []
+        data: []
+        stats: {}
+        analytics: {}
+      }
 .then (v) ->
   winston.info 'Pipeline completed.'
   process.exit 0

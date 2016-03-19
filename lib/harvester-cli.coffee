@@ -32,8 +32,6 @@ process.env.DUMP = yargs.parsed.argv.dump
 process.env.KIND = yargs.parsed.argv.kind
 process.env.SLOTS = yargs.parsed.argv.slots
 
-
-
 # Map of file associated througth --kind option
 dumpFname =
   CA: "categories"

@@ -1,14 +1,10 @@
+
 var _ = require('lodash'),
-    Promise = require('bluebird'),
     debug = require('debug')('plugin.companies'),
-    moment = require('moment'),
-    fs = require('fs'),
-    analytics = require('../lib/analytics'),
     companies = require('../lib/companies');
 
-Promise.promisifyAll(fs);
 
-module.exports = function(datainput) {
+module.exports = function(staticInput, datainput) {
     var newData = [],
         iCm;
 
@@ -18,7 +14,7 @@ module.exports = function(datainput) {
         _.each(siteTested.rr, function(inclusion) {
             if (_.isUndefined(memo[inclusion.domain])) {
                 memo[inclusion.domain] = companies.associatedCompany(
-                    datainput.companies, inclusion.domain);
+                    staticInput.companies, inclusion.domain);
             }
         });
         return memo
@@ -45,10 +41,3 @@ module.exports = function(datainput) {
     return datainput;
 };
 
-module.exports.argv = {
-    'companies.shared': {
-        nargs: 1,
-        default: 1,
-        desc: 'do analysis of shared inclusion in the dataset (companies or domains).'
-    }
-};

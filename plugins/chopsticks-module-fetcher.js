@@ -33,8 +33,8 @@ var pageFetch = function(siteEntry, cnt, totalCount) {
                         fetch_id: cnt,
                         href: siteEntry._ls_links[0].href,
                         href_hash: siteEntry._ls_links[0]._ls_id_hash,
-                        startTime: startTime.format('HH:mm:SS'),
-                        endTime: moment().format('HH:mm:SS'),
+                        startTime: startTime.format('HH:mm:ss'),
+                        endTime: moment().format('HH:mm:ss'),
                         startLoad: startLoad,
                         endLoad: os.loadavg()[0],
                         startMem: startMem,
@@ -61,8 +61,8 @@ var pageFetch = function(siteEntry, cnt, totalCount) {
                     });
             })
             .catch(function(error) {
-                debug("Error %s", error);
-                debug("Error with %s", phantc);
+                debug("%s", error);
+                debug("^^^^^ from %s", phantc);
                 return siteEntry;
             })
         });
@@ -77,24 +77,24 @@ var statusCheck = function(memo, siteEntry) {
     return memo;
 }
 
-module.exports = function(val) {
-    /* This module, OR fromDisk, has to be used. they provide:
+module.exports = function(staticInput, datainput) {
+    /* This module, OR resume, has to be used. they provide:
         which is: val.source.[siteEntry].savedLog = {} */
 
     debug("Chain of fetch: %d fetches, delay %d, concurrency %d, estimated: %s",
-            val.source.length,
+            datainput.source.length,
             process.env.FETCHER_DELAY,
             process.env.FETCHER_CONCURRENCY,
-            moment.duration(process.env.FETCHER_DELAY * val.source.length, 'seconds').humanize()
+            moment.duration(process.env.FETCHER_DELAY * datainput.source.length, 'seconds').humanize()
     );
 
     return Promise
-        .reduce(val.source, statusCheck, [])
+        .reduce(datainput.source, statusCheck, [])
         .map(pageFetch, { concurrency : process.env.FETCHER_CONCURRENCY })
         .then(function(updatedSource) {
             debug("all the fetch are done!");
-            val.source = updatedSource;
-            return val;
+            datainput.source = updatedSource;
+            return datainput;
         });
 };
 

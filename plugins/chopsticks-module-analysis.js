@@ -2,7 +2,7 @@ var _ = require('lodash'),
     debug = require('debug')('plugin.analysis'),
     analytics = require('../lib/analytics');
 
-module.exports = function(datainput) {
+module.exports = function(staticInput, datainput) {
 
     datainput.analytics = {
         intrusiveness: analytics.computeIntrusiveness(datainput),

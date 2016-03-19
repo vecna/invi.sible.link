@@ -1,9 +1,8 @@
 var _ = require('lodash'),
-    Promise = require('bluebird'),
     debug = require('debug')('plugin.stripper'),
     companies = require('../lib/companies');
 
-module.exports = function(datainput) {
+module.exports = function(staticInput, datainput) {
   /* this module strip off from the top websites collected, the tracking
    * companies, for example: G.F. & Twitter */
 
@@ -12,7 +11,7 @@ module.exports = function(datainput) {
     datainput.source =
     _.reduce(datainput.source, function(memo, siteEntry) {
         var isTracker =
-            companies.associatedCompany(datainput.companies,
+            companies.associatedCompany(staticInput.companies,
                                       siteEntry._ls_links[0].domain);
 
         if (_.isNull(isTracker)) {
@@ -27,8 +26,8 @@ module.exports = function(datainput) {
         return memo;
     }, []);
 
-    debug("Stripped %d sites with this affiliations: %j",
-        _.sum(debugInfo), debugInfo);
+    debug("Stripped %d sites with this affiliations: %j → remaining %d",
+        _.sum(debugInfo), debugInfo, _.size(datainput.source));
 
     return datainput;
 };

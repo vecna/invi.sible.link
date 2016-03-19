@@ -1,0 +1,18 @@
+{
+  "mongodb": {
+    "uri": "mongodb://localhost/trackography"
+  },
+  "debug": "debugflow",
+  "media, fix this concept about .ini files...": {
+    "description": "Top media for some countries",
+    "filePrefix" : 
+              [ "AF", "AR", "AT", "AU", "BG", "BR", "CA", "CH", "CO", "CZ",
+                "DE", "DK", "EC", "ES", "FR", "GB", "GR", "GT", "HK", "HR",
+                "HU", "ID", "IE", "IL", "IN", "IS", "IT", "KE", "KH", "MK",
+                "MM", "MX", "NG", "NL", "NO", "NP", "NZ", "PH", "PK", "PL",
+                "PS", "RS", "RU", "SA", "SE", "SY", "TH", "UA", "UY", "VN", "ZA" ],
+    "type": "ini",
+    "locationDir": "config/media"
+  }
+}
+
