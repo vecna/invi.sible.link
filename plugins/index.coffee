@@ -12,5 +12,6 @@ module.exports =
   ranks: require './chopsticks-module-ranks'
   leaders: require './chopsticks-module-leaders'
   reducer: require './chopsticks-module-reducer'
+  hashish: require './chopsticks-module-hashish'
   mongodb: require './chopsticks-module-mongodb'
   twitter: require './chopsticks-module-twitter'

@@ -1,4 +1,5 @@
 _ = require 'lodash'
+debug = require('debug')('lib.transformer')
 crypto = require 'crypto'
 
 hash = (data) ->
@@ -16,6 +17,9 @@ fieldHasher = (key, fields, unit) ->
   _.merge unit, _.set({}, key, hash(data))
 
 linkIdHasher = _.partial fieldHasher, '_ls_id_hash', ['type', 'href']
+specificHref = _.partial fieldHasher, '_specific_hash', ['href','urlSize', 'bodySize']
+blurredHref = _.partial fieldHasher, '_blurred_hash', ['domain', 'contentType', 'bodySize' ]
+
 imageIdHasher = _.partial fieldHasher, '_ls_id_hash', ['type', 'href']
 imageExifHasher = _.partial fieldHasher, '_ls_exif_hash', ['exif.Format',
   'exif.format', 'exif.size.width', 'exif.size.height', 'exif.Geometry']
@@ -51,6 +55,10 @@ module.exports =
     if l.type is 'self' then l else linkIdHasher(l)
   imageIdHash: _.partial hashUnit, '_ls_images', imageIdHasher
   imageExifHash: _.partial hashUnit, '_ls_images', imageExifHasher
+
+  # These are need for the Req/Res
+  specificHash: _.partial hashUnit, 'rr', specificHref
+  blurredHash: _.partial hashUnit, 'rr', blurredHref
 
   defaultFields: defaultFields
 
