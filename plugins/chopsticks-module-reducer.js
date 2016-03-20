@@ -1,28 +1,31 @@
 var _ = require('lodash'),
     debug = require('debug')('plugin.reducer');
 
-/* this module has to be/can be called after analysis, simply strip
- * the Request/Response without a company associated, out of datainput.data.rr */ 
+module.exports = function(staticInput, datainput) {
 
-module.exports = function(datainput) {
+    var fieldsToKeep = ['href', 'urlSize', 'contentType',
+                        'redirect', 'bodySize', 'domain', 'company']
+    /* I'm removing host because I don't really need it */
 
-    if ( _.size(datainput.analytics) === 0 ) {
-        throw new Error("operation 'reducer' is intended to be launched after datainput.analytics is computed");
-    }
+    if ( _.size(datainput.analytics) === 0 )
+        throw new Error("operation 'reducer' is intended to be launched after 'analysis' plugin");
 
-    debug("reducer plugin iterating over datainput.data.rr, and remove everything not associated to a company");
+    debug("Reducer plugin, remove Req/Res from the target domain, and debug fields");
+
     datainput.data = _.reduce(datainput.data, function(memo, sT) {
-      /* pick everything beside "rr" */
-        var newSiteTest = _.pick(sT, 'stats', 'phantomFile', 'fetchInfo');
-        newSiteTest.rr = _.reduce(sT.rr, function(m, httpRR) {
-            if(httpRR.company !== null) {
-                m.push(httpRR);
-            }
+        /* pick everything beside "rr" */
+        var reducedSiteRR = _.pick(sT, 'stats', 'phantomFile', 'fetchInfo');
+            targetDomain = sT.rr[0].domain;
+
+        reducedSiteRR.rr = _.reduce(sT.rr, function(m, httpRR) {
+            if(httpRR.domain !== targetDomain)
+                m.push(_.pick(httpRR, fieldsToKeep));
             return m;
         }, []);
-        memo.push(newSiteTest);
+        memo.push(reducedSiteRR);
         return memo;
     }, []);
+
     return datainput;
 };
 

@@ -2,10 +2,13 @@ var _ = require('lodash'),
     debug = require('debug')('plugin.analysis'),
     analytics = require('../lib/analytics');
 
+
+/* Intrusiveness has been removed after commit 80702b3, because without details 
+ * on the website visibility per country, it is quite hard compute that */
+
 module.exports = function(staticInput, datainput) {
 
     datainput.analytics = {
-        intrusiveness: analytics.computeIntrusiveness(datainput),
         sharedUnrecognized: analytics.sharedUnrecognized(datainput),
         peeks: analytics.extractPeeks(datainput)
     };
