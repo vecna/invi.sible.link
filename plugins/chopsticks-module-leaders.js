@@ -1,57 +1,63 @@
 var _ = require('lodash'),
-    debug = require('debug')('plugin.ranks'),
+    debug = require('debug')('plugin.leaders'),
     lookup = require('../lib/lookup');
 
 /*
- Leaders per country:
- {
-    country: IT,
-    tested_site: $Number
-    presences: {
-        'Google': 80,
-        'Facebook': 75,
-        'abc': 5
- }
+ Leaders per country and per category.
+    Iterate over all the available staticInput.world,
+    check if they has been fetched (in that case, increment presence of belonging)
+    append companies presence.
  */
 
-module.exports = function(datainput) {
+module.exports = function(staticInput, datainput) {
 
-    debug("Creating a map of the Internet leader by Country");
+    debug("Extracting the leaders per Category/Country")
+    datainput.analytics.leaders = _.reduce(staticInput.world, function(memo, crawledEntry) {
 
-    var x = _.reduce(datainput.source, function(memo, siteEntry) {
-        try {
-            var companies = _.keys(lookup
-                                 .inFetchInfo(datainput, siteEntry._ls_links[0]._ls_id_hash)
-                                 .stats
-                                 .companies);
-        } catch(error) {
-            debug("Missing fetchInfo for %s", siteEntry._ls_links[0].href);
+        var siteFetch = lookup.inFetchByInput(datainput, crawledEntry.input_hash);
+
+        if (_.isUndefined(siteFetch))
             return memo;
-        }
 
-        _.each(siteEntry.visibility, function(sP) {
-            memo[sP.country].tested_site += 1;
-            _.each(companies, function(c) {
-                if (_.isUndefined(memo[sP.country].presence[c])) {
-                    memo[sP.country].presence[c] = 1;
-                } else {
-                    memo[sP.country].presence[c] += 1;
-                }
-            });
+        _.each(_.pluck(crawledEntry.categories, 'where'), function(category) {
+            memo.by_category[category].site_tested += 1;
+            _.each(_.keys(siteFetch.stats.companies), function(company) {
+                if(_.isUndefined(memo.by_category[category].companies[company]))
+                    memo.by_category[category].companies[company] = 1;
+                else
+                    memo.by_category[category].companies[company] += 1;
+            })
         });
+
+        _.each(_.pluck(crawledEntry.countries, 'where'), function(country) {
+            memo.by_country[country].site_tested += 1;
+            _.each(_.keys(siteFetch.stats.companies), function(company) {
+                if(_.isUndefined(memo.by_country[country].companies[company]))
+                    memo.by_country[country].companies[company] = 1;
+                else
+                    memo.by_country[country].companies[company] += 1;
+            })
+        });
+
         return memo;
     },
-        _.reduce(process.env.WORLD_FILEPREFIX.split(','), function(memo, tlcc) {
-            memo[tlcc] = {
-                country: tlcc,
-                tested_site: 0,
-                presence: {}
-            }
-            return memo;
+    {
+        'by_country': _.reduce(staticInput.lists.countries, function(m, c) {
+            m[c] = {
+                'site_tested' : 0,
+                'companies': {}
+            };
+            return m;
+        }, {}),
+        'by_category': _.reduce(staticInput.lists.categories, function(m, c) {
+            m[c] = {
+                'site_tested' : 0,
+                'companies': {}
+            };
+            return m;
         }, {})
-    );
+    } );
 
-    datainput.analytics.leaders = _.values(x);
     return datainput;
 };
 
