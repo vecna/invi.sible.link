@@ -36,9 +36,15 @@ assertEnv = (vars) ->
     missingFields = _.difference vars, _.keys(v)
     throw new Error("Environment variable missing: #{missingFields.join(', ')}")
 
+savingPolicy = (plugin, argopt) ->
+  if _.isUndefined argopt then return true
+  return _.find argopt.split(','), (dumpableName) ->
+    return plugin == dumpableName
+
 module.exports =
   idHashes: _.partial selectByHash, '_ls_id_hash'
   contentHashes: _.partial selectByHash, '_ls_content_hash'
 
   nestedOption: nestedOption
   assertEnv: assertEnv
+  savingPolicy: savingPolicy

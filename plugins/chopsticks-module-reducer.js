@@ -13,7 +13,11 @@ module.exports = function(staticInput, datainput) {
     debug("Reducer plugin, remove Req/Res from the target domain, and debug fields");
 
     datainput.data = _.reduce(datainput.data, function(memo, sT) {
-        /* pick everything beside "rr" */
+        if(!(_.size(sT.rr))) {
+            debug("Missing R/R from %s", sT.phantomFile);
+            return memo;
+        }
+        /* pick everything beside "rr", is the only one reduced ATM */
         var reducedSiteRR = _.pick(sT, 'stats', 'phantomFile', 'fetchInfo');
             targetDomain = sT.rr[0].domain;
 

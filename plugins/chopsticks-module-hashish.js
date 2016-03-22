@@ -4,11 +4,10 @@ var _ = require('lodash'),
 
 module.exports = function(staticInput, datainput) {
 
-    debug("Reducer plugin, remove Req/Res from the target domain, and debug fields");
+    debug("compue hashes, specific and blurred");
     datainput.data = _.map(datainput.data, function(sT) {
         return transformer.specificHash(transformer.blurredHash(sT));
     });
-
     return datainput;
 };
 

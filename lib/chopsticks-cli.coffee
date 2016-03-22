@@ -6,19 +6,20 @@ fs = require 'fs'
 plugins = require '../plugins'
 {initialize} = require './init'
 {history} = require './history'
-{nestedOption, assertEnv} = require './utils'
-debug = require('debug')('cli')
+{savingPolicy, nestedOption, assertEnv} = require './utils'
+debug = require('debug')('↻ cli')
 
 Promise.promisifyAll fs
 
 yargs = require 'yargs'
   .nargs('p', 1).alias('p', 'plugins').string('p')
             .describe('p', 'A list of plugins')
-  .nargs('r', 1).alias('r', 'random').string('r')
-            .describe('r', 'pick a random sample of sites')
+  .nargs('d', 1).alias('d', 'dump').string('d')
+            .describe('d', 'the plugins to dump output')
   .config('c')
   .help 'h'
   .alias 'h', 'help'
+  .demand(['c', 'p'])
 
 # Load plugin related command line options.
 argv = (_.reduce plugins, (yargs, p) ->
@@ -38,10 +39,6 @@ _(argv)
 winston.remove winston.transports.Console
 winston.add winston.transports.Console, timestamp: true, colorize: true
 
-if ! (typeof argv.c == "string" && typeof argv.p == "string")
-  winston.info "No options passed in commnd line, -p and -c required"
-  return
-
 # Initialize the mongodb configuration
 try
   assertEnv ['MONGODB_URI']
@@ -57,15 +54,16 @@ initialize argv.c
       winston.info "Calling the #{p} plugin."
       # winston.info "#{JSON.stringify(inputs.source[p])}" if inputs.source[p]?
       unless plugins[p]?
-        throw new Error("Invalid plug name: #{p}")
+        throw new Error("Invalid plugin name: #{p}")
 
       step p
       .then -> plugins[p](inputs, val)
-      .then -> 
-        val.debugfile = join inputs.config.debug, p + ".json"
-        debug "  Ω Saving in %s the current data envelope", val.debugfile
-        return val
-      .tap -> fs.writeFileAsync val.debugfile, JSON.stringify(val, undefined, 2)
+      .tap (val) ->
+        if savingPolicy(p, argv.dump)
+          debugfile = join inputs.config.debug, p + ".json"
+          debug "  Ω Saving in %s the current data envelope", debugfile
+          return fs.writeFileAsync debugfile, JSON.stringify(val, undefined, 2)
+      .tap (val) -> debug "Completed iteration of plugin %s", p
     , {
         source: []
         data: []
