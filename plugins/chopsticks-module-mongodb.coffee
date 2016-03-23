@@ -3,7 +3,6 @@ Promise = require 'bluebird'
 debug = require('debug')('plugin.mongodb')
 winston = require 'winston'
 moment = require 'moment'
-
 mongodb = require '../lib/mongodb'
 utils = require '../lib/utils'
 
@@ -102,16 +101,17 @@ storeNewRelations = (relation, collection, units) ->
   .then _.partial(storeUnits, collection)
 
 # Our actual plugin.
-module.exports = (val) ->
+module.exports = (staticInput, val) ->
   envData =
     _ls_created: val.created or moment().toISOString()
     _ls_profile: val.source[0].source # profile.profileId
 
   units = _(val.data)
-    .uniq '_ls_id_hash'
+    .uniq 'input_hash'
     .map (unit) -> _.extend unit, envData
     .value()
 
+  console.log JSON.stringify(units, undefined, 2)
   winston.info "Processing #{_.size(units)} units."
 
   unitsC = 'units'
