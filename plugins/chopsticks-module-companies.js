@@ -24,19 +24,30 @@ module.exports = function(staticInput, datainput) {
         _.size(datainput.data), _.size(iCm));
 
     _.each(datainput.data, function(siteTested) {
-
         /* Instead of this 'each', can be a reduce and removed all the target site details? */
         _.each(siteTested.rr, function(inclusion, ndx, sT) {
             sT[ndx].company = iCm[inclusion.domain];
         });
-        siteTested.stats.companies = _.countBy(
+
+        var companiesDict = _.countBy(
             _.filter(
                 _.map(siteTested.rr, function(incl) {
                     return incl.company;
                 }), undefined));
+
+        siteTested.stats.companies = _.reduce(companiesDict, function(memo, v, k) {
+            memo.push({
+                'name': k,
+                'times': v
+            });
+            return memo;
+        }, []);
+
+
         newData.push(siteTested);
     });
-    datainput.data = newData;
+
+    datainput.data = newData
 
     return datainput;
 };

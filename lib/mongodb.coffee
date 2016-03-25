@@ -17,14 +17,15 @@ aggregate = (coll, query) ->
 # operation of the list of units against the collection. This function can be
 # used to determine new or existing units.
 setOperation = (operation, collection, units) ->
-  ids = utils.idHashes units
+  debug("¹²³ ø %s %s", operation, collection)
+  ids = utils.specificHashes units
   # This pipeline returns an empty array if no id's were found on the
   # initial match or an array with a single object that contains an hashes
   # array:
   #  [{hashes: [id1, id2, ...]}]
   query = [
-    {$match: {_ls_id_hash: {$in: ids}}}
-    {$group: {_id: null, existing: {$addToSet: "$_ls_id_hash"}}}
+    {$match: {_specific_hash: {$in: ids}}}
+    {$group: {_id: null, existing: {$addToSet: "$_specific_hash"}}}
     {$project: {existing: 1, new: {$literal: ids}}}
     {$project: {hashes: {"$#{operation}": ["$new", "$existing"]}}}]
 
@@ -32,10 +33,10 @@ setOperation = (operation, collection, units) ->
   .then (results) ->
     # It's a weirdness of the mongodb driver, if the pipeline got no match,
     # it simply returns an empty array.
-    return units  if _.isEmpty results
+    return units if _.isEmpty results
 
     hashes = _.first(results).hashes
-    _.filter units, ({_ls_id_hash}) -> _.includes hashes, _ls_id_hash
+    _.filter units, ({_specific_hash}) -> _.includes hashes, _specific_hash
 
 # String -> Future DbHandler
 # Given a MongoDB URI string return a db handler for that MongoDB.
@@ -56,6 +57,11 @@ module.exports =
     debugLog 'find', coll
     Promise.using connection(), (db) ->
       db.collection(coll).find(query).toArray()
+
+  removeAll: (coll) ->
+    debugLog 'remove', coll
+    Promise.using connection(), (db) ->
+      db.collection(coll).drop()
 
   findOne: (coll, query) ->
     debugLog 'findOne', coll

@@ -10,7 +10,7 @@ utils = require '../lib/utils'
 # Map a list of units to a map with the id hashes as key, and the unit as value.
 sortUnitsById = (units) ->
   _.reduce units, (memo, unit) ->
-    memo[unit._ls_id_hash] = unit
+    memo[unit._specific_hash] = unit
     memo
   , {}
 
@@ -31,13 +31,13 @@ matchRevisions = (newUnits, existingUnits) ->
 # Given a list of id hashes, fetch all corresponding units from the
 # collection. Returns a promise that resolves to the list of fetched units.
 fetchUnitsByIds = (collection, ids) ->
-  mongodb.find collection, _ls_id_hash: {$in: ids}
+  debug("collection = %s", collection)
+  mongodb.find collection, _specific_hash: {$in: ids}
 
 # Collection -> [{a}] -> Future [{a}]
 # Store a list of units to the collection. Returns a promise that resolves
 # to the list of units including the new unit object id.
 storeUnits = (collection, units) ->
-  debug "storeUnits --> we've %j and %j", collection, units
   return Promise.resolve units  if _.isEmpty units
   mongodb.insert collection, units
 
@@ -62,7 +62,7 @@ storeNewUnits = (collection, units) ->
 storeRevisions = (revisionCollection, unitCollection, units) ->
   mongodb.duplicateUnits unitCollection, units
   .then (duplicates) ->
-    [duplicates, fetchUnitsByIds unitCollection, utils.idHashes(duplicates)]
+    [duplicates, fetchUnitsByIds unitCollection, utils.specificHashes(duplicates)]
   .spread (duplicates, existingUnits) ->
     revisions = matchRevisions duplicates, existingUnits
 
@@ -75,70 +75,52 @@ storeRevisions = (revisionCollection, unitCollection, units) ->
         .return result
     .then (results) -> _(results).flatten().compact().value()
 
-# String -> Collection -> [{a}] -> Future [{a}]
-# Store all new relations of a list of units to a collection. Returns a promise
-# that resolves to a list of relations that have been stored.
-storeNewRelations = (relation, collection, units) ->
-  field = "_ls_#{relation}"
-  docs =_(units)
-    .map (unit) ->
-      # In case the unit has no relation of that type.
-      return  unless unit[field]?
-      ref = new mongodb.DBRef collection, unit._id
-      _.zip (ref for i in unit[field]), unit[field]
-    .flatten()
-    .compact()
-    # Make sure that we store correctly multiple references if we have the
-    # same relation within the same set of units.
-    .reduce (memo, [ref, rel]) ->
-      hash = rel._ls_id_hash
-      if memo[hash]? then memo[hash]._ls_sources.push ref
-      else memo[hash] = _.extend rel, _ls_sources: [ref], _ls_relation: relation
-      memo
-    , {}
-
-  mongodb.newUnits collection, _.values docs
-  .then _.partial(storeUnits, collection)
 
 # Our actual plugin.
 module.exports = (staticInput, val) ->
-  envData =
-    _ls_created: val.created or moment().toISOString()
-    _ls_profile: val.source[0].source # profile.profileId
+  origDLen = _.size(val.data)
+  origSLen = _.size(val.source)
 
   units = _(val.data)
-    .uniq 'input_hash'
-    .map (unit) -> _.extend unit, envData
+    .uniq '_specific_hash'
     .value()
 
-  console.log JSON.stringify(units, undefined, 2)
-  winston.info "Processing #{_.size(units)} units."
+  prcnt = _.round(_.size(units)/origDLen, 3) * 100
+  winston.info "Processing #{_.size(units)} unique units, #{prcnt}% of the original corpus."
 
   unitsC = 'units'
-  relationsC = 'relations'
   revisionsC = 'revisions'
+  sourcesC = 'sources'
 
-  storeNewUnits(unitsC, units)
-  .then (newUnits) ->
-    storeRevisions(revisionsC, unitsC, units)
-    .then (revisions) ->
-      winston.info "Stored #{_.size(newUnits)} new units."
-      winston.info "Stored #{_.size(revisions)} revisions."
+  # sources are always put, no matter of what, because multiple tests per day can
+  # exists: sadly at the moment I'm not using a fine tuned timing, so I've to increase
+  # the details of the timeString before send this in production -- TODO
+  sources = _(val.source)
+    .uniq 'input_hash'
+    .value()
 
-      Promise.all [storeNewRelations('images', relationsC, newUnits),
-                   storeNewRelations('links', relationsC, newUnits)]
-      .spread (images, links) ->
-        winston.info "Inserted #{_.size(images)} new relations of type images."
-        winston.info "Inserted #{_.size(links)} new relations of type links."
+  prcnt = _.round(_.size(sources)/origSLen, 3) * 100
+  winston.info "Tested #{_.size(sources)} sites, #{prcnt}% of the original corpus."
 
+  # To store sources, I use not the library function (more oriented to units)
+  # but some other home-made shit I'll move in a library soon or never
+  mongodb.insert(sourcesC, sources)
+  .then (result) ->
+    debug("Sources insert results: %d", _.size(result))
+
+    return storeNewUnits(unitsC, units)
+    .then (newUnits) ->
+      storeRevisions(revisionsC, unitsC, units)
+      .then (revisions) ->
+        winston.info "Stored #{_.size(newUnits)} new units."
+        winston.info "Stored #{_.size(revisions)} revisions."
         val.stats = _.extend val.stats,
+          newSources: _.size sources
           uniqueUnits: _.size units
           newUnits: _.size newUnits
           revisions: _.size revisions
-          newImages: _.size images
-          newLinks: _.size links
-
         val
+
 
 module.exports.argv =
   'mongodb.uri':

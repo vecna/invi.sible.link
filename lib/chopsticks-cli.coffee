@@ -7,7 +7,7 @@ plugins = require '../plugins'
 {initialize} = require './init'
 {history} = require './history'
 {savingPolicy, nestedOption, assertEnv} = require './utils'
-debug = require('debug')('↻ cli')
+debug = require('debug')('↻ chopsticks')
 
 Promise.promisifyAll fs
 

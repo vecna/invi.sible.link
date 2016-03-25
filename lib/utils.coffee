@@ -42,8 +42,8 @@ savingPolicy = (plugin, argopt) ->
     return plugin == dumpableName
 
 module.exports =
-  idHashes: _.partial selectByHash, '_ls_id_hash'
-  contentHashes: _.partial selectByHash, '_ls_content_hash'
+  specificHashes: _.partial selectByHash, '_specific_hash'
+  blurredHashes: _.partial selectByHash, '_blurred_hash'
 
   nestedOption: nestedOption
   assertEnv: assertEnv

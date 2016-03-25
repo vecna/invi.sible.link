@@ -26,7 +26,7 @@ module.exports = function(staticInput, datainput) {
         // debug("² %d", _.size(removedData.rr));
 
         if(_.isUndefined(removedData)) {
-            debug("Unexistend %j", siteEntry);
+            // debug("Unexistend %j", siteEntry);
             return {};
         }
 
@@ -44,8 +44,12 @@ module.exports = function(staticInput, datainput) {
         return newSource;
     });
 
-    debug(".data now is supposed to be empty, and it is: %d, units %d", 
-        _.size(datainput.data), _.size(units) );
+    debug("unique Request/Responses units: %d", _.size(units) );
+    if ( _.size(datainput.data) !== 0) {
+        debug("Still present %d elements ?", _.size(datainput.data));
+        console.log(JSON.stringify(datainput.data, undefined, 2));
+        throw new Error("Investigate on this!");
+    }
 
     datainput.data = units;
     return datainput;
