@@ -5,6 +5,7 @@ var _ = require('lodash'),
     moment = require('moment'),
     fs = require('fs'),
     importer = require('../lib/importer'),
+    slotCutter = require('../lib/slots').slotCutter,
     linkIdHash = require('../lib/transformer').linkIdHash,
     domainTLDinfo = require('../lib/domain').domainTLDinfo,
     directoryStruct = require('../lib/jsonfiles').directoryStruct;
@@ -24,11 +25,11 @@ module.exports = function(staticInput, datainput) {
 
     datainput.source = _.reduce(staticInput.world, function(memo, siteEntry) {
 
-        if(_.lt(process.env.SOURCE_RANK,  _.min(siteEntry.categories, function(rank) {
+        if(_.lt(process.env.SOURCE_RANK, _.min(siteEntry.categories, function(rank) {
             return rank.rank;
         }).rank))
             return memo;
-        if(_.lt(process.env.SOURCE_RANK,  _.min(siteEntry.countries, function(rank) {
+        if(_.lt(process.env.SOURCE_RANK, _.min(siteEntry.countries, function(rank) {
             return rank.rank;
         }).rank))
             return memo;
@@ -45,6 +46,11 @@ module.exports = function(staticInput, datainput) {
     }, []);
 
     debug("Filtered source contains now %d sites", _.size(datainput.source) );
+    if(process.env.SOURCE_SLOTS !== '1,0,1') {
+      datainput.source = slotCutter(datainput.source, process.env.SOURCE_SLOTS);
+      debug("Slots cutter applied, source contains %d sites", _.size(datainput.source));
+    }
+
     return datainput;
 };
 
@@ -85,4 +91,3 @@ module.exports.argv = {
         desc: 'Slot segment of the source'
     }
 };
-

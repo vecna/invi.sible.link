@@ -43,7 +43,6 @@ module.exports = function(staticInput, datainput) {
             return memo;
         }, []);
 
-
         newData.push(siteTested);
     });
 

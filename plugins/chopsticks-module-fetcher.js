@@ -109,10 +109,10 @@ module.exports.argv = {
       default: 0,
       desc: 'Repeat if fetch is already done'
     },
-    'fetcher.concurrency': {
+    'fetcher.parex': {
         nargs: 1,
         default: 10,
-        desc: 'Concurrency in fetcher executions'
+        desc: '(max) parallel executions'
     },
     'fetcher.delay': {
         nargs: 1,
