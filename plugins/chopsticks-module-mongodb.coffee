@@ -4,6 +4,7 @@ debug = require('debug')('plugin.mongodb')
 winston = require 'winston'
 moment = require 'moment'
 mongodb = require '../lib/mongodb'
+sourceops = require '../lib/sourceops'
 utils = require '../lib/utils'
 
 # [a] -> {b}
@@ -31,7 +32,6 @@ matchRevisions = (newUnits, existingUnits) ->
 # Given a list of id hashes, fetch all corresponding units from the
 # collection. Returns a promise that resolves to the list of fetched units.
 fetchUnitsByIds = (collection, ids) ->
-  debug("collection = %s", collection)
   mongodb.find collection, _specific_hash: {$in: ids}
 
 # Collection -> [{a}] -> Future [{a}]
@@ -85,8 +85,8 @@ module.exports = (staticInput, val) ->
     .uniq '_specific_hash'
     .value()
 
-  prcnt = _.round(_.size(units)/origDLen, 3) * 100
-  winston.info "Processing #{_.size(units)} unique units, #{prcnt}% of the original corpus."
+  prcnt = _.round(_.size(units)/origDLen, 1) * 100
+  debug "Processing #{_.size(units)} unique units, #{prcnt}% of the original corpus."
 
   unitsC = 'units'
   revisionsC = 'revisions'
@@ -99,14 +99,12 @@ module.exports = (staticInput, val) ->
     .uniq 'input_hash'
     .value()
 
-  prcnt = _.round(_.size(sources)/origSLen, 2) * 100
-  winston.info "Tested #{_.size(sources)} sites, removed dups, kept #{prcnt}%"
+  prcnt = _.round(_.size(sources)/origSLen, 1) * 100
+  debug "Reduced duplicated sites tested since #{origSLen} to #{_.size(sources)} #{prcnt}%"
 
-  # To store sources, I use not the library function (more oriented to units)
-  # but some other home-made shit I'll move in a library soon or never
-  mongodb.insert(sourcesC, sources)
+  return sourceops.storeDailyTests(sourcesC, sources)
   .then (result) ->
-    debug("Sources insert results: %d", _.size(result))
+    debug("Today's entry already present %d newly inserted %d", result.dup, result.stored)
 
     return storeNewUnits(unitsC, units)
     .then (newUnits) ->
