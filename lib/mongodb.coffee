@@ -7,7 +7,6 @@ mongodb = Promise.promisifyAll require('mongodb')
 connectionUri = undefined
 
 aggregate = (coll, query) ->
-  debugLog 'aggregate', coll
   Promise.using connection(), (db) ->
     db.collection(coll).aggregateAsync(query)
 
@@ -17,7 +16,6 @@ aggregate = (coll, query) ->
 # operation of the list of units against the collection. This function can be
 # used to determine new or existing units.
 setOperation = (operation, collection, units) ->
-  debug("¹²³ ø %s %s", operation, collection)
   ids = utils.specificHashes units
   # This pipeline returns an empty array if no id's were found on the
   # initial match or an array with a single object that contains an hashes

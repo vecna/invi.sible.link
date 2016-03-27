@@ -5,6 +5,7 @@ var _ = require('lodash'),
     importer = require('../lib/importer');
 
 
+
 module.exports = function(staticInput, datainput) {
 
     return new Promise.map(datainput.source, function(siteEntry) {
@@ -21,18 +22,12 @@ module.exports = function(staticInput, datainput) {
     })
     .map(importer.importLog)
     .map(importer.importPhantput)
-    .then(function(fileEntries) {
-        return _.reduce(fileEntries, function(memo, jFE) {
-            if ((jFE.fetchInfo == null) || (jFE.rr === []))
-                return memo;
-            memo.push({
-                rr: jFE.rr,
-                stats: importer.computeStats(jFE.rr),
-                phantomFile: jFE.phantomFile,
-                fetchInfo: jFE.fetchInfo
-            });
-            return memo;
-        }, []);
+    .filter(function(jFE) {
+      return (!((jFE.fetchInfo == null) || (jFE.rr === [])));
+    })
+    .map(importer.computeStats)
+    .map(function(fileEntries) {
+        return _.pick(fileEntries, ['rr', 'stats', 'phantomFile', 'fetchInfo']);
     })
     .then(function(scanData) {
         if (_.size(scanData) === 0) {

@@ -35,7 +35,7 @@ module.exports = function(staticInput, datainput) {
             return memo;
 
         memo.push({
-            when: moment().format('YYMMDD'),
+            when: _.parseInt(moment().format('YYMMDD')),
             input_hash: siteEntry.input_hash,
             _ls_links: [{
                 href: 'http://' + siteEntry.href,
@@ -81,7 +81,7 @@ module.exports.argv = {
     },
     'source.rank': {
         nargs: 1,
-        default: 200,
+        default: 300,
         desc: 'strip sites ranked less than'
     },
     'source.slots': {

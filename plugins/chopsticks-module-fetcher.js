@@ -84,13 +84,13 @@ module.exports = function(staticInput, datainput) {
     debug("Chain of fetch: %d fetches, delay %d, concurrency %d, estimated: %s",
             datainput.source.length,
             process.env.FETCHER_DELAY,
-            process.env.FETCHER_CONCURRENCY,
+            process.env.FETCHER_PAREX,
             moment.duration(process.env.FETCHER_DELAY * datainput.source.length, 'seconds').humanize()
     );
 
     return Promise
         .reduce(datainput.source, statusCheck, [])
-        .map(pageFetch, { concurrency : process.env.FETCHER_CONCURRENCY })
+        .map(pageFetch, { concurrency : process.env.FETCHER_PAREX })
         .then(function(updatedSource) {
             debug("all the fetch are done!");
             datainput.source = updatedSource;

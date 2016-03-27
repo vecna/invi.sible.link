@@ -26,6 +26,7 @@ module.exports = function(staticInput, datainput) {
                         );
                     }
                     siteEntry.is_present = (phantomFileExists && siteEntry.is_present) ? true : false;
+                    siteEntry.when = siteEntry._ls_dir.timeString;
                 })
                 .return(siteEntry);
             });

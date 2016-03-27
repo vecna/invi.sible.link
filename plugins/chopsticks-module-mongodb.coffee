@@ -99,8 +99,8 @@ module.exports = (staticInput, val) ->
     .uniq 'input_hash'
     .value()
 
-  prcnt = _.round(_.size(sources)/origSLen, 3) * 100
-  winston.info "Tested #{_.size(sources)} sites, #{prcnt}% of the original corpus."
+  prcnt = _.round(_.size(sources)/origSLen, 2) * 100
+  winston.info "Tested #{_.size(sources)} sites, removed dups, kept #{prcnt}%"
 
   # To store sources, I use not the library function (more oriented to units)
   # but some other home-made shit I'll move in a library soon or never

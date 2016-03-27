@@ -41,6 +41,9 @@ savingPolicy = (plugin, argopt) ->
   return _.find argopt.split(','), (dumpableName) ->
     return plugin == dumpableName
 
+isPercentage = (cnt, total, ofwhat) ->
+  return ((_.round((cnt / total), _.size(total+'')) * 100) % ofwhat) == 0
+
 module.exports =
   specificHashes: _.partial selectByHash, '_specific_hash'
   blurredHashes: _.partial selectByHash, '_blurred_hash'
@@ -48,3 +51,5 @@ module.exports =
   nestedOption: nestedOption
   assertEnv: assertEnv
   savingPolicy: savingPolicy
+
+  isPercentage: isPercentage
