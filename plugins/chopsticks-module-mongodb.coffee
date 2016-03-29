@@ -102,6 +102,7 @@ module.exports = (staticInput, val) ->
   prcnt = _.round(_.size(sources)/origSLen, 1) * 100
   debug "Reduced duplicated sites tested since #{origSLen} to #{_.size(sources)} #{prcnt}%"
 
+  # TODO considering the update, probably I've just to overwrite the previously stored tests
   return sourceops.storeDailyTests(sourcesC, sources)
   .then (result) ->
     debug("Today's entry already present %d newly inserted %d", result.dup, result.stored)

@@ -81,3 +81,20 @@ http://staysafeonline.org/blog/50-things-a-server-can-tell-when-you-visit-a-webp
 https://webcookies.org
 
 [Method and system for one tag trafficking in display advertising to achieve personalized ad experiences at scale](http://www.google.com/patents/US20110119125)
+
+
+# Reminder 
+
+This are the comments 
+
+DEBUG=* bin/chopsticks -p source,diskCheck,stripper,fetcher -c config/world.json -d xxx --fetcher.delay 2 --source.rank 500
+
+
+DEBUG=* bin/chopsticks -p source,diskCheck,stripper,resume,jsonLoad,companies,analysis,reducer,leaders,hashish,mongodb -c config/world.json --diskCheck.day 1 --source.rank 500 --source.slots 1,0,1
+
+
+with slots chunked:
+
+DEBUG=* bin/chopsticks -p source,diskCheck,stripper,resume,jsonLoad,companies,analysis,reducer,leaders,hashish,mongodb -c config/world.json --diskCheck.day 1 --source.rank 500 --source.slots 4,0,1 -d xxx && DEBUG=* bin/chopsticks -p source,diskCheck,stripper,resume,jsonLoad,companies,analysis,reducer,leaders,hashish,mongodb -c config/world.json --diskCheck.day 1 --source.rank 500 --source.slots 4,1,1 -d xxx && DEBUG=* bin/chopsticks -p source,diskCheck,stripper,resume,jsonLoad,companies,analysis,reducer,leaders,hashish,mongodb -c config/world.json --diskCheck.day 1 --source.rank 500 --source.slots 4,2,1 -d xxx && DEBUG=* bin/chopsticks -p source,diskCheck,stripper,resume,jsonLoad,companies,analysis,reducer,leaders,hashish,mongodb -c config/world.json --diskCheck.day 1 --source.rank 500 --source.slots 4,3,1 -d xxx
+
+
