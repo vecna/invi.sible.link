@@ -54,6 +54,10 @@ module.exports = function(staticInput, datainput) {
     return datainput;
 };
 
+/* TODO, usare selezione per categoria con:
+ *  78         category = sourceops.guessRequestedCategory(staticInput.lists.categories, argv.k);
+ *  79         debug("Detected %s among %j", category, staticInput.lists.categories);
+ */
 module.exports.argv = {
     'source+categ': {
         nargs: 1,

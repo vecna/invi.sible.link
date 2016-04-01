@@ -1,21 +1,14 @@
 path = require 'path'
-profiles = require './routes/profiles'
 units = require './routes/units'
-revisions = require './routes/revisions'
 history = require './routes/history'
+siteinfo = require './routes/siteinfo'
 
 module.exports = (app) ->
-  app.get '/api/profiles', profiles.list
-  app.post '/api/profiles', profiles.create
-  app.get '/api/profiles/:profile', profiles.show
-  app.put '/api/profiles/:profile', profiles.update
-  app.delete '/api/profiles/:profile', profiles.remove
+  app.get '/api/siteinfos', siteinfo.list
+  app.get '/api/siteinfos/:siteinfo', siteinfo.show
 
-  app.get '/api/profiles/:profile/units', units.list
-  app.get '/api/profiles/:profile/units/:unit', units.show
-#  app.put '/api/profiles/:profile/units/:unit', units.update
-
-  app.get '/api/profiles/:profile/units/:unit/revisions', revisions.list
+  app.get '/api/siteinfos/:siteinfo/units', units.list
+  app.get '/api/siteinfos/:siteinfo/units/:unit', units.show
 
   app.get '/api/history', history.list
 

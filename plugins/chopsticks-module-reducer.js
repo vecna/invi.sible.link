@@ -7,9 +7,6 @@ module.exports = function(staticInput, datainput) {
                         'redirect', 'bodySize', 'domain', 'company']
     /* I'm removing host because I don't really need it */
 
-    if ( _.size(datainput.analytics) === 0 )
-        throw new Error("operation 'reducer' is intended to be launched after 'analysis' plugin");
-
     debug("Reducer plugin, remove Req/Res from the target domain, and debug fields");
 
     datainput.data = _.reduce(datainput.data, function(memo, sT) {

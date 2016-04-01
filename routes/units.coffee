@@ -3,7 +3,7 @@
 units = require '../lib/units'
 
 list = handleRequest units.byProfile, ['profile']
-
+# bugs, these do not exists anymore...
 show = handleRequest units.oneByProfile, ['profile', 'unit']
 
 

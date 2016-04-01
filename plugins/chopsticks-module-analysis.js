@@ -8,8 +8,9 @@ var _ = require('lodash'),
 
 module.exports = function(staticInput, datainput) {
 
+    /* remove from here and do 'ruminant' pipeline */
     if(_.lt(process.env.CHUNKS, 100)) {
-        debug("You can't use analysis plugin with chunking (%d%%), use mongoreload", 
+        debug("You can't use analysis plugin with chunking (%d%%)",
             process.env.CHUNKS);
         throw new Error("a plugin intended to be used over the 100% is used on a chunk");
     }

@@ -19,7 +19,7 @@ gracefullyClosing = false
 # Load the app configuration
 nconf = require('nconf')
   .env separator: '_'
-  .file app.get('env'), "config/test_SIMPLE.json"
+  .file app.get('env'), "config/world.json"
 #  .file app.get('env'), "config/#{app.get('env')}.json"
 
 # Configure our node app for all environments

@@ -64,7 +64,7 @@ gulp.task("symlink", function() {
     if (process.env.NODE_ENV !== 'production' && process.env.NODE_ENV !== 'staging') {
         fs = require('fs');
         try {
-            fs.symlinkSync('../tempdump/', 'dist/media');
+            fs.symlinkSync('../datadump/', 'dist/crawlput');
         } catch(error) {
             // error.code if is  EEXIST is ok
             console.error(error);

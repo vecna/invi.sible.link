@@ -7,7 +7,7 @@ module.exports = function(staticInput, datainput) {
     var units = [],
         source_fields = ['input_hash', 'when'];
 
-    debug("compute hashes (specific and blurred) and creating units");
+    debug("Computing hashes (specific and blurred) and creating units");
     datainput.data = _.map(datainput.data, function(sT) {
         return transformer.specificHash(transformer.blurredHash(sT));
     });
@@ -23,12 +23,8 @@ module.exports = function(staticInput, datainput) {
                     sT.fetchInfo.href_hash === newSource.test_hash);
         })[0];
 
-        // debug("² %d", _.size(removedData.rr));
-
-        if(_.isUndefined(removedData)) {
-            // debug("Unexistend %j", siteEntry);
+        if(_.isUndefined(removedData))
             return {};
-        }
 
         newSource.stats = removedData.stats;
         newSource.hashes = _.reduce(removedData.rr, function(memo, rr) {
