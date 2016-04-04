@@ -3,6 +3,7 @@ var _ = require('lodash'),
     eslint = require("gulp-eslint"),
     del = require("del"),
     browserify = require("browserify"),
+    uglify = require('gulp-uglify'),
     babelify = require("babelify"),
     sourcemaps = require("gulp-sourcemaps"),
     source = require("vinyl-source-stream"),
@@ -47,8 +48,8 @@ gulp.task("vendor", function() {
 });
 
 gulp.task("scripts", ["lint"], function() {
-  browserify({debug: true, extensions: ['.jsx']})
-    .add("src/app.jsx", {entry: true})
+  return browserify({debug: true, extensions: ['.js']})
+    .add("eyes/main.js", {entry: true})
     .external(getNPMPackageIds())
     .transform(babelify)
     .bundle()
@@ -60,18 +61,13 @@ gulp.task("scripts", ["lint"], function() {
     .pipe(gulp.dest("./dist/scripts"));
 });
 
-gulp.task("symlink", function() {
-    if (process.env.NODE_ENV !== 'production' && process.env.NODE_ENV !== 'staging') {
-        fs = require('fs');
-        try {
-            fs.symlinkSync('../datadump/', 'dist/crawlput');
-        } catch(error) {
-            // error.code if is  EEXIST is ok
-            console.error(error);
-        }
-    }
+/*
+gulp.task("scripts", function() {
+    return gulp.src('eyes/*.js')
+    .pipe(uglify())
+    .pipe(gulp.dest('dist'));
 });
-
+*/
 gulp.task("css", function () {
   gulp.src('./public/css/application.css')
       .pipe(gulp.dest('./dist/css/'));
@@ -104,10 +100,10 @@ gulp.task("index", ["vendor", "scripts"], function () {
              .pipe(gulp.dest('./dist'));
 });
 
-gulp.task("assets", ["vendor", "scripts", "css", "fonts", "index", "symlink"]);
+gulp.task("assets", ["vendor", "scripts", "css", "fonts", "index"]);
 
 gulp.task("watch", ["assets"], function () {
-  watch(["src/**/*.js", "src/**/*.jsx", "public/css/*.css"],
+  watch(["src/**/*.js", "public/css/*.css"],
         {verbose: true},
         function (vinyl) {
           // emacs flycheck creates temporary files, don't recompile.
