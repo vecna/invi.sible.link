@@ -1,6 +1,8 @@
 # Trackography-2
 
-Trackography is an app permiting to monitor the trackers exposure. Runs in desktop environment, using a node.js pipeline and the output of the setup can be seen at https://trackers.exposed
+Trackography is an app permiting to monitor the trackers exposure. Runs in desktop environment, using a node.js pipeline and the output of the setup can be seen at https://tracking.exposed (not yet online)
+
+# This is currently supported by 
 
 ### code small intro 
 
