@@ -2,7 +2,7 @@
 
 Trackography is an app permiting to monitor the trackers exposure. Runs in desktop environment, using a node.js pipeline and the output of the setup can be seen at https://tracking.exposed (not yet online)
 
-![Image Alt](https://raw.githubusercontent.com/vecna/trackography-2/master/Shuttleworth%20Funded.jpg)
+![Image Alt](https://raw.githubusercontent.com/vecna/trackography-2/master/.img/Shuttleworth%20Funded.jpg)
 
 Other organization can run their own tests. They can be meaningful to understand third party trackers, and verify is targeted malvertising campaign are performed.
 
