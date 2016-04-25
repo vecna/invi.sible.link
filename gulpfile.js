@@ -18,16 +18,13 @@ var dependencies = [
   'bluebird',
   'lodash',
   'request',
-  'react',
-  'react-dom',
-  'react-router',
   'd3',
   'rickshaw',
   'moment',
 ]
 
 gulp.task("lint", function () {
-    return gulp.src(["src/**/*.js", "src/**/*.jsx"])
+    return gulp.src(["src/**/*.js"])
         .pipe(eslint({configFile: "./.eslintrc"}))
         .pipe(eslint.format())
         .pipe(eslint.failOnError());
@@ -71,7 +68,7 @@ gulp.task("scripts", function() {
 gulp.task("css", function () {
   gulp.src('./public/css/application.css')
       .pipe(gulp.dest('./dist/css/'));
-  gulp.src('./public/css/unit-details.css')
+  gulp.src('./public/css/graph.css')
       .pipe(gulp.dest('./dist/css/'));
 });
 
@@ -92,7 +89,7 @@ gulp.task("index", ["vendor", "scripts"], function () {
                           './dist/scripts/vendor.js',
                           './dist/scripts/bundle.js',
                           './dist/css/application.css',
-                          './dist/css/unit-details.css'])
+                          './dist/css/graph.css'])
                     .pipe(hash(opts));
 
   return gulp.src('./public/index.html')
@@ -103,7 +100,7 @@ gulp.task("index", ["vendor", "scripts"], function () {
 gulp.task("assets", ["vendor", "scripts", "css", "fonts", "index"]);
 
 gulp.task("watch", ["assets"], function () {
-  watch(["src/**/*.js", "public/css/*.css"],
+  watch(["eyes/*.js", "public/css/*.css", "public/index.html" ],
         {verbose: true},
         function (vinyl) {
           // emacs flycheck creates temporary files, don't recompile.

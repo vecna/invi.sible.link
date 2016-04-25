@@ -2,6 +2,7 @@ path = require 'path'
 units = require './routes/units'
 history = require './routes/history'
 siteinfo = require './routes/siteinfo'
+visualization = require './routes/visualization'
 
 module.exports = (app) ->
   app.get '/api/siteinfos', siteinfo.list
@@ -12,5 +13,6 @@ module.exports = (app) ->
 
   app.get '/api/history', history.list
 
+  app.get '/viz/:what', visualization.dispatch
   app.get '*', (req, res) ->
     res.sendFile path.resolve(__dirname, 'dist', 'index.html')

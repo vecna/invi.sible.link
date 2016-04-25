@@ -1,0 +1,61 @@
+{
+  "category": {
+      "name": "Visibility in Italy",
+      "symbol": "IT"
+  },
+  "sites": [
+    { 
+      "rank": 3,
+      "label": "Il post",
+      "href": "http://www.ilpost.it",
+      "position": 1,
+      "nation": "IT",
+      "id": "aaaa",
+      "companiesId": [ "3333", "3334", "3335" ]
+    },
+    { 
+      "rank": 100,
+      "label": "lettera43.it",
+      "href": "http://lettera43.it",
+      "position": 2,
+      "nation": "IT",
+      "id": "aaab",
+      "companiesId": [ "3333", "3336" ]
+    },
+    {
+      "rank": 5,
+      "label": "ValigiaBLU",
+      "href": "http://valigiablu.it",
+      "position": 3,
+      "nation": "IT",
+      "id": "aaac",
+      "companiesId": [ "3333", "3334", "3335", "3336" ]
+    }
+  ],
+  "companies": [
+    {
+        "name": "Google",
+        "position": 1,
+        "percentage": 90.3,
+        "id": "3333"
+    },
+    {
+        "name": "Facebook",
+        "position": 2,
+        "percentage": 75.4,
+        "id": "3334"
+    },
+    {
+        "name": "Twitter",
+        "position": 3,
+        "percentage": 53,
+        "id": "3335"
+    },
+    {
+        "name": "Sarca",
+        "position": 4,
+        "percentage": 30,
+        "id": "3336"
+    }
+  ]
+}

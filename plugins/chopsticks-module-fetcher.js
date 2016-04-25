@@ -2,7 +2,7 @@ var _ = require('lodash'),
     Promise = require('bluebird'),
     debug = require('debug')('plugin.fetcher'),
     moment = require('moment'),
-    fs = Promise.promisifyAll(require('fs'));
+    fs = Promise.promisifyAll(require('fs')),
     os = require('os'),
     execChainable  = require('exec-chainable');
 
