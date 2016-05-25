@@ -79,6 +79,15 @@ https://www.ghostery.com/support/global-opt-out/
 https://app.ghosteryenterprise.com/TM/PI2VVQ
 http://staysafeonline.org/blog/50-things-a-server-can-tell-when-you-visit-a-webpage
 https://webcookies.org
+https://www.theguardian.com/technology/2016/apr/22/facebook-algorithm-change-pieces-people-actually-read so now the facebook button or something other has a time checked like the one in medium?
+http://www.cjr.org/innovations/investigating_algorithms.php
+https://social.shorthand.com/vischella/jyPfoABuRGc/platforms-are-eating-journalism-now-what
+https://endgeoblocking.eu/
+https://www.thatsnotprivacy.com/
+[Italian] http://www.wired.it/attualita/media/2016/05/05/google-concorrente-dei-giornali/
+https://re-publica.de/16/session/im-better-ads-helping-journalists-make-money-online
+
+
 
 [Method and system for one tag trafficking in display advertising to achieve personalized ad experiences at scale](http://www.google.com/patents/US20110119125)
 
@@ -97,4 +106,11 @@ with slots chunked:
 
 DEBUG=* bin/chopsticks -p source,diskCheck,stripper,resume,jsonLoad,companies,analysis,reducer,leaders,hashish,mongodb -c config/world.json --diskCheck.day 1 --source.rank 500 --source.slots 4,0,1 -d xxx && DEBUG=* bin/chopsticks -p source,diskCheck,stripper,resume,jsonLoad,companies,analysis,reducer,leaders,hashish,mongodb -c config/world.json --diskCheck.day 1 --source.rank 500 --source.slots 4,1,1 -d xxx && DEBUG=* bin/chopsticks -p source,diskCheck,stripper,resume,jsonLoad,companies,analysis,reducer,leaders,hashish,mongodb -c config/world.json --diskCheck.day 1 --source.rank 500 --source.slots 4,2,1 -d xxx && DEBUG=* bin/chopsticks -p source,diskCheck,stripper,resume,jsonLoad,companies,analysis,reducer,leaders,hashish,mongodb -c config/world.json --diskCheck.day 1 --source.rank 500 --source.slots 4,3,1 -d xxx
 
+# on ablocking adoption
+
+https://www.quora.com/What-is-the-percentage-of-Internet-users-that-employ-AdBlock-Plus-or-similar-ad-blocking-plugins
+
+as part of the research direction I'm not interested: https://github.com/reek/anti-adblock-killer
+
+https://acceptableads.org/
 
