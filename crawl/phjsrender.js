@@ -66,25 +66,25 @@ var HappyEnding = function() {
 
     return new Promise(function (resolve, reject) {
 
-        console.log("Saving Errors (" + errordetails.length + ") in " + RelativeFullPaths.timeout);
+        // console.log("Saving Errors (" + errordetails.length + ") in " + RelativeFullPaths.timeout);
         fs.write(RelativeFullPaths.timeout,
             JSON.stringify(errordetails, undefined, 2),
             {flag: 'w+'}
         );
 
-        console.log("Saving the DOM in " + RelativeFullPaths.dom);
+        // console.log("Saving the DOM in " + RelativeFullPaths.dom);
         fs.write(RelativeFullPaths.dom,
             page.content,
             {flag: 'w+'}
         );
 
-        console.log("Saving the I/O details in " + RelativeFullPaths.io);
+        // console.log("Saving the I/O details in " + RelativeFullPaths.io);
         fs.write(RelativeFullPaths.io,
             JSON.stringify(iodetails, undefined, 2),
             {flag: 'w+'}
         );
 
-        console.log("Starting closing session of analysis");
+        // console.log("Starting closing session of analysis");
         page.evaluate(function() {
             document.body.bgColor = 'white';
         });
@@ -98,6 +98,7 @@ var HappyEnding = function() {
     })
     .catch(function(e) {
         console.error("Critical error: " + e);
+        console.log("STDOUT: Critical error: " + e);
         phantom.exit(2);
     });
 };

@@ -114,3 +114,46 @@ as part of the research direction I'm not interested: https://github.com/reek/an
 
 https://acceptableads.org/
 
+https://ssc.io/trackingthetrackers/
+
+# extra sw dev
+https://github.com/thlorenz/v8-flags
+https://github.com/diracdeltas/blog/blob/master/post/2015-08-24-backdooring-js.md
+
+
+# Facebook
+http://www.recode.net/2016/5/9/11610100/the-facebook-papers-part-1-the-great-unbundling
+http://thehackernews.com/2016/05/facebook-private-messages.html
+http://www.nytimes.com/2016/05/21/technology/facebook-trending-list-skewed-by-individual-judgment-not-institutional-bias.html
+http://www.socialmediatoday.com/social-networks/wanna-know-what-facebook-thinks-your-interests-are-heres-how-find-out
+http://www.theatlantic.com/technology/archive/2016/06/did-facebook-spike-uk-voter-registration/485843/
+
+# Freedom of expression UN report
+https://freedex.org/new-report-on-freedom-of-expression-states-and-the-private-sector-in-the-digital-age/
+
+
+# Algo neutrality
+
+http://arxiv.org/pdf/1412.3756v3.pdf
+
+    What does it mean for an algorithm to be biased? In U.S. law, unintentional bias is encoded via
+    disparate impact
+    , which occurs when a selection process has widely different outcomes for different
+    groups, even as it appears to be neutral.
+
+# General Data Protection Regulation
+
+https://blog.mozilla.org/netpolicy/2016/05/25/the-countdown-is-on-24-months-to-gdpr-compliance/
+
+Official
+http://eur-lex.europa.eu/legal-content/EN/TXT/PDF/?uri=CELEX:32016R0679
+
+# Italian
+
+http://www.datamediahub.it/2016/06/07/blocca-gli-ads-numeri-motivi-scenario
+
+
+# Research tech
+
+https://github.com/macbre/phantomas
+

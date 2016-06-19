@@ -14,6 +14,7 @@ module.exports = function(staticInput, datainput) {
 
     return Promise
         .map(datainput.source, function(siteEntry) {
+          // return _.merge(siteEntry, foundDiskPlace(siteEntry));
             var linkSection = _.merge(
                     linkIdHash(siteEntry)._ls_links,
                     domainTLDinfo(siteEntry._ls_links)
@@ -27,7 +28,8 @@ module.exports = function(staticInput, datainput) {
             return fs
                 .statAsync(siteEntry.logFile)
                 .then(function(presence) {
-                    siteEntry.is_present = true;
+                    siteEntry.is_present = true && (!_.parseInt(
+                        process.env.DISKCHECKER_REDO)) ;
                 })
                 .catch(function(error) {
                     siteEntry.is_present = false;
@@ -51,6 +53,11 @@ module.exports.argv = {
         nargs: 1,
         default: 0,
         desc: '(relative) day in the past to generate sub directory'
+    },
+    'diskCheck.redo': {
+        nargs: 1,
+        default: 0,
+        desc: 'Repeat if fetch is already done'
     }
 };
 

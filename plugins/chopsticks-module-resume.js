@@ -5,6 +5,9 @@ var _ = require('lodash'),
     fileStruct = require('../lib/jsonfiles').fileStruct,
     checkPresence = require('../lib/importer').checkPresence;
 
+/* can che changed having -resume a plugin that reads from 
+ * another plugin output (to resume the pipeline execution)
+ * having fetcher be indepotent */
 module.exports = function(staticInput, datainput) {
     /* take the list from input and resume previously aquired content,
      * set the siteEntry.when in the past accordingly to the timestring 
