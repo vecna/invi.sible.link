@@ -14,6 +14,32 @@ Normally malware is said to be malicious software aimed to extract personal info
 
 In the next milestones, will improve the analysis of the scripts.
 
+# personal reminder, how to use
+
+This is the basic, without using slicing of data
+
+	DEBUG=* bin/chopsticks -p source,diskCheck,stripper,fetcher -c config/world.json --source.rank 5
+
+And above, the config has to be:
+
+	"companies": "config/companies/companymap.json",
+	"world": {
+		"countries": "config/world/countriesInfos.json",
+		"worldRank": "config/world/worldWideRanks.json",
+		"categories": "config/world/categoriesRanks.json"
+	}
+
+Then for .ini files (ini files are just list of URL with a [something] on top
+
+	"source": {
+		"description": "Journalist",
+		"filePrefix" : [ "URLS" ],
+		"type": "ini",
+		"locationDir": "config/datavizurls"
+	}
+
+But remind: the .ini is broken, has to be fixed the code, this section is ignored
+
 ### Other research
 
 [WebXRay](http://webxray.org/)
