@@ -3,7 +3,7 @@ var _ = require('lodash'),
     Promise = require('bluebird'),
     debug = require('debug')('plugin.ini'),
     moment = require('moment'),
-    fs = require('fs'),
+    fs = Promise.promisifyAll(require('fs')),
     importer = require('../lib/importer'),
     linkIdHash = require('../lib/transformer').linkIdHash,
     domainTLDinfo = require('../lib/domain').domainTLDinfo,
@@ -16,11 +16,25 @@ module.exports = function(staticInput, datainput) {
     /* TODO copia da old_init_backup, rimpiazza la lista usando quella degli ini, i valori di
      rank sono quelli presenti in tutto lo staticInput-. in pratica è intercambiabile con source */
 
-    debug("Processing %d URL entries and checking disk locations/logs",
-        _.size(datainput.source) );
+    var iniSource = "config/datavizurls/URLS.list"
+	/* nota: non è manco un ini, è una lista di URL */
+    debug("Looking for URLs in %s", iniSource);
 
-    return Promise
-        .map(datainput.source, function(siteEntry) {
+    return fs.readFileAsync(iniSource, 'utf-8')
+	.then(function(fcontent) {
+	    debugger;
+            var tempSource = _.map(fcontent.split("\n"), function(url) {
+		    return {
+			"when": moment().format("YYMMDD"),
+			"_ls_links": [ 
+				{ "href": url,
+				  "type": "target" } ]
+		    };
+	    });
+	    debug("Processing %d URL entries", _.size(tempSource));
+            return tempSource;
+	})
+        .map(function(siteEntry) {
             var linkSection = _.merge(
                     linkIdHash(siteEntry)._ls_links,
                     domainTLDinfo(siteEntry._ls_links)

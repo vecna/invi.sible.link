@@ -10,6 +10,10 @@ module.exports = function(staticInput, datainput) {
 
     datainput.source =
     _.reduce(datainput.source, function(memo, siteEntry) {
+	if(_.isUndefined(siteEntry._ls_links[0].domain)) {
+	    debug("Skipping %j", siteEntry);
+	    return memo;
+	}
         var isTracker =
             companies.associatedCompany(staticInput.companies,
                                       siteEntry._ls_links[0].domain);
