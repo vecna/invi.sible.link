@@ -148,6 +148,9 @@ https://blog.mozilla.org/netpolicy/2016/05/25/the-countdown-is-on-24-months-to-g
 Official
 http://eur-lex.europa.eu/legal-content/EN/TXT/PDF/?uri=CELEX:32016R0679
 
+FB on Tracking Belgium users logged off
+http://arstechnica.com/tech-policy/2016/06/facebook-wins-privacy-case-against-belgiums-data-protection-authority/
+
 # Italian
 
 http://www.datamediahub.it/2016/06/07/blocca-gli-ads-numeri-motivi-scenario
@@ -157,3 +160,5 @@ http://www.datamediahub.it/2016/06/07/blocca-gli-ads-numeri-motivi-scenario
 
 https://github.com/macbre/phantomas
 
+# Google: on the side of victims (users), judge and executioner
+http://searchengineland.com/interstitialgeddon-google-warns-will-crack-intrusive-interstitials-next-january-257252 -- and beneficiary, because ofc google adword is "less invasive" 
