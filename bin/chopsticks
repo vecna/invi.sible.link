@@ -1,4 +1,0 @@
-#!/usr/bin/env nodejs
-
-require('coffee-script/register');
-require('../lib/chopsticks-cli');
