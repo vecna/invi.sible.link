@@ -1,0 +1,35 @@
+{
+  "name": "invi.sible.link",
+  "version": "1.0.0",
+  "description": "This is https://invi.sible.link codebase",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/vecna/invi.sible.link.git"
+  },
+  "keywords": [
+    "tracking",
+    "trackers",
+    "javascript",
+    "fingerprint"
+  ],
+  "author": "Claudio Agosti",
+  "license": "GPL-2.0",
+  "bugs": {
+    "url": "https://github.com/vecna/invi.sible.link/issues"
+  },
+  "homepage": "https://github.com/vecna/invi.sible.link#readme",
+  "dependencies": {
+    "bluebird": "^3.4.6",
+    "body-parser": "^1.15.2",
+    "express": "^4.14.0",
+    "lodash": "^4.17.2",
+    "moment": "^2.17.0",
+    "mongodb": "^2.2.11",
+    "nconf": "^0.8.4",
+    "pug": "^2.0.0-beta6"
+  }
+}

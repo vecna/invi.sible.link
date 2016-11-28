@@ -1,0 +1,27 @@
+doctype html
+html
+  head
+    link(rel='stylesheet', href='/css/index.css')
+    link(rel='stylesheet', href='/css/bootstrap.css')
+    link(rel='stylesheet', href='/css/c3.css')
+    script(type='text/javascript', src='/js/vendor/jquery.js')
+    script(type='text/javascript', src='/js/vendor/collapse.js')
+    script(type='text/javascript', src='/js/vendor/d3.min.js')
+    script(type='text/javascript', src='/js/vendor/c3.min.js')
+    script(type='text/javascript', src='/js/local/homepage.js')
+    title ⛅ 
+
+  body(onload="displaySomething('#target');")
+  
+  .container-fluid
+    .jumbotron
+      h1 ⛅  See the invi.sible.link
+      small since November 2016, invi.sible.link is in α release
+
+  include navbar
+
+  .container-fluid
+    div(class="text") This is a text 
+    div(id="target")
+
+  div.footer

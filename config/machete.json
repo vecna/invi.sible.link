@@ -1,0 +1,8 @@
+{
+  "port": 7100,
+  "name": "machete",
+  "schema": {
+    "irresponsible": "irresponsible"
+  },
+  "mongodb": "mongodb://localhost/machete"
+}

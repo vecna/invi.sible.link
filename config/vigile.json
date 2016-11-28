@@ -1,0 +1,8 @@
+{
+  "port": 7200,
+  "name": "vigile",
+  "schema": {
+    "promises": "promises"
+  },
+  "mongodb": "mongodb://localhost/vigile"
+}

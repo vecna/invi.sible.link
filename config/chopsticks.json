@@ -1,0 +1,10 @@
+{
+  "name": "chopsticks",
+  "schema": {
+    "anomalies": "anomalies",
+    "log": "log",
+    "phantom": "phantom",
+    "thug": "thug"
+  },
+  "mongodb": "mongodb://localhost/chopsticks"
+}
