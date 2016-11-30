@@ -2,7 +2,8 @@
   "port": 7000,
   "name": "storyteller",
   "schema": {
-    "accesses": "accesses"
+    "accesses": "accesses",
+    "report": "report"
   },
   "mongodb": "mongodb://localhost/storyteller"
 }

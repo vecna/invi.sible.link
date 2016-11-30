@@ -23,25 +23,26 @@ Design of the architecture behind invi.sible.link
  * analysis are exposed by storyteller
  * fetch and interpolate third party data
 
-composition pipeline:
-  retrieveSubjects,
-    mongo
-    irresponsibles,
-    frequencies ?
-    reportAnomalies,
-    fullifyPromises,
-    mongo
+    composition pipeline:
+      retrieveSubjects,
+        mongo
+        irresponsibles,
+        frequencies ?
+        reportAnomalies,
+        reportAnomalies,
+        fullifyPromises,
+        mongo
 
-  # !MVP/ISL?
-  iterateOnInclusions,
-    company,
-    countries ? (poulation or law)
-    unrecognized,
-    behavior (after thug ?)
-    reportAnomalies,
-    fullifyPromises,
-    mongo
-  
+      # !MVP/ISL?
+      iterateOnInclusions,
+        company,
+        countries ? (poulation or law)
+        unrecognized,
+        behavior (after thug ?)
+        reportAnomalies,
+        fullifyPromises,
+        mongo
+      
 
 ## vigile
 
@@ -49,16 +50,18 @@ composition pipeline:
 
 execute activities in user time, no 
 
-  * provide direction to chopsticks (promises theory)
-  * receive all the operation results of every promises absolved
+  * provide direction to chopsticks, it is where test list are stored
+  * receive all the results of every promises resolved (choptstick, machete, socialpressure)
+  * receive all the anomalies reported by all the components
   * provide stats for the admin on what is happening
-  * is managed by admins and only by them
+  * is managed by the adminstrators and only by them
 
 ## chopsticks
 
 **Runs on the vantage point**
 
-perform web connection, is a pipeline, 
+perform web connection, is a pipeline, can be run in parallel, scheduled,
+it constantly execute itself and look for operation to do.
 
 composition pipeline:
   retriveLists,
@@ -69,18 +72,21 @@ composition pipeline:
     fullifyPromises,
     mongo
 
+
 ## exposer
 
-**Runs where chopstick runs** 7300
+**Runs where chopstick run**, 7300
 
-expose via API in a raw version what the chopsticks exectutions 
-results are. 
+expose via API in a raw version what the chopsticks exectutions, can't
+be performed by chopstick itself because this is a webserver and chopstick
+has different execution pattern.
 
 ## socialpressure
 
 **Runs whenever**
 
-generate output for the social media, fetch from storyteller API
+Tooks input from machete API, generate output for the social media and
+contains the logic to automatize activities
 
 # requirements
 
