@@ -9,7 +9,7 @@
     "clean": "rm -rf dist/css dist/js",
     "build": "bin/copyToDist",
     "storyteller": "bin/copyToDist && nodemon --config config/storyteller.json storyteller",
-    "start": "node app"
+    "start": "echo 'nop, call run storyteller or the others' "
   },
   "repository": {
     "type": "git",
@@ -30,12 +30,21 @@
   "dependencies": {
     "bluebird": "^3.4.6",
     "body-parser": "^1.15.2",
+    "bootstrap": "^3.3.7",
+    "c3": "^0.4.11",
+    "crypto": "0.0.3",
+    "d3": "^4.4.0",
+    "datatables": "^1.10.12",
+    "diskusage": "^0.1.5",
     "express": "^4.14.0",
+    "jquery": "^3.1.1",
     "lodash": "^4.17.2",
     "moment": "^2.17.0",
     "mongodb": "^2.2.11",
     "nconf": "^0.8.4",
-    "nodemon": "^1.10.0",
-    "pug": "^2.0.0-beta6"
+    "nodemon": "^1.11.0",
+    "pug": "^2.0.0-beta6",
+    "reveal.js": "^3.3.0",
+    "stylus": "^0.54.5"
   }
 }

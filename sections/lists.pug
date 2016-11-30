@@ -1,0 +1,26 @@
+doctype html
+html
+  head
+    link(rel='stylesheet', href='/css/index.css')
+    link(rel='stylesheet', href='/css/bootstrap.css')
+    link(rel='stylesheet', href='https://cdn.datatables.net/1.10.12/css/jquery.dataTables.min.css')
+    script(type='text/javascript', src='/js/vendor/jquery.js')
+    script(type='text/javascript', src='https://cdn.datatables.net/1.10.12/js/jquery.dataTables.min.js')
+    script(type='text/javascript', src='/js/vendor/collapse.js')
+    script(type='text/javascript', src='/js/local/lists.js')
+    title ⛅ 
+
+  body(onload="displayLists('#listTable');")
+  
+  .container-fluid
+    .jumbotron
+      h1 ⛅  Report lists
+      small α release, click on a row
+
+  include navbar
+
+  .container-fluid
+    div(class="text") This is a text 
+    div(id="listTable")
+
+  div.footer

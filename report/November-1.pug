@@ -1,0 +1,26 @@
+block November-1
+ 
+  span(id="november-1" when="2016-11")
+
+    h2(class="activity-1 activity-2 preliminary") Components design
+    p(class="task-description") Define the components that should to work togheder. The goal is pretty ambitious in this year, having a reliable system, able to be distributed across different vantage point, to be centrally coordinated, and permit granular fine analysis. The current schema is composed by [6 components](https://github.com/vecna/invi.sible.link/README.md) with small dedicated tasks. I've not used the prototype named Trackography-2, inspired to littlefork, because the underlay problem addressed by the two software are different and the pipeline approach it is only good as data processing engineering solution. The component diversification is done for distribution, reliability and contextualisation pourposes. 
+      i The components names are just intended to provide an evokative meaning to me.
+      ol
+        li
+          b storyteller
+          |: is the component running the public website [https://invi.sible.link](https://invi.sible.link), will contain information for technical audience and all the documentation on the open data API usable by third party. Third party, would be for example, a website developed with CodingRights to disseminate results
+        li
+          b machete
+          |: is the component managing all the results in a database, if the system has to scale for size, this component has to be moved in a larger box.
+        li
+          b vigile
+          |: provide directions for all the components, orchestrate the test using the promise theory, receives all the anomalies triggered in the other components
+        li
+          b chopstick
+          |: inheritance from the Trackography-2/Littlefork design, wraps the execution of phantomjs/Thug, run in the vantage point
+        li exposer
+          b exposer
+          |: make accessible to machete the retrieved result obtain via chopsticks
+        li 
+          b socialpressure
+          |: components containing the libraries, API keys and posing logic of the social media bots

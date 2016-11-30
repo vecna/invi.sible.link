@@ -1,6 +1,13 @@
-# components
+# invi.sible.link architecture design
 
-Design of the architecture behind invi.sible.link
+**storyteller**: web publisher of lists and results
+
+There are different components because they might run in separated
+machines, and because some of them are HTTP servers, other are cron-based
+exectuion pipelines.
+
+Additionally, to replicate the advocacy declined for CodingRights 
+experiments, this might imply different boxes, management, etc.
 
 ## storyteller
 
@@ -48,7 +55,7 @@ Design of the architecture behind invi.sible.link
 
 **Runs in one admin controller machine**, access restricted, 7200
 
-execute activities in user time, no 
+execute activities in user time, no scheduled tasks
 
   * provide direction to chopsticks, it is where test list are stored
   * receive all the results of every promises resolved (choptstick, machete, socialpressure)

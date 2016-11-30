@@ -3,7 +3,28 @@
   "name": "storyteller",
   "schema": {
     "accesses": "accesses",
-    "report": "report"
+    "report": "report",
+    "lists": "lists"
   },
-  "mongodb": "mongodb://localhost/storyteller"
+  "mongodb": "mongodb://localhost/storyteller",
+
+
+
+
+  "watch": [
+      "lib/*.js",
+      "sections/*.jade",
+      "routes/*.js",
+      "dist/**"
+  ],
+  "ignore": [
+      "node_modules/**/node_modules",
+      "sections/webscripts/*.js"
+  ],
+  "verbose": true,
+  "exitcrash": false,
+  "env": {
+      "DEBUG": "*"
+  },
+  "ext": "js css json jade"
 }

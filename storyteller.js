@@ -15,7 +15,7 @@ var nconf = require('nconf');
  * prende sempre come argomento un oggetto o una collection e ci lavora
  * facendo tornare un nuovo valore */
 var various = require('./lib/various');
-var routes = require('./routes/storyteller');
+var routes = require('./routes/_storyteller');
 
 var cfgFile = "config/storyteller.json";
 var redOn = "\033[31m";
@@ -26,17 +26,16 @@ nconf.argv()
      .file({ file: cfgFile });
 console.log(redOn + "ઉ nconf loaded, using " + cfgFile + redOff);
 
-var wrapError = function(where, v, fn, nfo) {
-    var str = redOn + " " + where + " Developer mistake v(" +
-              v + ") " + fn + "\n" +
-              JSON.stringify(nfo, undefined, 2) + redOff;
-    console.log(str);
+var returnHTTPError = function(req, res, funcName, where) {
+    debug("%s HTTP error 500 %s [%s]", req.randomUnicode, funcName, where);
+    res.status(500);
+    return false;
 };
 
 /* This function wraps all the API call, checking the verionNumber
  * managing error in 4XX/5XX messages and making all these asyncronous
  * I/O with DB, inside this Bluebird */
-var dispatchPromise = function(name, req, res, next) {
+var dispatchPromise = function(name, req, res) {
 
     var apiV = _.parseInt(_.get(req.params, 'version'));
 
@@ -50,19 +49,14 @@ var dispatchPromise = function(name, req, res, next) {
     debug("%s %s API v%d name %s (%s)", req.randomUnicode,
         moment().format("HH:mm:ss"), apiV, name, req.url);
 
-    var func = _.get(escviAPI.implementations, name, null);
+    var func = _.get(routes, name, null);
 
-    if(_.isNull(func)) {
-        debug("%s Wrong function name requested: %s",
-            req.randomUnicode, name);
-        wrapError("pre-exec", apiV, funcName, req.params, res);
-        res.status(500);
-        res.send('error');
-        return false;
-    }
+    if(_.isNull(func))
+        return returnHTTPError(req, res, funcName, "Not a function request");
 
     return new Promise.resolve(func(req))
       .then(function(httpresult) {
+
           if(!_.isUndefined(httpresult.json)) {
               debug("%s API %s success・returning JSON (%d bytes)",
                   req.randomUnicode, name,
@@ -78,16 +72,22 @@ var dispatchPromise = function(name, req, res, next) {
                   req.randomUnicode, name, httpresult.file);
               res.sendFile(__dirname + "/html/" + httpresult.file);
           } else {
-              debug("%s default failure", req.randomUnicode);
-              res.header(500);
+              return returnHTTPError(req, res, funcName,
+                  "Undetermined failure");
           }
 
+          /* is a promise, the actual return value don't matter */
           return various.accessLog(name, req, httpresult);
+      })
+      .catch(function(error) {
+          debug("%s Trigger an Exception %s: %s",
+              req.randomUnicode, name, error);
+          return returnHTTPError(req, res, funcName, "Exception");
       });
 };
 
 /* everything begin here, welcome */
-server.listen(nconf.get('port'));
+server.listen(nconf.get('port'), '127.0.0.1');
 console.log("  Port " + nconf.get('port') + " listening");
 /* configuration of express4 */
 app.use(bodyParser.json({limit: '3mb'}));
