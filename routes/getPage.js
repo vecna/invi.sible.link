@@ -28,7 +28,7 @@ var getPage = function(req) {
         debug("%s getPage of %s", req.randomUnicode, pageName);
     }
 
-    return { 'text': pageMap[pageName] };
+    return { 'text': pageMap[pageName]() };
 };
 
 module.exports = {

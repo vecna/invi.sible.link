@@ -49,10 +49,10 @@ var dispatchPromise = function(name, req, res) {
     debug("%s %s API v%d name %s (%s)", req.randomUnicode,
         moment().format("HH:mm:ss"), apiV, name, req.url);
 
-    var func = _.get(routes, name, null);
+    var func = _.get(routes, name, null)[name];
 
-    if(_.isNull(func))
-        return returnHTTPError(req, res, funcName, "Not a function request");
+    if( _.isNull(func) || _.isUndefined(func) )
+        return returnHTTPError(req, res, name, "Not a function request");
 
     return new Promise.resolve(func(req))
       .then(function(httpresult) {
@@ -72,18 +72,19 @@ var dispatchPromise = function(name, req, res) {
                   req.randomUnicode, name, httpresult.file);
               res.sendFile(__dirname + "/html/" + httpresult.file);
           } else {
-              return returnHTTPError(req, res, funcName,
-                  "Undetermined failure");
+              return returnHTTPError(req, res, name, "Undetermined failure");
           }
 
           /* is a promise, the actual return value don't matter */
           return various.accessLog(name, req, httpresult);
-      })
+      });
+/*
       .catch(function(error) {
           debug("%s Trigger an Exception %s: %s",
               req.randomUnicode, name, error);
-          return returnHTTPError(req, res, funcName, "Exception");
+          return returnHTTPError(req, res, name, "Exception");
       });
+ */
 };
 
 /* everything begin here, welcome */

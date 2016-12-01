@@ -42,6 +42,7 @@
     "moment": "^2.17.0",
     "mongodb": "^2.2.11",
     "nconf": "^0.8.4",
+    "node-geoip": "^1.0.1",
     "nodemon": "^1.11.0",
     "pug": "^2.0.0-beta6",
     "reveal.js": "^3.3.0",
