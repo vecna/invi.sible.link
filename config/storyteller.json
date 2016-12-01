@@ -12,6 +12,7 @@
 
 
   "watch": [
+      "storyteller.js",
       "lib/*.js",
       "sections/*.jade",
       "routes/*.js",

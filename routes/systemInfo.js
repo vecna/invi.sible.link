@@ -38,6 +38,4 @@ function systemInfo(req) {
         });
 };
 
-module.exports = {
-    systemInfo: systemInfo
-};
+module.exports = systemInfo;

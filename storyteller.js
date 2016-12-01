@@ -49,9 +49,10 @@ var dispatchPromise = function(name, req, res) {
     debug("%s %s API v%d name %s (%s)", req.randomUnicode,
         moment().format("HH:mm:ss"), apiV, name, req.url);
 
-    var func = _.get(routes, name, null)[name];
 
-    if( _.isNull(func) || _.isUndefined(func) )
+    var func = _.get(routes, name, null);
+
+    if(_.isNull(func))
         return returnHTTPError(req, res, name, "Not a function request");
 
     return new Promise.resolve(func(req))

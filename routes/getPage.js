@@ -31,6 +31,4 @@ var getPage = function(req) {
     return { 'text': pageMap[pageName]() };
 };
 
-module.exports = {
-    getPage: getPage
-};
+module.exports = getPage;

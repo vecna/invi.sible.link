@@ -5,12 +5,17 @@ var nconf = require('nconf');
  
 var mongo = require('../lib/mongo');
 
-function getList(req) {
+function getLists(req) {
     /* don't take any option yet */
-    debug("%s getList", req.randomUnicode);
+    debug("%s getLists", req.randomUnicode);
 
     return mongo
-        .read(nconf.get('schema').lists)
+        .read(nconf.get('schema').lists, {
+            'public': true
+        })
+        .map(function(singleList) {
+            return _.pick(singleList, ['id', 'name', 'source']);
+        })
         .then(function(lists) {
             return {
                 json: lists
@@ -18,6 +23,4 @@ function getList(req) {
         });
 };
 
-module.exports = {
-    getList: getList
-};
+module.exports = getLists;
