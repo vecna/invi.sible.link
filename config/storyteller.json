@@ -14,7 +14,7 @@
   "watch": [
       "storyteller.js",
       "lib/*.js",
-      "sections/*.jade",
+      "sections/*.pug",
       "routes/*.js",
       "dist/**"
   ],
@@ -27,5 +27,5 @@
   "env": {
       "DEBUG": "*"
   },
-  "ext": "js css json jade"
+  "ext": "js css json pug"
 }

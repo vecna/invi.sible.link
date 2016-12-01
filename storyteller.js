@@ -49,7 +49,6 @@ var dispatchPromise = function(name, req, res) {
     debug("%s %s API v%d name %s (%s)", req.randomUnicode,
         moment().format("HH:mm:ss"), apiV, name, req.url);
 
-
     var func = _.get(routes, name, null);
 
     if(_.isNull(func))
@@ -119,8 +118,9 @@ app.use('/lib/font/league-gothic', express.static(__dirname + '/dist/css'));
 app.use('/js/vendor', express.static(__dirname + '/dist/js/vendor'));
 /* development: the local JS are pick w/out "npm run build" every time */
 if(nconf.get('development') === 'true') {
-    console.log(redOn + "ઉ DEVELOPMENT = serving JS from src" + redOff);
-    app.use('/js/local', express.static(__dirname + '/sections/webscripts'));
+    var scriptPath = '/sections/webscripts';
+    console.log(redOn,"ઉ DEVELOPMENT = serving JS from", scriptPath,redOff);
+    app.use('/js/local', express.static(__dirname + scriptPath));
 } else {
     app.use('/js/local', express.static(__dirname + '/dist/js/local'));
 }

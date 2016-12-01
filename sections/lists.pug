@@ -3,24 +3,39 @@ html
   head
     link(rel='stylesheet', href='/css/index.css')
     link(rel='stylesheet', href='/css/bootstrap.css')
-    link(rel='stylesheet', href='https://cdn.datatables.net/1.10.12/css/jquery.dataTables.min.css')
+    link(rel='stylesheet', type='text/css', href='//cdn.datatables.net/1.10.12/css/jquery.dataTables.css')
     script(type='text/javascript', src='/js/vendor/jquery.js')
-    script(type='text/javascript', src='https://cdn.datatables.net/1.10.12/js/jquery.dataTables.min.js')
+    script(type='text/javascript', charset='utf8', src='//cdn.datatables.net/1.10.12/js/jquery.dataTables.js')
     script(type='text/javascript', src='/js/vendor/collapse.js')
+    script(type='text/javascript', src='/js/vendor/lodash.min.js')
     script(type='text/javascript', src='/js/local/lists.js')
-    title ⛅ 
+    title ⛅  Subject comparison
 
   body(onload="displayLists('#listTable');")
   
   .container-fluid
     .jumbotron
-      h1 ⛅  Report lists
-      small α release, click on a row
+      h1 ⛅  Subject comparison
+      small α release, how the website are aggregated
 
   include navbar
 
   .container-fluid
-    div(class="text") This is a text 
-    div(id="listTable")
+    div(class="text") The following row represent, each of them, a list of website subject to be tested one per day.
+    table#listTable.display(cellspacing='0', width='100%')
+      thead
+        tr
+          th Name
+          th Type
+          th Source 
+          th Last update
+          th Site present
+      tfoot
+        tr
+          th Name
+          th Type
+          th Source 
+          th Last update
+          th Site present
 
-  div.footer
+  include footer

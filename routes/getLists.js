@@ -4,6 +4,7 @@ var debug = require('debug')('getList');
 var nconf = require('nconf');
  
 var mongo = require('../lib/mongo');
+var listsOps = require('../lib/listsOps');
 
 function getLists(req) {
     /* don't take any option yet */
@@ -13,12 +14,9 @@ function getLists(req) {
         .read(nconf.get('schema').lists, {
             'public': true
         })
-        .map(function(singleList) {
-            return _.pick(singleList, ['id', 'name', 'source']);
-        })
         .then(function(lists) {
             return {
-                json: lists
+                json: listsOps.serializeLists(lists)
             };
         });
 };
