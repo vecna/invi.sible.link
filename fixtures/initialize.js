@@ -37,15 +37,29 @@ function composeList(memo, block) {
     return memo;
 };
 
-function createCollections(lists) {
+function createCollections(lists, worldPopulation) {
+
     return _.reduce(lists, function(memo, pages, reason) {
-        memo.push({
+        var subject = {
             'pages': pages,
-            'name': reason,
-            'source': 'First test of invi.sible.link',
+            'source': 'Initialization subjects for invi.sible.link',
             'public': true,
-            'id': various.hash({ 'a': reason })
-        });
+        };
+        if(_.size(reason) == 2) {
+            var cdesc = _.find(worldPopulation, { twolc: reason });
+            subject.name = cdesc.country;
+            subject.kind = 'country';
+            subject.iso3166 = reason;
+            subject.population = _.parseInt(cdesc.ppl);
+        } else {
+            subject.name = reason;
+            subject.kind = 'category';
+        }
+        subject.creationTime = new Date();
+        subject.trueOn = new Date("2016-03-17");
+        subject.subject_id = various.hash(_.pick(subject, ['kind', 'name']));
+        subject.id = various.hash(_.pick(subject,['trueOn','kind','name']));
+        memo.push(subject);
         return memo;
     }, []);
 };
@@ -54,14 +68,15 @@ function insertLists() {
    
     return Promise.all([
         loadJSONfile(files.byCountry),
-        loadJSONfile(files.byCategory)
+        loadJSONfile(files.byCategory),
+        loadJSONfile(files.population)
     ])
     .then(function(contents) {
         var lists = _.reduce(contents[0], composeList, {});
         debug("byCountry produced %d lists", _.size(lists));
         lists = _.reduce(contents[1], composeList, lists);
         debug("+byCategory reach %d lists", _.size(lists));
-        return createCollections(lists);
+        return createCollections(lists, contents[2]);
     })
     .then(function(collections) {
         return mongo.writeMany(nconf.get('schema').lists, collections);

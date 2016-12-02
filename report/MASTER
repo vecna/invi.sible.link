@@ -1,6 +1,0 @@
-block monthName-UniqueCounter
- 
-  span(id="monthName-UniqueCounter" when="2016-13")
-
-    h2(class="activity-N preliminary prototype operative improvements") Title
-    p(class="task-description") description

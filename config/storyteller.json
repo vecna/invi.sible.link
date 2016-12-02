@@ -3,20 +3,17 @@
   "name": "storyteller",
   "schema": {
     "accesses": "accesses",
-    "report": "report",
     "lists": "lists"
   },
   "mongodb": "mongodb://localhost/storyteller",
-
-
-
 
   "watch": [
       "storyteller.js",
       "lib/*.js",
       "sections/*.pug",
       "routes/*.js",
-      "dist/**"
+      "dist/css/**",
+      "dist/js/**"
   ],
   "ignore": [
       "node_modules/**/node_modules",

@@ -1,0 +1,58 @@
+doctype html
+html
+  head
+    link(rel='stylesheet', href='/css/index.css')
+    link(rel='stylesheet', href='/css/bootstrap.css')
+    script(type='text/javascript', src='/js/vendor/jquery.js')
+    script(type='text/javascript', src='/js/vendor/collapse.js')
+    script(type='text/javascript', src='/js/vendor/lodash.min.js')
+    script(type='text/javascript', src='/js/local/report.js')
+    title ⛅ 
+
+  body(onload="updateTaskList('#taskList');")
+  
+  .container-fluid
+    .jumbotron
+      h1 ⛅  invi.sible.link, operative reporting
+
+  include navbar
+
+  .container-fluid
+    div(class="text") This page get updated near the beginning of every month, to understand the overall picture, consult the 
+      a(href="/project-plan") Project Plan
+      |.
+
+    h3 Task list
+
+    div
+      ol
+        li(id="activity-1") Improve browser emulation and javascript sand boxing, integrating the Honeynet project 
+          a(href="https://github.com/buffer/thug") Thug 
+          |, technically this allows us to get a list of all the javascript functions executed going beyond just a static source code analysis
+          div(class="progressBar" id="progress-1") Phase:
+        li(id="activity-2") Having a data sharing capability in every node, and look for differences between tracking code
+          div(class="progressBar" id="progress-2") Phase:
+        li(id="activity-3") In browser visualization of the results, usable to monitor the trend or visually identify anomalies
+          div(class="progressBar" id="progress-3") Phase:
+        li(id="activity-4") Import the browser history of a person to map their profile of exposure / support community driven input (through github files), this approach would allow a more personalized analysis, that goes beyond just looking at the Alexa top 500 sites for each country
+          div(class="progressBar" id="progress-4") Phase:
+        li(id="activity-5") Integrate the tool developed by 
+          a(href="http://randomwalker.info/publications/OpenWPM_1_million_site_tracking_measurement.pdf") Princeton university in doing trackers fingerprinting
+          |, this will provide an intermediate level of detail, still lower than the Thug code analysis capability
+          div(class="progressBar" id="progress-5") Phase:
+        li(id="activity-6") Research into how to identify anomalies and tracking related functionality based on the dynamic code analysis provided by 1.
+          div(class="progressBar" id="progress-6") Phase:
+        li(id="activity-7") Research into the privacy implications and device fingerprinting used in tracking
+          div(class="progressBar" id="progress-7") Phase:
+        li(id="activity-8") Support Latin American communities running the tool, interpolating their results
+          div(class="progressBar" id="progress-8") Phase:
+        li(id="activity-9") Write a research report
+          div(class="progressBar" id="progress-9") Phase:
+        li(id="activity-10") Work with CodingRights in disseminating the results in Latin American communities
+          div(class="progressBar" id="progress-10") Phase:
+        li(id="activity-11") Researcher visualization: the difference between this and point 3 is the amount of detail provided
+          div(class="progressBar" id="progress-11") Phase:
+        li(id="activity-12") Wrapping up the project and performing last touches and cleanups
+          div(class="progressBar" id="progress-12") Phase:
+
+    include report/November

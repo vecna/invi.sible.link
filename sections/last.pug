@@ -8,35 +8,40 @@ html
     script(type='text/javascript', charset='utf8', src='//cdn.datatables.net/1.10.12/js/jquery.dataTables.js')
     script(type='text/javascript', src='/js/vendor/collapse.js')
     script(type='text/javascript', src='/js/vendor/lodash.min.js')
-    script(type='text/javascript', src='/js/vendor/moment.min.js')
     script(type='text/javascript', src='/js/local/lists.js')
     title ⛅  Subject comparison
 
-  body(onload="displayLists('#listTable');")
+  body(onload="displayLists('#lastTable');")
   
   .container-fluid
     .jumbotron
-      h1 ⛅  Subject comparison
-      small α release, how the website are aggregated
+      h1 ⛅  Last activities 
+      small α release -- this page would be ready when any activity exists
 
   include navbar
 
   .container-fluid
-    div(class="text") The following row represent, each of them, a list of website subject to be tested one per day.
+    div(class="text") Technical detail: every update from the components named
+      b vigile
+      |  should be reported here, has administrative tool to get updated on the status of the components
+
+
     table#listTable.display(cellspacing='0', width='100%')
       thead
         tr
-          th Name
-          th Kind
-          th group dated on
-          th inserted
-          th Site present
+          th Component
+          th Host
+          th Activity
+          th Date
+          th When
+          th Details
       tfoot
         tr
-          th Name
-          th Kind
-          th group dated on
-          th inserted
-          th Site present
+          th Component
+          th Host
+          th Activity
+          th Date
+          th When
+          th Details
 
   include footer

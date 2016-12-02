@@ -52,7 +52,7 @@ var dispatchPromise = function(name, req, res) {
     var func = _.get(routes, name, null);
 
     if(_.isNull(func))
-        return returnHTTPError(req, res, name, "Not a function request");
+        return returnHTTPError(req, res, name, "is null");
 
     return new Promise.resolve(func(req))
       .then(function(httpresult) {
@@ -66,13 +66,9 @@ var dispatchPromise = function(name, req, res) {
               debug("%s API %s success・returning text (size %d)",
                   req.randomUnicode, name, _.size(httpresult.text));
               res.send(httpresult.text)
-          } else if(!_.isUndefined(httpresult.file)) {
-              /* this is used for special files, beside the css/js below */
-              debug("%s API %s success・returning file (%s)",
-                  req.randomUnicode, name, httpresult.file);
-              res.sendFile(__dirname + "/html/" + httpresult.file);
           } else {
-              return returnHTTPError(req, res, name, "Undetermined failure");
+              httpresult.error = "Undetermined failure";
+              returnHTTPError(req, res, name, "Undetermined failure");
           }
 
           /* is a promise, the actual return value don't matter */
@@ -101,10 +97,6 @@ app.get('/api/v:version/system/info', function(req, res) {
 
 app.get('/api/v:version/lists', function(req, res) {
     return dispatchPromise('getLists', req, res);
-});
-
-app.get('/report', function(req, res) {
-    return dispatchPromise('getReport', req, res);
 });
 
 app.get('/favicon.ico', function(req, res) {
