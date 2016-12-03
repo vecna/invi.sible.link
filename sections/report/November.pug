@@ -5,9 +5,9 @@ block November
   section(class="preliminary-1 preliminary-2")
     h2 Components design
 
-    p(class="task-description") Define the components that should to work together in order to accomplish the pipeline. The goal is pretty ambitious, because the system has to operate on many vantage point, and be centrally coordinated. Enable the analyst to get easily results, and enable CodingRights and me to setup declined campaign without efforts. The current schema is composed by 
+    p(class="task-description") Define the components that should to work together in order to accomplish the pipeline. The goal is pretty ambitious, because the system has to operate on many vantage point, and be centrally coordinated. Enable the analyst to get easily results, and enable CodingRights and me to setup declined campaign without effort. The current schema is composed by 
       a(href="https://github.com/vecna/invi.sible.link/README.md") 6 components
-      |  each of it, with a small dedicated tasks. I've not used the prototype named Trackography-2, because the risk was a complexity increment. The reason in the components splitting, is to keep the design "simple and stupid" as possible. 
+      |  each of it, with a small dedicated tasks. I have not used the prototype named Trackography-2, because the risk was a complexity increment. The reason in the components splitting, is to keep the design "simple and stupid" as possible. 
       ol
         li
           b Component "storyteller"
@@ -32,46 +32,49 @@ block November
           b Component "social pressure"
           |: as the name evoke, is one of the key experiment of this project. A components containing the libraries, API keys to be a simple social media bots feed by machete.
 
-
   section(class="preliminary-5 preliminary-1")
     h2 Setup boxes infrastructure
 
-    p(class="task-description") Thanks to the OTF cloud, I've setup easily four boxes to have the components runs, and a situation in which, box less or box more, the system can continue to operate and easily migrated, if other organization show interest in maintain the project after the fellowship, or just to run their own set of tests.
+    p(class="task-description") Thanks to the OTF cloud, I setup easily four boxes to have the components runs, and a situation in which, box less or box more, the system can continue to operate and easily migrated, if other organization show interest in maintain the project after the fellowship, or just to run their own set of tests.
     img(src="/images/infrastructure.png")
-    p(class="task-description") I've recovered the lists I was using to do the previous experiment, they are nicely visualized with
+    p(class="task-description") I recovered the lists I was using to do the previous experiment, they are nicely visualized with 
       a(href="https://www.datatables.net") DataTables
       |  here: 
       a(href="/lists")
 
-
   section(class="preliminary-8")
     h2 chupadados.na.tracking.exposed
 
-    p(class="task-description") CodingRights has launch at the end of November a campaign website targeting Latin america communities. Is a campaign with content, narratives and design. The first
+    p(class="task-description") CodingRights has launch at the end of November a campaign website targeting Latin America communities, the name is 
+      a(href="https://chupadados.codingrights.org/") Chupadados
+      |  it is a campaign exploring different narratives to raise awareness on data surveillance, government and corporate, for Spanish and Portuguese audience. The first
       i declination
-      |  of invi.sible.link will be on a selected list of Brasilian websites, all related to the sexual health services. This would be an experiment to advocate on a target community outside our common audience.
+      |  of invi.sible.link will be on a selected list of Brazilian websites, all related to the sexual health services. This would be an experiment to advocate on a target community outside our common audience.
 
 
   section(class="preliminary-5 prototype-5 operative-5")
-    h2 Tested webXray on OTF cloud
+    h2 Test webXray on OTF cloud
 
-    p(class="task-description") The tool
+    p(class="task-description") The tool 
       a(href="http://webxray.org/") webXray
-      | has many things in common with this project, there are some points that can be reused and other that are not useful. I've used in on the three vantage points setup on OTF cloud, that would be used also as base infrastructure for the project
+      |  has many things in common with this project; I start to assess if code base can be re-used. As first, I tested webXray on the three vantage points on OTF cloud, it is worked smoothly with a low effort. It is an interactive tool, therefore some of the assumptions behind the architecture might be different from my needs, still, looking in the internals:
       ul
         li
           b useful
-          | the PhantomJS script is inspired to my same source. I've lost a certain amount of time in managing the network deadlock that website might create on the analyzing pipeline.
+          |  the PhantomJS script is inspired to my same source. I have spent a certain amount of time in managing the network deadlock that website might create on the analyzing pipeline, that's is considered an "hard problem" me and webXray solved differently
         li
           b not useful
-          | the backend use a strict SQL schema, that might work nicely for a defined research project, but in my case, I'm preferring a Document Oriented DB (Mongo). This permit a more flexible usage of such data, considering integration and adaptability is one of my value.
+          |  the backend use a strict SQL schema, that might work nicely for a defined research project, but in my case, I'm preferring a Document Oriented DB (Mongo). This permit a more flexible usage of such data, and considering I'm using node+mongo stack intensively in the last 12 months, I prefer don't change it now.
+        li
+          b different
+          |  The subject under investigation, the websites, are aggregated as "1 million Alexa" also because do not support a fine clustering approach. Considering we address a "profiling issue", we need to keep in account different clusters of website, separated by their content, target audience, political and geographical impact. In this direction is also the point 4 in my task list.
         li
           b troublesome 
           | one of the problem in third party trackers is the unreliability and source changes of the ADV content. The tool, any tool, might hang for infinite time and I've not yet found a discrete "exit condition". In order to optimize resources  webXray, 
           a(href="https://github.com/timlib/webXray/blob/master/webxray/resources/phantomjs_scripts/wbxr_logger.js#L121") kills the browser emulation after 20 seconds
           |, no matter of what is happening. In
           a(href="https://github.com/vecna/invi.sible.link/blob/Jan-Mar-2016-advancements/crawl/phjsrender.js") Trackography-2
-          | I've tried an adaptive solution (expecting to get more information and other capability, like few navigation on the website) but has been proven to not be a good idea.
+          |  I have experimented the adaptive solution, but has to be refined.
 
     p(class="task-description") In my current design these blocking operation are a small engineering problem. In the examples below you'll see the effect of don't managing such blocks. Without a manual intervention the pipeline remain blocked forever, and spotting all the possible conditions is a complex problem.
       img(src="/images/unmanagedDelay1.png")
