@@ -10,19 +10,25 @@ html
     script(type='text/javascript', src='/js/vendor/lodash.min.js')
     script(type='text/javascript', src='/js/vendor/moment.min.js')
     script(type='text/javascript', src='/js/local/lists.js')
-    title ⛅  Subject comparison
+    title ⛅  Subjects under scrutiny
 
   body(onload="displayLists('#listTable');")
   
   .container-fluid
     .jumbotron
-      h1 ⛅  Subject comparison
-      small α release, how the website are aggregated
+      h1 ⛅  Subjects under scrutiny
+      small α release -- how the website are aggregated
 
   include navbar
 
   .container-fluid
-    div(class="text") The following row represent, each of them, a list of website subject to be tested one per day.
+    p(class="text") The following row represents a list of website subject to be tested one per day. Is based on the Alexa list of March 2016, it is just a dummy test until the pipeline isn't ready to provide updated results. 
+    p(class="text") Next improvements might be:
+      ul
+        li See the actual content of the list
+        li Strip off from the list the tracking website itself (we don't need to test them?)
+        li Receive CSV from external contributor
+
     table#listTable.display(cellspacing='0', width='100%')
       thead
         tr

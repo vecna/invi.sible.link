@@ -70,14 +70,18 @@ block November
           |  The subject under investigation, the websites, are aggregated as "1 million Alexa" also because do not support a fine clustering approach. Considering we address a "profiling issue", we need to keep in account different clusters of website, separated by their content, target audience, political and geographical impact. In this direction is also the point 4 in my task list.
         li
           b troublesome 
-          | one of the problem in third party trackers is the unreliability and source changes of the ADV content. The tool, any tool, might hang for infinite time and I've not yet found a discrete "exit condition". In order to optimize resources  webXray, 
+          | one of the problem in third party trackers is the unreliability and source changes of the ADV content. The tool, any tool, might hang for infinite time and I've not yet found a discrete "exit condition". In order to optimize resources, webXray, 
           a(href="https://github.com/timlib/webXray/blob/master/webxray/resources/phantomjs_scripts/wbxr_logger.js#L121") kills the browser emulation after 20 seconds
-          |, no matter of what is happening. In
+          |, no matter of what is happening. In 
           a(href="https://github.com/vecna/invi.sible.link/blob/Jan-Mar-2016-advancements/crawl/phjsrender.js") Trackography-2
-          |  I have experimented the adaptive solution, but has to be refined.
+          |  I have experimented a smart solution, but being the deadlock an hard problem, this has to be refined.
 
     p(class="task-description") In my current design these blocking operation are a small engineering problem. In the examples below you'll see the effect of don't managing such blocks. Without a manual intervention the pipeline remain blocked forever, and spotting all the possible conditions is a complex problem.
       img(src="/images/unmanagedDelay1.png")
       img(src="/images/unmanagedDelay2.png")
-    p(class="task-description") webXray solved this problem with the hardcoded time limit, probably I'll use the same if a  adaptive solutions keep failing.
+    p(class="task-description") When you see the 
+      b 7 day
+      | and 
+      b 7 minutes 
+      | is because I kill the process manually. webXray solved this problem with the hardcoded time limit, probably I'll use the same if the smart solution I'm rying keep failing.
 
