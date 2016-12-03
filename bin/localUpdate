@@ -1,0 +1,5 @@
+#!/bin/sh
+su - storyteller
+cd invi.sible.link
+git pull origin master
+# bin/talktobobby "https://invi.sible.link" "updated repository using master branch"
