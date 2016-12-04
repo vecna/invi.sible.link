@@ -12,8 +12,9 @@ var pugCompiler = function(filePrefix) {
 };
 
 var pageMap = {
-  '/': pugCompiler('homepage'),
-  'lists': pugCompiler('lists'),
+  'storyteller': pugCompiler('storyteller'),
+  'vigile': pugCompiler('vigile'),
+  'subjects': pugCompiler('subjects'),
   'last': pugCompiler('last'),
   'project-plan': pugCompiler('projectPlan'),
   'about': pugCompiler('about'),
@@ -23,7 +24,7 @@ var pageMap = {
 
 var getPage = function(req) {
 
-    var pageName = _.get(req.params, 'page', '/');
+    var pageName = _.get(req.params, 'page');
 
     if(_.isUndefined(_.get(pageMap, pageName))) {
         debug("%s getPage on %s: not found", req.randomUnicode, pageName);

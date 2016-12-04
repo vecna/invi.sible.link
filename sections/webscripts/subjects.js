@@ -1,5 +1,5 @@
-var displayLists = function(containerId) {
-    var url = '/api/v1/lists';
+var displaySubjects = function(containerId) {
+    var url = '/api/v1/subjects';
 
     $.getJSON(url, function(collections) {
 

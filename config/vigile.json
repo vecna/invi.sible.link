@@ -2,7 +2,28 @@
   "port": 7200,
   "name": "vigile",
   "schema": {
-    "promises": "promises"
+    "promises": "promises",
+    "accesses": "accesses",
+    "subjects": "subjects"
   },
-  "mongodb": "mongodb://localhost/vigile"
+  "mongodb": "mongodb://localhost/ivl",
+
+  "watch": [
+      "vigile.js",
+      "lib/*.js",
+      "sections/*.pug",
+      "routes/*.js",
+      "dist/css/**",
+      "dist/js/**"
+  ],
+  "ignore": [
+      "node_modules/**/node_modules",
+      "sections/webscripts/*.js"
+  ],
+  "verbose": true,
+  "exitcrash": false,
+  "env": {
+      "DEBUG": "*"
+  },
+  "ext": "js css json pug"
 }

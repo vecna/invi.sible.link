@@ -6,19 +6,14 @@ var moment = require('moment');
 var bodyParser = require('body-parser');
 var Promise = require('bluebird');
 var mongodb = Promise.promisifyAll(require('mongodb'));
-var debug = require('debug')('storyteller');
+var debug = require('debug')('vigile');
 var nconf = require('nconf');
 
-/* routes contiene gli handler dell'app, various le util generiche,
- * mentre tutte le utils d'alto livello sono implementate in utils
- * con un nome caratteristico per la funzionalità d'alto livello, che
- * prende sempre come argomento un oggetto o una collection e ci lavora
- * facendo tornare un nuovo valore */
 var various = require('./lib/various');
-var routes = require('./routes/_storyteller');
+var routes = require('./routes/_vigile');
 var dispatchPromise = require('./lib/dispatchPromise');
 
-var cfgFile = "config/storyteller.json";
+var cfgFile = "config/vigile.json";
 var redOn = "\033[31m";
 var redOff = "\033[0m";
 
@@ -39,8 +34,8 @@ app.get('/api/v:version/system/info', function(req, res) {
     return dispatchPromise('systemInfo', routes, req, res);
 });
 
-app.get('/api/v:version/subjects', function(req, res) {
-    return dispatchPromise('getSubjects', routes, req, res);
+app.get('/api/v:version/getTasks/:agentName', function(req, res) {
+    return dispatchPromise('getTasks', routes, req, res);
 });
 
 app.get('/favicon.ico', function(req, res) {
@@ -61,11 +56,11 @@ if(nconf.get('development') === 'true') {
     app.use('/js/local', express.static(__dirname + '/dist/js/local'));
 }
 
-/* catch all and homepage as final default catcher */
 app.get('/:page', function(req, res) {
     return dispatchPromise('getPage', routes, req, res);
 });
 app.get('/', function(req, res) {
-    _.set(req.params, 'page', 'storyteller');
+    _.set(req.params, 'page', 'vigile');
     return dispatchPromise('getPage', routes, req, res);
 });
+

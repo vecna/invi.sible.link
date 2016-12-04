@@ -28,10 +28,13 @@ function composeList(memo, block) {
     _.each(block.retrieved, function(page) {
         if(_.isUndefined(memo[belong]))
             memo[belong] = [];
+        var url = 'http://' + page.name;
         memo[belong].push({
             'rank': page.ranked,
-            'href': 'http://' + page.name,
-            'description': page.description
+            'href': url,
+            'description': page.description,
+            'domainId': various.hash({ 'domain': page.name }),
+            'id': various.hash({ 'href' : url })
         });
     });
     return memo;
@@ -57,7 +60,7 @@ function createCollections(lists, worldPopulation) {
         }
         subject.creationTime = new Date();
         subject.trueOn = new Date("2016-03-17");
-        subject.subject_id = various.hash(_.pick(subject, ['kind', 'name']));
+        subject.subjectId = various.hash(_.pick(subject, ['kind', 'name']));
         subject.id = various.hash(_.pick(subject,['trueOn','kind','name']));
         memo.push(subject);
         return memo;
@@ -79,7 +82,7 @@ function insertLists() {
         return createCollections(lists, contents[2]);
     })
     .then(function(collections) {
-        return mongo.writeMany(nconf.get('schema').lists, collections);
+        return mongo.writeMany(nconf.get('schema').subjects, collections);
     });
 };
 

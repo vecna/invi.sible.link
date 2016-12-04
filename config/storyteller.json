@@ -3,9 +3,9 @@
   "name": "storyteller",
   "schema": {
     "accesses": "accesses",
-    "lists": "lists"
+    "subjects": "subjects"
   },
-  "mongodb": "mongodb://localhost/storyteller",
+  "mongodb": "mongodb://localhost/ivl",
 
   "watch": [
       "storyteller.js",

@@ -1,6 +1,6 @@
 
 module.exports = {
     systemInfo:         require('./systemInfo'),
-    getSubjects:        require('./getSubjects'),
+    getTasks:           require('./getTasks'),
     getPage:            require('./getPage')
 };
