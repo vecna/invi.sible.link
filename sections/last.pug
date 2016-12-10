@@ -8,38 +8,38 @@ html
     script(type='text/javascript', charset='utf8', src='//cdn.datatables.net/1.10.12/js/jquery.dataTables.js')
     script(type='text/javascript', src='/js/vendor/collapse.js')
     script(type='text/javascript', src='/js/vendor/lodash.min.js')
-    script(type='text/javascript', src='/js/local/lists.js')
-    title ⛅  Subject comparison
+    script(type='text/javascript', src='/js/local/last.js')
+    title ⛅  Last activities
 
-  body(onload="displayLists('#lastTable');")
-  
-  .container-fluid
-    .jumbotron
-      h1 ⛅  Last activities 
-      small α release -- this page would be ready when any activity exists
+  body(onload="displayLast('#lastTable');")
 
-  include navbar
+    .container-fluid
+      .jumbotron
+        h1 ⛅  Last activities
+        small α release -- this page would be ready when any activity exists
 
-  .container-fluid
-    div(class="text") This page will show last activities performed by the components in the network.
+    include navbar
+
+    .container-fluid
+      div(class="text") This page will show last activities performed by the components in the network.
 
 
-    table#listTable.display(cellspacing='0', width='100%')
-      thead
-        tr
-          th Component
-          th Host
-          th Activity
-          th Date
-          th When
-          th Details
-      tfoot
-        tr
-          th Component
-          th Host
-          th Activity
-          th Date
-          th When
-          th Details
+      table#listTable.display(cellspacing='0', width='100%')
+        thead
+          tr
+            th Component
+            th Host
+            th Activity
+            th Date
+            th When
+            th Details
+        tfoot
+          tr
+            th Component
+            th Host
+            th Activity
+            th Date
+            th When
+            th Details
 
-  include footer
+    include footer

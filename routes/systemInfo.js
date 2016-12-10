@@ -2,7 +2,6 @@ var _ = require('lodash');
 var Promise = require('bluebird');
 var debug = require('debug')('systemInfo');
 var os = require('os');
-var disk = Promise.promisifyAll(require('diskusage'));
 var nconf = require('nconf');
  
 var mongo = require('../lib/mongo');
@@ -22,20 +21,16 @@ function systemInfo(req) {
             }, {});
         })
         .then(function(namedNumbers) {
-            return disk
-                .checkAsync('/')
-                .then(function(freebytes) {
-                    return {
-                        json: {
-                            columns: namedNumbers,
-                            disk: freebytes,
-                            loadavg: os.loadavg(),
-                            totalmem: os.totalmem(),
-                            freemem: os.freemem()
-                        }
-                    };
-                });
+            return {
+                json: {
+                    columns: namedNumbers,
+                    loadavg: os.loadavg(),
+                    totalmem: os.totalmem(),
+                    freemem: os.freemem()
+                }
+            };
+
         });
-};
+}
 
 module.exports = systemInfo;
