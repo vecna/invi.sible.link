@@ -13,9 +13,9 @@ var stripper = require('../lib/stripper');
 
 nconf.argv().env().file({ file: 'config/storyteller.json' });
 
-var files = { "byCountry" : "fixtures/data/worldWideRanks.json",
-              "population" : "fixtures/data/countriesInfos.json",
-              "byCategory" : "fixtures/data/categoriesRanks.json",
+var files = { "byCountry": "fixtures/data/worldWideRanks.json",
+              "population": "fixtures/data/countriesInfos.json",
+              "byCategory": "fixtures/data/categoriesRanks.json",
               "companies": "fixtures/data/companyreference.json"
 };
 

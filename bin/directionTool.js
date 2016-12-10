@@ -1,8 +1,4 @@
-/**
- * Created by HOME on 08/12/2016.
- */
-"use strict";
-
+#!/usr/bin/env nodejs
 var _ = require('lodash');
 var Promise = require('bluebird');
 var util = require('util');
@@ -32,8 +28,8 @@ function uniqueTargets(memo, subject) {
     });
     var uniqued = _.uniqBy(_.concat(memo, alist), 'id');
     /* reject forcefully everything with a rank < than 100 */
-    return _.reject(unique, function(entry) {
-        return entry.rank < 100;
+    return _.reject(uniqued, function(entry) {
+        return entry.rank > 100;
     });
 }
 
@@ -45,10 +41,17 @@ function insertNeeds(fname) {
             mongo.read(nconf.get('schema').subjects)
         ])
         .then(function(inputs) {
+            debug("Stripping everything with rank < 100 off");
             var targets = _.reduce(inputs[1], uniqueTargets, []);
-            debugger;
+            return _.map(targets, function(t) {
+                return _.extend(t, inputs[0]);
+            });
         })
-        .delay(2000);
+        .then(function(needs) {
+            debug("Generated %d needs", _.size(needs));
+            debug("The first is %j", needs[0]);
+            return mongo.writeMany(nconf.get('schema').promises, needs);
+        });
 }
 
 function timeRanges(fname) {
@@ -61,10 +64,9 @@ function timeRanges(fname) {
         })
         .then(function(content) {
             var start, end;
-            debug("Processing timefram, startFrom %s (options: midnight|now), lastFor %j",
+            debug("Processing timeframe: startFrom %s (options: midnight|now), lastFor %j",
                 content.lastFor, content.startFrom);
             if(content.startFrom === 'midnight') {
-                debugger;
                 var mins_since_midnight = moment().isocalendar()[3];
                 start = moment().subtract(mins_since_midnight, 'm');
                 end = moment().subtract(mins_since_midnight, 'm').add(content.lastFor.amount, content.lastFor.unit);
@@ -82,4 +84,11 @@ function timeRanges(fname) {
         });
 }
 
-return insertNeeds(nconf.get('needsfile')|| 'fixtures/dailyNeeds.json');
+if(_.isUndefined(nconf.get('needsfile'))) {
+    var fname = 'config/dailyNeeds.json';
+    debug("Unspecified 'needsfile' ENV, using default %s", fname);
+    return insertNeeds(fname);
+} else {
+    debug("needsfile: %s", nconf.get('needsfile'));
+    return insertNeeds(nconf.get('needsfile'));
+}

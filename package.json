@@ -7,7 +7,7 @@
     "build-css": "stylus styles/index.styl",
     "watch-css": "stylus styles/index.styl -o dist/css -w",
     "clean": "rm -rf dist/css dist/js",
-    "build": "bin/copyToDist",
+    "build": "./.gruntlame",
     "storyteller": "nodemon --config config/storyteller.json storyteller",
     "vigile": "nodemon --config config/vigile.json vigile",
     "chopsticks": "nodemon --config config/chopsticks.json chopsticks",
