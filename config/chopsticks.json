@@ -1,5 +1,6 @@
 {
   "name": "chopsticks",
+  "source": "http://localhost:7200",
   "schema": {
     "anomalies": "anomalies",
     "log": "log",

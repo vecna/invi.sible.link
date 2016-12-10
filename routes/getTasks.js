@@ -33,6 +33,9 @@ function getTasks(req) {
         });
 };
 
+/* quello che ho è un una richiesta da parte di un VP,
+ * ho dalla mia parte una lista di promesse giornaliere che devono essere assolte, quando vigile le generale, schedulate, le scrive su DB nella tabella needs */
+
     /*
      * Avere la lista di test collezionati e fare una sottrazione, per
      * far si che chopstick possa loopare su tutto

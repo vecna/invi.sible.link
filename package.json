@@ -10,6 +10,7 @@
     "build": "bin/copyToDist",
     "storyteller": "nodemon --config config/storyteller.json storyteller",
     "vigile": "nodemon --config config/vigile.json vigile",
+    "chopsticks": "nodemon --config config/chopsticks.json chopsticks",
     "start": "echo 'nop, call run storyteller or the others components separately' "
   },
   "repository": {
