@@ -41,11 +41,13 @@
     "jquery": "^3.1.1",
     "lodash": "^4.17.2",
     "moment": "^2.17.0",
+    "moment-isocalendar": "^0.1.0",
     "mongodb": "^2.2.11",
     "nconf": "^0.8.4",
     "node-geoip": "^1.0.1",
     "nodemon": "^1.11.0",
     "pug": "^2.0.0-beta6",
+    "request": "^2.79.0",
     "reveal.js": "^3.3.0",
     "rimraf": "^2.5.4",
     "stylus": "^0.54.5"
