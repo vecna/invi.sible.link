@@ -9,9 +9,9 @@ var mongodb = Promise.promisifyAll(require('mongodb'));
 var debug = require('debug')('vigile');
 var nconf = require('nconf');
 
-var various = require('./lib/various');
-var routes = require('./routes/_vigile');
-var dispatchPromise = require('./lib/dispatchPromise');
+var various = require('../lib/various');
+var routes = require('../routes/_vigile');
+var dispatchPromise = require('../lib/dispatchPromise');
 
 var cfgFile = "config/vigile.json";
 var redOn = "\033[31m";
@@ -34,7 +34,7 @@ app.get('/api/v:version/system/info', function(req, res) {
     return dispatchPromise('systemInfo', routes, req, res);
 });
 
-app.get('/api/v:version/getTasks/:agentName', function(req, res) {
+app.get('/api/v:version/getTasks/:vantagePoint/:amount', function(req, res) {
     return dispatchPromise('getTasks', routes, req, res);
 });
 

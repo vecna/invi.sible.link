@@ -2,8 +2,9 @@ var _ = require('lodash');
 var Promise = require('bluebird');
 var debug = require('debug')('↻ chopsticks');
 var request = Promise.promisifyAll(require('request'));
-var plugins = require('./plugins');
 var nconf = require('nconf');
+
+var plugins = require('../plugins');
 
 var cfgFile = "config/chopsticks.json";
 
@@ -11,27 +12,41 @@ nconf.argv()
      .env()
      .file({ file: cfgFile });
 
-var url = nconf.get('source') + '/api/v1/getTasks/' + nconf.get('vp');
+var VP = nconf.get('VP');
+if(_.isUndefined(VP)) {
+    console.log("VP, vantage point, is needed in the Environment. forced 'dummy'");
+    VP = 'dummy';
+}
+
+var directionByKind = {
+    "basic": {
+        "plugins": [ "systemState", "phantom", "saver", "reportBack" ],
+        "config": null
+    }
+};
+
+function keepPromises(N) {
+    var direction = directionByKind[N.needName];
+    debug("%j ", direction);
+    return Promise.reduce(direction.plugins, function(state, p) {
+        debug("Call %s about %s state key (%j)", p, state.href, _.keys(state));
+        return plugins[p](state, direction.config);
+    }, N);
+};
+
+var url = nconf.get('source') + '/api/v1/getTasks/' + VP + '/' + nconf.get('amount');
 debug("Looking for some needs in %s...", url);
 return request
-    .getAsync({
-        url: url
+    .getAsync(url)
+    .then(function(response) {
+        return JSON.parse(response.body);
     })
     .then(function(needs) {
-        debug("Received %d needs, can be filtered/reduced in size",
-            _.size(needs));
+        debug("Received %d needs", _.size(needs));
+        /* estimation of load might define concurrency and delay */
         return needs;
     })
-    .then(function(needs) {
-        debug("Iterating over the needs:");
-        console.log(JSON.stringify(needs, undefined, 2));
-        return Promise.reduce(needs.chain, function(memo, p) {
-            debug("Executing %s", p.plugin);
-            var state = plugins[p.plugin](memo, p.config);
-            debug("Execution completed from %s", p.plugin);
-            return state;
-        }, [ needs.promises ]);
-    })
+    .map(keepPromises, { concurrency: 1})
     .then(function(solutions) {
         debug("TODO, posts the solutions to the promises");
     })

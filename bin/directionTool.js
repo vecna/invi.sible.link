@@ -24,9 +24,13 @@ function loadJSONfile(fname) {
 
 function uniqueTargets(memo, subject) {
     var alist = _.map(subject.pages, function(site) {
-        return _.pick(site, ['href', 'id', 'rank']);
+        return {
+            subjectId: site.id,
+            href: site.href,
+            rank: site.rank
+        };
     });
-    var uniqued = _.uniqBy(_.concat(memo, alist), 'id');
+    var uniqued = _.uniqBy(_.concat(memo, alist), 'subjectId');
     /* reject forcefully everything with a rank < than 100 */
     return _.reject(uniqued, function(entry) {
         return entry.rank > 100;
@@ -41,10 +45,16 @@ function insertNeeds(fname) {
             mongo.read(nconf.get('schema').subjects)
         ])
         .then(function(inputs) {
-            debug("Stripping everything with rank < 100 off");
             var targets = _.reduce(inputs[1], uniqueTargets, []);
+            debug("Remind, everything with rank < 100 has been stripped off");
             return _.map(targets, function(t) {
-                return _.extend(t, inputs[0]);
+                var p = _.extend(t, inputs[0]);
+                p.id = various.hash({
+                    'href': p.href,
+                    'start': p.start,
+                    'end': p.end
+                });
+                return p;
             });
         })
         .then(function(needs) {
@@ -78,8 +88,8 @@ function timeRanges(fname) {
             }
             return {
                 needName: content.needName,
-                start: start.toISOString(),
-                end: end.toISOString()
+                start: new Date(start.toISOString()),
+                end: new Date(end.toISOString())
             };
         });
 }

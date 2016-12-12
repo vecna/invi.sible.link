@@ -7,58 +7,52 @@ var mongo = require('../lib/mongo');
 var subjectsOps = require('../lib/subjectsOps');
 var prand = require('../lib/pseudoRandom');
 
+
+function markVantagePoint(vp, siteList) {
+    
+    return Promise.map(siteList, function(s) {
+        /* has to be fixed to 'toArray' returned by readLimit */
+        var start = new Date(s.start);
+        var end = new Date(s.end);
+        var update = _.set(_.extend(_.omit(s, ['start', 'end' ]), {
+            start: start,
+            end: end
+        }), vp, true);
+
+        return mongo.upsertOne(nconf.get('schema').promises, {
+            id: update.id
+        }, update);
+    });
+};
+
 /* this function is constantly called, like, every minute, 
  * through this function might be possible organize a coordinated
  * test to the same site in the same moment from N-vantage points */
 function getTasks(req) {
 
-    /* cambiare a post ? */
-    var agentName = req.params.agentName;
-    var agentInfo = req.params.agentInfo || "amen";
-    var referenceTime = moment().subtract(1, 'd');
+    var vantagePoint = req.params.vantagePoint;
+    var amount = _.parseInt(req.params.amount);
 
-    debug("%s %s (%s) asks getTasksId since %s",
-        req.randomUnicode, agentName,
-        agentInfo, referenceTime.toISOString() );
+    debug("%s %s asks getTasks %d",
+        req.randomUnicode, vantagePoint, amount);
+
+    var selector = {
+        "start": { "$lt": new Date() },
+        "end": { "$gt": new Date() }
+    };
+    _.set(selector, vantagePoint, { "$exists": false });
 
     return mongo
-        .read(nconf.get('schema').subjects)
-        .then(prand.getPseudoRandomSample)
-        .map(subjectsOps.getSites)
-        .then(prand.getPseudoRandomSample)
+        .readLimit(nconf.get('schema').promises, selector, {}, amount, 0)
+        .map(function(site) {
+            return _.omit(site, ['_id']);
+        })
         .then(function(siteList) {
-            return {
-                json: siteList
-            };
+            return markVantagePoint(vantagePoint, siteList)
+                .return({
+                    json: siteList
+                });
         });
 };
-
-/* quello che ho è un una richiesta da parte di un VP,
- * ho dalla mia parte una lista di promesse giornaliere che devono essere assolte, quando vigile le generale, schedulate, le scrive su DB nella tabella needs */
-
-    /*
-     * Avere la lista di test collezionati e fare una sottrazione, per
-     * far si che chopstick possa loopare su tutto
-    return mongo
-        .read(nconf.get('schema').promises, {
-            "$lt": new Date(moment().subtract(1, 'd')),
-            "agent": agentName
-        })
-        .then(function(lists) {
-            return {
-                json: subjectsOps.serializeLists(lists)
-            };
-        });
-
-    return mongo
-        .read(nconf.get('schema').subjects, {
-            'public': true
-        })
-        .then(function(lists) {
-            return {
-                json: subjectsOps.serializeLists(lists)
-            };
-        });
-    */
 
 module.exports = getTasks;

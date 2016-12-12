@@ -1,4 +1,6 @@
 module.exports = {
     systemState: require('./systemState'),
-    // phantom: require('./phantom')
+    phantom: require('./phantom'),
+    saver: require('./saver'),
+    reportBack: require('./reportBack')
 };

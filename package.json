@@ -8,10 +8,10 @@
     "watch-css": "stylus styles/index.styl -o dist/css -w",
     "clean": "rm -rf dist/css dist/js",
     "build": "./.gruntlame",
-    "storyteller": "nodemon --config config/storyteller.json storyteller",
-    "vigile": "nodemon --config config/vigile.json vigile",
-    "chopsticks": "nodemon --config config/chopsticks.json chopsticks",
-    "start": "echo 'nop, call run storyteller or the others components separately' "
+    "start": "echo 'nop, call run storyteller or the others components separately' ",
+    "storyteller": "nodemon --config config/storyteller.json bin/storyteller",
+    "vigile": "nodemon --config config/vigile.json bin/vigile",
+    "chopsticks": "DEBUG=* node bin/chopsticks"
   },
   "repository": {
     "type": "git",
@@ -47,6 +47,7 @@
     "nconf": "^0.8.4",
     "node-geoip": "^1.0.1",
     "nodemon": "^1.11.0",
+    "phantomjs": "^2.1.7",
     "pug": "^2.0.0-beta6",
     "request": "^2.79.0",
     "reveal.js": "^3.3.0",

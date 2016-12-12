@@ -14,9 +14,9 @@ var nconf = require('nconf');
  * con un nome caratteristico per la funzionalità d'alto livello, che
  * prende sempre come argomento un oggetto o una collection e ci lavora
  * facendo tornare un nuovo valore */
-var various = require('./lib/various');
-var routes = require('./routes/_storyteller');
-var dispatchPromise = require('./lib/dispatchPromise');
+var various = require('../lib/various');
+var routes = require('../routes/_storyteller');
+var dispatchPromise = require('../lib/dispatchPromise');
 
 var cfgFile = "config/storyteller.json";
 var redOn = "\033[31m";
