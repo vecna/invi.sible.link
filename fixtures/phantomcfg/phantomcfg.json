@@ -1,0 +1,5 @@
+{
+  ignoreSslErors: true,
+  webSecurityEnabled: false,
+  autoLoadImages: false
+}
