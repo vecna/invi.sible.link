@@ -10,6 +10,7 @@ var debug = require('debug')('vigile');
 var nconf = require('nconf');
 
 var various = require('../lib/various');
+var mongo = require('../lib/mongo');
 var routes = require('../routes/_vigile');
 var dispatchPromise = require('../lib/dispatchPromise');
 
@@ -28,6 +29,22 @@ console.log("  Port " + nconf.get('port') + " listening");
 /* configuration of express4 */
 app.use(bodyParser.json({limit: '3mb'}));
 app.use(bodyParser.urlencoded({limit: '3mb', extended: true}));
+
+/* see actually how many directive are available when vigile get started */
+Promise.resolve(
+    mongo
+        .readLimit(nconf.get('schema').promises, {
+            "start": { "$lt": new Date() },
+            "end": { "$gt": new Date() }
+        }, {}, 10000, 0)
+)
+.then(function(promises) {
+   if(_.size(promises) === 10000)
+       debug("initial check: Promises are more than 1000");
+   else
+       debug("initial check: Promises are %d", _.size(promises) );
+});
+
 
 /* API specs: dispatchPromise is in /lib/, the argument is in ./routes */
 app.get('/api/v:version/system/info', function(req, res) {
