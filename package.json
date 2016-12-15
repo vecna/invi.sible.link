@@ -53,5 +53,10 @@
     "reveal.js": "^3.3.0",
     "rimraf": "^2.5.4",
     "stylus": "^0.54.5"
+  },
+  "devDependencies": {
+    "eslint": "^3.12.0",
+    "eslint-config-airbnb-base": "^11.0.0",
+    "eslint-plugin-import": "^2.2.0"
   }
 }

@@ -35,16 +35,18 @@ var spawnCommand = function(command) {
 };
 
 var setupDirectory = function(need) {
-    var outpdir = path.join(
-        need.conf.root, 
-        dirurlutils.urlToDirectory(need.href) 
-    );
     need.disk = {
-        directory: outpdir,
-        random: _.random(0, 0xffff);
+        directory: path.join(
+            need.conf.root, 
+            urlutils.urlToDirectory(need.href) )
     };
-    debug("Is going to be used %s directory (%d unique)",
-        outpdir, need.disk.random);
+    need.disk.incompath = path.join(
+        need.disk.directory,
+        _.random(0, 0xffff) + "");
+
+    debug("Disk would be used with these: %s",
+        JSON.stringify(need.disk, undefined, 2));
+
     return spawnCommand({
                   binary: '/bin/mkdir', 
                   args: [ "-p", need.disk.directory ]
@@ -63,7 +65,7 @@ var performPhantom = function(need) {
         args: [ "--config=fixtures/phantomcfg/phantomcfg.json",
                 "fixtures/phantomcfg/phjsrender.js",
                 need.href,
-                path.join(need.disk.directory, need.disk.random),
+                need.disk.incompath,
                 need.conf.maxtime ]
     })
     .then(function() {
@@ -89,8 +91,7 @@ module.exports = function(need, conf) {
   if(!conf || _.isUndefined(conf.maxtime)) {
       conf = {
           maxtime: 30,
-          delay: 2,
-          root: "~/phantomtmp"
+          root: "./phantomtmp"
       };
       debug("Setting default config %j", conf);
   }
@@ -101,9 +102,7 @@ module.exports = function(need, conf) {
           'disk': null,
           'phantom': null
       }) ], setupDirectory)
-      .then(performPhantom)
-      .then(function(result) {
-          debug("result qui è %j", result);
-      });
+      .then(_.first)
+      .then(performPhantom);
 };
 

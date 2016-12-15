@@ -54,6 +54,11 @@ app.get('/api/v:version/system/info', function(req, res) {
 app.get('/api/v:version/getTasks/:vantagePoint/:amount', function(req, res) {
     return dispatchPromise('getTasks', routes, req, res);
 });
+app.get('/api/v:version/doneTask/:vantagePoint/:id', function(req, res) {
+    return dispatchPromise('doneTask', routes, req, res);
+});
+
+
 
 app.get('/favicon.ico', function(req, res) {
     res.sendFile(__dirname + '/dist/favicon.ico');

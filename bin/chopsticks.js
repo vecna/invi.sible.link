@@ -5,6 +5,7 @@ var request = Promise.promisifyAll(require('request'));
 var nconf = require('nconf');
 
 var plugins = require('../plugins');
+var choputils = require('../lib/choputils');
 
 var cfgFile = "config/chopsticks.json";
 
@@ -13,29 +14,37 @@ nconf.argv()
      .file({ file: cfgFile });
 
 var VP = nconf.get('VP');
-if(_.isUndefined(VP)) {
-    console.log("VP, vantage point, is needed in the Environment. forced 'dummy'");
+if(_.isUndefined(VP) || _.size(VP) === 0 ) {
+    console.log("VP, vantage point not found -- forced 'dummy'");
     VP = 'dummy';
 }
 
+var concValue = nconf.get('concurrency') || 1;
+
 var directionByKind = {
     "basic": {
-        "plugins": [ "systemState", "phantom", "saver", "reportBack" ],
+        "plugins": [ "systemState", "phantom", "saver", "confirmation" ],
         "config": null
     }
 };
 
-function keepPromises(N) {
+function keepPromises(N, i) {
     var direction = directionByKind[N.needName];
-    debug("%j ", direction);
     return Promise.reduce(direction.plugins, function(state, p) {
-        debug("Call %s about %s state key (%j)", p, state.href, _.keys(state));
+        debug("%d Call %s about %s: state keys #%d",
+            i, p, state.href, _.size(_.keys(state)) );
         return plugins[p](state, direction.config);
     }, N);
 };
 
-var url = nconf.get('source') + '/api/v1/getTasks/' + VP + '/' + nconf.get('amount');
-debug("Looking for some needs in %s...", url);
+var url = choputils.composeURL(
+            choputils.getVP(nconf.get('VP')),
+            nconf.get('source'),
+            { 
+                what: 'getTasks',
+                option: nconf.get('amount')
+            });
+
 return request
     .getAsync(url)
     .then(function(response) {
@@ -46,10 +55,7 @@ return request
         /* estimation of load might define concurrency and delay */
         return needs;
     })
-    .map(keepPromises, { concurrency: 1})
-    .then(function(solutions) {
-        debug("TODO, posts the solutions to the promises");
-    })
+    .map(keepPromises, { concurrency: concValue })
     .catch(function(error) {
         debug("Unamanged error, chopstick breaks");
         debug(error);

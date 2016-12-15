@@ -1,26 +1,17 @@
 var _ = require('lodash');
 var Promise = require('bluebird');
-var debug = require('debug')('getList');
+var debug = require('debug')('getTasks');
 var nconf = require('nconf');
  
 var mongo = require('../lib/mongo');
-var subjectsOps = require('../lib/subjectsOps');
-var prand = require('../lib/pseudoRandom');
-
 
 function markVantagePoint(vp, siteList) {
     
     return Promise.map(siteList, function(s) {
-        /* has to be fixed to 'toArray' returned by readLimit */
-        var start = new Date(s.start);
-        var end = new Date(s.end);
-        var update = _.set(_.extend(_.omit(s, ['start', 'end' ]), {
-            start: start,
-            end: end
-        }), vp, true);
+        var update = _.set({}, vp, false);
 
         return mongo.upsertOne(nconf.get('schema').promises, {
-            id: update.id
+            id: s.id
         }, update);
     });
 };

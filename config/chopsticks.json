@@ -1,5 +1,6 @@
 {
   "name": "chopsticks",
+  "VP": "",
   "source": "http://localhost:7200",
   "schema": {
     "log": "log",
@@ -8,5 +9,6 @@
     "anomalies": "anomalies"
   },
   "amount": 30,
+  "concurrency": 2,
   "mongodb": "mongodb://localhost/chopsticks"
 }
