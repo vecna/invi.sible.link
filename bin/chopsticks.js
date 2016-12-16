@@ -45,6 +45,7 @@ var url = choputils.composeURL(
                 option: nconf.get('amount')
             });
 
+debug("Starting with concurrency %d", concValue);
 return request
     .getAsync(url)
     .then(function(response) {

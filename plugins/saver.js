@@ -21,12 +21,17 @@ function phantomCleaning(rr, i) {
         'what': what,
         'url': content.url
     });
+
+    /* cosa voglio avere qui ? 
+     * degli oggetti che mi dicano tutto
     /* TODOs
      * relationId (togliendo le opzioni URL)
      * schema-type
      * url hash
      * url lenght
-     * e se è un "data", l'url viene rimosso */
+     * e se è un "data", l'url viene rimosso,
+     * unificare gli 'stage'
+     * ogni data passata in moment e new Date() */
     debug("%d %s", JSON.stringify(content, undefined, 2));
     return content;
 };
@@ -44,7 +49,8 @@ function savePhantom(gold) {
         .readFileAsync(gold.disk.incompath + '.json', 'utf-8')
         .then(JSON.parse)
         .then(function(content) {
-            simplifyContent = _.map(content, phantomCleaning);
+            ioByPeer = _.map(content, phantomCleaning, {});
+            /* ioByPeer has key as the phantom.id increment numb */
             core.io = simplifyContent;
             return core;
         })

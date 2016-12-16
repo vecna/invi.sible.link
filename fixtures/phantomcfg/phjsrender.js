@@ -49,18 +49,22 @@ page.onResourceTimeout = function(e) {
     });
 }
 page.onResourceRequested = function(request) {
-    iodetails.push({
-        request: request,
-        when: moment().toISOString(),
-        step: counter
-    });
+    iodetails.push(
+        _.extend(request, {
+          type: "request",
+          when: moment().toISOString(),
+          step: counter
+        })
+    );
 }
 page.onResourceReceived = function(response) {
-    iodetails.push({
-        response: response,
-        when: moment().toISOString(),
-        step: counter
-    });
+    iodetails.push(
+        _.extend(response, {
+          type: "response",
+          when: moment().toISOString(),
+          step: counter
+        })
+    );
 };
 
 
