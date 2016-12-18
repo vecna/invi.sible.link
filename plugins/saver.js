@@ -2,38 +2,83 @@ var _ = require('lodash');
 var Promise = require('bluebird');
 var fs = Promise.promisifyAll(require('fs'));
 var debug = require('debug')('saver');
+var moment = require('moment');
 var nconf = require('nconf');
 
 var various = require('../lib/various');
 var mongo = require('../lib/mongo');
+var urlutils = require('../lib/urlutils');
+
+
+function dissectHeaders(memo, hdr) {
+
+    /* TODO: fare special, set-Cookie e le date, vanno parsate */
+    var standards = ['Content-Type', 'Expires', 'Date', 'Server', 'Last-Modified', 'Set-Cookie' ];
+    var ignored = [ 'Vary', 'Content-Encoding', 'Connection', 'ETag', 'Accept-Ranges'];
+
+    if(ignored.indexOf(hdr.name) !== -1)
+        return memo;
+
+    if(standards.indexOf(hdr.name) !== -1) {
+        memo.standardHeaders[hdr.name] = hdr.value;
+        return memo;
+    }
+
+    memo.proprietaryHeaders.push(hdr);
+    return memo;
+};
 
 /* save in mongodb what is not going to be deleted after,
  * = the JSON from the fetcher, and the path associated for static files
  * like html and screenshot */
-
-function phantomCleaning(rr, i) {
-    var what = _.first(_.keys(rr));
-    var content = _.first(_.values(rr));
+function phantomCleaning(memo, rr, i) {
     
     /* here the data uri get cut off, and header get simplify */
-    content.what = what;
-    content.actionId = various.hash({
-        'what': what,
-        'url': content.url
-    });
+    var id = rr.id;
 
-    /* cosa voglio avere qui ? 
-     * degli oggetti che mi dicano tutto
-    /* TODOs
-     * relationId (togliendo le opzioni URL)
-     * schema-type
-     * url hash
-     * url lenght
-     * e se è un "data", l'url viene rimosso,
-     * unificare gli 'stage'
-     * ogni data passata in moment e new Date() */
-    debug("%d %s", JSON.stringify(content, undefined, 2));
-    return content;
+    if(_.isUndefined(memo[id])) {
+        /* is the request */
+        memo[id] = {
+                url: rr.url,
+                requestTime: new Date(moment(rr.when).toISOString())
+        };
+        if(rr.method === "POST") {
+            debug("Manage POST!");
+        }
+    } else /* is the response: status 'start' or 'end' */ {
+
+        if(rr.stage == "end") {
+            debug("Skipping 'end' %s %s", memo[id].url, rr.url);
+            return memo;
+        }
+
+        var urlId = various.hash({
+            'url': rr.url
+        });
+        var domainId = various.hash({
+            'domain': urlutils.urlToDomain(rr.url)
+        });
+        var relationId = various.hash({
+            'path': urlutils.urlClean(rr.url)
+        });
+
+        var h = _.reduce(rr.headers, dissectHeaders, {
+            standardHeaders: {},
+            proprietaryHeaders: []
+        });
+
+        memo[id] = _.extend(memo[id], {
+            urlId: urlId,
+            domainId: domainId,
+            relationId: relationId,
+            proprietary: h.proprietaryHeaders
+        });
+        memo[id] = _.extend(memo[id], h.standardHeaders);
+    }
+
+    debug("%d ID %d %s", i, id, JSON.stringify(memo[id], undefined, 2));
+    return memo;
+
 };
 
 function savePhantom(gold) {
@@ -41,22 +86,22 @@ function savePhantom(gold) {
     if(_.isUndefined(gold.phantom))
         return false;
 
-    var core = _.pick(gold, 
-            ['subjectId', 'href', 'needName', 'id', 
-             'disk', 'phantom' ]);
+    var needInfo = ['subjectId', 'href', 'needName', 'id', 'disk', 'phantom'];
+    var core = _.pick(gold, needInfo);
 
     return fs
         .readFileAsync(gold.disk.incompath + '.json', 'utf-8')
         .then(JSON.parse)
         .then(function(content) {
-            ioByPeer = _.map(content, phantomCleaning, {});
+            var ioByPhids = _.reduce(content, phantomCleaning, {});
             /* ioByPeer has key as the phantom.id increment numb */
-            core.io = simplifyContent;
-            return core;
+            return _.map(ioByPhids, function(value) {
+                return _.extend(value, core);
+            });
         })
-        .then(function(info) {
-            console.log(JSON.stringify(info, undefined, 2));
-            return mongo.writeOne(nconf.get('schema').phantom, info);
+        .then(function(data) {
+            debug("Saving %d", _.size(data));
+            return mongo.writeMany(nconf.get('schema').phantom, data);
         })
         .return(true);
 };

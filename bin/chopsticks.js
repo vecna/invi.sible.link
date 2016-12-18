@@ -30,20 +30,24 @@ var directionByKind = {
 
 function keepPromises(N, i) {
     var direction = directionByKind[N.needName];
-    return Promise.reduce(direction.plugins, function(state, p) {
-        debug("%d Call %s about %s: state keys #%d",
-            i, p, state.href, _.size(_.keys(state)) );
-        return plugins[p](state, direction.config);
-    }, N);
+    return Promise
+        .reduce(direction.plugins, function(state, p) {
+            debug("%d Call %s about %s: state keys #%d",
+                i, p, state.href, _.size(_.keys(state)) );
+            return plugins[p](state, direction.config);
+        }, N)
+        .tap(function(product) {
+            debug("%d Completed %s: state keys #%d",
+                i, N.href, _.size(_.keys(product)) );
+        });
 };
 
-var url = choputils.composeURL(
-            choputils.getVP(nconf.get('VP')),
-            nconf.get('source'),
-            { 
-                what: 'getTasks',
-                option: nconf.get('amount')
-            });
+var url = choputils
+            .composeURL(
+                choputils.getVP(nconf.get('VP')),
+                nconf.get('source'),
+                { what: 'getTasks', option: nconf.get('amount') }
+            );
 
 debug("Starting with concurrency %d", concValue);
 return request

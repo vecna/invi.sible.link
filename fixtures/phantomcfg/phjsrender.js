@@ -52,7 +52,6 @@ page.onResourceRequested = function(request) {
     iodetails.push(
         _.extend(request, {
           type: "request",
-          when: moment().toISOString(),
           step: counter
         })
     );
@@ -61,7 +60,6 @@ page.onResourceReceived = function(response) {
     iodetails.push(
         _.extend(response, {
           type: "response",
-          when: moment().toISOString(),
           step: counter
         })
     );

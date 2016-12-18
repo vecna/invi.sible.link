@@ -10,28 +10,27 @@ var path = require('path');
 var urlutils = require('../lib/urlutils');
 
 var spawnCommand = function(command) {
-  return new Promise(function(resolve, reject) {
-    var M = spawn(command.binary, command.args);
+    return new Promise(function(resolve, reject) {
+        var M = spawn(command.binary, command.args);
 
-    M.stdout.on('data', function(data) {
-      /* this has to be just ignored or saved in TODO debug mode */
+        M.stdout.on('data', function(data) {
+            /* this has to be just ignored or saved in TODO debug mode */
+        });
+
+        M.stderr.on('data', function(data) {
+            debug("Error from %j", command.args);
+            debug("Error? %s", data);
+        });
+
+        M.on('exit', function(code) {
+            if (code && code.error) {
+                debug("Exit with Error %j", code);
+                return reject();
+            } else {
+                return resolve();
+            }
+        });
     });
-
-    M.stderr.on('data', function(data) {
-        debug("Error from %j", command.args);
-        debug("Error? %s", data);
-    });
-
-    M.on('exit', function(code) {
-      if (code && code.error) {
-        debug("Exit with Error %j", code);
-        return reject();
-      } else {
-        return resolve();
-      }
-    });
-
-  });
 };
 
 var setupDirectory = function(need) {
@@ -42,13 +41,14 @@ var setupDirectory = function(need) {
     };
     need.disk.incompath = path.join(
         need.disk.directory,
-        _.random(0, 0xffff) + "");
+        moment().format("YYYY-MM-DD")
+    );
 
     debug("Disk would be used with these: %s",
         JSON.stringify(need.disk, undefined, 2));
 
     return spawnCommand({
-                  binary: '/bin/mkdir', 
+                  binary: '/bin/mkdir',
                   args: [ "-p", need.disk.directory ]
     })
     .return(need);
