@@ -1,3 +1,4 @@
+#!/usr/bin/env nodejs
 var _ = require('lodash');
 var Promise = require('bluebird');
 var debug = require('debug')('↻ chopsticks');
@@ -20,6 +21,7 @@ if(_.isUndefined(VP) || _.size(VP) === 0 ) {
 }
 
 var concValue = nconf.get('concurrency') || 1;
+concValue = _.parseInt(concValue);
 
 var directionByKind = {
     "basic": {
