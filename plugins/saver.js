@@ -86,8 +86,9 @@ function savePhantom(gold) {
     if(_.isUndefined(gold.phantom))
         return false;
 
-    var needInfo = ['subjectId', 'href', 'needName', 'id', 'disk', 'phantom'];
+    var needInfo = ['subjectId', 'href', 'needName', 'disk', 'phantom'];
     var core = _.pick(gold, needInfo);
+    core.promiseId = gold.id;
 
     return fs
         .readFileAsync(gold.disk.incompath + '.json', 'utf-8')
