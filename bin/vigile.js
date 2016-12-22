@@ -24,7 +24,7 @@ nconf.argv()
 console.log(redOn + "ઉ nconf loaded, using " + cfgFile + redOff);
 
 /* everything begin here, welcome */
-server.listen(nconf.get('port'), '127.0.0.1');
+server.listen(nconf.get('port'), '0.0.0.0');
 console.log("  Port " + nconf.get('port') + " listening");
 /* configuration of express4 */
 app.use(bodyParser.json({limit: '3mb'}));
