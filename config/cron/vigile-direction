@@ -1,0 +1,16 @@
+#! /bin/sh
+
+set -e
+
+LOCALUSER="storyteller"
+NICE=10
+LOCATION="/home/storyteller/invi.sible.link"
+
+export NICE LOCALUSER
+
+if getent passwd $LOCALUSER > /dev/null ; then
+  cd $LOCATION && nice -n ${NICE:-10} bin/directionTool.js 2>/dev/null
+else
+  echo "User $LOCALUSER does not exist."
+  exit 1
+fi
