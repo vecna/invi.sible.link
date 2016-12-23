@@ -9,6 +9,7 @@ LOCATION="/home/storyteller/invi.sible.link"
 export NICE LOCALUSER
 
 if getent passwd $LOCALUSER > /dev/null ; then
+  touch /tmp/direction-updates-`date +%j-%Y`
   cd $LOCATION && nice -n ${NICE:-10} bin/directionTool.js 2>/dev/null
 else
   echo "User $LOCALUSER does not exist."
