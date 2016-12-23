@@ -5,6 +5,7 @@ var nconf = require('nconf');
 var mongo = require('../lib/mongo');
 
 function doneTask(req) {
+    /* switch the $VantagePoint: false to 'true' */
 
     var vantagePoint = req.params.vantagePoint;
     var id = _.parseInt(req.params.id);

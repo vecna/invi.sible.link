@@ -15,7 +15,7 @@ module.exports = function(need, conf) {
         nconf.get('source'),
         {
             what: 'doneTask',
-            option: need.promiseId
+            param: need.id
         });
         
     return request

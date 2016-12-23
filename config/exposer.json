@@ -1,4 +1,29 @@
 {
   "name": "exposer",
-  "port": 7300
+  "port": 7300,
+  "schema": {
+    "log": "log",
+    "thug": "thug",
+    "phantom": "phantom",
+    "anomalies": "anomalies"
+  },
+  "mongodb": "mongodb://localhost/chopsticks",
+  "watch": [
+      "exposer.js",
+      "lib/*.js",
+      "sections/*.pug",
+      "routes/*.js",
+      "dist/css/**",
+      "dist/js/**"
+  ],
+  "ignore": [
+      "node_modules/**/node_modules",
+      "sections/webscripts/*.js"
+  ],
+  "verbose": true,
+  "exitcrash": false,
+  "env": {
+      "DEBUG": "exposer,dispatchPromise,various,getPage,getMass,getRetrieved,systemInfo"
+  },
+  "ext": "js css json pug"
 }

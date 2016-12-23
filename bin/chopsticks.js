@@ -1,7 +1,7 @@
 #!/usr/bin/env nodejs
 var _ = require('lodash');
 var Promise = require('bluebird');
-var debug = require('debug')('↻ chopsticks');
+var debug = require('debug')('chopsticks');
 var request = Promise.promisifyAll(require('request'));
 var nconf = require('nconf');
 
@@ -26,7 +26,10 @@ concValue = _.parseInt(concValue);
 var directionByKind = {
     "basic": {
         "plugins": [ "systemState", "phantom", "saver", "confirmation" ],
-        "config": null
+        "config": {
+            maxSeconds: 30,
+            root: "./phantomtmp"
+        }
     }
 };
 
@@ -48,7 +51,7 @@ var url = choputils
             .composeURL(
                 choputils.getVP(nconf.get('VP')),
                 nconf.get('source'),
-                { what: 'getTasks', option: nconf.get('amount') }
+                { what: 'getTasks', param: nconf.get('amount') }
             );
 
 debug("Starting with concurrency %d", concValue);
@@ -63,7 +66,11 @@ return request
         return needs;
     })
     .map(keepPromises, { concurrency: concValue })
+    .then(function(results) {
+        /* check where 'completed' was false, is an anomaly to report back */
+        var timeouted = _.filter(results, { completed: false});
+        debug("TODO: manage Timeouted %s", JSON.stringify(timeouted, undefined, 2));
+    })
     .catch(function(error) {
-        debug("Unamanged error, chopstick breaks");
-        debug(error);
+        debug("Unmanaged exception!");
     });

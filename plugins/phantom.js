@@ -9,7 +9,10 @@ var path = require('path');
 
 var urlutils = require('../lib/urlutils');
 
-var spawnCommand = function(command) {
+var spawnCommand = function(command, msTimeout) {
+    if(_.isUndefined(msTimeout))
+        msTimeout = 1000;
+
     return new Promise(function(resolve, reject) {
         var M = spawn(command.binary, command.args);
 
@@ -30,7 +33,8 @@ var spawnCommand = function(command) {
                 return resolve();
             }
         });
-    });
+    })
+    .timeout(msTimeout);
 };
 
 var setupDirectory = function(need) {
@@ -66,8 +70,8 @@ var performPhantom = function(need) {
                 "fixtures/phantomcfg/phjsrender.js",
                 need.href,
                 need.disk.incompath,
-                need.conf.maxtime ]
-    })
+                need.conf.maxSeconds ]
+    }, (need.conf.maxSeconds + 5) * 1000)
     .then(function() {
         need.phantom = {
             startTime: startTime.toISOString(),
@@ -75,26 +79,39 @@ var performPhantom = function(need) {
             startLoad: startLoad,
             endLoad: os.loadavg()[0],
             startMem: startMem,
-            endMem: os.freemem()
+            endMem: os.freemem(),
+            completed: true
         };
         debug("Fetch done ☞ 「%s」to 「%s」",
             moment.duration(moment().diff(startTime)).humanize(),
             need.href );
         return need;
+    })
+    .catch(function(error) {
+        if(error.name === "TimeoutError") {
+            need.phantom = {
+                startTime: startTime.toISOString(),
+                endTime: moment().toISOString(),
+                startLoad: startLoad,
+                endLoad: os.loadavg()[0],
+                startMem: startMem,
+                endMem: os.freemem(),
+                completed: false
+            };
+            debug("Timeout ☞ 「%s」to 「%s」",
+                moment.duration(moment().diff(startTime)).humanize(),
+                need.href );
+            return need;
+        }
+        console.stack();
+        debug("! %s", JSON.stringify(error, undefined, 2));
+        throw new Error(error);
     });
 };
 
 
 /* the need is only one, always, (but might contain many URL per need ?) */
 module.exports = function(need, conf) {
-
-  if(!conf || _.isUndefined(conf.maxtime)) {
-      conf = {
-          maxtime: 30,
-          root: "./phantomtmp"
-      };
-      debug("Setting default config %j", conf);
-  }
 
   return Promise
       .map([ _.extend(need, {

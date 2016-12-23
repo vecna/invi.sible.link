@@ -11,7 +11,8 @@
     "start": "echo 'nop, call run storyteller or the others components separately' ",
     "storyteller": "nodemon --config config/storyteller.json bin/storyteller",
     "vigile": "nodemon --config config/vigile.json bin/vigile",
-    "chopsticks": "DEBUG=* node bin/chopsticks"
+    "exposer": "nodemon --config config/exposer.json bin/exposer",
+    "chopsticks": "DEBUG=chopsticks,systemState,phantom,saver,confirmation node bin/chopsticks"
   },
   "repository": {
     "type": "git",
