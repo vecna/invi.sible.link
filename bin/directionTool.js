@@ -4,7 +4,7 @@ var Promise = require('bluebird');
 var util = require('util');
 var request = Promise.promisifyAll(require('request'));
 var fs = Promise.promisifyAll(require('fs'));
-var debug = require('debug')('fixtures');
+var debug = require('debug')('directionTool');
 var nconf = require('nconf');
 var process = require('process');
 var mongo = require('../lib/mongo');
@@ -74,7 +74,7 @@ function timeRanges(fname) {
         })
         .then(function(content) {
             var start, end;
-            debug("Processing timeframe: startFrom %s (options: midnight|now), lastFor %j",
+            debug("Processing timeframe: startFrom %j (options: midnight|now), lastFor %j",
                 content.lastFor, content.startFrom);
             if(content.startFrom === 'midnight') {
                 var mins_since_midnight = moment().isocalendar()[3];

@@ -15,7 +15,7 @@ module.exports = function(need, conf) {
         nconf.get('source'),
         {
             what: 'doneTask',
-            option: need.id
+            param: need.id
         });
         
     return request
@@ -36,5 +36,3 @@ module.exports = function(need, conf) {
         })
         .return(need);
 };
-
-

@@ -14,6 +14,7 @@ var pugCompiler = function(filePrefix) {
 var pageMap = {
   'storyteller': pugCompiler('storyteller'),
   'vigile': pugCompiler('vigile'),
+  'exposer': pugCompiler('exposer'),
   'subjects': pugCompiler('subjects'),
   'last': pugCompiler('last'),
   'project-plan': pugCompiler('projectPlan'),

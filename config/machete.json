@@ -1,8 +1,11 @@
 {
-  "port": 7100,
   "name": "machete",
-  "schema": {
-    "irresponsible": "irresponsible"
-  },
+  "campaigns": [{
+      "name": "italian-media",
+      "chain": [ "fetch", "worst", "visibility-impact", "communicate" ]
+  }, {
+      "name": "generic",
+      "chain": [ "fetch", "worst", "population-impact", "communicate" ]
+  }],
   "mongodb": "mongodb://localhost/machete"
 }
