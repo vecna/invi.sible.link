@@ -8,11 +8,11 @@ var mongo = require('../lib/mongo');
 function markVantagePoint(vp, siteList) {
     
     return Promise.map(siteList, function(s) {
-        var update = _.set({}, vp, false);
+        _.set(s, vp, false);
 
         return mongo.upsertOne(nconf.get('schema').promises, {
             id: s.id
-        }, update);
+        }, s);
     });
 };
 
@@ -38,10 +38,10 @@ function getTasks(req) {
         .map(function(site) {
             return _.omit(site, ['_id']);
         })
-        .then(function(siteList) {
-            return markVantagePoint(vantagePoint, siteList)
+        .then(function(taskList) {
+            return markVantagePoint(vantagePoint, taskList)
                 .return({
-                    json: siteList
+                    json: taskList
                 });
         });
 };
