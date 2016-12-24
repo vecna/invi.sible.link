@@ -69,8 +69,11 @@ return request
     .then(function(results) {
         /* check where 'completed' was false, is an anomaly to report back */
         var timeouted = _.filter(results, { completed: false});
-        debug("TODO: manage Timeouted %s", JSON.stringify(timeouted, undefined, 2));
+        if(_.size(timeouted))
+          debug("To be: managed Timeouted %s", JSON.stringify(timeouted, undefined, 2));
     })
     .catch(function(error) {
+        console.trace();
+        debug("%s %s", error, JSON.stringify(error, undefined, 2));
         debug("Unmanaged exception!");
     });

@@ -48,8 +48,7 @@ var setupDirectory = function(need) {
         moment().format("YYYY-MM-DD")
     );
 
-    debug("Disk would be used with these: %s",
-        JSON.stringify(need.disk, undefined, 2));
+    debug("Using %s", need.disk.incompath);
 
     return spawnCommand({
                   binary: '/bin/mkdir',

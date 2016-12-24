@@ -73,18 +73,20 @@ function dissectHeaders(memo, hdr) {
     return memo;
 };
 
-function cutDataURL(lu) 
+function cutDataURL(lu, id) 
 {
     var MAXSIZEURL = 4096;
+    var retval;
     if(_.size(lu) > MAXSIZEURL) {
         var i = lu.indexOf(';');
-        debug("url is bigger than %d, starts with: %s, first ';' at %d",
-            MAXSIZEURL, lu.substring(0, 30), i);
         if(i !== -1) {
-            return lu.substring(0, i);
+            retval = lu.substring(0, i);
         } else {
-            return lu.substring(0, 30) + '…';
+            retval = lu.substring(0, 30) + '…';
         }
+        debug("rr %d url get shortened as %s [long %d]",
+            id, retval, _.size(lu));
+        return retval;
     }
     return lu;
 };
@@ -100,7 +102,7 @@ function phantomCleaning(memo, rr, i) {
     if(_.isUndefined(memo[id])) {
         /* is the request */
 
-        var surl = cutDataURL(rr.url);
+        var surl = cutDataURL(rr.url, id);
 
         memo[id] = {
                 url: surl,
@@ -112,7 +114,7 @@ function phantomCleaning(memo, rr, i) {
         }
     } else /* is the response: status 'start' or 'end' */ {
 
-        var surl = cutDataURL(rr.url);
+        var surl = cutDataURL(rr.url, id);
 
         if(rr.stage == "end") {
             // debug("Skipping 'end' %s %s", memo[id].url, rr.url);
@@ -175,7 +177,7 @@ function savePhantom(gold) {
         })
         .then(function(data) {
             debug("Saving %d keys/value in .phantom (%s promiseId)",
-                _.size(data), data.phantomId);
+                _.size(data), data[0].promiseId);
             return mongo.writeMany(nconf.get('schema').phantom, data);
         })
         .return(true);
@@ -186,6 +188,7 @@ function saveThug(gold) {
 
 module.exports = function(val, conf) {
 
+    /* indepotent function saver is */
     return Promise
         .all([ savePhantom(val), saveThug(val) ])
         .return(val);
