@@ -1,6 +1,6 @@
 !#/bin/bash
 
-ISL="Dev/invi.sible.link"
+ISL="invi.sible.link"
 
 if [ ! -d $ISL ]; then echo `date +%H:%M` "invi.sible.link don't exists: failure in chopsticks scheduled running" >> /tmp/ISL.log ; fi
 
