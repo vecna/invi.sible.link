@@ -6,19 +6,15 @@ var moment = require('moment');
 var bodyParser = require('body-parser');
 var Promise = require('bluebird');
 var mongodb = Promise.promisifyAll(require('mongodb'));
-var debug = require('debug')('storyteller');
+var debug = require('debug')('exposer');
 var nconf = require('nconf');
 
-/* routes contiene gli handler dell'app, various le util generiche,
- * mentre tutte le utils d'alto livello sono implementate in utils
- * con un nome caratteristico per la funzionalità d'alto livello, che
- * prende sempre come argomento un oggetto o una collection e ci lavora
- * facendo tornare un nuovo valore */
 var various = require('../lib/various');
-var routes = require('../routes/_storyteller');
+var mongo = require('../lib/mongo');
+var routes = require('../routes/_exposer');
 var dispatchPromise = require('../lib/dispatchPromise');
 
-var cfgFile = "config/storyteller.json";
+var cfgFile = "config/exposer.json";
 var redOn = "\033[31m";
 var redOff = "\033[0m";
 
@@ -34,38 +30,50 @@ console.log("  Port " + nconf.get('port') + " listening");
 app.use(bodyParser.json({limit: '3mb'}));
 app.use(bodyParser.urlencoded({limit: '3mb', extended: true}));
 
+
 /* API specs: dispatchPromise is in /lib/, the argument is in ./routes */
 app.get('/api/v:version/system/info', function(req, res) {
     return dispatchPromise('systemInfo', routes, req, res);
 });
 
-app.get('/api/v:version/subjects', function(req, res) {
-    return dispatchPromise('getSubjects', routes, req, res);
+app.get('/api/v:version/getRetrieved/:what/:id', function(req, res) {
+    return dispatchPromise('getRetrieved', routes, req, res);
 });
 
+app.post('/api/v:version/getMass', function(req, res) {
+    return dispatchPromise('getMass', routes, req, res);
+});
+
+app.get('/api/v:version/getStats', function(req, res) {
+    return dispatchPromise('getStats', routes, req, res);
+});
+
+
+
+var distDir = "/home/oo/Dev/invi.sible.link/dist"
 app.get('/favicon.ico', function(req, res) {
-    res.sendFile(__dirname + '/../dist/favicon.ico');
+    res.sendFile(distDir + '/favicon.ico');
 });
 
-app.use('/css', express.static(__dirname + '/../dist/css'));
-app.use('/images', express.static(__dirname + '/../dist/images'));
-app.use('/lib/font/league-gothic', express.static(__dirname + '/../dist/css'));
+app.use('/css', express.static(distDir + '/css'));
+app.use('/images', express.static(distDir + '/images'));
+app.use('/lib/font/league-gothic', express.static(distDir + '/css'));
 
-app.use('/js/vendor', express.static(__dirname + '/../dist/js/vendor'));
+app.use('/js/vendor', express.static(distDir + '/js/vendor'));
 /* development: the local JS are pick w/out "npm run build" every time */
 if(nconf.get('development') === 'true') {
-    var scriptPath = '/../sections/webscripts';
+    var scriptPath = '/sections/webscripts';
     console.log(redOn,"ઉ DEVELOPMENT = serving JS from", scriptPath,redOff);
-    app.use('/js/local', express.static(__dirname + scriptPath));
+    app.use('/js/local', express.static(distDir + scriptPath));
 } else {
-    app.use('/js/local', express.static(__dirname + '/../dist/js/local'));
+    app.use('/js/local', express.static(distDir + '/js/local'));
 }
 
-/* catch all and homepage as final default catcher */
 app.get('/:page', function(req, res) {
     return dispatchPromise('getPage', routes, req, res);
 });
 app.get('/', function(req, res) {
-    _.set(req.params, 'page', 'storyteller');
+    _.set(req.params, 'page', 'exposer');
     return dispatchPromise('getPage', routes, req, res);
 });
+

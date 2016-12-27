@@ -3,7 +3,6 @@
   "VP": "",
   "source": "http://localhost:7200",
   "schema": {
-    "log": "log",
     "thug": "thug",
     "phantom": "phantom",
     "anomalies": "anomalies"

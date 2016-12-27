@@ -2,9 +2,9 @@
   "name": "exposer",
   "port": 7300,
   "schema": {
-    "log": "log",
     "thug": "thug",
     "phantom": "phantom",
+    "accesses": "accesses",
     "anomalies": "anomalies"
   },
   "mongodb": "mongodb://localhost/chopsticks",

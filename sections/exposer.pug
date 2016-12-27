@@ -8,20 +8,21 @@ html
     script(type='text/javascript', src='/js/vendor/collapse.js')
     script(type='text/javascript', src='/js/vendor/d3.min.js')
     script(type='text/javascript', src='/js/vendor/c3.min.js')
-    title invi.sible.link
+    script(type='text/javascript', src='/js/local/homepage.js')
+    title invi.sible.link - exposer
 
   body
-
+  
     .container-fluid
-      .jumbotron
-        h1 ⛅  invi.sible.link
-        small since November 2016, invi.sible.link is in α release
+        .jumbotron
+            h1 ⛅  Exposer of invi.sible.link
+            small.italic
+            a(href="https://en.wiktionary.org/wiki/vigile") Vigile
+            |, is the Italian word for "traffic cop"
 
     include navbar
 
     .container-fluid
-      p.text This project is the continuation of 
-        a(href="https://trackography.org") Trackography
-        |. Is it currently in α release release, updates will appear here before 2017.
+        h2 This is the vantage point #{VP}
 
     div.footer

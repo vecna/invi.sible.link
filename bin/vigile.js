@@ -59,23 +59,22 @@ app.get('/api/v:version/doneTask/:vantagePoint/:id', function(req, res) {
 });
 
 
-
 app.get('/favicon.ico', function(req, res) {
-    res.sendFile(__dirname + '/dist/favicon.ico');
+    res.sendFile(__dirname + '/../dist/favicon.ico');
 });
 
-app.use('/css', express.static(__dirname + '/dist/css'));
-app.use('/images', express.static(__dirname + '/dist/images'));
-app.use('/lib/font/league-gothic', express.static(__dirname + '/dist/css'));
+app.use('/css', express.static(__dirname + '/../dist/css'));
+app.use('/images', express.static(__dirname + '/../dist/images'));
+app.use('/lib/font/league-gothic', express.static(__dirname + '/../dist/css'));
 
-app.use('/js/vendor', express.static(__dirname + '/dist/js/vendor'));
+app.use('/js/vendor', express.static(__dirname + '/../dist/js/vendor'));
 /* development: the local JS are pick w/out "npm run build" every time */
 if(nconf.get('development') === 'true') {
-    var scriptPath = '/sections/webscripts';
+    var scriptPath = '/../sections/webscripts';
     console.log(redOn,"ઉ DEVELOPMENT = serving JS from", scriptPath,redOff);
     app.use('/js/local', express.static(__dirname + scriptPath));
 } else {
-    app.use('/js/local', express.static(__dirname + '/dist/js/local'));
+    app.use('/js/local', express.static(__dirname + '/../dist/js/local'));
 }
 
 app.get('/:page', function(req, res) {
