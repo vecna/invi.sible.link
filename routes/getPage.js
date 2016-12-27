@@ -12,15 +12,15 @@ var pugCompiler = function(filePrefix) {
 };
 
 var pageMap = {
-  'storyteller': pugCompiler('storyteller'),
-  'vigile': pugCompiler('vigile'),
-  'exposer': pugCompiler('exposer'),
-  'subjects': pugCompiler('subjects'),
-  'last': pugCompiler('last'),
-  'project-plan': pugCompiler('projectPlan'),
-  'about': pugCompiler('about'),
-  'report': pugCompiler('taskList'),
-  '404': pugCompiler('404')
+    'storyteller': pugCompiler('storyteller'),
+    'vigile': pugCompiler('vigile'),
+    'exposer': pugCompiler('exposer'),
+    'subjects': pugCompiler('subjects'),
+    'last': pugCompiler('last'),
+    'project-plan': pugCompiler('projectPlan'),
+    'about': pugCompiler('about'),
+    'report': pugCompiler('taskList'),
+    '404': pugCompiler('404')
 };
 
 var getPage = function(req) {

@@ -13,6 +13,8 @@ var various = require('../lib/various');
 var mongo = require('../lib/mongo');
 var routes = require('../routes/_vigile');
 var dispatchPromise = require('../lib/dispatchPromise');
+var defaultSetup = require('../lib/sharedExpress');
+
 
 var cfgFile = "config/vigile.json";
 var redOn = "\033[31m";
@@ -58,30 +60,4 @@ app.get('/api/v:version/doneTask/:vantagePoint/:id', function(req, res) {
     return dispatchPromise('doneTask', routes, req, res);
 });
 
-
-app.get('/favicon.ico', function(req, res) {
-    res.sendFile(__dirname + '/../dist/favicon.ico');
-});
-
-app.use('/css', express.static(__dirname + '/../dist/css'));
-app.use('/images', express.static(__dirname + '/../dist/images'));
-app.use('/lib/font/league-gothic', express.static(__dirname + '/../dist/css'));
-
-app.use('/js/vendor', express.static(__dirname + '/../dist/js/vendor'));
-/* development: the local JS are pick w/out "npm run build" every time */
-if(nconf.get('development') === 'true') {
-    var scriptPath = '/../sections/webscripts';
-    console.log(redOn,"ઉ DEVELOPMENT = serving JS from", scriptPath,redOff);
-    app.use('/js/local', express.static(__dirname + scriptPath));
-} else {
-    app.use('/js/local', express.static(__dirname + '/../dist/js/local'));
-}
-
-app.get('/:page', function(req, res) {
-    return dispatchPromise('getPage', routes, req, res);
-});
-app.get('/', function(req, res) {
-    _.set(req.params, 'page', 'vigile');
-    return dispatchPromise('getPage', routes, req, res);
-});
-
+defaultSetup(app, dispatchPromise, express, routes, 'vigile');

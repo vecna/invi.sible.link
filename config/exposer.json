@@ -23,7 +23,7 @@
   "verbose": true,
   "exitcrash": false,
   "env": {
-      "DEBUG": "exposer,dispatchPromise,various,getPage,getMass,getRetrieved,systemInfo"
+      "DEBUG": "exposer,dispatchPromise,various,getPage,getMass,getRetrieved,systemInfo,daily,mongo"
   },
   "ext": "js css json pug"
 }
