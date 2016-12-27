@@ -9,6 +9,6 @@
     "anomalies": "anomalies"
   },
   "amount": 30,
-  "concurrency": 2,
+  "concurrency": 10,
   "mongodb": "mongodb://localhost/chopsticks"
 }

@@ -1,0 +1,9 @@
+#! /bin/sh
+
+cd invi.sible.link
+
+# TODO, soon or later, this script shall execute different directions based on timezones and target of interest,
+# for example: mainstream media has to be checked around noon / 16 / 20 / 22 per national timezone
+date +%j-%Y >> /tmp/vigile-directions-given
+node bin/directionTool.js
+

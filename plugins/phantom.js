@@ -54,6 +54,10 @@ var setupDirectory = function(need) {
                   binary: '/bin/mkdir',
                   args: [ "-p", need.disk.directory ]
     })
+    .catch(function(error) {
+        debug("mkdirError %j", JSON.stringify(error, undefined, 2));
+        throw new Error("Impossible proceed after mkdir failure");
+    })
     .return(need);
 };
 
@@ -87,6 +91,7 @@ var performPhantom = function(need) {
         return need;
     })
     .catch(function(error) {
+        debug("phantomError %j", JSON.stringify(error, undefined, 2));
         if(error.name === "TimeoutError") {
             need.phantom = {
                 startTime: startTime.toISOString(),
