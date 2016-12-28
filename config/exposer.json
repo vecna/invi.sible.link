@@ -1,5 +1,6 @@
 {
   "name": "exposer",
+  "interface": "0.0.0.0",
   "port": 7300,
   "schema": {
     "thug": "thug",

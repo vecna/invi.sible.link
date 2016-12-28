@@ -1,5 +1,6 @@
 {
   "port": 7200,
+  "interface": "0.0.0.0",
   "name": "vigile",
   "schema": {
     "promises": "promises",
