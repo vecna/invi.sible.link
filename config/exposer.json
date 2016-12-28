@@ -2,9 +2,9 @@
   "name": "exposer",
   "port": 7300,
   "schema": {
-    "log": "log",
     "thug": "thug",
     "phantom": "phantom",
+    "accesses": "accesses",
     "anomalies": "anomalies"
   },
   "mongodb": "mongodb://localhost/chopsticks",
@@ -23,7 +23,7 @@
   "verbose": true,
   "exitcrash": false,
   "env": {
-      "DEBUG": "exposer,dispatchPromise,various,getPage,getMass,getRetrieved,systemInfo"
+      "DEBUG": "exposer,dispatchPromise,various,getPage,getMass,getRetrieved,systemInfo,daily,mongo"
   },
   "ext": "js css json pug"
 }

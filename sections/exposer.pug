@@ -1,0 +1,27 @@
+doctype html
+html
+  head
+    link(rel='stylesheet', href='/css/index.css')
+    link(rel='stylesheet', href='/css/bootstrap.css')
+    link(rel='stylesheet', href='/css/c3.css')
+    script(type='text/javascript', src='/js/jquery.js')
+    script(type='text/javascript', src='/js/collapse.js')
+    script(type='text/javascript', src='/js/d3.min.js')
+    script(type='text/javascript', src='/js/c3.min.js')
+    script(type='text/javascript', src='/js/lodash.min.js')
+    script(type='text/javascript', src='/js/local/exposer.js')
+    title invi.sible.link - exposer
+
+  body(onload="byDay('basicReport', '#basicStatus'); ")
+  
+    .container-fluid
+        .jumbotron
+            h1 ⛅  Exposer of invi.sible.link
+
+    include navbar
+
+    .container-fluid
+        h2 Current test runned 
+    div#basicStatus
+
+    div.footer

@@ -6,15 +6,16 @@ var moment = require('moment');
 var bodyParser = require('body-parser');
 var Promise = require('bluebird');
 var mongodb = Promise.promisifyAll(require('mongodb'));
-var debug = require('debug')('storyteller');
+var debug = require('debug')('exposer');
 var nconf = require('nconf');
 
 var various = require('../lib/various');
-var routes = require('../routes/_storyteller');
+var mongo = require('../lib/mongo');
+var routes = require('../routes/_exposer');
 var dispatchPromise = require('../lib/dispatchPromise');
 var defaultSetup = require('../lib/sharedExpress');
 
-var cfgFile = "config/storyteller.json";
+var cfgFile = "config/exposer.json";
 var redOn = "\033[31m";
 var redOff = "\033[0m";
 
@@ -30,13 +31,23 @@ console.log("  Port " + nconf.get('port') + " listening");
 app.use(bodyParser.json({limit: '3mb'}));
 app.use(bodyParser.urlencoded({limit: '3mb', extended: true}));
 
+
 /* API specs: dispatchPromise is in /lib/, the argument is in ./routes */
 app.get('/api/v:version/system/info', function(req, res) {
     return dispatchPromise('systemInfo', routes, req, res);
 });
 
-app.get('/api/v:version/subjects', function(req, res) {
-    return dispatchPromise('getSubjects', routes, req, res);
+app.get('/api/v:version/getRetrieved/:what/:id', function(req, res) {
+    return dispatchPromise('getRetrieved', routes, req, res);
 });
 
-defaultSetup(app, dispatchPromise, express, routes, 'storyteller');
+app.post('/api/v:version/getMass', function(req, res) {
+    return dispatchPromise('getMass', routes, req, res);
+});
+
+app.get('/api/v:version/daily/:what', function(req, res) {
+    return dispatchPromise('getStats', routes, req, res);
+});
+
+
+defaultSetup(app, dispatchPromise, express, routes, 'exposer');

@@ -10,10 +10,11 @@ mkdir -p $V
 
 node_modules/.bin/stylus styles/index.styl -o dist/css
 cp pictures/*.png dist/images/
+cp styles/favicon.ico dist/
 cp node_modules/bootstrap/dist/css/bootstrap.* dist/css 
 cp node_modules/jquery/dist/jquery.js $V 
 cp node_modules/bootstrap/js/collapse.js $V 
-cp node_modules/d3/build/d3.min.js $V 
+cp node_modules/d3/d3.min.js $V 
 cp node_modules/c3/c3.min.js $V 
 cp node_modules/moment/min/moment.min.js $V 
 cp node_modules/c3/c3.css dist/css && 

@@ -3,12 +3,11 @@
   "VP": "",
   "source": "http://localhost:7200",
   "schema": {
-    "log": "log",
     "thug": "thug",
     "phantom": "phantom",
     "anomalies": "anomalies"
   },
   "amount": 30,
-  "concurrency": 2,
+  "concurrency": 10,
   "mongodb": "mongodb://localhost/chopsticks"
 }
