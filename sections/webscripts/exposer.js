@@ -7,20 +7,26 @@ function renderBasic(something, containerId) {
             json: something,
             keys: {
                 x: 'date',
-                value: ['tasks', 'subjects','connections','domains']
+                value: ['tasks', 'subjects', 'servers', 'domains']
             },
             types: {
                 subjects: 'line',
-                connections: 'line',
+                servers: 'line',
                 tasks: 'line',
                 domains: 'area'
             },
             colors: {
                 subjects: '#448800',
-                connections: '#f100f1',
+                servers: '#f100f1',
                 tasks: '#818081',
-                domains: '#0099BB'
-            }
+                domains: '#44ffff'
+            },
+            axes: {
+                subjects: 'y2',
+                servers: 'y',
+                tasks: 'y',
+                domains: 'y2'
+            },
         },
         axis: {
             x: {
@@ -29,6 +35,7 @@ function renderBasic(something, containerId) {
                     format: '%Y-%m-%d'
                 }
             },
+            y2: { 'show': true }
         }
     });
 };
