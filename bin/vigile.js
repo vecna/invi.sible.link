@@ -49,9 +49,6 @@ Promise.resolve(
 
 
 /* API specs: dispatchPromise is in /lib/, the argument is in ./routes */
-app.get('/api/v:version/system/info', function(req, res) {
-    return dispatchPromise('systemInfo', routes, req, res);
-});
 
 app.get('/api/v:version/getTasks/:vantagePoint/:amount', function(req, res) {
     return dispatchPromise('getTasks', routes, req, res);

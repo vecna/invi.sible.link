@@ -31,9 +31,6 @@ app.use(bodyParser.json({limit: '3mb'}));
 app.use(bodyParser.urlencoded({limit: '3mb', extended: true}));
 
 /* API specs: dispatchPromise is in /lib/, the argument is in ./routes */
-app.get('/api/v:version/system/info', function(req, res) {
-    return dispatchPromise('systemInfo', routes, req, res);
-});
 
 app.get('/api/v:version/subjects', function(req, res) {
     return dispatchPromise('getSubjects', routes, req, res);

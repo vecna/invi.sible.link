@@ -9,6 +9,24 @@ var various = require('../lib/various');
 var mongo = require('../lib/mongo');
 var urlutils= require('../lib/urlutils');
 
+function cutDataURL(lu, id) 
+{
+    var MAXSIZEURL = 4096;
+    var retval;
+    if(_.size(lu) > MAXSIZEURL) {
+        var i = lu.indexOf(';');
+        if(i !== -1) {
+            retval = lu.substring(0, i);
+        } else {
+            retval = lu.substring(0, 30) + '…';
+        }
+        debug("rr %d url get shortened as %s [long %d]",
+            id, retval, _.size(lu));
+        return retval;
+    }
+    return lu;
+};
+
 function cookieDissect(memo, block) {
     var separator = block.indexOf('=');
     if(separator !== -1) {
@@ -41,7 +59,7 @@ function manageCookies(memo, cookie) {
 function dissectHeaders(memo, hdr) {
 
     /* TODO: fare special, set-Cookie e le date, vanno parsate */
-    var standards = ['Content-Length', 'Content-Size', 'Content-Type', 'Server', ];
+    var standards = ['Content-Length', 'Content-Size', 'Content-Type', 'Server' ];
     var dates = [ 'Expires', 'Date', 'Last-Modified' ];
     var ignored = [ 'Vary', 'Content-Encoding', 'Connection', 'ETag', 'Accept-Ranges', 'Set-Cookie'];
 
@@ -73,23 +91,6 @@ function dissectHeaders(memo, hdr) {
     return memo;
 };
 
-function cutDataURL(lu, id) 
-{
-    var MAXSIZEURL = 4096;
-    var retval;
-    if(_.size(lu) > MAXSIZEURL) {
-        var i = lu.indexOf(';');
-        if(i !== -1) {
-            retval = lu.substring(0, i);
-        } else {
-            retval = lu.substring(0, 30) + '…';
-        }
-        debug("rr %d url get shortened as %s [long %d]",
-            id, retval, _.size(lu));
-        return retval;
-    }
-    return lu;
-};
 
 /* save in mongodb what is not going to be deleted after,
  * = the JSON from the fetcher, and the path associated for static files
@@ -163,7 +164,8 @@ function savePhantom(gold) {
     var needInfo = ['subjectId', 'href', 'needName', 'disk', 'phantom'];
     var core = _.pick(gold, needInfo);
     core.promiseId = gold.id;
-    core.version = 1;
+    core.version = 2;
+    core.VP = gold.config.VP;
 
     return fs
         .readFileAsync(gold.disk.incompath + '.json', 'utf-8')
