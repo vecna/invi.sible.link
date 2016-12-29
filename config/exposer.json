@@ -24,7 +24,7 @@
   "verbose": true,
   "exitcrash": false,
   "env": {
-      "DEBUG": "exposer,dispatchPromise,various,getPage,getMass,getRetrieved,systemInfo,daily,mongo"
+      "DEBUG": "exposer,route:*,lib:*"
   },
   "ext": "js css json pug"
 }

@@ -1,6 +1,6 @@
 var _ = require('lodash');
 var Promise = require('bluebird');
-var debug = require('debug')('getRetrieved');
+var debug = require('debug')('route:getRetrieved');
 var nconf = require('nconf');
  
 var mongo = require('../lib/mongo');

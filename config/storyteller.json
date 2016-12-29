@@ -23,7 +23,7 @@
   "verbose": true,
   "exitcrash": false,
   "env": {
-      "DEBUG": "chopsticks, directionTool, storyteller, vigile, dispatchPromise, mongo, pseudoRandom, stripper, subjectsOps, urlutils, various, getPage, getSubjects, getTasks, systemInfo"
+        "DEBUG": "storyteller,route:*,lib:*"
   },
   "ext": "js css json pug"
 }

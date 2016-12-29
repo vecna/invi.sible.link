@@ -46,5 +46,8 @@ app.get('/api/v:version/daily/:what', function(req, res) {
     return dispatchPromise('getStats', routes, req, res);
 });
 
+app.get('/api/v:version/surface', function(req, res) {
+    return dispatchPromise('getSurface', routes, req, res);
+});
 
 defaultSetup(app, dispatchPromise, express, routes, 'exposer');

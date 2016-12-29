@@ -20,23 +20,10 @@ html
 
     include exposerbar
 
-    p.text This server is not supposed to contain actual information, just to expose a couple of API, and surface statistics on the data collected by this 
-        b Vantage Point
-        |.
+    p.text Graph visualisation, currently facing some memory issue due to the large amount of not-indexed data. This might be solved using a scheduled analysis tool that generate results once per day.
 
-    table#listTable.display(cellspacing='0', width='100%')
-        thead
-            tr
-                th Site Tested
-                th Inclusions
-                th Javascript(s)
-                th Unique 3rd partis
-        tfoot
-            tr
-                th Site Tested
-                th Inclusions
-                th Javascript(s)
-                th Unique 3rd partis
+    .container-fluid
+        h3 Some basic stats describing what's going on
+    div#basicStatus
 
-    include footer
-
+    div.footer

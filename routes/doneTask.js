@@ -1,5 +1,5 @@
 var _ = require('lodash');
-var debug = require('debug')('doneTask');
+var debug = require('debug')('route:doneTask');
 var nconf = require('nconf');
  
 var mongo = require('../lib/mongo');
