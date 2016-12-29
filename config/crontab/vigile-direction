@@ -7,6 +7,7 @@ if [ ! -d $ISL ];
         cd $ISL
         # TODO, soon or later, this script shall execute different directions based on timezones and target of interest,
         # for example: mainstream media has to be checked around noon / 16 / 20 / 22 per national timezone
-        date +%j-%Y >> /tmp/ISL.log
+        echo `date +%c` "executing directionTool" >> /tmp/vigile.log
+        ps ax | grep mongod | grep -v grep >> /tmp/vigile.log
         node bin/directionTool.js
 fi
