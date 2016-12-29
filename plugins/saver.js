@@ -1,7 +1,7 @@
 var _ = require('lodash');
 var Promise = require('bluebird');
 var fs = Promise.promisifyAll(require('fs'));
-var debug = require('debug')('saver');
+var debug = require('debug')('plugin:saver');
 var moment = require('moment');
 var nconf = require('nconf');
 
@@ -99,25 +99,26 @@ function phantomCleaning(memo, rr, i) {
     
     /* here the data uri get cut off, and header get simplify */
     var id = rr.id;
+    var surl = cutDataURL(rr.url, id);
 
     if(_.isUndefined(memo[id])) {
         /* is the request */
-
-        var surl = cutDataURL(rr.url, id);
 
         memo[id] = {
                 url: surl,
                 requestTime: new Date(moment(rr.when).toISOString())
         };
         if(rr.method === "POST") {
-            memo.post = true;
+            memo[id].post = true;
             debug("Manage POST! %j", rr);
         }
+
+        if(id === 1)
+            memo[id].target = true;
+
     } else /* is the response: status 'start' or 'end' */ {
 
-        var surl = cutDataURL(rr.url, id);
-
-        if(rr.stage == "end") {
+        if(rr.stage === "end") {
             // debug("Skipping 'end' %s %s", memo[id].url, rr.url);
             return memo;
         }
@@ -156,7 +157,7 @@ function phantomCleaning(memo, rr, i) {
 
 };
 
-function savePhantom(gold) {
+function savePhantom(gold, conf) {
 
     if(_.isUndefined(gold.phantom))
         return false;
@@ -165,7 +166,7 @@ function savePhantom(gold) {
     var core = _.pick(gold, needInfo);
     core.promiseId = gold.id;
     core.version = 2;
-    core.VP = gold.config.VP;
+    core.VP = conf.VP;
 
     return fs
         .readFileAsync(gold.disk.incompath + '.json', 'utf-8')
@@ -192,6 +193,6 @@ module.exports = function(val, conf) {
 
     /* indepotent function saver is */
     return Promise
-        .all([ savePhantom(val), saveThug(val) ])
+        .all([ savePhantom(val, conf), saveThug(val) ])
         .return(val);
 }

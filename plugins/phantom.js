@@ -1,6 +1,6 @@
 var _ = require('lodash');
 var Promise = require('bluebird');
-var debug = require('debug')('phantom');
+var debug = require('debug')('plugin:phantom');
 var moment = require('moment');
 var fs = Promise.promisifyAll(require('fs'));
 var spawn = require('child_process').spawn;

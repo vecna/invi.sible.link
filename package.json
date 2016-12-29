@@ -12,7 +12,7 @@
     "storyteller": "nodemon --config config/storyteller.json bin/storyteller",
     "vigile": "nodemon --config config/vigile.json bin/vigile",
     "exposer": "nodemon --config config/exposer.json bin/exposer",
-    "chopsticks": "DEBUG=chopsticks,systemState,phantom,saver,confirmation node bin/chopsticks"
+    "chopsticks": "DEBUG=chopsticks,lib:*,plugin:* node bin/chopsticks"
   },
   "repository": {
     "type": "git",

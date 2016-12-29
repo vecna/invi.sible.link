@@ -1,5 +1,5 @@
 var _ = require('lodash');
-var debug = require('debug')('systemState');
+var debug = require('debug')('plugin:systemState');
 var os = require('os');
 
 function systemState(val, conf) {
