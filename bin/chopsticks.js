@@ -28,7 +28,8 @@ var directionByKind = {
         "plugins": [ "systemState", "phantom", "saver", "confirmation" ],
         "config": {
             maxSeconds: 30,
-            root: "./phantomtmp"
+            root: "./phantomtmp",
+            VP: VP
         }
     }
 };

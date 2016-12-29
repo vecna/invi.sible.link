@@ -4,5 +4,6 @@ module.exports = {
     getRetrieved:       require('./getRetrieved'),
     getMass:            require('./getMass'),
     getPage:            require('./getPage'),
-    getStats:           require('../lib/daily').byDayStats
+    getStats:           require('../lib/daily').byDayStats,
+    getSurface:         require('./getSurface')
 };

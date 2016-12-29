@@ -1,5 +1,6 @@
 {
   "port": 7200,
+  "interface": "0.0.0.0",
   "name": "vigile",
   "schema": {
     "promises": "promises",
@@ -23,7 +24,7 @@
   "verbose": true,
   "exitcrash": false,
   "env": {
-      "DEBUG": "chopsticks, directionTool, storyteller, vigile, dispatchPromise, pseudoRandom, stripper, subjectsOps, urlutils, various, getPage, getSubjects, getTasks, systemInfo"
+        "DEBUG": "vigile,route:*,lib:*"
   },
   "ext": "js css json pug"
 }

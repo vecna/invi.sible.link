@@ -1,5 +1,5 @@
 var _ = require('lodash');
-var debug = require('debug')('getPages');
+var debug = require('debug')('route:getPages');
 var pug = require('pug');
 
 var pugCompiler = function(filePrefix) {

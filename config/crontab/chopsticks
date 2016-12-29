@@ -2,10 +2,14 @@
 
 ISL="invi.sible.link"
 
-if [ ! -d $ISL ]; then echo `date +%H:%M` "invi.sible.link don't exists: failure in chopsticks scheduled running" >> /tmp/ISL.log ; fi
+if [ ! -d $ISL ]; then echo `date +%c` "invi.sible.link don't exists: failure in chopsticks scheduled running" >> /tmp/ISL.log ; fi
 
 cd $ISL
 # runs every two minutes, 10 in parallel is not bad, 35 * 3 slots is OK in 120 seconds,
 # timeout can be raise to 40 (+5) instead of 30, or the start can be incremental having
 # 1 seconds of delay between every phantom launch
-amount=30 concurrency=10 npm run chopsticks
+CLOG = "/tmp/chopsticks.log"
+echo `date +%c` "chopsticks starting" >> $CLOG
+ps ax | grep mongod | grep -v grep >> $CLOG
+uptime >> $CLOG
+amount=30 concurrency=10 node bin/chopsticks

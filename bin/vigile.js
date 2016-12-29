@@ -26,8 +26,8 @@ nconf.argv()
 console.log(redOn + "ઉ nconf loaded, using " + cfgFile + redOff);
 
 /* everything begin here, welcome */
-server.listen(nconf.get('port'), '0.0.0.0');
-console.log("  Port " + nconf.get('port') + " listening");
+server.listen(nconf.get('port'), nconf.get('interface') );
+console.log( nconf.get('interface') + ':' + nconf.get('port') + " listening");
 /* configuration of express4 */
 app.use(bodyParser.json({limit: '3mb'}));
 app.use(bodyParser.urlencoded({limit: '3mb', extended: true}));
@@ -49,9 +49,6 @@ Promise.resolve(
 
 
 /* API specs: dispatchPromise is in /lib/, the argument is in ./routes */
-app.get('/api/v:version/system/info', function(req, res) {
-    return dispatchPromise('systemInfo', routes, req, res);
-});
 
 app.get('/api/v:version/getTasks/:vantagePoint/:amount', function(req, res) {
     return dispatchPromise('getTasks', routes, req, res);

@@ -1,7 +1,7 @@
 var _ = require('lodash');
 var Promise = require('bluebird');
 var request = Promise.promisifyAll(require('request'));
-var debug = require('debug')('confirmation');
+var debug = require('debug')('plugin:confirmation');
 var moment = require('moment');
 var nconf = require('nconf');
 
