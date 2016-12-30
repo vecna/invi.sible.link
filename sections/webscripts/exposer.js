@@ -1,4 +1,35 @@
 
+
+var getSurface = function(containerId) {
+    var url = '/api/v1/surface';
+
+    $.getJSON(url, function(collections) {
+
+        /* convert collections with basic shape explained here 
+         * https://datatables.net/manual/data/ */
+        var converted = _.map(collections, function(list) {
+            var inserted = moment
+                .duration(moment() - moment(list.creationTime) )
+                .humanize() + " ago";
+            /* order matter, so I want to be sure here */
+			/* Site Tested Inclusions Javascript(s) Unique 3rd partis Time ago */
+            return [
+                list.url,
+                list.thirdparties,
+				list.scripts,
+				list.relations.length,
+                inserted
+            ];
+        });
+
+
+        $(containerId).DataTable( {
+            data: converted
+        });
+    });
+};
+
+
 function renderBasic(something, containerId) {
     console.log(something);
     return c3.generate({
