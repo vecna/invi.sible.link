@@ -14,12 +14,14 @@ var pugCompiler = function(filePrefix) {
 var pageMap = {
     'storyteller': pugCompiler('storyteller'),
     'vigile': pugCompiler('vigile'),
+    'graphs': pugCompiler('exposergraph'),
+    'raw': pugCompiler('raw'),
     'exposer': pugCompiler('exposer'),
     'subjects': pugCompiler('subjects'),
     'last': pugCompiler('last'),
     'project-plan': pugCompiler('projectPlan'),
     'about': pugCompiler('about'),
-    'report': pugCompiler('taskList'),
+    'report': pugCompiler('reportList'),
     '404': pugCompiler('404')
 };
 
