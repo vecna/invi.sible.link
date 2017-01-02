@@ -1,0 +1,92 @@
+block December
+ 
+    h1(class="reportTitle" id="December-16") December 2016
+
+    section(class="prototype-2")
+        h2 web Crawling and Orchestration works for me
+        p(class="task-description") The structure running is simple and easily to be distributed. It involved few componenents.
+
+            h3 Vigile (central authoritity)
+            p At 5AM GMT, a command is executed, it creates a list of tasks that has to be completed. This list is derived by the list of 
+                a(href="/subjects") Subjects under analysis
+                |, and can be reached publicly via API:
+
+            pre http http://invi.sible.link:7200/api/v1/getTasks/Aname/20
+            pre.
+              ۞  ~/Dev/invi.sible.link http http://invi.sible.link:7200/api/v1/getTasks/Aname/20
+                  [   {
+                          "AMS": true,
+                          "HK": true,
+                          "end": "2017-01-03T00:00:03.467Z",
+                          "href": "http://baidu.com",
+                          "id": "c0ff474789434497abdf3b335f1bdb1def18993a",
+                          "Aname": false,
+                          "needName": "basic",
+                          "rank": 1,
+                          "start": "2017-01-02T00:00:03.467Z",
+                          "subjectId": "b4ef98150c7eeb7c03afb40437ab4c34ec0620ad"
+                      }, {
+                          "AMS": true,
+                          "HK": true,
+                          "end": "2017-01-03T00:00:03.467Z",
+                          "href": "http://qq.com",
+                          "id": "54a5d8d9ce08d5899a782efb5adc73e29f62dd3d",
+                          "Aname": false,
+                          "needName": "basic",
+                          "rank": 2,
+                          "start": "2017-01-02T00:00:03.467Z",
+                          "subjectId": "35eabd32318c6082cb645fbacfe5bca8f2baeb50"
+                      }
+
+
+            p This model has technical properties that helps me in the orchestration:
+            ol
+                li the field 
+                    b needName
+                    |  specify the needs. At the moment, the only need is named
+                    code basic
+                    |  and means, crawl with phantomjs. This permit specialisation in distribution, because, if the vantage point don't support that test, can just skip to the next need.
+                li the fields 
+                    b HK
+                    |, 
+                    b AMS
+                    |  and  
+                    b Aname
+                    |  have boolean values. It mean if the vantage point (specified in the request) has absolved or not the task. The value 
+                    code false
+                    |  means the VP has only got the task, if the value is 
+                    code true
+                    |  means has solved the task and confirmed the execution.
+                li b start
+                    |  and 
+                    b end
+                    |  describe the window of time in which the task can be absolved.
+
+
+            h3 Chopsticks 
+            p quick and dirty approach: every two minutes contrab call for tasks to be done. ask for 30 to be exectuted 10 per time. maximum time 30 seconds, after 35 is killed. I'll measure performances and failure ratio later on.
+            p it saves and import in mongodb results
+            img(src="/images/phantom-db-unit.png")
+            p Above you can see the level of detail experimented now. Having many descriptive fields will helps finding correlation, trend, pattern.
+
+            h3 Exposer
+            p make the results available for who need these, referenced by the promiseId. It display some basic graph of the data stored. was it working with only 1 day of results, with more than one, require an optimization of the analytic, because is too big.
+            img(src="/images/surface-failing-web.png")
+            img(src="/images/surface-failing-terminal.png")
+            p As part of this improvement, the component 
+                b machete
+                |  will be completed.
+
+    section(class="preliminary-3")
+        h2 Visulisation with Raw and c3
+        p(class="task-description") Work in progress is integrating 
+            a(href="https://raw.densitydesign.org") RAW
+            |, framework, and 
+            a(href="https://c3js.org") c3
+            | To begin with a decent visualisation of technical results
+
+    section(class="prototype-1")
+        h2 Logical workflow of the pipeline
+        p(class="task-description") A decent distribution and resiliency is going on with the designed pipeline, here the 
+            a(href="https://github.com/vecna/invi.sible.link/tree/master/config/crontab") scheduled tasks
+            |. the next component will fetch from the result and complete the pipeline.
