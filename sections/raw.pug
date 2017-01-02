@@ -1,0 +1,32 @@
+doctype html
+html
+    head
+        link(rel='stylesheet', href='/css/index.css')
+        link(rel='stylesheet', href='/css/bootstrap.css')
+        link(rel='stylesheet', href='/css/c3.css')
+
+        script(type='text/javascript', src='/js/vendor/jquery.js')
+        script(type='text/javascript', src='/js/vendor/collapse.js')
+        script(type='text/javascript', src='/js/vendor/lodash.min.js')
+        script(type='text/javascript', src='/js/vendor/d3.min.js')
+        script(type='text/javascript', src='/js/vendor/hexbin.js')
+        script(type='text/javascript', src='/js/vendor/c3.min.js')
+
+        script(type='text/javascript', src='/lib/raw.js')
+        script(type='text/javascript', src='/js/local/raw.js')
+        title raw - invi.sible.link
+
+    body(onload="renderGraph('#container');")
+
+        .container-fluid
+            .jumbotron
+            h1 ⛅  Visualization of invi.sible.link
+            small.italic aaaa
+
+        include navbar
+
+        h2 Bom Dia, test `raw`
+        p.text aaa aaa
+        div(id="container")
+
+        div.footer
