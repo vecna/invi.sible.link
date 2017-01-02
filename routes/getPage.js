@@ -21,7 +21,7 @@ var pageMap = {
     'last': pugCompiler('last'),
     'project-plan': pugCompiler('projectPlan'),
     'about': pugCompiler('about'),
-    'report': pugCompiler('taskList'),
+    'report': pugCompiler('reportList'),
     '404': pugCompiler('404')
 };
 
