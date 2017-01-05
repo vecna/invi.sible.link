@@ -2,7 +2,8 @@
   "name": "machete",
   "schema": {
     "statistics": "statistics",
-    "campaigns": "campaigns"
+    "campaigns": "campaigns",
+    "subjects": "subjects"
   },
   "mongodb": "mongodb://localhost/ivl",
   "servers": [
@@ -14,6 +15,7 @@
   "tasks": [{
       "name": "statistics",
       "chain": {
+        "filter": null,
         "pickFromCore": null,
         "sources": [ "HK", "AMS", "WS", "Core" ],
         "fetch": "system/info",
@@ -22,11 +24,12 @@
         "save": "statistics"
       }
   },{
-      "name": "italian-media",
+      "name": "Italian Media",
       "chain": {
-        "pickFromCore": [ "getAssociatedTasks", "byName" ],
+        "filter": { "name" : "italian-media" },
+        "pickFromCore": "bySubjectLast7",
         "sources": [ "HK", "AMS", "WS" ],
-        "fetch": "getMass",
+        "fetch": "getBySubjectId",
         "singleProcess": null,
         "collectiveProcess": [ "defineWorst", "spotDiscriminations" ],
         "save": "campaigns"
@@ -34,9 +37,10 @@
   },{
       "name": "Brasil",
       "chain": {
-        "pickFromCore": [ "getAssociatedTasks", "byCountry" ],
+        "filter": { "iso3166": "BR" },
+        "pickFromCore": "bySubjectLast7",
         "sources": [ "HK", "AMS", "WS" ],
-        "fetch": "getMass",
+        "fetch": "getBySubjectId",
         "singleProcess": null,
         "collectiveProcess": [ "defineWorst", "spotDiscriminations" ],
         "save": "campaigns"
@@ -44,9 +48,10 @@
   },{
       "name": "Pornography",
       "chain": {
-        "pickFromCore": [ "getAssociatedTasks", "byCategory" ],
+        "filter": { "kind": "category", "name": "Pornography" },
+        "pickFromCore": "bySubjectLast7",
         "sources": [ "HK", "AMS", "WS" ],
-        "fetch": "getMass",
+        "fetch": "getBySubjectId",
         "singleProcess": null,
         "collectiveProcess": [ "defineWorst", "spotDiscriminations" ],
         "save": "campaigns"

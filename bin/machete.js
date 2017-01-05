@@ -28,7 +28,8 @@ debug("Based on task requested %s, sequence of commands is %s",
 function mongoSave(val) {
     var content = {
         when: new Date(),
-        data: val.data
+        data: val.data,
+        task: val.name,
     };
     return mongo.writeOne(logic.chain.save, content);
 };
@@ -47,7 +48,6 @@ function mongoSave(val) {
 
 return machetils.initialize(logic, nconf.get('servers'))
     .then(function(val) {
-        debug("%j", val);
         return Promise.map(val.logic.chain.sources, function(sn, i) {
             return machetils.fetchFrom(sn, val, i)
                 .then(machetils.singleProcess)
