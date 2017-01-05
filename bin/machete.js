@@ -24,13 +24,15 @@ var logic = _.find(nconf.get('tasks'), { name: task });
 debug("Based on task requested %s, sequence of commands is %s",
     task, JSON.stringify(logic, undefined, 2));
 
-function infoObj(nome) {
-    return {
-        'name': nome,
-        'when': new Date()
-          /* other info if needed */
+
+function mongoSave(val) {
+    var content = {
+        when: new Date(),
+        data: val.data
     };
+    return mongo.writeOne(logic.chain.save, content);
 };
+
 
 /*  Sequence for every task: 
     Having the 'logic' as starting value, we've a pipeline doing:
@@ -43,44 +45,15 @@ function infoObj(nome) {
     save: "statistics" → database where thing goes
   */
 
-return machetils.initialize(logic)
-    .tap(machetils.D)
+return machetils.initialize(logic, nconf.get('servers'))
     .then(function(val) {
-        return Promise.map(val.sources, function(s) {
-            debugger;
-            return machetils.fetchFrom(s, val)
-                .tap(machetils.D)
+        debug("%j", val);
+        return Promise.map(val.logic.chain.sources, function(sn, i) {
+            return machetils.fetchFrom(sn, val, i)
                 .then(machetils.singleProcess)
         }, {concurrency: 1})
     })
-    .tap(machetils.D)
     .then(machetils.compactList)
-    .tap(machetils.D)
     .then(machetils.collectiveProcess)
-    .tap(machetils.D)
     .then(mongoSave);
 
-    /*
-debug("Starting with concurrency %d", concValue);
-return request
-    .getAsync(url)
-    .then(function(response) {
-        return JSON.parse(response.body);
-    })
-    .then(function(content) {
-        return {
-            'data': content,
-            'info': [ infoObj("singleFetch") ],
-            'logic': task
-        };
-    })
-    .then(function(val) {
-        debug("Received %d needs", _.size(needs));
-        return needs;
-    })
-    .map(keepPromises, { concurrency: concValue })
-    .catch(function(error) {
-        debug("Unamanged error, chopstick breaks");
-        debug(error);
-    });
-  */

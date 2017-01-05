@@ -6,10 +6,10 @@
   },
   "mongodb": "mongodb://localhost/ivl",
   "servers": [
-      { "name": "HK", "host": "hk-vp.sible.link" },
-      { "name": "AMS", "host": "ams-vp.sible.link" },
-      { "name": "WS", "host": "ws-vp.sible.link" },
-      { "name": "Core", "host": "invi.sible.link" }
+      { "name": "HK", "host": "http://hk-vp.sible.link:7300" },
+      { "name": "AMS", "host": "http://ams-vp.sible.link:7300" },
+      { "name": "WS", "host": "http://ws-vp.sible.link:7300" },
+      { "name": "Core", "host": "https://invi.sible.link" }
   ],
   "tasks": [{
       "name": "statistics",

@@ -1,5 +1,5 @@
 #!/bin/sh
 date +%c >> /tmp/makesuremongod
 ps ax | grep mongod >> /tmp/makesuremongod
-service mongod start
+/usr/sbin/service mongod start
 
