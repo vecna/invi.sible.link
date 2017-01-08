@@ -24,6 +24,7 @@ function cutDataURL(lu, id)
             id, retval, _.size(lu));
         return retval;
     }
+    /* smaller dataurl are kept */
     return lu;
 };
 

@@ -13,8 +13,9 @@ var nconf = require('nconf');
 var mongo = require('../lib/mongo');
 var machetils = require('../lib/machetils');
 
-var cfgFile = "config/campaignChecker.json";
-nconf.argv().env().file({ file: cfgFile });
+nconf.argv().env();
+var cfgFile = nconf.get('config') || "config/campaignChecker.json";
+nconf.file({ file: cfgFile });
 
 var tname = nconf.get('campaign');
 var target = _.find(nconf.get('campaigns'), { name: tname });
@@ -33,12 +34,11 @@ function buildURLs(memo, page) {
 					page.id, target.dayswindow, 'BSL' ].join('/');
 		return {
 			url: url,
-			name: vp.name + ' ' + page.href,
+			page: page.href,
 			VP: vp.name,
 			subjectId: page.id
         }
 	});
-    debugger;
 	return _.concat(memo, subjectURLs);
 };
 
@@ -54,17 +54,29 @@ function getSubjectURLs(target) {
             debug("With filter %j we have %d subjects",
                 target.filter, _.size(S.pages));
 			return _.reduce(S.pages, buildURLs, []);
-        })
-		.tap(function(a) {
-			debugger;
 		});
 }
 
+function savedInfo(memo, subject) {
+
+	var target = _.head(subject.data);
+    if(!target) {
+        debug("Missing target in: %j", subject);
+        return memo;
+    }
+	target.macheteTiming = subject.timing;
+
+	var fieldstrip = ['disk','phantom' ];
+	var inclusions = _.map(_.tail(subject.data), function(rr) {
+		return _.omit(rr, fieldstrip);
+	})
+	return _.concat(memo, target, inclusions);
+};
+
 return getSubjectURLs(target)
-    .map(machetils.jsonFetch, {concurrency: 1})
-    .then(machetils.compactList)
-    .then(machetils.collectiveProcess)
-    .then(function(content) {
+    .map(machetils.jsonFetch, {concurrency: 4})
+    .reduce(savedInfo, [])
+	.then(function(content) {
 		return machetils
 			.mongoSave(nconf.get('target'), content, taskName);
 	})

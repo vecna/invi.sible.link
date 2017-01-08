@@ -1,4 +1,5 @@
 #!/usr/bin/env nodejs
+var _ = require('lodash');
 var Promise = require('bluebird');
 var debug = require('debug')('statusChecker');
 var nconf = require('nconf');
@@ -24,10 +25,16 @@ debug("Retriving stats from %s",
 
 return Promise
     .map(nconf.get('sources'), prepareURLs)
-    .map(machetils.jsonFetch, {concurrency: 1})
+    .map(machetils.jsonFetch, {concurrency: 4})
     .then(function(content) {
-        return machetils
-            .mongoSave(nconf.get('target'), content, taskName);
+        return _.map(content, function(c) {
+            return _.extend({name:
+                c.name
+            }, c.data.columns, c.data.freespace);
+        });
+    })
+    .then(function(cc) {
+        return machetils.mongoSave(nconf.get('target'), cc, taskName);
     })
     .tap(function(r) {
         debug("Operationg compeleted successfully");
