@@ -6,13 +6,18 @@ var nconf = require('nconf');
 var mongo = require('../lib/mongo');
 var machetils = require('../lib/machetils');
 
-var cfgFile = "config/statusChecker.json";
-nconf.argv().env().file({ file: cfgFile });
+nconf.argv().env();
+var cfgFile = nconf.get('config') || "config/statusChecker.json";
+nconf.file({ file: cfgFile });
 
 function prepareURLs(srcobj) {
     srcobj.url = srcobj.host + '/api/v1/' + 'system/info';
     return srcobj;
 }
+
+var taskName = nconf.get('taskName');
+if(!taskName)
+	throw new Error("need --taskName or env `taskName`");
 
 debug("Retriving stats from %s",
     JSON.stringify(nconf.get('sources'), undefined, 2) );
@@ -22,7 +27,7 @@ return Promise
     .map(machetils.jsonFetch, {concurrency: 1})
     .then(function(content) {
         return machetils
-            .mongoSave(nconf.get('target'), content);
+            .mongoSave(nconf.get('target'), content, taskName);
     })
     .tap(function(r) {
         debug("Operationg compeleted successfully");

@@ -38,7 +38,7 @@ app.get('/api/v:version/getRetrieved/:what/:id', function(req, res) {
     return dispatchPromise('getRetrieved', routes, req, res);
 });
 
-app.post('/api/v:version/:subjectId/:past/BSL', function(req, res) {
+app.get('/api/v:version/:subjectId/:past/BSL', function(req, res) {
     return dispatchPromise('bySubjectLast', routes, req, res);
 });
 
