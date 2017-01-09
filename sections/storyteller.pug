@@ -17,7 +17,7 @@ html
 
     title invi.sible.link
 
-  body
+    body(onload="subjectlist('#brasilSubject', 'Brasil-test'); lastOne('#lastBrasil', 'Brasil-test'); lastTrends('#brasilTrends', 'Brasil-test');")
 
     .container-fluid
       .jumbotron
@@ -29,34 +29,34 @@ html
     .container-fluid
       p.text This project is the continuation of 
         a(href="https://trackography.org") Trackography
-        |. Is it currently in α release release
+        |. Is it currently in α release, transition to the ß
 
-    table#listTable.display(cellspacing='0', width='100%')
-      thead
-        tr
-          th Campagin
-          th Tests
-          th Last test
-          th Site present
-      tfoot
-        tr
-          th Campagin
-          th Tests
-          th Last test
-          th Site present
+    .container-fluid
+      p.text Currently we are experimenting different visualization. The basic goal for the window between the second month (January) and the sixth (April) is:
+        ul
+          li Collect data, have historical reference
+          li Technical ability in extrapolate a subject and show results only of that subject.
+
+      h2 The roadmap split
+      p.text after the first two months, we are seeing the workflow operating. Now the roadmap splits in two paths.
+        ul
+          li Advocacy on web tracking
+          li Technical research on browser fingerprinting and users profiling
+
+    .container-fluid
+      h2 "Brasil" experiment
+      p.text Below some basic visualization intended to display how a campaign can focus on a cluster of websites. In this case, the Brazilian most visited website in last spring. Having pick this cluster of website has been completely random. You can think to "all the link shared with #BLM hashtag" or "all the news media in Pakistan" or "all the USG website". This clusterisation is a requirement to develop targeted campaign (and hopefully, escape from our bubble of techno-enthusiast)
+
+      h2 Subjects in analysis
+      div(id="brasilSubject")
+
+      h2 Last updated test
+      div(id="lastBrasil")
+
+      h2 Last days trend
+      div(id="lastTrends")
+
+
 
   include footer
 
-
-
-
-    link(rel='stylesheet', href='/css/index.css')
-    link(rel='stylesheet', href='/css/bootstrap.css')
-    link(rel='stylesheet', type='text/css', href='//cdn.datatables.net/1.10.12/css/jquery.dataTables.css')
-    script(type='text/javascript', src='/js/vendor/jquery.js')
-    script(type='text/javascript', charset='utf8', src='//cdn.datatables.net/1.10.12/js/jquery.dataTables.js')
-    script(type='text/javascript', src='/js/vendor/collapse.js')
-    script(type='text/javascript', src='/js/vendor/lodash.min.js')
-    script(type='text/javascript', src='/js/vendor/moment.min.js')
-    script(type='text/javascript', src='/js/local/subjects.js')
-    title ⛅  Subjects under scrutiny

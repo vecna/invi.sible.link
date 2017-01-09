@@ -4,6 +4,7 @@ if [ ! -d $ISL ]; then
     echo `date +%c` "invi.sible.link don't exists: failure in chopsticks scheduled running" >> /tmp/ISL.log ; 
     exit
 fi
+
 cd $ISL
 
 killall phantomjs
@@ -15,4 +16,4 @@ echo `date +%c` "   → chopsticks starting" >> $CLOG
 echo "Phantom running: "`ps ax | grep -v grep | grep -c phantom` >> $CLOG
 echo "mongod:          "`ps ax | grep mongod | grep -v grep` >> $CLOG
 uptime >> $CLOG
-amount=30 concurrency=10 node bin/chopsticks
+amount=30 concurrency=10 npm run chopsticks
