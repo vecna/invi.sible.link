@@ -1,0 +1,12 @@
+#!/usr/bin/env nodejs
+var os = require('os');
+var process = require('process');
+
+/*
+> process.env['USER']
+'oo'
+ */
+
+debugger;
+console.log(process.ENV);
+

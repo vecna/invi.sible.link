@@ -4,7 +4,9 @@
   "name": "storyteller",
   "schema": {
     "accesses": "accesses",
-    "subjects": "subjects"
+    "subjects": "subjects",
+    "statistics": "statistics",
+    "campaigns": "campaigns"
   },
   "mongodb": "mongodb://localhost/ivl",
 

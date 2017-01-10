@@ -36,4 +36,8 @@ app.get('/api/v:version/subjects', function(req, res) {
     return dispatchPromise('getSubjects', routes, req, res);
 });
 
+app.get('/api/v:version/stats/:hours', function(req, res) {
+    return dispatchPromise('getStats', routes, req, res);
+});
+
 defaultSetup(app, dispatchPromise, express, routes, 'storyteller');

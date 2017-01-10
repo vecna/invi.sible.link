@@ -19,6 +19,7 @@ var pageMap = {
     'exposer': pugCompiler('exposer'),
     'subjects': pugCompiler('subjects'),
     'last': pugCompiler('last'),
+    'stats': pugCompiler('stats'),
     'project-plan': pugCompiler('projectPlan'),
     'about': pugCompiler('about'),
     'report': pugCompiler('reportList'),

@@ -25,5 +25,6 @@
       "filter": { "name" : "clinics" },
       "dayswindow": 3
   }],
-  "target": "campaigns"
+  "evidences": "evidences",
+  "surface": "surface"
 }

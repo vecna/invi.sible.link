@@ -16,21 +16,25 @@ function lastOne(containerId, campaignName) {
 function lastTrends(containerId, campaignName) {
 };
 
+/*
     table#lastBrasil.display(cellspacing='0', width='100%')
       thead
         tr
           th website
-          th inclusions
+          th 3rd party domains
+          th external scrips
           th Last test
       tfoot
         tr
           th Campaign
           th Tests
           th Last test
+*/
 
 
-
-'#brasilSubject', 'Brasil-test'); lastOne('#lastBrasil', 'Brasil-test'); lastTrends('#brasilTrends', 'Brasil-test');")
+// subjectList('#brasilSubject', 'Brasil-test');
+// lastOne('#lastBrasil', 'Brasil-test');
+// lastTrends('#brasilTrends', 'Brasil-test');
 
 
 

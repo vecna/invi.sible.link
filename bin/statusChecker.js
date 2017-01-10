@@ -12,7 +12,7 @@ var cfgFile = nconf.get('config') || "config/statusChecker.json";
 nconf.file({ file: cfgFile });
 
 function prepareURLs(srcobj) {
-    srcobj.url = srcobj.host + '/api/v1/' + 'system/info';
+    srcobj.url = [ srcobj.host, 'api', 'v1', 'system', 'info' ].join('/');
     return srcobj;
 }
 
@@ -20,12 +20,10 @@ var taskName = nconf.get('taskName');
 if(!taskName)
 	throw new Error("need --taskName or env `taskName`");
 
-debug("Retriving stats from %s",
-    JSON.stringify(nconf.get('sources'), undefined, 2) );
-
 return Promise
     .map(nconf.get('sources'), prepareURLs)
     .map(machetils.jsonFetch, {concurrency: 4})
+    .then(_.compact)
     .then(function(content) {
         return _.map(content, function(c) {
             return _.extend({name:
@@ -34,8 +32,9 @@ return Promise
         });
     })
     .then(function(cc) {
+        debug("Saving %j", cc);
         return machetils.mongoSave(nconf.get('target'), cc, taskName);
     })
     .tap(function(r) {
-        debug("Operationg compeleted successfully");
+        debug("Operation compeleted!");
     });

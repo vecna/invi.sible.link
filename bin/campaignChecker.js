@@ -2,6 +2,7 @@
 var _ = require('lodash');
 var Promise = require('bluebird');
 var debug = require('debug')('campaignChecker');
+
 var nconf = require('nconf');
 /* ¹ a great result in Keep it Simple and Stupid has 
  * caused the death of the themed componented "machete",
@@ -24,9 +25,9 @@ if(!target)
 
 var taskName = nconf.get('taskName');
 if(!taskName)
-	throw new Error("need --taskName or env `taskName`");
+    throw new Error("need --taskName or env `taskName`");
 
-debug("Campaign selected is %s %d", target, target.dayswindow);
+debug("Task %s running for campaign %j", taskName, target);
 
 function buildURLs(memo, page) {
 	var subjectURLs = _.map(nconf.get('vantages'), function(vp) {
@@ -57,29 +58,81 @@ function getSubjectURLs(target) {
 		});
 }
 
-function savedInfo(memo, subject) {
+function saveAll(retrieved) {
+    return Promise
+        .reduce(retrieved, function (memo, subject) {
 
-	var target = _.head(subject.data);
-    if(!target) {
-        debug("Missing target in: %j", subject);
-        return memo;
-    }
-	target.macheteTiming = subject.timing;
+            var target = _.head(subject.data);
+            if(!target) {
+                debug("saveAll: missing target in: %j", subject);
+                return memo;
+            }
+            target.macheteTiming = subject.timing;
 
-	var fieldstrip = ['disk','phantom' ];
-	var inclusions = _.map(_.tail(subject.data), function(rr) {
-		return _.omit(rr, fieldstrip);
-	})
-	return _.concat(memo, target, inclusions);
+            var fieldstrip = ['disk','phantom' ];
+            var inclusions = _.map(_.tail(subject.data), function(rr) {
+                return _.omit(rr, fieldstrip);
+            })
+            return _.concat(memo, target, inclusions);
+        }, [])
+        .then(function(content) {
+            return machetils
+                .mongoSave(nconf.get('evidences'), content, taskName);
+        });
+}
+
+function updateSurface(retrieved) {
+    return Promise
+        .reduce(retrieved, function (memo, subject) {
+
+            var target = _.head(subject.data);
+
+            if(!target) {
+                debug("updateSurface: missing target in: %j", subject);
+                return memo;
+            }
+
+            /* this to keep track of the unique third party domains */
+            target.unique = {};
+
+            /* this to keep track of total javascriptps present to be analyzed */
+            target.javascripts = 0;
+
+            _.each(_.tail(subject.data), function(rr) {
+
+                if(_.isUndefined(target.unique[rr.domainId]))
+                    _.set(target.unique, rr.domainId, 0);
+
+                target.unique[rr.domainId] += 1;
+
+                if(rr['Content-Type'] && rr['Content-Type'].match('script')) {
+                    target.javascripts += 1;
+                    debug("This %s\tIS a JS", rr['Content-Type']);
+                } else {
+                    debug("     %s    not   Javascript", rr['Content-Type']);
+                }
+            })
+
+            return _.concat(memo, target);
+        }, [])
+        .then(function(content) {
+            return machetils
+                .mongoSave(nconf.get('surface'), content, taskName);
+        });
 };
 
+function numerize(list) {
+    debug("The list in this step has %d elements", _.size(list));
+}
+
 return getSubjectURLs(target)
+    .tap(numerize)
     .map(machetils.jsonFetch, {concurrency: 4})
-    .reduce(savedInfo, [])
-	.then(function(content) {
-		return machetils
-			.mongoSave(nconf.get('target'), content, taskName);
-	})
+    .tap(numerize)
+    .then(_.compact)
+    .tap(numerize)
+    .tap(saveAll)
+    .tap(updateSurface)
     .tap(function(r) {
         debug("Operationg compeleted successfully");
     });
