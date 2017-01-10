@@ -26,9 +26,10 @@ return Promise
     .then(_.compact)
     .then(function(content) {
         return _.map(content, function(c) {
-            return _.extend({name:
-                c.name
-            }, c.data.columns, c.data.freespace);
+            return _.extend({name: c.name,
+                             loadavg: c.data.loadavg },
+                            c.data.columns,
+                            c.data.freespace);
         });
     })
     .then(function(cc) {

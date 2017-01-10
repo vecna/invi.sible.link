@@ -7,23 +7,52 @@ var moment = require('moment');
 var mongo = require('../lib/mongo');
 
 function transform(coll) {
-   
-    var byDate = _.reduce(coll, function(memo, entry) {
-        var W = moment(entry.when).format("YYYY-MM-DD HH:mm");
+  
+    var formatstr = "YYYY-MM-DD HH:mm";
+    var memoryByDate = _.reduce(coll, function(memo, entry) {
+        var W = moment(entry.when).format(formatstr);
 
         if(!memo[W])
-            memo[W] = { date: moment(entry.when).format("YYYY-MM-DD HH:mm") };
+            memo[W] = { date: moment(entry.when).format(formatstr) };
             
         if(_.size(entry.name) <= 3) {
             /* is a Vantage Point, the only with 'saved' */
             _.set(memo[W], entry.name + 'saved', entry.phantom);
         } 
         _.set(memo[W], entry.name + 'accesses', entry.accesses);
+        return memo;
+    }, {});
+
+    var mongoByDate = _.reduce(coll, function(memo, entry) {
+        var W = moment(entry.when).format(formatstr);
+
+        if(!memo[W])
+            memo[W] = { date: moment(entry.when).format(formatstr) };
+            
         _.set(memo[W], entry.name + 'free', _.round(entry.free / 1024) );
         _.set(memo[W], entry.name + 'total', _.round(entry.total / 1024) );
         return memo;
     }, {});
-    return _.values(byDate);
+
+    var loadByDate = _.reduce(coll, function(memo, entry) {
+        if(!entry.loadavg || !entry.loadavg[0])
+            return memo;
+
+        var W = moment(entry.when).format(formatstr);
+        if(!memo[W])
+            memo[W] = { date: moment(entry.when).format(formatstr) };
+
+        _.set(memo[W], entry.name + 'load-0', _.round(entry.loadavg[0] * 1000) );
+        _.set(memo[W], entry.name + 'load-1', _.round(entry.loadavg[1] * 1000) );
+        _.set(memo[W], entry.name + 'load-2', _.round(entry.loadavg[2] * 1000) );
+        return memo;
+    }, {});
+
+    return { 
+        memory: _.values(memoryByDate),
+        mongo: _.values(mongoByDate),
+        loadavg: _.values(loadByDate),
+    };
 };
 
 function getStats(req) {
