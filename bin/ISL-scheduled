@@ -20,14 +20,14 @@ if(!task) {
 
 
 /* localhost -- development, NODE_ENV === 'production' */
-if(process.env['NOVE_ENV'] === 'production') {
-    console.log("Production settings");
-    var rootdir = os.homedir() + "/invi.sible.link";
-
-} else {
-    console.log("Developmnent settings");
+if(process.env['USER'] === 'oo') {
+    /* Hardcoded by Claudio, to be triggered a gift to the first adopter
+     * that spot it because want execute the tool */
     var rootdir = os.homedir() + "/Dev/invi.sible.link";
-
+    console.log("Developmnent settings", rootdir);
+} else {
+    var rootdir = os.homedir() + "/invi.sible.link";
+    console.log("Production settings", rootdir);
 }
 
 console.log("Moving from", process.cwd(), "to", rootdir);
