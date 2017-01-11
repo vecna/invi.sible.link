@@ -1,68 +1,33 @@
 
-/* This is one of the few C2 graph not using a daily timeserier but a minutae
- *          "AMS ",
- *          "HK ",
- *          "WS ",
- *          "Core ",
- */
+function renderStats(jsonData, containerId, VPs, keywords) {
 
-
-
-function renderStats(jsonData, containerId, linesInfo) {
-
-    var fields = _.flatten(_.map(linesInfo.vantagePoints, function(vpname) {
-        return _.map(linesInfo.keywords, function(kw) {
+    var fields = _.flatten(_.map(VPs, function(vpname) {
+        return _.map(keywords, function(kw) {
             return vpname + kw;
         });
     }));
 
-    var displayName = _.flatten(_.map(linesInfo.vantagePoints, function(vpname) {
-        return _.map(linesInfo.keywords, function(kw) {
+    var displayName = _.flatten(_.map(VPs, function(vpname) {
+        return _.map(keywords, function(kw) {
             return vpname + ' ' + kw;
         });
     }));
 
+    console.log(fields);
+    console.log(displayName);
+    console.log(jsonData);
+
     return c3.generate({
         bindto: containerId,
         data: {
-            json: something,
+            json: jsonData,
             keys: {
                 x: 'date',
                 value: fields
-                /* [ 
-                    "AMSsaved", "HKsaved", "WSsaved", 
-                    "AMSaccesses", "HKaccesses", "WSaccesses", "Coreaccesses",
-                    "AMSfree", "HKfree", "WSfree", "Corefree",
-                    "AMStotal", "HKtotal", "WStotal", "Coretotal"
-                ] */
             },
             xFormat: '%Y-%m-%d %H:%M',
+            type: 'spline',
             names: _.zipObject(fields, displayName)
-                /*
-            {
-                AMSsaved: "AMS saved",
-                HKsaved: "HK saved",
-                WSsaved: "WS saved", 
-                AMSaccesses: "AMS accesses",
-                HKaccesses: "HK accesses",
-                WSaccesses: "WS accesses",
-                Coreaccesses: "Core accesses",
-                AMSfree: "AMS free",
-                HKfree: "HK free",
-                WSfree: "WS free",
-                Corefree: "Core free",
-                AMStotal: "AMS total", 
-                HKtotal: "HK total", 
-                WStotal: "WS total", 
-                Coretotal: "Core total"
-            },   
-            */
-        },
-        color: {
-            pattern: ['#1f77b4', '#aec7e8', '#ff7f0e', '#ffbb78',
-                      '#2ca02c', '#98df8a', '#d62728', '#ff9896',
-                      '#9467bd', '#c5b0d5', '#8c564b', '#c49c94',
-                      '#e377c2', '#f7b6d2', '#7f7f7f' ]
         },
         axis: {
             x: {
@@ -77,20 +42,28 @@ function renderStats(jsonData, containerId, linesInfo) {
 
 function lastHours(config) {
 
+    var fieldSet = {
+        'loadavg': [ 'load-0', 'load-1'], //, 'load-2' ],
+        'memory': [ 'free' ], // , 'total' ],
+        'mongo': [ 'saved' ] // , 'accesses' ]
+    };
+    var VPs = [ 'HK', 'WS', 'AMS' ];
     var url = '/api/v1/stats/' + config.hours;
+
     console.log("Fetching last", config.hours, "from", url);
+
     d3.json(url, function(content) {
+
         console.log(content);
 
         if(config.memory)
-            var memoryChart = renderStats(content.memory, containerId);
+            var memoryChart = renderStats(content.memory, config.memory, VPs, fieldSet.memory);
 
         if(config.loadavg)
-            var loadavgChart = renderStats(content.loadavg, containerId);
+            var loadavgChart = renderStats(content.loadavg, config.loadavg, VPs, fieldSet.loadavg);
 
-        if(config.database)
-            var databaseChart = renderStats(content.database, containerId);
-
+        if(config.mongo)
+            var mongoChart = renderStats(content.mongo, config.mongo, VPs, fieldSet.mongo);
     });
 
 }

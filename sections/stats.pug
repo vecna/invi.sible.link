@@ -16,7 +16,7 @@ html
 
     title ⛅  invi.sible.link - Statistics
 
-    body(onload="lastHours({'hours': 48, 'loadavg': '#loadavg, 'memory': '#memory', 'database': '#database'});")
+    body(onload="lastHours({'hours': 48, 'loadavg': '#loadavg', 'memory': '#memory', 'mongo': '#database'});")
 
     .container-fluid
       .jumbotron
@@ -25,14 +25,16 @@ html
 
     include navbar
 
-    h2 Open statistics, they are part of the process
+    .container-fluid.text
+        h2 Open statistics, they are part of the process
+        p This display the last 48 hours for the vantage points
 
-    h3 Load Average
-    div(id="loadavg")
-    h3 Memory
-    div(id="memory")
-    h3 Database objects
-    div(id="database")
+        h3 Load Average
+        div(id="loadavg")
+        h3 Memory
+        div(id="memory")
+        h3 Database objects
+        div(id="database")
 
     include footer
 

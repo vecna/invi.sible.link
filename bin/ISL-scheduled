@@ -1,0 +1,75 @@
+#!/usr/bin/env nodejs
+var os = require('os');
+var process = require('process');
+var child_process = require('child_process');
+var nconf = require('nconf');
+
+nconf.argv().env();
+
+function simpleAppend(fname, what) {
+    console.log("Reporting", what, "in", fname);
+    var cmd = "echo `date +%c`  '" + what + "' >> /tmp/" + fname + ".append";
+    child_process.execSync(cmd);
+};
+
+var task = nconf.get('task')
+if(!task) {
+    console.log("tasks might be: statistics, campaign, chopsticks");
+    throw new Error("specify --task or env `task`");
+}
+
+
+/* localhost -- development, NODE_ENV === 'production' */
+if(process.env['NOVE_ENV'] === 'production') {
+    console.log("Production settings");
+    var rootdir = os.homedir() + "/invi.sible.link";
+
+} else {
+    console.log("Developmnent settings");
+    var rootdir = os.homedir() + "/Dev/invi.sible.link";
+
+}
+
+console.log("Moving from", process.cwd(), "to", rootdir);
+process.chdir(rootdir);
+
+if(task === 'statistics') {
+    simpleAppend("statistics", "calling now");
+    var cmd = 'bin/statusChecker.js > /tmp/statusChecker.log 2>&1'
+    child_process.execSync(cmd, {
+        'env': {
+            'DEBUG': '*',
+            'taskName': 'default-stats'
+        }
+    });
+    simpleAppend("statistics", "completed");
+} else if(task === 'chopsticks') {
+    simpleAppend("chopsticks", "calling now");
+    var cmd = 'npm run chopsticks > /tmp/chopsticks.log 2>&1'
+    child_process.execSync(cmd);
+    simpleAppend("chopsticks", "completed");
+} else if(task === 'vigile') {
+    simpleAppend("vigile", "calling now");
+    var cmd = 'bin/directionTool.js > /tmp/vigile-direction.log 2>&1'
+    child_process.execSync(cmd, {
+        'env': {
+            'DEBUG': '*'
+        }
+    });
+    simpleAppend("vigile", "completed");
+    child_process.execSync(cmd);
+} else if(task === 'campaign') {
+    var campname = nconf.get('campaign');
+    if(!campname) {
+        simpleAppend("campaign", "missing --campaign option, abort");
+    } else {
+        simpleAppend("campaign", "calling now " + campname);
+        var cmd = ''
+        child_process.execSync(cmd);
+        simpleAppend("campaign", "completed " + campname);
+    }
+} else {
+    simpleAppend("schedule-error", "UNRECOGNIZED task " + task);
+}
+
+

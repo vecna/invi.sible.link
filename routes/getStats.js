@@ -9,7 +9,7 @@ var mongo = require('../lib/mongo');
 function transform(coll) {
   
     var formatstr = "YYYY-MM-DD HH:mm";
-    var memoryByDate = _.reduce(coll, function(memo, entry) {
+    var mongoByDate = _.reduce(coll, function(memo, entry) {
         var W = moment(entry.when).format(formatstr);
 
         if(!memo[W])
@@ -23,7 +23,7 @@ function transform(coll) {
         return memo;
     }, {});
 
-    var mongoByDate = _.reduce(coll, function(memo, entry) {
+    var memoryByDate = _.reduce(coll, function(memo, entry) {
         var W = moment(entry.when).format(formatstr);
 
         if(!memo[W])

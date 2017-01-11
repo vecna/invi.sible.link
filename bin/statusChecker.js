@@ -26,15 +26,19 @@ return Promise
     .then(_.compact)
     .then(function(content) {
         return _.map(content, function(c) {
-            return _.extend({name: c.name,
-                             loadavg: c.data.loadavg },
+            return _.extend({ name: c.name,
+                              loadavg: c.data.loadavg },
                             c.data.columns,
                             c.data.freespace);
         });
     })
     .then(function(cc) {
-        debug("Saving %j", cc);
-        return machetils.mongoSave(nconf.get('target'), cc, taskName);
+        if(_.size(cc)) {
+            debug("Saving %j", cc);
+            return machetils.mongoSave(nconf.get('target'), cc, taskName);
+        } else {
+            debug("Network or application error: no data available!");
+        }
     })
     .tap(function(r) {
         debug("Operation compeleted!");
