@@ -39,10 +39,12 @@ function uniqueTargets(memo, subject) {
 
 function insertNeeds(fname) {
 
+    var filter = nconf.get('filter') || JSON.stringify({});
+    filter = JSON.parse(filter);
     return Promise
         .all([
             timeRanges(fname),
-            mongo.read(nconf.get('schema').subjects)
+            mongo.read(nconf.get('schema').subjects, filter)
         ])
         .then(function(inputs) {
             var targets = _.reduce(inputs[1], uniqueTargets, []);
