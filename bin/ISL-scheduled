@@ -64,12 +64,17 @@ if(task === 'statistics') {
         simpleAppend("campaign", "missing --campaign option, abort");
     } else {
         simpleAppend("campaign", "calling now " + campname);
-        var cmd = ''
-        child_process.execSync(cmd);
+        var cmd = 'bin/campaignChecker.js > /tmp/campaigChecker.log 2>&1';
+        child_process.execSync(cmd, {
+            'env': {
+                'DEBUG': '*',
+                'taskName': 'scheduled',
+                'campaign': campname
+            }
+        });
         simpleAppend("campaign", "completed " + campname);
     }
 } else {
     simpleAppend("schedule-error", "UNRECOGNIZED task " + task);
 }
-
 
