@@ -19,37 +19,25 @@ experiments, this might imply different boxes, management, etc.
  * implement basic API
  * fetch the data from machete
 
-## machete
+## scheduled collectors 
 
-*Machete is good to do everything, is like computadores*
--- a guide in a Costa Rica national park
+Some high level data and visualisation takes sense only if computed separately.
+I was thinking to generalize this sequence of tasks through the toll named
+`machete` but it is proven an unproper planning, because the reduction process
+changes too much to be generalized.
 
-**Runs potentially where it likes** 7100
+Therefore, the two scheduled execution currently implemented are:
 
- * fetch from the DB the raw results and do the analysis
- * analysis are exposed by storyteller
- * fetch and interpolate third party data
+### statusChecker
 
-    composition pipeline:
-      retrieveSubjects,
-        mongo
-        irresponsibles,
-        frequencies ?
-        reportAnomalies,
-        reportAnomalies,
-        fullifyPromises,
-        mongo
+It look at the API `/api/v1/system/info` every hour, and keep track of the
+load average, disk usage, memorized object in every machine contacted.
 
-      # !MVP/ISL?
-      iterateOnInclusions,
-        company,
-        countries ? (poulation or law)
-        unrecognized,
-        behavior (after thug ?)
-        reportAnomalies,
-        fullifyPromises,
-        mongo
-      
+### campaingChecker
+
+It look through all the Vantage Point to get information over the subject
+of a specific investigation, and update a daily report on the subject.
+
 
 ## vigile
 
@@ -92,7 +80,7 @@ has different execution pattern.
 
 **Runs whenever**
 
-Tooks input from machete API, generate output for the social media and
+Tooks input from scheduled resuls, generate output for the social media and
 contains the logic to automatize activities
 
 # requirements

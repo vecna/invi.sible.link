@@ -2,6 +2,9 @@ doctype html
 html
   head
     link(rel='stylesheet', href='/css/index.css')
+    link(rel='stylesheet', href='/css/bootstrap.css')
+    script(type='text/javascript', src='/js/vendor/jquery.js')
+    script(type='text/javascript', src='/js/vendor/collapse.js')
     title ☃ 404
 
   body
@@ -10,4 +13,11 @@ html
         h1 ☃ 
 
     h2.center ⛅  invi.sible.link: Page requested not found
+
+    hr
+    p.text.small stroyteller navigation bar:
+    include navbar
+    hr
+    p.text.small exposer navigation bar:
+    include exposerbar
 

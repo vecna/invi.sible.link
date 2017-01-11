@@ -1,0 +1,30 @@
+{
+  "name": "campaignChecker",
+  "schema": {
+    "subjects": "subjects"
+  },
+  "mongodb": "mongodb://localhost/ivl",
+  "vantages": [
+      { "name": "HK", "host": "http://hk-vp.sible.link:7300" },
+      { "name": "AMS", "host": "http://ams-vp.sible.link:7300" },
+      { "name": "WS", "host": "http://ws-vp.sible.link:7300" }
+  ],
+  "campaigns": [{
+      "name": "itamedia",
+      "description": "Italian media",
+      "filter": { "name" : "italian-media" },
+      "dayswindow": 3
+  }, {
+      "name": "BR",
+      "description": "Brazil top sites",
+      "filter": { "iso3166": "BR" },
+      "dayswindow": 5
+  }, {
+      "name": "cr",
+      "description": "Latin American online clinics",
+      "filter": { "name" : "clinics" },
+      "dayswindow": 3
+  }],
+  "evidences": "evidences",
+  "surface": "surface"
+}

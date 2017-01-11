@@ -1,0 +1,40 @@
+doctype html
+html
+  head
+    link(rel='stylesheet', href='/css/index.css')
+    link(rel='stylesheet', href='/css/bootstrap.css')
+    link(rel='stylesheet', href='/css/c3.css')
+
+    script(type='text/javascript', src='/js/vendor/jquery.js')
+    script(type='text/javascript', src='/js/vendor/collapse.js')
+    script(type='text/javascript', src='/js/vendor/lodash.min.js')
+    script(type='text/javascript', src='/js/vendor/moment.min.js')
+    script(type='text/javascript', src='/js/vendor/d3.min.js')
+    script(type='text/javascript', src='/js/vendor/c3.min.js')
+
+    script(type='text/javascript', src='/js/local/stats.js')
+
+    title ⛅  invi.sible.link - Statistics
+
+    body(onload="lastHours({'hours': 48, 'loadavg': '#loadavg', 'memory': '#memory', 'mongo': '#database'});")
+
+    .container-fluid
+      .jumbotron
+        h1 Stats of 
+        h2 ⛅  invi.sible.link
+
+    include navbar
+
+    .container-fluid.text
+        h2 Open statistics, they are part of the process
+        p This display the last 48 hours for the vantage points
+
+        h3 Load Average
+        div(id="loadavg")
+        h3 Memory
+        div(id="memory")
+        h3 Database objects
+        div(id="database")
+
+    include footer
+

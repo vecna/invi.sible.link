@@ -16,7 +16,6 @@ nconf.argv()
 
 var VP = nconf.get('VP');
 if(_.isUndefined(VP) || _.size(VP) === 0 ) {
-    console.log("VP, vantage point not found -- forced 'dummy'");
     VP = 'dummy';
 }
 

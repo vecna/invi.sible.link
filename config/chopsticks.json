@@ -1,6 +1,6 @@
 {
   "name": "chopsticks",
-  "VP": "",
+  "VP": "casa",
   "source": "http://localhost:7200",
   "schema": {
     "thug": "thug",

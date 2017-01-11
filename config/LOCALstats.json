@@ -1,0 +1,8 @@
+{
+  "name": "statusChecker",
+  "mongodb": "mongodb://localhost/ivl",
+  "sources": [
+      { "name": "localhost", "host": "http://localhost:7300" }
+  ],
+  "target": "statistics"
+}

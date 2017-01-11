@@ -24,6 +24,7 @@ function cutDataURL(lu, id)
             id, retval, _.size(lu));
         return retval;
     }
+    /* smaller dataurl are kept */
     return lu;
 };
 
@@ -183,7 +184,12 @@ function savePhantom(gold, conf) {
                 _.size(data), data[0].promiseId);
             return mongo.writeMany(nconf.get('schema').phantom, data);
         })
-        .return(true);
+        .return(true)
+        .catch(function(error) {
+            debug("Exception managed! %s %j indepotent function, not written db for promiseId %s",
+                    error, error, core.promisedId);
+            return false;
+        });
 };
 
 function saveThug(gold) {
