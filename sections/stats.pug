@@ -3,19 +3,20 @@ html
   head
     link(rel='stylesheet', href='/css/index.css')
     link(rel='stylesheet', href='/css/bootstrap.css')
+    link(rel='stylesheet', href='/css/c3.css')
+
     script(type='text/javascript', src='/js/vendor/jquery.js')
     script(type='text/javascript', src='/js/vendor/collapse.js')
     script(type='text/javascript', src='/js/vendor/lodash.min.js')
     script(type='text/javascript', src='/js/vendor/moment.min.js')
-    script(type='text/javascript', src='/js/local/stats.js')
-
-    link(rel='stylesheet', href='/css/c3.css')
     script(type='text/javascript', src='/js/vendor/d3.min.js')
     script(type='text/javascript', src='/js/vendor/c3.min.js')
 
+    script(type='text/javascript', src='/js/local/stats.js')
+
     title ⛅  invi.sible.link - Statistics
 
-  body(onload="last48hoursStats('#statistics');")
+    body(onload="lastHours({'hours': 48, 'loadavg': '#loadavg, 'memory': '#memory', 'database': '#database'});")
 
     .container-fluid
       .jumbotron
@@ -24,7 +25,14 @@ html
 
     include navbar
 
-    div(id="statistics")
+    h2 Open statistics, they are part of the process
+
+    h3 Load Average
+    div(id="loadavg")
+    h3 Memory
+    div(id="memory")
+    h3 Database objects
+    div(id="database")
 
     include footer
 

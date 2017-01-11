@@ -62,22 +62,31 @@ function saveAll(retrieved) {
     return Promise
         .reduce(retrieved, function (memo, subject) {
 
+            debugger;
             var target = _.head(subject.data);
             if(!target) {
-                debug("saveAll: missing target in: %j", subject);
+                memo.missingTarget += 1;
                 return memo;
             }
+            memo.target += 1;
             target.macheteTiming = subject.timing;
 
             var fieldstrip = ['disk','phantom' ];
             var inclusions = _.map(_.tail(subject.data), function(rr) {
                 return _.omit(rr, fieldstrip);
             })
-            return _.concat(memo, target, inclusions);
-        }, [])
+
+            memo.data = _.concat(memo.data, target, inclusions);
+            return memo;
+        }, { data: [], missingTarget: 0, target: 0 })
         .then(function(content) {
-            return machetils
-                .mongoSave(nconf.get('evidences'), content, taskName);
+            debug("saveAll has %d data, results: %d and %d missing",
+                _.size(content.data), content.target, content.missingTarget);
+
+            if(_.size(content.data)) {
+                return machetils
+                    .mongoSave(nconf.get('evidences'), content.data, taskName);
+            }
         });
 }
 
@@ -88,9 +97,10 @@ function updateSurface(retrieved) {
             var target = _.head(subject.data);
 
             if(!target) {
-                debug("updateSurface: missing target in: %j", subject);
+                memo.missingTarget += 1;
                 return memo;
             }
+            memo.target += 1;
 
             /* this to keep track of the unique third party domains */
             target.unique = {};
@@ -111,13 +121,19 @@ function updateSurface(retrieved) {
                 } else {
                     debug("     %s    not   Javascript", rr['Content-Type']);
                 }
-            })
+            });
 
-            return _.concat(memo, target);
-        }, [])
+            memo.data = _.concat(memo.data, target);
+            return memo;
+        }, {data: [], missingTarget: 0, target: 0 })
         .then(function(content) {
-            return machetils
-                .mongoSave(nconf.get('surface'), content, taskName);
+            debug("updateSurtface has %d data, results: %d and %d missing",
+                _.size(content.data), content.target, content.missingTarget);
+
+            if(_.size(content.data)) {
+                return machetils
+                    .mongoSave(nconf.get('surface'), content.data, taskName);
+            }
         });
 };
 
