@@ -62,7 +62,6 @@ function saveAll(retrieved) {
     return Promise
         .reduce(retrieved, function (memo, subject) {
 
-            debugger;
             var target = _.head(subject.data);
             if(!target) {
                 memo.missingTarget += 1;
@@ -143,7 +142,7 @@ function numerize(list) {
 
 return getSubjectURLs(target)
     .tap(numerize)
-    .map(machetils.jsonFetch, {concurrency: 4})
+    .map(machetils.jsonFetch, {concurrency: 10})
     .tap(numerize)
     .then(_.compact)
     .tap(numerize)

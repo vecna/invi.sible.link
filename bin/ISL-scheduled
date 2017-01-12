@@ -68,7 +68,8 @@ if(task === 'statistics') {
         child_process.execSync(cmd, {
             'env': {
                 'DEBUG': '*',
-                'taskName': 'scheduled',
+                'config': nconf.get('config'),
+                'taskName': nconf.get('task') || 'scheduled',
                 'campaign': campname
             }
         });

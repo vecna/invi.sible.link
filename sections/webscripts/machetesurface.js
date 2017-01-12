@@ -7,7 +7,43 @@ lastTrends: create a c3 simple graph with the top 10/? websites from the last an
 
  */
 
-function subjectlist(containerId, campaignName) {
+var x = " table#lastBrasil.display(cellspacing='0', width='100%') thead tr th website th 3rd party domains th external scrips th Last test tfoot tr th Campaign th Tests th Last test ";
+
+
+console.log(x);
+
+var subjectList= function(containerId) {
+    var url = '/api/v1/subjects/brasil';
+
+    $.getJSON(url, function(collections) {
+
+		$(containerId).html(x);
+
+        /* convert collections with basic shape explained here 
+         * https://datatables.net/manual/data/ */
+        var converted = _.map(collections, function(list) {
+            var inserted = moment
+                .duration(moment() - moment(list.creationTime) )
+                .humanize() + " ago";
+            /* order matter, so I want to be sure here */
+            return [
+                list.name,
+                list.kind,
+                moment(list.trueOn).format("YYYY-MM-DD"),
+                inserted,
+                list.siteCount
+            ];
+        });
+
+
+        $(containerId).DataTable( {
+            data: converted
+        });
+    });
+};
+
+
+function subjectList(containerId, campaignName) {
 }
 
 function lastOne(containerId, campaignName) {
@@ -15,22 +51,6 @@ function lastOne(containerId, campaignName) {
 
 function lastTrends(containerId, campaignName) {
 };
-
-/*
-    table#lastBrasil.display(cellspacing='0', width='100%')
-      thead
-        tr
-          th website
-          th 3rd party domains
-          th external scrips
-          th Last test
-      tfoot
-        tr
-          th Campaign
-          th Tests
-          th Last test
-*/
-
 
 // subjectList('#brasilSubject', 'Brasil-test');
 // lastOne('#lastBrasil', 'Brasil-test');
@@ -83,20 +103,9 @@ function byDay(something, containerId) {
     });
 };
 
-var kindMap = {
-    'brasil': [ 'daily/impressions', renderImpression ],
-    'users': [ 'daily/users', renderUsers ],
-    'metadata': [ 'daily/metadata', renderMetadata ]
-};
-
 
 
 function lastOne(kind, containerId) {
-
-    if( _.size(kindMap[kind]) !== 2 ) {
-        console.log("not yet supported", kind);
-        return;
-    }
 
     var url = '/api/v1/' + _.nth(kindMap[kind], 0);
     var renderF = _.nth(kindMap[kind], 1);
@@ -108,4 +117,6 @@ function lastOne(kind, containerId) {
     });
 
 }
+
+
 

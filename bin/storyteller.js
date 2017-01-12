@@ -32,7 +32,7 @@ app.use(bodyParser.urlencoded({limit: '3mb', extended: true}));
 
 /* API specs: dispatchPromise is in /lib/, the argument is in ./routes */
 
-app.get('/api/v:version/subjects', function(req, res) {
+app.get('/api/v:version/subjects/:campaign', function(req, res) {
     return dispatchPromise('getSubjects', routes, req, res);
 });
 
