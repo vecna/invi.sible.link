@@ -60,7 +60,7 @@ function getStats(req) {
 
     var hoursAgo= _.parseInt(req.params.hours);
     var isofmt = moment().subtract(hoursAgo, 'h').toISOString();
-    var filter = { task: 'statistics', when: { "$gt": new Date(isofmt) }};
+    var filter = { task: 'default-stats', when: { "$gt": new Date(isofmt) }};
     debug("getStats since %d hours ago, filter %j", hoursAgo, filter);
 
     return mongo
