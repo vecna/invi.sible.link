@@ -64,7 +64,7 @@ if(task === 'statistics') {
         simpleAppend("campaign", "missing --campaign option, abort");
     } else {
         simpleAppend("campaign", "calling now " + campname);
-        var cmd = 'bin/campaignChecker.js > /tmp/campaigChecker.log 2>&1';
+        var cmd = 'bin/campaignChecker.js > /tmp/campaignChecker.log 2>&1';
         child_process.execSync(cmd, {
             'env': {
                 'DEBUG': '*',
