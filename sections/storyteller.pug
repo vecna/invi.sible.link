@@ -17,7 +17,7 @@ html
 
     title invi.sible.link
 
-    body(onload="subjectlist('#brasilSubject', 'Brasil-test'); lastOne('#lastBrasil', 'Brasil-test'); lastTrends('#brasilTrends', 'Brasil-test');")
+    body(onload="subjectList('#subjectTable', 'BR'); lastOne('#lastBrasil', 'campaign'); mostUniqueTrackers('#worst', 'campaign');")
 
     .container-fluid
       .jumbotron
@@ -29,33 +29,55 @@ html
     .container-fluid
       p.text This project is the continuation of 
         a(href="https://trackography.org") Trackography
-        |. Is it currently in α release, transition to the ß
+        |. Is it currently in α release, transition to the ß. In the first Quarter of 2017, the goal is improve the pipeline with advocacy material and increase the evidences collected.
 
     .container-fluid
-      p.text Currently we are experimenting different visualization. The basic goal for the window between the second month (January) and the sixth (April) is:
-        ul
-          li Collect data, have historical reference
-          li Technical ability in extrapolate a subject and show results only of that subject.
-
-      h2 The roadmap split
-      p.text after the first two months, we are seeing the workflow operating. Now the roadmap splits in two paths.
-        ul
-          li Advocacy on web tracking
-          li Technical research on browser fingerprinting and users profiling
-
-    .container-fluid
-      h2 "Brasil" experiment
-      p.text Below some basic visualization intended to display how a campaign can focus on a cluster of websites. In this case, the Brazilian most visited website in last spring. Having pick this cluster of website has been completely random. You can think to "all the link shared with #BLM hashtag" or "all the news media in Pakistan" or "all the USG website". This clusterisation is a requirement to develop targeted campaign (and hopefully, escape from our bubble of techno-enthusiast)
+      h2 The 
+        b Brazil experiment
+      p.text 
+        b This is a data processing pipeline intended to feed advocacy campaign on websites
+        |. The visualizations below are intended to display how a campaign can focus on a cluster of websites; In this case, as nearly-reandom testing webisites, are took the top 100 Brazilian visited (on '16 Spring). 
+      p.text Other clusters of websites can be "
+        i all the link shared with #BLM hashtag
+        |" or "
+        i all the news media in Pakistan
+        |", until you can provide a list, I can add your campaign in this pipeline.
 
       h2 Subjects in analysis
-      div(id="brasilSubject")
+      div.text
+        table#subjectTable.display(cellspacing='0', width='100%')
+          thead
+            tr
+              th Href
+              th Description
+              th Rank
+          tfoot
+            tr
+              th Href
+              th Description
+              th Rank
 
       h2 Last updated test
-      div(id="lastBrasil")
+      div.text
+        table#lastBrasil.display(cellspacing='0', width='100%')
+          thead
+            tr
+              th Href
+              th Seen By
+              th Javascripts
+              th 3rd party Inclusions
+              th when
+          tfoot
+            tr
+              th Href
+              th Seen By
+              th Javascripts
+              th 3rd party Inclusions
+              th when
 
-      h2 Last days trend
-      div(id="lastTrends")
-
+      h2 Most unique trackers
+      p.text later on I'ill go deeper in profiling such trackers and extend their metadata.
+      div(id="worst")
 
 
   include footer

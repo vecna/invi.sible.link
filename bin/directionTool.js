@@ -90,8 +90,8 @@ function timeRanges(fname) {
             }
             return {
                 needName: content.needName,
-                start: new Date(start.toISOString()),
-                end: new Date(end.toISOString())
+                start: new Date(start.format("YYYY-MM-DD")),
+                end: new Date(end.format("YYYY-MM-DD"))
             };
         });
 }

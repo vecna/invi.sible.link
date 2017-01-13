@@ -86,3 +86,16 @@ contains the logic to automatize activities
 # requirements
 
 mongodb, node, npm, `npm install`
+
+# How to do a Vantage Point
+
+```
+git clone ...
+mkdir bin 
+cd bin
+ln -s ../invi.sible.link/bin/ISL-scheduled 
+
+crontab -e
+
+*/2 * * * * bin/ISL-scheduled --task chopsticks
+```

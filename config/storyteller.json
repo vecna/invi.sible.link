@@ -6,12 +6,14 @@
     "accesses": "accesses",
     "subjects": "subjects",
     "statistics": "statistics",
-    "campaigns": "campaigns"
+    "campaigns": "campaigns",
+    "surface": "surface",
+    "evidences": "evidences"
   },
   "mongodb": "mongodb://localhost/ivl",
 
   "watch": [
-      "storyteller.js",
+      "bin/storyteller.js",
       "lib/*.js",
       "sections/*.pug",
       "routes/*.js",

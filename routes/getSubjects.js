@@ -7,15 +7,18 @@ var mongo = require('../lib/mongo');
 var subjectsOps = require('../lib/subjectsOps');
 
 function getSubjects(req) {
-    /* don't take any option yet */
+    var campaign = _.get(req.params, 'campaign');
 
+    var filter = { 'public': true };
+    if(campaign)
+        filter = _.extend(filter, campaign);
+
+    debug("Using filter %j in case of wildcard test of the route", filter);
     return mongo
-        .read(nconf.get('schema').subjects, {
-            'public': true
-        })
+        .read(nconf.get('schema').subjects, filter)
         .then(function(subjects) {
-            debug("%s getSubjects = %d",
-                req.randomUnicode, _.size(subjects));
+            debug("%s getSubjects filter %j = %d",
+                req.randomUnicode, filter, _.size(subjects));
             return {
                 json: subjectsOps.serializeLists(subjects)
             };

@@ -7,105 +7,79 @@ lastTrends: create a c3 simple graph with the top 10/? websites from the last an
 
  */
 
-function subjectlist(containerId, campaignName) {
-}
+var subjectList= function(containerId, iso3166) {
+    var url = '/api/v1/campaign/' + iso3166;
+
+    $.getJSON(url, function(response) {
+
+        console.log(response);
+        var inserted = moment
+            .duration(moment() - moment(response.info.creationTime) )
+            .humanize() + " ago";
+
+        // $(containerId).append("ciao");
+
+        console.log(inserted);
+        $(containerId).DataTable( {
+            data: response.table
+        });
+    });
+};
+
 
 function lastOne(containerId, campaignName) {
-};
 
-function lastTrends(containerId, campaignName) {
-};
+    var url = '/api/v1/surface/' + campaignName;
 
-/*
-    table#lastBrasil.display(cellspacing='0', width='100%')
-      thead
-        tr
-          th website
-          th 3rd party domains
-          th external scrips
-          th Last test
-      tfoot
-        tr
-          th Campaign
-          th Tests
-          th Last test
-*/
+    $.getJSON(url, function(data) {
 
+        var tablized = _.map(data, function(e) {
+            var when = moment
+                .duration(moment() - moment(e.when) )
+                .humanize() + " ago";
+            return [ e.url, e.VP, e.javascripts, _.size(e.unique), when ];
+        });
 
-// subjectList('#brasilSubject', 'Brasil-test');
-// lastOne('#lastBrasil', 'Brasil-test');
-// lastTrends('#brasilTrends', 'Brasil-test');
-
-
-
-function byDay(something, containerId) {
-
-    var url = '/api/v1/' + _.nth(kindMap[kind], 0);
-    var renderF = _.nth(kindMap[kind], 1);
-
-    console.log("Fetching for", kind, "in", url);
-    d3.json(url, function(something) {
-        var chart = renderF(something, containerId);
-        /* eventually, we can manage updates of this chart */
+        $(containerId).DataTable( {
+            data: tablized
+        });
     });
+};
 
-    return c3.generate({
-        bindto: containerId,
-        data: {
-            json: something,
-            keys: {
-                x: 'date',
-                value: ['htmls','impressions','timelines']
+function mostUniqueTrackers(containerId, campaignName) {
+
+    var url= '/api/v1/mostUniqueTrackers/' + campaignName;
+
+    console.log(url);
+    d3.json(url, function(data) {
+
+        console.log(data);
+        return c3.generate({
+            bindto: containerId,
+            data: {
+                keys: {
+                    x: 'url',
+                    value: data.trackers
+                },
+                json: data.content,
+                type: 'scatter',
             },
-            axes: {
-                htmls: 'y',
-                impressions: 'y',
-                timelines: 'y2'
+            axis: {
+                x: {
+                    type: 'category'
+                }, 
+                y: {
+                    show: false
+                },
             },
-            types: {
-                htmls: 'line',
-                impressions: 'line',
-                timelines: 'area'
-            },
-            colors: {
-                timelines: '#f0e971'
-            }
-        },
-        axis: {
-            x: {
-                type: 'timeseries',
-                tick: {
-                    format: '%Y-%m-%d'
+            grid: {
+                x: {
+                    show: true
                 }
             },
-            y2: { show: true }
-        }
+            point: {
+                  r: 5
+            }
+        });
     });
 };
-
-var kindMap = {
-    'brasil': [ 'daily/impressions', renderImpression ],
-    'users': [ 'daily/users', renderUsers ],
-    'metadata': [ 'daily/metadata', renderMetadata ]
-};
-
-
-
-function lastOne(kind, containerId) {
-
-    if( _.size(kindMap[kind]) !== 2 ) {
-        console.log("not yet supported", kind);
-        return;
-    }
-
-    var url = '/api/v1/' + _.nth(kindMap[kind], 0);
-    var renderF = _.nth(kindMap[kind], 1);
-
-    console.log("Fetching for", kind, "in", url);
-    d3.json(url, function(something) {
-        var chart = renderF(something, containerId);
-        /* eventually, we can manage updates of this chart */
-    });
-
-}
-
