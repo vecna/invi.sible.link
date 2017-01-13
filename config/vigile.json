@@ -10,7 +10,7 @@
   "mongodb": "mongodb://localhost/ivl",
 
   "watch": [
-      "vigile.js",
+      "bin/vigile.js",
       "lib/*.js",
       "sections/*.pug",
       "routes/*.js",

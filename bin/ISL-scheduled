@@ -69,7 +69,7 @@ if(task === 'statistics') {
             'env': {
                 'DEBUG': '*',
                 'config': nconf.get('config'),
-                'taskName': nconf.get('task') || 'scheduled',
+                'taskName': nconf.get('name') || 'scheduled',
                 'campaign': campname
             }
         });

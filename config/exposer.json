@@ -10,7 +10,7 @@
   },
   "mongodb": "mongodb://localhost/chopsticks",
   "watch": [
-      "exposer.js",
+      "bin/exposer.js",
       "lib/*.js",
       "sections/*.pug",
       "routes/*.js",

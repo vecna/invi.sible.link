@@ -13,6 +13,7 @@ function getSubjects(req) {
     if(campaign)
         filter = _.extend(filter, campaign);
 
+    debug("Using filter %j in case of wildcard test of the route", filter);
     return mongo
         .read(nconf.get('schema').subjects, filter)
         .then(function(subjects) {

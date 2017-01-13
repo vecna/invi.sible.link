@@ -32,7 +32,19 @@ app.use(bodyParser.urlencoded({limit: '3mb', extended: true}));
 
 /* API specs: dispatchPromise is in /lib/, the argument is in ./routes */
 
-app.get('/api/v:version/subjects/:campaign', function(req, res) {
+app.get('/api/v:version/mostUniqueTrackers/:task', function(req, res) {
+    return dispatchPromise('getRanked', routes, req, res);
+});
+
+app.get('/api/v:version/surface/:task', function(req, res) {
+    return dispatchPromise('getSurface', routes, req, res);
+});
+
+app.get('/api/v:version/campaign/:cc', function(req, res) {
+    return dispatchPromise('getCampaignSubject', routes, req, res);
+});
+
+app.get('/api/v:version/subjects', function(req, res) {
     return dispatchPromise('getSubjects', routes, req, res);
 });
 

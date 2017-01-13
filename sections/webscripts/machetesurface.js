@@ -7,116 +7,79 @@ lastTrends: create a c3 simple graph with the top 10/? websites from the last an
 
  */
 
-var x = " table#lastBrasil.display(cellspacing='0', width='100%') thead tr th website th 3rd party domains th external scrips th Last test tfoot tr th Campaign th Tests th Last test ";
+var subjectList= function(containerId, iso3166) {
+    var url = '/api/v1/campaign/' + iso3166;
 
+    $.getJSON(url, function(response) {
 
-console.log(x);
+        console.log(response);
+        var inserted = moment
+            .duration(moment() - moment(response.info.creationTime) )
+            .humanize() + " ago";
 
-var subjectList= function(containerId) {
-    var url = '/api/v1/subjects/brasil';
+        // $(containerId).append("ciao");
 
-    $.getJSON(url, function(collections) {
-
-		$(containerId).html(x);
-
-        /* convert collections with basic shape explained here 
-         * https://datatables.net/manual/data/ */
-        var converted = _.map(collections, function(list) {
-            var inserted = moment
-                .duration(moment() - moment(list.creationTime) )
-                .humanize() + " ago";
-            /* order matter, so I want to be sure here */
-            return [
-                list.name,
-                list.kind,
-                moment(list.trueOn).format("YYYY-MM-DD"),
-                inserted,
-                list.siteCount
-            ];
-        });
-
-
+        console.log(inserted);
         $(containerId).DataTable( {
-            data: converted
+            data: response.table
         });
     });
 };
 
-
-function subjectList(containerId, campaignName) {
-}
 
 function lastOne(containerId, campaignName) {
-};
 
-function lastTrends(containerId, campaignName) {
-};
+    var url = '/api/v1/surface/' + campaignName;
 
-// subjectList('#brasilSubject', 'Brasil-test');
-// lastOne('#lastBrasil', 'Brasil-test');
-// lastTrends('#brasilTrends', 'Brasil-test');
+    $.getJSON(url, function(data) {
 
+        var tablized = _.map(data, function(e) {
+            var when = moment
+                .duration(moment() - moment(e.when) )
+                .humanize() + " ago";
+            return [ e.url, e.VP, e.javascripts, _.size(e.unique), when ];
+        });
 
-
-function byDay(something, containerId) {
-
-    var url = '/api/v1/' + _.nth(kindMap[kind], 0);
-    var renderF = _.nth(kindMap[kind], 1);
-
-    console.log("Fetching for", kind, "in", url);
-    d3.json(url, function(something) {
-        var chart = renderF(something, containerId);
-        /* eventually, we can manage updates of this chart */
+        $(containerId).DataTable( {
+            data: tablized
+        });
     });
+};
 
-    return c3.generate({
-        bindto: containerId,
-        data: {
-            json: something,
-            keys: {
-                x: 'date',
-                value: ['htmls','impressions','timelines']
+function mostUniqueTrackers(containerId, campaignName) {
+
+    var url= '/api/v1/mostUniqueTrackers/' + campaignName;
+
+    console.log(url);
+    d3.json(url, function(data) {
+
+        console.log(data);
+        return c3.generate({
+            bindto: containerId,
+            data: {
+                keys: {
+                    x: 'url',
+                    value: data.trackers
+                },
+                json: data.content,
+                type: 'scatter',
             },
-            axes: {
-                htmls: 'y',
-                impressions: 'y',
-                timelines: 'y2'
+            axis: {
+                x: {
+                    type: 'category'
+                }, 
+                y: {
+                    show: false
+                },
             },
-            types: {
-                htmls: 'line',
-                impressions: 'line',
-                timelines: 'area'
-            },
-            colors: {
-                timelines: '#f0e971'
-            }
-        },
-        axis: {
-            x: {
-                type: 'timeseries',
-                tick: {
-                    format: '%Y-%m-%d'
+            grid: {
+                x: {
+                    show: true
                 }
             },
-            y2: { show: true }
-        }
+            point: {
+                  r: 5
+            }
+        });
     });
 };
-
-
-
-function lastOne(kind, containerId) {
-
-    var url = '/api/v1/' + _.nth(kindMap[kind], 0);
-    var renderF = _.nth(kindMap[kind], 1);
-
-    console.log("Fetching for", kind, "in", url);
-    d3.json(url, function(something) {
-        var chart = renderF(something, containerId);
-        /* eventually, we can manage updates of this chart */
-    });
-
-}
-
-
-
