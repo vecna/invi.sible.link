@@ -19,6 +19,7 @@ var cfgFile = nconf.get('config') || "config/campaignChecker.json";
 nconf.file({ file: cfgFile });
 
 var tname = nconf.get('campaign');
+debug("using target name %s to be search in %j", tname, nconf.get('campaigns'));
 var target = _.find(nconf.get('campaigns'), { name: tname });
 if(!target)
 	throw new Error("specify --campaign or env `campaign`");
