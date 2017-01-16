@@ -33,7 +33,7 @@ function renderStats(jsonData, containerId, VPs, keywords) {
             x: {
                 type: 'timeseries',
                 tick: {
-                    format: '%d %H:%M'
+                    format: '%d ፨ %H:%M'
                 },
             }
         }

@@ -53,7 +53,8 @@ if(task === 'statistics') {
     var cmd = 'bin/directionTool.js > /tmp/vigile-direction.log 2>&1'
     child_process.execSync(cmd, {
         'env': {
-            'DEBUG': '*'
+            'DEBUG': '*',
+            'filter': nconf.get('filter')
         }
     });
     simpleAppend("vigile", "completed");
