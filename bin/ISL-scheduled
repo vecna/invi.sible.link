@@ -49,12 +49,13 @@ if(task === 'statistics') {
     child_process.execSync(cmd);
     simpleAppend("chopsticks", "completed");
 } else if(task === 'vigile') {
-    simpleAppend("vigile", "calling now");
+    var filter = nconf.get('filter') || "";
+    simpleAppend("vigile", "calling now [filter: " + filter + "]");
     var cmd = 'bin/directionTool.js > /tmp/vigile-direction.log 2>&1'
     child_process.execSync(cmd, {
         'env': {
             'DEBUG': '*',
-            'filter': nconf.get('filter')
+            'filter': filter
         }
     });
     simpleAppend("vigile", "completed");

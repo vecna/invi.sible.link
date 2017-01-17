@@ -14,13 +14,17 @@ function doneTask(req) {
         .read(nconf.get('schema').promises, {id: id})
         .tap(function(anomaly) {
             if(_.size(anomaly) !== 1) {
-                debug("This is very bad! %s", JSON.stringify(anomaly, undefined, 2));
+                /* this happen when the same website has been set more than once per day */
+                debug("Anomaly1, dup: for subject %s %s (amount %d)?",
+                    anomaly.subjectId, anomaly.url, _.size(anomaly) );
+                /* This is not ok because below is used _.first and this will screw up align */
             }
         })
         .then(_.first)
         .then(function(solved) {
-            if(solved[vantagePoint] !== false)
-                debug("Anomaly in %s %d = %j", id, vantagePoint, solved);
+            if(solved[vantagePoint] !== false) {
+                debug("Anomaly2: %s VP %s not false in %j", id, vantagePoint, solved);
+            }
 
             solved[vantagePoint] = true;
 

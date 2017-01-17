@@ -88,7 +88,6 @@ function tasksInsertion(containerId) {
             return memo;
         }, []));
 
-        console.log(fields);
         console.log(data);
 
         return c3.generate({
@@ -97,7 +96,7 @@ function tasksInsertion(containerId) {
                 json: data,
                 keys: {
                     x: 'when',
-                    value: fields
+                    value: _.orderBy(fields)
                 },
                 type: 'bar',
             },

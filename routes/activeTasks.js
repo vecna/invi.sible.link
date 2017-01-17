@@ -6,8 +6,6 @@ var nconf = require('nconf');
 var mongo = require('../lib/mongo');
 
 function increment(destd, fk, sk) {
-    debug("--- %j %s %s ", destd, fk, sk);
-
     if(_.isUndefined(_.get(destd[fk], sk))) {
         destd[fk][sk] = 1;
     } else {
@@ -22,7 +20,6 @@ function activeTasks(req) {
 
     debug("%s activeTasks max %d from %s",
         req.randomUnicode, amount, vantagePoint);
-
 
     var twodaysago = moment().subtract(2, 'd');
     var selector = { "end": { "$gt": new Date(twodaysago) } };
@@ -58,7 +55,6 @@ function activeTasks(req) {
                 throw new Error("Someone has forget to configure the 'expected' in config");
 
             var c = _.reduce(taskList, function(memo, task) {
-                debug("1 %s", JSON.stringify(memo, undefined, 2));
                 increment(memo, task.day, 'total');
                 _.each(VPs, function(vp) {
                     var test = _.get(task, vp);
@@ -67,7 +63,6 @@ function activeTasks(req) {
                     if(test === true)
                         increment(memo, task.day, vp);
                 });
-                debug("2 %s", JSON.stringify(memo, undefined, 2));
                 return memo;
             }, {
                 'today': { 'when': 'today' },
