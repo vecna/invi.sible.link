@@ -16,7 +16,7 @@ html
 
     title ⛅  invi.sible.link - Statistics
 
-    body(onload="lastHours({'hours': 48, 'loadavg': '#loadavg', 'memory': '#memory', 'mongo': '#database'});")
+    body(onload="tasksInsertion('#tasks'); lastHours({'hours': 48, 'loadavg': '#loadavg', 'memory': '#memory', 'mongo': '#database'});")
 
     .container-fluid
       .jumbotron
@@ -26,7 +26,12 @@ html
     include navbar
 
     .container-fluid.text
-        h2 Open statistics, they are part of the process
+        h2 Tasks: promises and solutions
+        p This is the amount of scan request issued by the orchestration point
+        div(id="tasks")
+
+    .container-fluid.text
+        h2 Open statistics, as part of the open process
         p This display the last 48 hours for the vantage points
 
         h3 Load Average

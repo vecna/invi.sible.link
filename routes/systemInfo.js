@@ -1,6 +1,6 @@
 var _ = require('lodash');
 var Promise = require('bluebird');
-var debug = require('debug')('systemInfo');
+var debug = require('debug')('route:systemInfo');
 var disk = Promise.promisifyAll(require('diskusage'));
 var os = require('os');
 var nconf = require('nconf');
@@ -27,6 +27,7 @@ function systemInfo(req) {
                 .then(function(freebytes) {
                     return {
                         json: {
+                            rootspace: freebytes,
                             columns: namedNumbers,
                             loadavg: os.loadavg(),
                             totalmem: os.totalmem(),

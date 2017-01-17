@@ -23,10 +23,10 @@ if(!task) {
 if(process.env['USER'] === 'oo') {
     /* Hardcoded by Claudio, to be triggered a gift to the first adopter
      * that spot it because want execute the tool */
-    var rootdir = os.homedir() + "/Dev/invi.sible.link";
+    var rootdir = os.homedir() + "/Dev/invi.sible.link/";
     console.log("Developmnent settings", rootdir);
 } else {
-    var rootdir = os.homedir() + "/invi.sible.link";
+    var rootdir = os.homedir() + "/invi.sible.link/";
     console.log("Production settings", rootdir);
 }
 
@@ -65,15 +65,15 @@ if(task === 'statistics') {
         simpleAppend("campaign", "missing --campaign option, abort");
     } else {
         simpleAppend("campaign", "calling now " + campname);
+        var ourEnv = {
+            'DEBUG': '*',
+            'config': rootdir + (nconf.get('config') || "config/campaignChecker.json"),
+            'taskName': nconf.get('name') || 'scheduled',
+            'campaign': campname
+        };
+        simpleAppend("campaign", "Environment: " + JSON.stringify(ourEnv));
         var cmd = 'bin/campaignChecker.js > /tmp/campaignChecker.log 2>&1';
-        child_process.execSync(cmd, {
-            'env': {
-                'DEBUG': '*',
-                'config': nconf.get('config'),
-                'taskName': nconf.get('name') || 'scheduled',
-                'campaign': campname
-            }
-        });
+        child_process.execSync(cmd, { 'env': ourEnv });
         simpleAppend("campaign", "completed " + campname);
     }
 } else {

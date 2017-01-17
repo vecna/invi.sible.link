@@ -1,6 +1,6 @@
 var _ = require('lodash');
 var Promise = require('bluebird');
-var debug = require('debug')('getTasks');
+var debug = require('debug')('route:getTasks');
 var nconf = require('nconf');
  
 var mongo = require('../lib/mongo');
@@ -24,8 +24,8 @@ function getTasks(req) {
     var vantagePoint = req.params.vantagePoint;
     var amount = _.parseInt(req.params.amount);
 
-    debug("%s %s asks getTasks %d",
-        req.randomUnicode, vantagePoint, amount);
+    debug("%s getTasks max %d from %s",
+        req.randomUnicode, amount, vantagePoint);
 
     var selector = {
         "start": { "$lt": new Date() },
@@ -40,6 +40,10 @@ function getTasks(req) {
         })
         .then(function(taskList) {
             return markVantagePoint(vantagePoint, taskList)
+                .tap(function(marked) {
+                    debug("taskList returns %d tasks updated for VP [%s]",
+                        _.size(taskList), vantagPoint);
+                })
                 .return({
                     json: taskList
                 });

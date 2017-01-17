@@ -12,6 +12,11 @@ function doneTask(req) {
 
     return mongo
         .read(nconf.get('schema').promises, {id: id})
+        .tap(function(anomaly) {
+            if(_.size(anomaly) !== 1) {
+                debug("This is very bad! %s", JSON.stringify(anomaly, undefined, 2));
+            }
+        })
         .then(_.first)
         .then(function(solved) {
             if(solved[vantagePoint] !== false)

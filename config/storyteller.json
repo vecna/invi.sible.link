@@ -7,10 +7,12 @@
     "subjects": "subjects",
     "statistics": "statistics",
     "campaigns": "campaigns",
+    "promises": "promises",
     "surface": "surface",
     "evidences": "evidences"
   },
   "mongodb": "mongodb://localhost/ivl",
+  "expected": [ "HK", "AMS", "WS", "casa" ],
 
   "watch": [
       "bin/storyteller.js",
@@ -27,7 +29,7 @@
   "verbose": true,
   "exitcrash": false,
   "env": {
-        "DEBUG": "storyteller,route:*,lib:*"
+        "DEBUG": "storyteller,route:*,lib:*,-lib:urlutils"
   },
   "ext": "js css json pug"
 }

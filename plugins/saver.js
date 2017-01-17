@@ -114,8 +114,13 @@ function phantomCleaning(memo, rr, i) {
             debug("Manage POST! %j", rr);
         }
 
-        if(id === 1)
+        /* if is not the first object, don't save phantom and disk 
+         * because they are just the same */
+        if(id === 1) {
             memo[id].target = true;
+        } else {
+            memo[id] = _.omit(memo[id], ['phantom', 'disk' ]);
+        }
 
     } else /* is the response: status 'start' or 'end' */ {
 

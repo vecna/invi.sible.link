@@ -15,7 +15,10 @@ var mongo = require('../lib/mongo');
 var machetils = require('../lib/machetils');
 
 nconf.argv().env();
-var cfgFile = nconf.get('config') || "config/campaignChecker.json";
+
+var cfgFile = nconf.get('config') 
+if(!cfgFile)
+    throw new Error("config file has to be explicit and full path here");
 nconf.file({ file: cfgFile });
 
 var tname = nconf.get('campaign');
@@ -61,7 +64,7 @@ function getSubjectURLs(target) {
 
 function saveAll(retrieved) {
     return Promise
-        .reduce(retrieved, function (memo, subject) {
+        .reduce(retrieved, function (memo, subject, i, total) {
 
             var target = _.head(subject.data);
             if(!target) {
@@ -75,6 +78,10 @@ function saveAll(retrieved) {
             var inclusions = _.map(_.tail(subject.data), function(rr) {
                 return _.omit(rr, fieldstrip);
             })
+
+            debug("SavingAll %f%% of %d elements, objects so far %d + %d",
+                _.round(((100 / total) * i), 2), total,
+                _.size(memo.data), _.size(inclusions));
 
             memo.data = _.concat(memo.data, target, inclusions);
             return memo;
@@ -92,7 +99,7 @@ function saveAll(retrieved) {
 
 function updateSurface(retrieved) {
     return Promise
-        .reduce(retrieved, function (memo, subject) {
+        .reduce(retrieved, function (memo, subject, i, total) {
 
             var target = _.head(subject.data);
 
@@ -104,7 +111,6 @@ function updateSurface(retrieved) {
 
             /* this to keep track of the unique third party domains */
             target.unique = {};
-
             /* this to keep track of total javascriptps present to be analyzed */
             target.javascripts = 0;
 
@@ -115,13 +121,12 @@ function updateSurface(retrieved) {
 
                 target.unique[rr.domainId] += 1;
 
-                if(rr['Content-Type'] && rr['Content-Type'].match('script')) {
+                if(rr['Content-Type'] && rr['Content-Type'].match('script'))
                     target.javascripts += 1;
-                    debug("This %s\tIS a JS", rr['Content-Type']);
-                } else {
-                    debug("     %s    not   Javascript", rr['Content-Type']);
-                }
             });
+
+            debug("Surface %f%% of %d elements, JS %d",
+                _.round(((100 / total) * i), 2), total, target.javascripts);
 
             memo.data = _.concat(memo.data, target);
             return memo;
