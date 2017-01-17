@@ -7,10 +7,12 @@
     "subjects": "subjects",
     "statistics": "statistics",
     "campaigns": "campaigns",
+    "promises": "promises",
     "surface": "surface",
     "evidences": "evidences"
   },
   "mongodb": "mongodb://localhost/ivl",
+  "expected": [ "HK", "AMS", "WS", "casa" ],
 
   "watch": [
       "bin/storyteller.js",

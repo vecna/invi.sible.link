@@ -6,5 +6,6 @@ module.exports = {
     getStats:           require('./getStats'),
     getCampaignSubject: require('./getCampaignSubject'),
     getSurface:         require('./getSurface'),
-    getRanked:          require('./getRanked')
+    getRanked:          require('./getRanked'),
+    activeTasks:        require('./activeTasks')
 };
