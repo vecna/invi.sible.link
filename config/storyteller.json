@@ -27,7 +27,7 @@
   "verbose": true,
   "exitcrash": false,
   "env": {
-        "DEBUG": "storyteller,route:*,lib:*"
+        "DEBUG": "storyteller,route:*,lib:*,-lib:urlutils"
   },
   "ext": "js css json pug"
 }

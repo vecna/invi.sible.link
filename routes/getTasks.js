@@ -40,6 +40,9 @@ function getTasks(req) {
         })
         .then(function(taskList) {
             return markVantagePoint(vantagePoint, taskList)
+                .tap(function(marked) {
+                    debug("taskList %d %j", _.size(taskList), marked);
+                })
                 .return({
                     json: taskList
                 });

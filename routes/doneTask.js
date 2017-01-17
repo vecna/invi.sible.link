@@ -22,7 +22,10 @@ function doneTask(req) {
             return mongo
                 .upsertOne(nconf.get('schema').promises, {
                     "id": solved.id,
-                }, solved);
+                }, solved)
+            .then(function(results) {
+                debug("%j %j", results, solved);
+            });
         })
         .return({ json: { 'result': 'OK' }});
 };
