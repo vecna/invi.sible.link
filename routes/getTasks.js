@@ -42,7 +42,7 @@ function getTasks(req) {
             return markVantagePoint(vantagePoint, taskList)
                 .tap(function(marked) {
                     debug("taskList returns %d tasks updated for VP [%s]",
-                        _.size(taskList), vantagPoint);
+                        _.size(taskList), vantagePoint);
                 })
                 .return({
                     json: taskList
