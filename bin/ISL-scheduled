@@ -7,7 +7,7 @@ var nconf = require('nconf');
 nconf.argv().env();
 
 function simpleAppend(fname, what) {
-    console.log("Reporting", what, "in", fname);
+    console.log("→ ", what, " → ", fname);
     var cmd = "echo `date +%c`  '" + what + "' >> /tmp/" + fname + ".append";
     child_process.execSync(cmd);
 };
@@ -19,8 +19,9 @@ if(!task) {
 }
 
 
+console.log(JSON.stringify(process.env, undefined, 2));
 /* localhost -- development, NODE_ENV === 'production' */
-if(process.env['USER'] === 'oo') {
+if(process.env['HOME'] === '/home/oo') {
     /* Hardcoded by Claudio, to be triggered a gift to the first adopter
      * that spot it because want execute the tool */
     var rootdir = os.homedir() + "/Dev/invi.sible.link/";
