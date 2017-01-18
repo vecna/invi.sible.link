@@ -90,7 +90,7 @@ mongodb, node, npm, `npm install`
 # How to do a Vantage Point
 
 ```
-git clone ...
+git clone git@github.com:vecna/invi.sible.link.git
 mkdir bin 
 cd bin
 ln -s ../invi.sible.link/bin/ISL-scheduled 
@@ -99,3 +99,12 @@ crontab -e
 
 */2 * * * * bin/ISL-scheduled --task chopsticks
 ```
+
+## ISL-scheduled
+
+```
+bin/ISL-scheduled --task campaign --campaign Brasil --config config/brlocal.json --taskName Brasil
+```
+
+    * campaign: is looked in the config/brlocal as the campaign selector
+    * taskName: is saved in the db (evidences and surface) field `task` used as selector in `/api/v1/mostUniqueTrackers/$taskName`

@@ -23,9 +23,11 @@ nconf.file({ file: cfgFile });
 
 var tname = nconf.get('campaign');
 debug("using target name %s to be search in %j", tname, nconf.get('campaigns'));
+if(!tname)
+	throw new Error("specify --campaign or env `campaign`");
 var target = _.find(nconf.get('campaigns'), { name: tname });
 if(!target)
-	throw new Error("specify --campaign or env `campaign`");
+	throw new Error("Not found campagin " + tname + " in config section");
 
 var taskName = nconf.get('taskName');
 if(!taskName)
@@ -74,13 +76,14 @@ function saveAll(retrieved) {
             memo.target += 1;
             target.macheteTiming = subject.timing;
 
+            /* these fields are kept in target only ATM, TODO cleaning or remove this 4 lines */
             var fieldstrip = ['disk','phantom' ];
             var inclusions = _.map(_.tail(subject.data), function(rr) {
                 return _.omit(rr, fieldstrip);
             })
 
-            debug("SavingAll %f%% of %d elements, objects so far %d + %d",
-                _.round(((100 / total) * i), 2), total,
+            debug("SavingAll %d%% of %d elements, objects so far %d + %d",
+                _.round((100 / total) * i), total,
                 _.size(memo.data), _.size(inclusions));
 
             memo.data = _.concat(memo.data, target, inclusions);
@@ -125,8 +128,8 @@ function updateSurface(retrieved) {
                     target.javascripts += 1;
             });
 
-            debug("Surface %f%% of %d elements, JS %d",
-                _.round(((100 / total) * i), 2), total, target.javascripts);
+            debug("Surface %d%% of %d elements, JS %d",
+                _.round((100 / total) * i), total, target.javascripts);
 
             memo.data = _.concat(memo.data, target);
             return memo;
