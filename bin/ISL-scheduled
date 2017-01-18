@@ -49,27 +49,33 @@ if(task === 'statistics') {
     child_process.execSync(cmd);
     simpleAppend("chopsticks", "completed");
 } else if(task === 'vigile') {
+    var logentry ="calling now";
     var filter = nconf.get('filter') || "";
-    simpleAppend("vigile", "calling now [filter: " + filter + "]");
+    if(filter) logentry += ", with filter " + filter;
+    var taskName = nconf.get('taskName') || 'scheduled';
+    if(taskName) logentry += ", with taskName " + taskName;
+
+    simpleAppend("vigile", logentry);
     var cmd = 'bin/directionTool.js > /tmp/vigile-direction.log 2>&1'
     child_process.execSync(cmd, {
         'env': {
             'DEBUG': '*',
+            'taskName': taskName,
             'filter': filter
         }
     });
     simpleAppend("vigile", "completed");
-    child_process.execSync(cmd);
 } else if(task === 'campaign') {
     var campname = nconf.get('campaign');
     if(!campname) {
         simpleAppend("campaign", "missing --campaign option, abort");
     } else {
         simpleAppend("campaign", "calling now " + campname);
+        var taskName = nconf.get('taskName') || 'scheduled';
         var ourEnv = {
             'DEBUG': '*',
             'config': rootdir + (nconf.get('config') || "config/campaignChecker.json"),
-            'taskName': nconf.get('name') || 'scheduled',
+            'taskName': taskName,
             'campaign': campname
         };
         simpleAppend("campaign", "Environment: " + JSON.stringify(ourEnv));

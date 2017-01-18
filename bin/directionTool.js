@@ -11,8 +11,6 @@ var mongo = require('../lib/mongo');
 var moment = require('moment');
 var various = require('../lib/various');
 
-require('moment-isocalendar');
-
 nconf.argv().env().file({ file: 'config/vigile.json' });
 
 function loadJSONfile(fname) {
@@ -23,11 +21,13 @@ function loadJSONfile(fname) {
 }
 
 function uniqueTargets(memo, subject) {
+    var taskName = nconf.get('taskName') || "forgetten";
     var alist = _.map(subject.pages, function(site) {
         return {
             subjectId: site.id,
             href: site.href,
-            rank: site.rank
+            rank: site.rank,
+            taskName: taskName
         };
     });
     var uniqued = _.uniqBy(_.concat(memo, alist), 'subjectId');
@@ -41,6 +41,7 @@ function insertNeeds(fname) {
 
     var filter = nconf.get('filter') || JSON.stringify({});
     filter = JSON.parse(filter);
+    var taskName = nconf.get('taskName') || "forgetten";
     return Promise
         .all([
             timeRanges(fname),
@@ -48,7 +49,8 @@ function insertNeeds(fname) {
         ])
         .then(function(inputs) {
             var targets = _.reduce(inputs[1], uniqueTargets, []);
-            debug("Remind, everything with rank < 100 has been stripped off");
+            debug("taskName: %s Remind, everything with rank < 100 has been stripped off",
+                taskName);
             return _.map(targets, function(t) {
                 var p = _.extend(t, inputs[0]);
                 p.id = various.hash({
@@ -61,7 +63,7 @@ function insertNeeds(fname) {
         })
         .then(function(needs) {
             debug("Generated %d needs", _.size(needs));
-            debug("The first is %j", needs[0]);
+            debug("The first is %s", JSON.stringify(needs[0], undefined, 2) );
             return mongo.writeMany(nconf.get('schema').promises, needs);
         });
 }
@@ -79,9 +81,8 @@ function timeRanges(fname) {
             debug("Processing timeframe: startFrom %j (options: midnight|now), lastFor %j",
                 content.lastFor, content.startFrom);
             if(content.startFrom === 'midnight') {
-                var mins_since_midnight = moment().isocalendar()[3];
-                start = moment().subtract(mins_since_midnight, 'm');
-                end = moment().subtract(mins_since_midnight, 'm').add(content.lastFor.amount, content.lastFor.unit);
+                start = moment().startOf('day');
+                end = moment().startOf('day').add(content.lastFor.amount, content.lastFor.unit);
             } else if (content.startFrom === 'now') {
                 start = moment();
                 end = moment().add(content.lastFor.amount, content.lastFor.unit);
