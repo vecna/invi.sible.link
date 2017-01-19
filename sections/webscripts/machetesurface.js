@@ -17,8 +17,6 @@ var subjectList= function(containerId, iso3166) {
             .duration(moment() - moment(response.info.creationTime) )
             .humanize() + " ago";
 
-        // $(containerId).append("ciao");
-
         console.log(inserted);
         $(containerId).DataTable( {
             data: response.table
@@ -56,6 +54,9 @@ function mostUniqueTrackers(containerId, campaignName) {
         console.log(data);
         return c3.generate({
             bindto: containerId,
+            size: {
+                height: 800
+            },
             data: {
                 keys: {
                     x: 'url',
@@ -95,7 +96,10 @@ function mostCompanies(containerId, campaignName) {
             console.log(site);
             var HT = [ 
                 '<div class="text">',
-                '<h3>', i, " • ", site.url, '</h3>',
+                '<h4>', i + 1, " • ", site.url, 
+                    '<i>  • ', moment(site.requestTime).format("DD-MM-YY"), '  • </i>', 
+                    ' companies:', _.size(site.companies), 
+                '</h4>',
                 '<small>', _.reduce(site.companies, function(memo, c) {
                     if(memo)
                         memo += ", " + c;
