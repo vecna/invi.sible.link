@@ -11,8 +11,11 @@ var campaignOps = require('../lib/campaignOps');
 function getRanked(req) {
 
     var filter = { task: req.params.task };
-    return campaignOps.getEvidences(filter)
-        .then(campaignOps.rankEvidences)
+    return campaignOps.pickLastHours(filter, 36)
+        .tap(function(a) { debug("size is %d", _.size(a)); })
+        .then(campaignOps.keepTheWorstTest)
+        .tap(function(a) { debug("size is %d", _.size(a)); })
+        .then(campaignOps.rankByTracks)
         .then(function(ranked) {
             return {
                 'json': ranked

@@ -20,6 +20,7 @@ function loadJSONfile(fname) {
         .then(JSON.parse);
 }
 
+/* uniqueTargets _.reduce every source: DB or CSV */
 function uniqueTargets(memo, subject) {
     var taskName = nconf.get('taskName') || "forgetten";
     var alist = _.map(subject.pages, function(site) {
@@ -37,17 +38,24 @@ function uniqueTargets(memo, subject) {
     });
 }
 
-function insertNeeds(fname) {
+function insertNeeds(fname, csv) {
 
     var filter = nconf.get('filter') || JSON.stringify({});
     filter = JSON.parse(filter);
     var taskName = nconf.get('taskName') || "forgetten";
+    var promises = [ timeRanges(fname) ];
+
+    if(csv) {
+        throw new Error("Not yet implemented CSV");
+    } else {
+        /* if database source */
+        promises.push( mongo.read(nconf.get('schema').subjects, filter) );
+    }
+
     return Promise
-        .all([
-            timeRanges(fname),
-            mongo.read(nconf.get('schema').subjects, filter)
-        ])
+        .all(promises)
         .then(function(inputs) {
+            /* uniqueTargets process every source: DB or CSV */
             var targets = _.reduce(inputs[1], uniqueTargets, []);
             debug("taskName: %s Remind, everything with rank < 100 has been stripped off",
                 taskName);
@@ -97,11 +105,16 @@ function timeRanges(fname) {
         });
 }
 
+
+csv = nconf.get('csv');
+if(csv)
+    debug("CSV source defined in %s, I hope is an absolute path", csv);
+
 if(_.isUndefined(nconf.get('needsfile'))) {
     var fname = 'config/dailyNeeds.json';
     debug("Unspecified 'needsfile' ENV, using default %s", fname);
-    return insertNeeds(fname);
+    return insertNeeds(fname, csv);
 } else {
     debug("needsfile: %s", nconf.get('needsfile'));
-    return insertNeeds(nconf.get('needsfile'));
+    return insertNeeds(nconf.get('needsfile'), csv);
 }

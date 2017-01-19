@@ -53,6 +53,7 @@ function cookieDissect(memo, block) {
 
 function manageCookies(memo, cookie) {
     var cookieinfo = _.reduce(cookie.split(';'), cookieDissect, {});
+    debugger;
     memo.push(cookieinfo);
     return memo;
 }
@@ -60,9 +61,9 @@ function manageCookies(memo, cookie) {
 function dissectHeaders(memo, hdr) {
 
     /* TODO: fare special, set-Cookie e le date, vanno parsate */
-    var standards = ['Content-Length', 'Content-Size', 'Content-Type', 'Server' ];
+    var standards = ['Content-Length', 'Content-Size', 'Content-Type', 'ETag', 'Server' ];
     var dates = [ 'Expires', 'Date', 'Last-Modified' ];
-    var ignored = [ 'Vary', 'Content-Encoding', 'Connection', 'ETag', 'Accept-Ranges', 'Set-Cookie'];
+    var ignored = [ 'Vary', 'Content-Encoding', 'Connection', 'Accept-Ranges', 'Set-Cookie'];
 
     if(hdr.name === 'Set-Cookie') {
         memo.cookies = _.reduce(hdr.value.split("\n"), manageCookies, []);

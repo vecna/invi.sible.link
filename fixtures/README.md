@@ -18,3 +18,11 @@ aaѪaa:~/Dev/invi.sible.link$ DEBUG=* node fixtures/initialize.js
 aaѪaa:~/Dev/invi.sible.link$ 
 ```
 
+## TLD
+
+https://publicsuffix.org/, <3 Mozilla, Moz://a
+
+
+    wget https://publicsuffix.org/list/public_suffix_list.dat
+    cat public_suffix_list.dat | grep -v "^//" | sort | sed -es/^/\"/ | sed -es/$/\",/ > pseudoJSON
+

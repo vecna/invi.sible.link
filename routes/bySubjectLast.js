@@ -9,12 +9,12 @@ var mongo = require('../lib/mongo');
 function bySubjectLast(req) {
 
     var subjectId = req.params.subjectId;
-    var days = req.body.past;
+    var days = req.params.past;
     var reference = new Date( moment().subtract(days, 'd').format("YYYY-MM-DD") );
 
     var filter = { subjectId: subjectId, requestTime: { "$gt": reference } };
 
-    debug(" %s bySubjectLast filter %j", req.randomUnicode, filter);
+    debug(" %s bySubjectLast, days checked %d, filter %j", req.randomUnicode, days, filter);
 
     return mongo
         .read(nconf.get('schema').phantom, filter)
