@@ -83,3 +83,27 @@ function mostUniqueTrackers(containerId, campaignName) {
         });
     });
 };
+
+
+function mostCompanies(containerId, campaignName) {
+
+    var url = '/api/v1/byCompanies/' + campaignName;
+
+    $.getJSON(url, function(data) {
+        _.each(data, function(site, i) {
+            console.log(i);
+            console.log(site);
+            var HT = [ 
+                '<div class="text">',
+                '<h3>', i, " • ", site.url, '</h3>',
+                '<small>', _.reduce(site.companies, function(memo, c) {
+                    if(memo)
+                        memo += ", " + c;
+                    else
+                        memo = c;
+                    return memo;
+                }, null), '</small>', '</div>' ];
+            $(containerId).append(HT.join(''));
+        });
+    });
+}

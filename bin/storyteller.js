@@ -36,6 +36,10 @@ app.get('/api/v:version/mostUniqueTrackers/:task', function(req, res) {
     return dispatchPromise('getRanked', routes, req, res);
 });
 
+app.get('/api/v:version/byCompanies/:task', function(req, res) {
+    return dispatchPromise('getCompanies', routes, req, res);
+});
+
 app.get('/api/v:version/surface/:task', function(req, res) {
     return dispatchPromise('getSurface', routes, req, res);
 });

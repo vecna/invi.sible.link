@@ -17,7 +17,7 @@ html
 
     title invi.sible.link
 
-    body(onload="subjectList('#subjectTable', 'BR'); lastOne('#lastBrasil', 'Brasil'); mostUniqueTrackers('#worst', 'Brasil');")
+    body(onload="subjectList('#subjectTable', 'BR'); lastOne('#lastBrasil', 'Brasil'); mostUniqueTrackers('#worst', 'Brasil'); mostCompanies('#companies', 'Brasil'); ")
 
     .container-fluid
       .jumbotron
@@ -78,6 +78,10 @@ html
       h2 Most unique trackers
       p.text later on I'ill go deeper in profiling such trackers and extend their metadata.
       div(id="worst")
+
+      h2 Most Companies
+      p.text A simply indicative association between trackers and known companies.
+      div(id="companies")
 
 
   include footer

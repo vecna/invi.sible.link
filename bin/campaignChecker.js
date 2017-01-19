@@ -116,6 +116,8 @@ function updateSurface(retrieved) {
             target.unique = {};
             /* this to keep track of total javascriptps present to be analyzed */
             target.javascripts = 0;
+            /* this to keep track unique companies name */
+            target.companies = [];
 
             _.each(_.reject(subject.data, {target: true}), function(rr) {
 
@@ -126,6 +128,10 @@ function updateSurface(retrieved) {
 
                 if(rr['Content-Type'] && rr['Content-Type'].match('script'))
                     target.javascripts += 1;
+
+                if(rr.company && target.companies.indexOf(rr.company)  === -1 ) {
+                    target.companies.push(rr.company);
+                }
             });
 
             return _.concat(memo, target);
