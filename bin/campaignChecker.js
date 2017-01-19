@@ -13,6 +13,7 @@ var nconf = require('nconf');
  * is not done.  */
 var mongo = require('../lib/mongo');
 var machetils = require('../lib/machetils');
+var company = require('../lib/company');
 
 nconf.argv().env();
 
@@ -50,6 +51,8 @@ function buildURLs(memo, page) {
 };
 
 function getSubjectURLs(target) {
+    /* note: correctly is returning only the subjects tested,
+     * not all the subject, for example, < 100 are skipped */
     return mongo
         .read(nconf.get('schema').subjects, target.filter)
 		.tap(function(alone) {
@@ -66,36 +69,28 @@ function getSubjectURLs(target) {
 
 function saveAll(retrieved) {
     return Promise
-        .reduce(retrieved, function (memo, subject, i, total) {
+        .reduce(retrieved, function (memo, subject) {
 
-            var target = _.head(subject.data);
-            if(!target) {
-                memo.missingTarget += 1;
+            var target = _.find(subject.data, {target: true})
+            if(!target)
                 return memo;
-            }
-            memo.target += 1;
+
             target.macheteTiming = subject.timing;
 
             /* these fields are kept in target only ATM, TODO cleaning or remove this 4 lines */
             var fieldstrip = ['disk','phantom' ];
-            var inclusions = _.map(_.tail(subject.data), function(rr) {
+            var inclusions = _.map(_.reject(subject.data, {target: true}), function(rr) {
                 return _.omit(rr, fieldstrip);
             })
 
-            debug("SavingAll %d%% of %d elements, objects so far %d + %d",
-                _.round((100 / total) * i), total,
-                _.size(memo.data), _.size(inclusions));
-
-            memo.data = _.concat(memo.data, target, inclusions);
-            return memo;
-        }, { data: [], missingTarget: 0, target: 0 })
+            return _.concat(memo, target, inclusions);
+        }, [])
         .then(function(content) {
-            debug("saveAll has %d data, results: %d and %d missing",
-                _.size(content.data), content.target, content.missingTarget);
+            debug("saveAll has %d data", _.size(content));
 
-            if(_.size(content.data)) {
+            if(_.size(content)) {
                 return machetils
-                    .mongoSave(nconf.get('evidences'), content.data, taskName);
+                    .mongoSave(nconf.get('evidences'), content, taskName);
             }
         });
 }
@@ -104,20 +99,25 @@ function updateSurface(retrieved) {
     return Promise
         .reduce(retrieved, function (memo, subject, i, total) {
 
-            var target = _.head(subject.data);
+            /*
+            > _.keys(subject)
+            [ 'url', 'page', 'VP', 'subjectId', 'data', 'timing' ]
+            > subject.url
+            'http://localhost:7300/api/v1/65bdefee473b2aa910ff52efdcb0425f3d4201d6/3/BSL'
+            > subject.data
+            [ { url: 'https://www.google.com.br/images/nav_logo242.png',
+                requestTime: '2017-01-18T11:43:55.515Z',                         */
 
-            if(!target) {
-                memo.missingTarget += 1;
+            var target = _.find(subject.data, {target: true})
+            if(!target)
                 return memo;
-            }
-            memo.target += 1;
 
             /* this to keep track of the unique third party domains */
             target.unique = {};
             /* this to keep track of total javascriptps present to be analyzed */
             target.javascripts = 0;
 
-            _.each(_.tail(subject.data), function(rr) {
+            _.each(_.reject(subject.data, {target: true}), function(rr) {
 
                 if(_.isUndefined(target.unique[rr.domainId]))
                     _.set(target.unique, rr.domainId, 0);
@@ -128,19 +128,15 @@ function updateSurface(retrieved) {
                     target.javascripts += 1;
             });
 
-            debug("Surface %d%% of %d elements, JS %d",
-                _.round((100 / total) * i), total, target.javascripts);
-
-            memo.data = _.concat(memo.data, target);
-            return memo;
-        }, {data: [], missingTarget: 0, target: 0 })
+            return _.concat(memo, target);
+        }, [])
         .then(function(content) {
-            debug("updateSurtface has %d data, results: %d and %d missing",
-                _.size(content.data), content.target, content.missingTarget);
+            debug("updateSurtface has %d data (has to be ~ subjects)",
+                _.size(content) );
 
-            if(_.size(content.data)) {
+            if(_.size(content)) {
                 return machetils
-                    .mongoSave(nconf.get('surface'), content.data, taskName);
+                    .mongoSave(nconf.get('surface'), content, taskName);
             }
         });
 };
@@ -155,6 +151,7 @@ return getSubjectURLs(target)
     .tap(numerize)
     .then(_.compact)
     .tap(numerize)
+    .map(company.attribution)
     .tap(saveAll)
     .tap(updateSurface)
     .tap(function(r) {

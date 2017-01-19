@@ -11,7 +11,7 @@ var surfaceOps = require('../lib/campaignOps');
  * absolved in the last 36 hours, and returning them for DataTable format */
 function getSurface(req) {
 
-    var filter = { task: req.param.task };
+    var filter = { task: req.params.task };
     var past = 36;
 
     debug("%s getSurface filter %j hours %d", req.randomUnicode, filter, past);

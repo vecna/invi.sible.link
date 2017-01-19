@@ -19,8 +19,7 @@ if(!task) {
 }
 
 
-console.log(JSON.stringify(process.env, undefined, 2));
-/* localhost -- development, NODE_ENV === 'production' */
+/* localhost → development, NODE_ENV === 'production', not really used ↓ */
 if(process.env['HOME'] === '/home/oo') {
     /* Hardcoded by Claudio, to be triggered a gift to the first adopter
      * that spot it because want execute the tool */

@@ -11,7 +11,7 @@ var campaignOps = require('../lib/campaignOps');
  * absolved in the last 36 hours, and returning them for DataTable format */
 function getRanked(req) {
 
-    var filter = { task: req.param('task') };
+    var filter = { task: req.params.task };
     return campaignOps.getEvidences(filter)
         .then(campaignOps.rankEvidences)
         .then(function(ranked) {
