@@ -23,7 +23,8 @@ var pageMap = {
     'project-plan': pugCompiler('projectPlan'),
     'about': pugCompiler('about'),
     'report': pugCompiler('reportList'),
-    '404': pugCompiler('404')
+    '404': pugCompiler('404'),
+    'muslimban': pugCompiler('campaign/muslimban')
 };
 
 var getPage = function(req) {
