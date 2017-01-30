@@ -4,7 +4,7 @@ var _ = require('lodash');
 var Promise = require('bluebird');
 var util = require('util');
 var fs = Promise.promisifyAll(require('fs'));
-var debug = require('debug')('fixtures');
+var debug = require('debug')('initialize');
 var nconf = require('nconf');
 
 var mongo = require('../lib/mongo');

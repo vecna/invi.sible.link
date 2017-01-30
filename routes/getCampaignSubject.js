@@ -11,7 +11,10 @@ var subjectsOps = require('../lib/subjectsOps');
  * absolved in the last 24 hours, and returning them for DataTable format */
 function getCampaignSubject(req) {
 
-    var filter = { iso3166 : req.params.cc };
+    if (_.size(req.params.cc) === 2)
+        var filter = { iso3166 : req.params.cc };
+    else
+        var filter = { name: req.params.cc };
 
     return mongo
         .read(nconf.get('schema').subjects, filter)
