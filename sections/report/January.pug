@@ -89,3 +89,22 @@ block January
           lib:mongo writeMany: DONE, in promises 74 objects +35ms
 
     img(src="/images/first-execution-Islam-test.png")
+
+    pre.
+        m-(~/invi.sible.link)-(16 files, 116Kb)--> DEBUG=* bin/campaignChecker.js --config config/campaignChecker.json --campaign islam --taskNam islam
+          campaignChecker using target name islam to be search in [{"name":"itamedia","description":"Italian media","filter":{"name":"italian-media"},"dayswindow":3},{"name":"BR","description":"Brazil top sites","filter":{"iso3166":"BR"},"dayswindow":1},{"name":"cr","description":"Latin American online clinics","filter":{"name":"clinics"},"dayswindow":3},{"name":"islam","description":"Experimental campaign after #MuslimBan; starting from 74 world ranked websites talking on Islamic faith","filter":{"name":"islam"},"dayswindow":1}] +0ms
+          campaignChecker Task islam running for campaign {"name":"islam","description":"Experimental campaign after #MuslimBan; starting from 74 world ranked websites talking on Islamic faith","filter":{"name":"islam"},"dayswindow":1} +5ms
+          lib:mongo read in subjects by {"name":"islam"} sort by {} got 1 results +107ms
+          campaignChecker With filter {"name":"islam"} we have 74 subjects +1ms
+          campaignChecker The list in this step has 222 elements +8ms
+          lib:machetils Request http://ams-vp.sible.link:7300/api/v1/7bfc6777d3f5b520e4278e1bec6f44bc8d1f2b31/1/BSL → 149 entries +337ms
+          lib:machetils Request http://ams-vp.sible.link:7300/api/v1/60e3b8c0ceba2ec2f7d464ed23671aeab73f4043/1/BSL → 37 entries +8ms
+          lib:machetils Request http://ams-vp.sible.link:7300/api/v1/cab857bfd007c4c75972bd9aa2bf9e90cb20679d/1/BSL → 183 entries +45ms
+          lib:machetils Request http://ams-vp.sible.link:7300/api/v1/ead9e81abf461bb26d45cbb07a6ffd7eb5437cd8/1/BSL → 12 entries +162ms
+          [...]
+          campaignChecker saveAll has 20454 data +1s
+          lib:mongo writeMany: DONE, in evidences 20454 objects +4s
+          campaignChecker updateSurtface has 222 data (has to be ~ subjects) +97ms
+          lib:mongo writeMany: DONE, in surface 222 objects +84ms
+          campaignChecker Operationg compeleted successfully +0ms
+
