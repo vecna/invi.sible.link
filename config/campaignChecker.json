@@ -18,12 +18,17 @@
       "name": "BR",
       "description": "Brazil top sites",
       "filter": { "iso3166": "BR" },
-      "dayswindow": 5
+      "dayswindow": 1
   }, {
       "name": "cr",
       "description": "Latin American online clinics",
       "filter": { "name" : "clinics" },
       "dayswindow": 3
+  }, {
+      "name": "islam",
+      "description": "Experimental campaign after #MuslimBan; starting from 74 world ranked websites talking on Islamic faith",
+      "filter": { "name": "islam" },
+      "dayswindow": 1
   }],
   "evidences": "evidences",
   "surface": "surface"
