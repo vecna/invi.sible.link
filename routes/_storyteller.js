@@ -8,5 +8,6 @@ module.exports = {
     getSurface:         require('./getSurface'),
     getRanked:          require('./getRanked'),
     getCompanies:       require('./getCompanies'),
-    activeTasks:        require('./activeTasks')
+    activeTasks:        require('./activeTasks'),
+    getRaw:             require('./getRaw')
 };

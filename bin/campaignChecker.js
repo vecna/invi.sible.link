@@ -70,6 +70,7 @@ function getSubjectURLs(target) {
 function saveAll(retrieved) {
     return Promise
         .reduce(retrieved, function (memo, subject) {
+            debugger;
 
             var target = _.find(subject.data, {target: true})
             if(!target)
@@ -99,15 +100,6 @@ function updateSurface(retrieved) {
     return Promise
         .reduce(retrieved, function (memo, subject, i, total) {
 
-            /*
-            > _.keys(subject)
-            [ 'url', 'page', 'VP', 'subjectId', 'data', 'timing' ]
-            > subject.url
-            'http://localhost:7300/api/v1/65bdefee473b2aa910ff52efdcb0425f3d4201d6/3/BSL'
-            > subject.data
-            [ { url: 'https://www.google.com.br/images/nav_logo242.png',
-                requestTime: '2017-01-18T11:43:55.515Z',                         */
-
             var target = _.find(subject.data, {target: true})
             if(!target)
                 return memo;
@@ -116,8 +108,12 @@ function updateSurface(retrieved) {
             target.unique = {};
             /* this to keep track of total javascriptps present to be analyzed */
             target.javascripts = 0;
+            /* this to keep track the domain setting a cookie */
+            target.cookies = [];
             /* this to keep track unique companies name */
             target.companies = [];
+            /* unrecognized domain */
+            target.unrecognized = [];
 
             _.each(_.reject(subject.data, {target: true}), function(rr) {
 
@@ -131,7 +127,19 @@ function updateSurface(retrieved) {
 
                 if(rr.company && target.companies.indexOf(rr.company)  === -1 ) {
                     target.companies.push(rr.company);
+                } else {
+                    target.unrecognized.push(rr.domaindottld)
                 }
+
+                if(rr['Server'] === 'cloudflare-nginx') {
+                    debug("CF server spot!");
+                    target.companies.push("Cloudflare");
+                }
+
+                if(rr.cookies && _.size(rr.cookies)) {
+                    target.cookies.push(rr.domaindottld);
+                }
+
             });
 
             return _.concat(memo, target);
