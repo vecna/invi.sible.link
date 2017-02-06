@@ -1,110 +1,55 @@
 block January
 
-    h2 -- WORK IN PROGRESS --
-    h2 -- WORK IN PROGRESS --
-    h2 -- WORK IN PROGRESS --
-    h2 -- WORK IN PROGRESS BELOW --
- 
     h1(class="reportTitle" id="January-17") January 2017
 
-    h2 An update on the vision
-    p.text Inspired by this title 
-        a(href="https://points.datasociety.net/hacking-the-attention-economy-9fa1daca7a37") Hacking the attention economy
-        |, Has become clear that my production has not just to be a website full of results, because a website has these limits:
-    ul
-        li one, or maybe more than one, targets. Every target audience require (in theory) appropriate terminology, design, knowledge of their context.
-        li every target need to be notified on the existence of invi.sible.link projects, and this is stupid: invi.sible.link is a technical tool, nobody that can't run the code would ever to look these pages
-        li a translation process is expensive and something useless. does it make any sense if I translate in Italian, the investigation made with CodingRights in LatAa? No.
-
-    p.text This is a
-        b pipeline
-        |, a series of tools that constantly process input to produce output. My output has to be:
+    section(class="preliminary-7")
+        h2 An update on the vision
+        p.text Inspired by this title 
+            a(href="https://points.datasociety.net/hacking-the-attention-economy-9fa1daca7a37") Hacking the attention economy
+            |, Has become clear that my production has not just to be a website full of results, because a website has these limits:
         ul
-            li targeted: specific audience that care of their own stuff, of their content, of their business. Because the subject of the campagin would be a list of websites near the audience
-            li simple: you can know how tracking works if you want, if you don't, at least you would know that someone in your digital environment is treating their user bad. and this feeling has to be the goal of the communication. making website responsible for their third party inclusions.
-            li like a bot: act on notification via social media, not mobile first, but:  
-                b bot first
-                |!
+            li one, or maybe more than one, targets. Every target audience require (in theory) appropriate terminology, design, knowledge of their context.
+            li every target need to be notified on the existence of invi.sible.link projects, and this is stupid: invi.sible.link is a technical tool, nobody that can't run the code would ever to look these pages
+            li a translation process is expensive and something useless. does it make any sense if I translate in Italian, the investigation made with CodingRights in LatAa? No.
 
-    p.text Therefore, in this post-prototypel phase, campaign pipeline has to be the priority. This might permit to experience since the beginning how reach out to different social circles, and will force the prject in keeping an operating workflow despite the tecnical challenges that are going to be faced later.
+        p.text This is a
+            b pipeline
+            |, a series of tools that constantly process input to produce output. My output has to be:
+            ul
+                li targeted: specific audience that care of their own stuff, of their content, of their business. Because the subject of the campagin would be a list of websites near the audience
+                li simple: you can know how tracking works if you want, if you don't, at least you would know that someone in your digital environment is treating their user bad. and this feeling has to be the goal of the communication. making website responsible for their third party inclusions.
+                li like a bot: act on notification via social media, not mobile first, but:  
+                    b bot first
+                    |!
 
-    h2 Flexibility in target specification
-    pre.
-        2075 ۞  ~/Dev/invi.sible.link DEBUG=* filter='{"iso3166":"BR"}' bin/directionTool.js 
-          directionTool Unspecified 'needsfile' ENV, using default config/dailyNeeds.json +0ms
-          directionTool Using config/dailyNeeds.json as needs generator +2ms
-          directionTool content {"needName":"basic","lastFor":{"amount":24,"unit":"h"},"startFrom":"midnight"} +31ms
-          directionTool Processing timeframe: startFrom {"amount":24,"unit":"h"} (options: midnight|now), lastFor "midnight" +0ms
-          lib:mongo read in subjects by {"iso3166":"BR"} sort by {} got 1 results +13ms
-          directionTool Remind, everything with rank < 100 has been stripped off +1ms
-          directionTool Generated 80 needs +5ms
-          directionTool The first is {"subjectId":"65bdefee473b2aa910ff52efdcb0425f3d4201d6","href":"http://google.com.br","rank":1,"needName":"basic","start":"2017-01-11T02:00:39.251Z","end":"2017-01-12T02:00:39.251Z","id":"d8dcdbc594dbe873a3b5d4378420ea5eddc1ce9c"} +0ms
-          lib:mongo writeMany in promises of 80 objects +0ms
+        p.text Therefore, in this post-prototypel phase, campaign pipeline has to be the priority. This might permit to experience since the beginning how reach out to different social circles, and will force the prject in keeping an operating workflow despite the tecnical challenges that are going to be faced later.
 
+    section(class="prototype-8")
+        h2 Flexibility in target specification
+        pre.
+            2075 ۞  ~/Dev/invi.sible.link DEBUG=* filter='{"iso3166":"BR"}' bin/directionTool.js 
+              directionTool Unspecified 'needsfile' ENV, using default config/dailyNeeds.json +0ms
+              directionTool Using config/dailyNeeds.json as needs generator +2ms
+              directionTool content {"needName":"basic","lastFor":{"amount":24,"unit":"h"},"startFrom":"midnight"} +31ms
+              directionTool Processing timeframe: startFrom {"amount":24,"unit":"h"} (options: midnight|now), lastFor "midnight" +0ms
+              lib:mongo read in subjects by {"iso3166":"BR"} sort by {} got 1 results +13ms
+              directionTool Remind, everything with rank < 100 has been stripped off +1ms
+              directionTool Generated 80 needs +5ms
+              directionTool The first is {"subjectId":"65bdefee473b2aa910ff52efdcb0425f3d4201d6","href":"http://google.com.br","rank":1,"needName":"basic","start":"2017-01-11T02:00:39.251Z","end":"2017-01-12T02:00:39.251Z","id":"d8dcdbc594dbe873a3b5d4378420ea5eddc1ce9c"} +0ms
+              lib:mongo writeMany in promises of 80 objects +0ms
 
-    h2 first usage of the pipeline for political challenges
+        p.text This approach is in experimentation in February, for the first targeted campaign. The goal of such campaing is getting visibility, constructive criticism, and see the overall reaction about this kind of monitoring approach.
 
-    h3 Concept
-    p.text Users in mass follow crisis, events, moment of struggle. Social media virality help to focalize the attention over these topic, therefore when a critical moment happen, it rapresent a spike of attention. If an event of interest might be correlated to the third party trackers phenomena, it is my goal explain why. 
-    h3 Reasons
-    ul
-        li Use the interest vector to get my message seen by a typically different audience. This is my only way to escape from my own filter bubble, otherwise I'll talk only to privacy activists.
-        li The social and political impact of web survellaince can be understood only in moment of crisis, apparently. Otherwise, instead of being seen as a massive privacy violation, it is saw just as an advertising nuisance. A nuisance, but not strong enough to justify any action.
+    section(class="preliminary-10")
+        h2 CodingRights campaign progress
+        p.text We made a meeting in CodingRights planning the Chupadados campaign, and currently I'm running a prototypal experiment outside the fellowship scope, in order to test the infrastructured and the content production pipeline
+        img(src="images/CR1.png")
+        img(src="images/CR2.png")
 
-    p.text In the night of the #MuslimBan and the following days, has been clear how a segment of the population can the targeted by institutional attacks. Here I'm not concerned on the political debate, I'm focused only on the question: 
-        b Where in the 2017 exists a registry of Religious view, usable to discriminate against segment of the population?
-        |  I think is in the corporate profiling, because is a opaque, technically intermediate and heavily lobbied market sector. I want to use this risk, now that is polically hot, as leverage to attract users, adopters, and critical judgment on this subject.
-
-    h3 As part of the roadmap
-    p.text Declined campaigning is one of the goal of my fellowship, As seen in December, now that the pipeline works has to be tested on field. This experiment
-        a(href="https://american.muslims.tracking.exposed") american.muslims.tracking.exposed
-        |  has got its political moment earlier than the first planned experiment (online clinic with CodingRights) but the technology used is pretty the same.
-    
-    pre.
-        m-(~/invi.sible.link)-(16 files, 116Kb)--> DEBUG=* fixtures/listimport.js --marker islam --source fixtures/lists/islamlist-January-2017.json 
-          listimport opening fixtures/lists/islamlist-January-2017.json +0ms
-          listimport Saving single entry with 74 pages +29ms
-
-        l(storyteller@invi)-(0)-(01:50 PM Mon Jan 30)->
-
-    pre.
-        m-(~/invi.sible.link)-(16 files, 116Kb)--> DEBUG=* bin/directionTool.js --filter '{"name":"islam"}' --taskName islam
-          directionTool Unspecified 'needsfile' ENV, using default config/dailyNeeds.json +0ms
-          directionTool Using config/dailyNeeds.json as needs generator +5ms
-          directionTool content {"needName":"basic","lastFor":{"amount":24,"unit":"h"},"startFrom":"midnight"} +57ms
-          directionTool Processing timeframe: startFrom {"amount":24,"unit":"h"} (options: midnight|now), lastFor "midnight" +1ms
-          lib:mongo read in subjects by {"name":"islam"} sort by {} got 1 results +27ms
-          directionTool taskName: islam Remind, everything with rank < 100 has been stripped off +4ms
-          directionTool Generated 74 needs +12ms
-          directionTool The first is {
-          "subjectId": "60e3b8c0ceba2ec2f7d464ed23671aeab73f4043",
-          "href": "http://islamqa.info",
-          "rank": 1,
-          "taskName": "islam",
-          "needName": "basic",
-          "start": "2017-01-30T00:00:00.000Z",
-          "end": "2017-01-31T00:00:00.000Z",
-          "id": "d63a2157bd7725191993e7aff01678eee7c78027"
-        } +1ms
-          lib:mongo writeMany: DONE, in promises 74 objects +35ms
-
-    img(src="/images/first-execution-Islam-test.png")
-
-    pre.
-        m-(~/invi.sible.link)-(16 files, 116Kb)--> DEBUG=* bin/campaignChecker.js --config config/campaignChecker.json --campaign islam --taskNam islam
-          campaignChecker using target name islam to be search in [{"name":"itamedia","description":"Italian media","filter":{"name":"italian-media"},"dayswindow":3},{"name":"BR","description":"Brazil top sites","filter":{"iso3166":"BR"},"dayswindow":1},{"name":"cr","description":"Latin American online clinics","filter":{"name":"clinics"},"dayswindow":3},{"name":"islam","description":"Experimental campaign after #MuslimBan; starting from 74 world ranked websites talking on Islamic faith","filter":{"name":"islam"},"dayswindow":1}] +0ms
-          campaignChecker Task islam running for campaign {"name":"islam","description":"Experimental campaign after #MuslimBan; starting from 74 world ranked websites talking on Islamic faith","filter":{"name":"islam"},"dayswindow":1} +5ms
-          lib:mongo read in subjects by {"name":"islam"} sort by {} got 1 results +107ms
-          campaignChecker With filter {"name":"islam"} we have 74 subjects +1ms
-          campaignChecker The list in this step has 222 elements +8ms
-          lib:machetils Request http://ams-vp.sible.link:7300/api/v1/7bfc6777d3f5b520e4278e1bec6f44bc8d1f2b31/1/BSL → 149 entries +337ms
-          lib:machetils Request http://ams-vp.sible.link:7300/api/v1/60e3b8c0ceba2ec2f7d464ed23671aeab73f4043/1/BSL → 37 entries +8ms
-          lib:machetils Request http://ams-vp.sible.link:7300/api/v1/cab857bfd007c4c75972bd9aa2bf9e90cb20679d/1/BSL → 183 entries +45ms
-          lib:machetils Request http://ams-vp.sible.link:7300/api/v1/ead9e81abf461bb26d45cbb07a6ffd7eb5437cd8/1/BSL → 12 entries +162ms
-          [...]
-          campaignChecker saveAll has 20454 data +1s
-          lib:mongo writeMany: DONE, in evidences 20454 objects +4s
-          campaignChecker updateSurtface has 222 data (has to be ~ subjects) +97ms
-          lib:mongo writeMany: DONE, in surface 222 objects +84ms
-          campaignChecker Operationg compeleted successfully +0ms
-
+    section(class="preliminary-6 prototype-6")
+        h2 Long term monitoring it is working properly
+        p.text The 
+            a(href="https://invi.sible.link/stats") stats page
+            |  is working smoothly since time, I'm using it to keep in check the multiple operation performed, new graph might be add apply to specific campaign. Study which kind of graph is still a work in progress, but I've already done successiful experiment in integrating: 
+            a(href="https://rawgraphs.io") rawgraphs.io
+            |.

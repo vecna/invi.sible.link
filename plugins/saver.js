@@ -155,8 +155,8 @@ function phantomCleaning(memo, rr, i) {
             proprietary: h.proprietaryHeaders
         });
         memo[id] = _.extend(memo[id], h.standardHeaders);
-        if(h.cookie)
-            memo[id].cookie = h.cookie;
+        if(h.cookies)
+            memo[id].cookies = h.cookies;
     }
 
     // debug("%d ID %d %s", i, id, JSON.stringify(memo[id], undefined, 2));
