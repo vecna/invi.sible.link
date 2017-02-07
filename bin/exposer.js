@@ -38,6 +38,10 @@ app.get('/api/v:version/getRetrieved/:what/:id', function(req, res) {
     return dispatchPromise('getRetrieved', routes, req, res);
 });
 
+app.get('/api/v:version/:promiseId/BP', function(req, res) {
+    return dispatchPromise('byPromise', routes, req, res);
+});
+
 app.get('/api/v:version/:subjectId/:past/BSL', function(req, res) {
     return dispatchPromise('bySubjectLast', routes, req, res);
 });
