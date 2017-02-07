@@ -22,7 +22,7 @@ function loadJSONfile(fname) {
 
 /* uniqueTargets _.reduce every source: DB or CSV */
 function uniqueTargets(memo, subject) {
-    var taskName = nconf.get('taskName') || "forgetten";
+    var taskName = nconf.get('taskName') || "u-forgot-taskName";
     var alist = _.map(subject.pages, function(site) {
         return {
             subjectId: site.id,
@@ -38,28 +38,53 @@ function uniqueTargets(memo, subject) {
     });
 }
 
+function importCSV(fname) {
+
+    var taskName = nconf.get('taskName') || "u-forgot-taskName";
+    return fs
+        .readFileAsync(fname, 'utf-8')
+        .then(function(csvc) {
+            var lines = csvc.split('\r\n');
+            debug("%d lines → keys [%s] 'rank' will be add",
+                _.size(lines)-1, lines[0] );
+            return _.map(_.tail(lines), function(entry, i) {
+                var comma = entry.indexOf(',');
+                return {
+                    'subjectId': various.hash({'fname': fname, 'content': csvc}),
+                    'taskName': taskName,
+                    'href': entry.substring(0, comma),
+                    'description': _.trim(entry.substring(comma+1), '"'),
+                    'rank': i + 1
+                };
+            });
+        });
+};
+
 function insertNeeds(fname, csv) {
 
     var filter = nconf.get('filter') || JSON.stringify({});
     filter = JSON.parse(filter);
-    var taskName = nconf.get('taskName') || "forgetten";
     var promises = [ timeRanges(fname) ];
 
     if(csv) {
-        throw new Error("Not yet implemented CSV");
+        debug("Importing CSV %s", csv);
+        promises.push( importCSV(csv) );
     } else {
-        /* if database source */
-        promises.push( mongo.read(nconf.get('schema').subjects, filter) );
+        debug("Using mongo as source (%j)", filter);
+        promises.push( 
+            mongo
+                .read(nconf.get('schema').subjects, filter)
+                .reduce(uniqueTargets, [])
+        );
     }
 
     return Promise
         .all(promises)
         .then(function(inputs) {
-            /* uniqueTargets process every source: DB or CSV */
-            var targets = _.reduce(inputs[1], uniqueTargets, []);
-            debug("taskName: %s Remind, everything with rank < 100 has been stripped off",
-                taskName);
-            return _.map(targets, function(t) {
+            debug("Read %d sites, everything with rank < 100 will be stripped off",
+                _.size(inputs[1]) );
+            /* TODO check that CSV and DB are producing here the same output */
+            return _.map(inputs[1], function(t) {
                 var p = _.extend(t, inputs[0]);
                 p.id = various.hash({
                     'href': p.href,
