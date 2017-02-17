@@ -134,7 +134,7 @@ function updateSurface(retrieved) {
                 }
 
                 if(rr['Server'] === 'cloudflare-nginx') {
-                    debug("CF server spot!");
+                    debug("CF server spot in %s (company %s)!", rr.domaindottld, rr.company);
                     target.companies.push("Cloudflare");
                 }
 

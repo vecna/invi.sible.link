@@ -94,6 +94,17 @@ function insertNeeds(fname, csv) {
                 return p;
             });
         })
+        .then(function(tobecheck) {
+            var uniquified = _.countBy(tobecheck, 'id');
+            return _.reduce(uniquified, function(memo, amount, id) {
+                if(amount === 1)
+                    return _.concat(memo, _.find(tobecheck, {id: id}));
+
+                debug("Duplicated (%d times) %j", amount, _.find(tobecheck, {id: id}));
+                return _.concat(memo, _.first(_.find(tobecheck, {id: id})));
+            }, []);
+        })
+        .then(_.compact)
         .then(function(needs) {
             debug("Generated %d needs", _.size(needs));
             debug("The first is %s", JSON.stringify(needs[0], undefined, 2) );
