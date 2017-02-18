@@ -122,17 +122,24 @@ function timeRanges(fname) {
         })
         .then(function(content) {
             var start, end;
-            debug("Processing timeframe: startFrom %j (options: midnight|now), lastFor %j",
-                content.lastFor, content.startFrom);
+            debug("Timeframe: startFrom %s (midnight|now), lastFor %j",
+                content.startFrom, content.lastFor);
             if(content.startFrom === 'midnight') {
-                start = moment().startOf('day');
-                end = moment().startOf('day').add(content.lastFor.amount, content.lastFor.unit);
+                start = moment()
+                    .startOf('day');
+                end = moment()
+                    .startOf('day')
+                    .add(content.lastFor.number, content.lastFor.period);
+                debugger;
+
             } else if (content.startFrom === 'now') {
                 start = moment();
-                end = moment().add(content.lastFor.amount, content.lastFor.unit);
+                end = moment()
+                    .add(content.lastFor.number, content.lastFor.period);
             } else {
                 throw new Error("Invalid keyword in startFrom");
             }
+            debug("Window start %s end %s", start, end);
             return {
                 needName: content.needName,
                 start: new Date(start.format("YYYY-MM-DD")),

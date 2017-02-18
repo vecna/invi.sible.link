@@ -1,8 +1,8 @@
 {
   "needName": "basic",
   "lastFor": {
-      "amount": 24,
-      "unit": "h"
+      "number": 28,
+      "period": "h"
   },
   "startFrom": "midnight"
 }
