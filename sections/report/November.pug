@@ -1,87 +1,85 @@
-block November
- 
-  h1(class="reportTitle" id="November-16") November 2016
+h1(class="reportTitle" id="November-16") November 2016
 
-  section(class="preliminary-1 preliminary-2")
+section(class="preliminary-1 preliminary-2")
     h2 Components design
 
     p(class="task-description") Define the components that should to work together in order to accomplish the pipeline. The goal is pretty ambitious, because the system has to operate on many vantage point, and be centrally coordinated. Enable the analyst to get easily results, and enable CodingRights and me to setup declined campaign without effort. The current schema is composed by 
-      a(href="https://github.com/vecna/invi.sible.link/README.md") 6 components
-      |  each of it, with a small dedicated tasks. I have not used the prototype named Trackography-2, because the risk was a complexity increment. The reason in the components splitting, is to keep the design "simple and stupid" as possible. 
-      ol
-        li
-          b Component "storyteller"
-          |: is the on running in the public website 
-          a(href="https://invi.sible.link") https://invi.sible.link
-          |, will contain information for technical audience and all the research tool developed this year. Will serve the results as open data, enabling third parties like CodingRights to integrate the data in their advocacy.
-        li
-          b Component "machete"
-          |: aggregate the results from the vantage point and perform analysis, correlation, high level function to produce results. For example: rank the most invasive trackers, find correlations among the last day result and the last month. Will be the tool operating over the database and producing data-driven-insights.
-        li
-          b Component "vigile"
-          |: will orchestrate the test on the vantage point, the analysis of machete, and keep track of the infrastructure performances 
-        li
-          b Component "chopstick"
-          |: inheritance from the 
-          a(href="https://www.npmjs.com/package/littlefork") Littlefork pipeline
-          |  in which I worked following Christo's of TacticalTech directions. Is the component wrapping the execution of phantomjs and Thug, being a specialized micro-service on the vantage point.
-        li
-          b Component "exposer"
-          |: The technical service needed to export the results from the vantage point to machete
-        li 
-          b Component "social pressure"
-          |: as the name evoke, is one of the key experiment of this project. A components containing the libraries, API keys to be a simple social media bots feed by machete.
+        a(href="https://github.com/vecna/invi.sible.link/README.md") 6 components
+        |    each of it, with a small dedicated tasks. I have not used the prototype named Trackography-2, because the risk was a complexity increment. The reason in the components splitting, is to keep the design "simple and stupid" as possible. 
+        ol
+            li
+                b Component "storyteller"
+                |: is the on running in the public website 
+                a(href="https://invi.sible.link") https://invi.sible.link
+                |, will contain information for technical audience and all the research tool developed this year. Will serve the results as open data, enabling third parties like CodingRights to integrate the data in their advocacy.
+            li
+                b Component "machete"
+                |: aggregate the results from the vantage point and perform analysis, correlation, high level function to produce results. For example: rank the most invasive trackers, find correlations among the last day result and the last month. Will be the tool operating over the database and producing data-driven-insights.
+            li
+                b Component "vigile"
+                |: will orchestrate the test on the vantage point, the analysis of machete, and keep track of the infrastructure performances 
+            li
+                b Component "chopstick"
+                |: inheritance from the 
+                a(href="https://www.npmjs.com/package/littlefork") Littlefork pipeline
+                |    in which I worked following Christo's of TacticalTech directions. Is the component wrapping the execution of phantomjs and Thug, being a specialized micro-service on the vantage point.
+            li
+                b Component "exposer"
+                |: The technical service needed to export the results from the vantage point to machete
+            li 
+                b Component "social pressure"
+                |: as the name evoke, is one of the key experiment of this project. A components containing the libraries, API keys to be a simple social media bots feed by machete.
 
-  section(class="preliminary-5 preliminary-1")
+section(class="preliminary-5 preliminary-1")
     h2 Setup boxes infrastructure
 
     p(class="task-description") Thanks to the OTF cloud, I setup easily four boxes to have the components runs, and a situation in which, box less or box more, the system can continue to operate and easily migrated, if other organization show interest in maintain the project after the fellowship, or just to run their own set of tests.
     img(src="/images/infrastructure.png")
     p(class="task-description") I recovered the lists I was using to do the previous experiment, they are nicely visualized with 
-      a(href="https://www.datatables.net") DataTables
-      |  here: 
-      a(href="/lists")
+        a(href="https://www.datatables.net") DataTables
+        |    here: 
+        a(href="/lists")
 
-  section(class="preliminary-8")
+section(class="preliminary-8")
     h2 chupadados.na.tracking.exposed
 
     p(class="task-description") CodingRights has launch at the end of November a campaign website targeting Latin America communities, the name is 
-      a(href="https://chupadados.codingrights.org/") Chupadados
-      |  it is a campaign exploring different narratives to raise awareness on data surveillance, government and corporate, for Spanish and Portuguese audience. The first
-      i declination
-      |  of invi.sible.link will be on a selected list of Brazilian websites, all related to the sexual health services. This would be an experiment to advocate on a target community outside our common audience.
+        a(href="https://chupadados.codingrights.org/") Chupadados
+        |    it is a campaign exploring different narratives to raise awareness on data surveillance, government and corporate, for Spanish and Portuguese audience. The first
+        i declination
+        |    of invi.sible.link will be on a selected list of Brazilian websites, all related to the sexual health services. This would be an experiment to advocate on a target community outside our common audience.
 
 
-  section(class="preliminary-5 prototype-5 operative-5")
+section(class="preliminary-5 prototype-5 operative-5")
     h2 Test webXray on OTF cloud
 
     p(class="task-description") The tool 
-      a(href="http://webxray.org/") webXray
-      |  has many things in common with this project; I start to assess if code base can be re-used. As first, I tested webXray on the three vantage points on OTF cloud, it is worked smoothly with a low effort. It is an interactive tool, therefore some of the assumptions behind the architecture might be different from my needs, still, looking in the internals:
-      ul
-        li
-          b useful
-          |  the PhantomJS script is inspired to my same source. I have spent a certain amount of time in managing the network deadlock that website might create on the analyzing pipeline, that's is considered an "hard problem" me and webXray solved differently
-        li
-          b not useful
-          |  the backend use a strict SQL schema, that might work nicely for a defined research project, but in my case, I'm preferring a Document Oriented DB (Mongo). This permit a more flexible usage of such data, and considering I'm using node+mongo stack intensively in the last 12 months, I prefer don't change it now.
-        li
-          b different
-          |  The subject under investigation, the websites, are aggregated as "1 million Alexa" also because do not support a fine clustering approach. Considering we address a "profiling issue", we need to keep in account different clusters of website, separated by their content, target audience, political and geographical impact. In this direction is also the point 4 in my task list.
-        li
-          b troublesome 
-          | one of the problem in third party trackers is the unreliability and source changes of the ADV content. The tool, any tool, might hang for infinite time and I've not yet found a discrete "exit condition". In order to optimize resources, webXray, 
-          a(href="https://github.com/timlib/webXray/blob/master/webxray/resources/phantomjs_scripts/wbxr_logger.js#L121") kills the browser emulation after 20 seconds
-          |, no matter of what is happening. In 
-          a(href="https://github.com/vecna/invi.sible.link/blob/Jan-Mar-2016-advancements/crawl/phjsrender.js") Trackography-2
-          |  I have experimented a smart solution, but being the deadlock an hard problem, this has to be refined.
+        a(href="http://webxray.org/") webXray
+        |    has many things in common with this project; I start to assess if code base can be re-used. As first, I tested webXray on the three vantage points on OTF cloud, it is worked smoothly with a low effort. It is an interactive tool, therefore some of the assumptions behind the architecture might be different from my needs, still, looking in the internals:
+        ul
+            li
+                b useful
+                |    the PhantomJS script is inspired to my same source. I have spent a certain amount of time in managing the network deadlock that website might create on the analyzing pipeline, that's is considered an "hard problem" me and webXray solved differently
+            li
+                b not useful
+                |    the backend use a strict SQL schema, that might work nicely for a defined research project, but in my case, I'm preferring a Document Oriented DB (Mongo). This permit a more flexible usage of such data, and considering I'm using node+mongo stack intensively in the last 12 months, I prefer don't change it now.
+            li
+                b different
+                |    The subject under investigation, the websites, are aggregated as "1 million Alexa" also because do not support a fine clustering approach. Considering we address a "profiling issue", we need to keep in account different clusters of website, separated by their content, target audience, political and geographical impact. In this direction is also the point 4 in my task list.
+            li
+                b troublesome 
+                | one of the problem in third party trackers is the unreliability and source changes of the ADV content. The tool, any tool, might hang for infinite time and I've not yet found a discrete "exit condition". In order to optimize resources, webXray, 
+                a(href="https://github.com/timlib/webXray/blob/master/webxray/resources/phantomjs_scripts/wbxr_logger.js#L121") kills the browser emulation after 20 seconds
+                |, no matter of what is happening. In 
+                a(href="https://github.com/vecna/invi.sible.link/blob/Jan-Mar-2016-advancements/crawl/phjsrender.js") Trackography-2
+                |    I have experimented a smart solution, but being the deadlock an hard problem, this has to be refined.
 
     p(class="task-description") In my current design these blocking operation are a small engineering problem. In the examples below you'll see the effect of don't managing such blocks. Without a manual intervention the pipeline remain blocked forever, and spotting all the possible conditions is a complex problem.
-      img(src="/images/unmanagedDelay1.png")
-      img(src="/images/unmanagedDelay2.png")
+        img(src="/images/unmanagedDelay1.png")
+        img(src="/images/unmanagedDelay2.png")
     p(class="task-description") When you see the 
-      b 7 day
-      | and 
-      b 7 minutes 
-      | is because I killed the process manually. webXray solved this problem with the hardcoded time limit, probably I'll use the same, if a smarter solution keep failing.
+        b 7 day
+        | and 
+        b 7 minutes 
+        | is because I killed the process manually. webXray solved this problem with the hardcoded time limit, probably I'll use the same, if a smarter solution keep failing.
 

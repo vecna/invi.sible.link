@@ -16,23 +16,17 @@ html
 
     title ⛅  invi.sible.link - Statistics
 
-    body(onload="tasksInsertion('#tasks'); lastHours({'hours': 48, 'loadavg': '#loadavg', 'memory': '#memory', 'mongo': '#database'});")
+    body(onload="lastHours({'hours': 20 * 24, 'loadavg': '#loadavg', 'memory': '#memory', 'mongo': '#database'});")
 
     .container-fluid
       .jumbotron
-        h1 Stats of 
+        h1 Long term stats of 
         h2 ⛅  invi.sible.link
 
     include navbar
 
     .container-fluid.text
-        h2 Tasks: promises and solutions
-        p This is the amount of scan request issued by the orchestration point
-        div(id="tasks")
-
-    .container-fluid.text
-        h2 Open statistics, as part of the open process
-        p This display the last 48 hours for the vantage points
+        h2 The last 20 days 
 
         h3 Load Average
         div(id="loadavg")
@@ -40,11 +34,6 @@ html
         div(id="memory")
         h3 Database objects
         div(id="database")
-
-    .container-fluid
-        h3 Check the 
-            a(href="/longterm-stats") Last 20 days
-            |  (Might take a while to load the graphs)
 
     include footer
 

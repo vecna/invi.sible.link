@@ -2,7 +2,7 @@ var updateTaskList = function() {
 
     var sections = document.getElementsByTagName('section');
 
-    _.times(11, function(i) {
+    _.times(12, function(i) {
         var targetId = '#progress-' + (i+1);
         _.each([ "preliminary", "prototype",
                  "operative", "improvements" ], function(step) {

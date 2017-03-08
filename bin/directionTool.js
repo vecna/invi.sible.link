@@ -22,7 +22,7 @@ function loadJSONfile(fname) {
 
 /* uniqueTargets _.reduce every source: DB or CSV */
 function uniqueTargets(memo, subject) {
-    var taskName = nconf.get('taskName') || "forgetten";
+    var taskName = nconf.get('taskName') || "u-forgot-taskName";
     var alist = _.map(subject.pages, function(site) {
         return {
             subjectId: site.id,
@@ -38,28 +38,57 @@ function uniqueTargets(memo, subject) {
     });
 }
 
+function importCSV(fname) {
+
+    var taskName = nconf.get('taskName') || "u-forgot-taskName";
+    return fs
+        .readFileAsync(fname, 'utf-8')
+        .then(function(csvc) {
+            var lines = csvc.split('\r\n');
+            debug("%d lines → keys [%s] 'rank' will be add",
+                _.size(lines)-1, lines[0] );
+            return _.map(_.tail(lines), function(entry, i) {
+                var comma = entry.indexOf(',');
+                return {
+                    'subjectId': various.hash({
+                        'fname': fname,
+                        'content': csvc,
+                        'name': taskName
+                    }),
+                    'taskName': taskName,
+                    'href': entry.substring(0, comma),
+                    'description': _.trim(entry.substring(comma+1), '"'),
+                    'rank': i + 1
+                };
+            });
+        });
+};
+
 function insertNeeds(fname, csv) {
 
     var filter = nconf.get('filter') || JSON.stringify({});
     filter = JSON.parse(filter);
-    var taskName = nconf.get('taskName') || "forgetten";
     var promises = [ timeRanges(fname) ];
 
     if(csv) {
-        throw new Error("Not yet implemented CSV");
+        debug("Importing CSV %s", csv);
+        promises.push( importCSV(csv) );
     } else {
-        /* if database source */
-        promises.push( mongo.read(nconf.get('schema').subjects, filter) );
+        debug("Using mongo as source (%j)", filter);
+        promises.push( 
+            mongo
+                .read(nconf.get('schema').subjects, filter)
+                .reduce(uniqueTargets, [])
+        );
     }
 
     return Promise
         .all(promises)
         .then(function(inputs) {
-            /* uniqueTargets process every source: DB or CSV */
-            var targets = _.reduce(inputs[1], uniqueTargets, []);
-            debug("taskName: %s Remind, everything with rank < 100 has been stripped off",
-                taskName);
-            return _.map(targets, function(t) {
+            debug("Read %d sites, everything with rank < 100 will be stripped off",
+                _.size(inputs[1]) );
+            /* TODO check that CSV and DB are producing here the same output */
+            return _.map(inputs[1], function(t) {
                 var p = _.extend(t, inputs[0]);
                 p.id = various.hash({
                     'href': p.href,
@@ -69,6 +98,17 @@ function insertNeeds(fname, csv) {
                 return p;
             });
         })
+        .then(function(tobecheck) {
+            var uniquified = _.countBy(tobecheck, 'id');
+            return _.reduce(uniquified, function(memo, amount, id) {
+                if(amount === 1)
+                    return _.concat(memo, _.find(tobecheck, {id: id}));
+
+                debug("Duplicated (%d times) %j", amount, _.find(tobecheck, {id: id}));
+                return _.concat(memo, _.first(_.find(tobecheck, {id: id})));
+            }, []);
+        })
+        .then(_.compact)
         .then(function(needs) {
             debug("Generated %d needs", _.size(needs));
             debug("The first is %s", JSON.stringify(needs[0], undefined, 2) );
@@ -86,17 +126,24 @@ function timeRanges(fname) {
         })
         .then(function(content) {
             var start, end;
-            debug("Processing timeframe: startFrom %j (options: midnight|now), lastFor %j",
-                content.lastFor, content.startFrom);
+            debug("Timeframe: startFrom %s (midnight|now), lastFor %j",
+                content.startFrom, content.lastFor);
             if(content.startFrom === 'midnight') {
-                start = moment().startOf('day');
-                end = moment().startOf('day').add(content.lastFor.amount, content.lastFor.unit);
+                start = moment()
+                    .startOf('day');
+                end = moment()
+                    .startOf('day')
+                    .add(content.lastFor.number, content.lastFor.period);
+                debugger;
+
             } else if (content.startFrom === 'now') {
                 start = moment();
-                end = moment().add(content.lastFor.amount, content.lastFor.unit);
+                end = moment()
+                    .add(content.lastFor.number, content.lastFor.period);
             } else {
                 throw new Error("Invalid keyword in startFrom");
             }
+            debug("Window start %s end %s", start, end);
             return {
                 needName: content.needName,
                 start: new Date(start.format("YYYY-MM-DD")),
