@@ -50,7 +50,11 @@ function importCSV(fname) {
             return _.map(_.tail(lines), function(entry, i) {
                 var comma = entry.indexOf(',');
                 return {
-                    'subjectId': various.hash({'fname': fname, 'content': csvc}),
+                    'subjectId': various.hash({
+                        'fname': fname,
+                        'content': csvc,
+                        'name': taskName
+                    }),
                     'taskName': taskName,
                     'href': entry.substring(0, comma),
                     'description': _.trim(entry.substring(comma+1), '"'),

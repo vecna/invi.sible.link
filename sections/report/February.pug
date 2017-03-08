@@ -1,0 +1,35 @@
+h1(class="reportTitle" id="February-17") February 2017
+
+section(class="preliminary-4 prototype-4")
+    h2 Importing CSV for campaigns, manage a campaign based website
+    p.text I'm realizing three campaign with a wenster audience in mind. These campaign don't related with the fellowship goals, but contains important lessons:
+        ul
+            li The effort in website selection require a deep knowledge of the environment addressed. Having a collaborator as part of the environment you want to test is nearly a requirement (to do something understood by the target audience). If the target audience is only the technical research community, it is less important indeed.
+            li Raise awareness on third party implications for users and companies security, require also some paragraphs about remediation, alternatives and script blocking.
+            li Translation/Localisation are optional but welcomed. Is important for this point, to implement a technical structure that permits such customisation.
+
+    p.text In RightsCon, by the end of March 2017, I'll meet partners from Turkey, Iran and other countries to discuss how begin some analysis campaign.
+    p.text As technical development, I've extended the previos campaign manager in importing CSV: this permits to the collaborator to work with a spreadsheet and export it. Also, it might be edited directly in github, lowering the entance barrier for contributors.
+
+section(class="prototype-10")
+    h2 Campaigns in progress and testing of the workflow
+    p.text In the three campaign I'm testing, the d3 plugin sankey is helping in the generation of a graphical appealing scalable visualisation, like:
+    img(src="images/sankey-preview.png")
+
+section(class="preliminary-9")
+    h2 Joint application with Coding Rights
+    p.text A research paper to compare 10 South American countries and 5 Western countries is a work in progress, we'll apply for academic conference.
+
+section(class="prototype-3")
+    h2 Stable monitoring of the analysis 
+    p.text The monitoring pipeline is proved to be stable, the statistics are available here, they are showing the last two days and there the 
+        a(href="/longterm-stats") last 20 days
+        |  (might take a while to load the graphs)
+
+    p.text below you can see a strange pattern that happen only to the machine located in Washington.
+    p.text
+        b Details: 
+        | Washington, Amsterdam and Hong-Kong share the same software and they execute same software and being the connection orchestrated in the same time with. And this is happening for a specific website, that seems sending different code based on the geographic location of the box. This is spot only because the process freeze on the WS box, and the CPU load remain high. Investigating more deeply with Thug, on the script differencies, would be part of my tasks in the next months.
+    img(src="images/weirdLoadAvg.png")
+
+
