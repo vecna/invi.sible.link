@@ -1,19 +1,30 @@
 h1(class="reportTitle" id="February-17") February 2017
 
 section(class="preliminary-4 prototype-4")
-    h2 Importing CSV for campaigns, manage a campaign based website
-    p.text I'm realizing three campaign with a wenster audience in mind. These campaign don't related with the fellowship goals, but contains important lessons:
+    h2 Manage a campaign based website
+    p.text I'm realizing three campaign with a Western audience in mind. These campaigns do not strictly fits with my fellowship goals, but are useful steps for outreach and early feedback.
         ul
-            li The effort in website selection require a deep knowledge of the environment addressed. Having a collaborator as part of the environment you want to test is nearly a requirement (to do something understood by the target audience). If the target audience is only the technical research community, it is less important indeed.
-            li Raise awareness on third party implications for users and companies security, require also some paragraphs about remediation, alternatives and script blocking.
-            li Translation/Localisation are optional but welcomed. Is important for this point, to implement a technical structure that permits such customisation.
+            li I realize a certain effort is in the 
+                b website selection 
+                |. It requires a deep knowledge of the target audience, as any non-generalistic communication. Having a collaborator belonging to the environment you want to disseminate is a requirement. In contexts in which the target audience is technical, this is less important though.
+            li Raise awareness about third party trackers and the implications for users and companies security, require also some paragraphs on 
+                b remediations, alternatives and script blocking
+                |. This might be delgated to the many translated tutorial around the web.
+            li Translation/Localisation are optional but welcomed. Is important for this point, to implement a technical structure that permits such customization.
 
-    p.text In RightsCon, by the end of March 2017, I'll meet partners from Turkey, Iran and other countries to discuss how begin some analysis campaign.
-    p.text As technical development, I've extended the previos campaign manager in importing CSV: this permits to the collaborator to work with a spreadsheet and export it. Also, it might be edited directly in github, lowering the entance barrier for contributors.
+    p.text I started the development of the tool named 
+        a(href="https://github.com/vecna/social-pressure") social-pressure
+        |.
+
+    p.text In RightsCon, by the end of March 2017, I'll meet partners from Turkey, Iran and other countries to discuss how to begin some analysis campaign.
+
+    p.text As technical imporvement, I've extended the 
+        b campaign manager 
+        | in importing CSV: this enables collaborator to work with a spreadsheet and github without dealing with more technically complex format (I use JSON natively). Also, it might be edited directly in github, lowering the entance barrier.
 
 section(class="prototype-10")
     h2 Campaigns in progress and testing of the workflow
-    p.text In the three campaign I'm testing, the d3 plugin sankey is helping in the generation of a graphical appealing scalable visualisation, like:
+    p.text In the three campaign I'm testing, the d3 plugin sankey is helping in the generation of a graphical appealing scalable visualization, like:
     img(src="images/sankey-preview.png")
 
 section(class="preliminary-9")
@@ -26,10 +37,11 @@ section(class="prototype-3")
         a(href="/longterm-stats") last 20 days
         |  (might take a while to load the graphs)
 
-    p.text below you can see a strange pattern that happen only to the machine located in Washington.
+    p.text below you can see a strange pattern that happens only to the machine located in Washington.
     p.text
         b Details: 
-        | Washington, Amsterdam and Hong-Kong share the same software and they execute same software and being the connection orchestrated in the same time with. And this is happening for a specific website, that seems sending different code based on the geographic location of the box. This is spot only because the process freeze on the WS box, and the CPU load remain high. Investigating more deeply with Thug, on the script differencies, would be part of my tasks in the next months.
+        | I'm using three boxes. Washington, Amsterdam and Hong-Kong. They share the same software and they execute the same command at the same time. This is done to reduce the differencies across tests. In a specific website under investigation, a different code is sent to the Washington box. Has the side effect of freeze phantomjs and keep it running. From the load average graph I spot this first anomaly:
     img(src="images/weirdLoadAvg.png")
+    p.text In the next months, with the integration of Thug, will be easier perform javascript inspection and investigate on the reasons.
 
 
