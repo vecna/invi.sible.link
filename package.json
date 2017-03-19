@@ -10,6 +10,7 @@
     "build": "./.gruntlame",
     "start": "echo 'nop, call run storyteller or the others components separately' ",
     "storyteller": "nodemon --config config/storyteller.json bin/storyteller",
+    "social-pressure": "nodemon --config config/social-pressure.json bin/social-pressure",
     "vigile": "nodemon --config config/vigile.json bin/vigile",
     "exposer": "nodemon --config config/exposer.json bin/exposer",
     "chopsticks": "DEBUG=chopsticks,lib:*,plugin:* node bin/chopsticks"
