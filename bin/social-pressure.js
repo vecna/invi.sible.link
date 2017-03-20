@@ -6,9 +6,6 @@ var _ = require('lodash');
 var debug = require('debug')('servente');
 var nconf = require('nconf');
 
-var routes = require('../routes/_socialpressure');
-var dispatchPromise = require('../lib/dispatchPromise');
-
 var cfgFile = "config/social-pressure.json";
 
 nconf.argv()
@@ -17,9 +14,13 @@ nconf.argv()
 
 var campaign = nconf.get('campaign');
 if(_.isUndefined(campaign) || campaign === "overwritewithenvorcommandline")
-    throw new Error("You've to specify a campaign name");
+    throw new Error("MISSING: campaign environment variable");
 
 nconf.file({ file: 'campaigns/' + campaign + ".json"});
+
+/* initialize libraries and inclusion only if the `campaign` variable set */
+var routes = require('../routes/_socialpressure');
+var dispatchPromise = require('../lib/dispatchPromise');
 
 /* test, is "port" is not found, then campaign is not found too */
 if(!nconf.get('port')) {
@@ -101,6 +102,9 @@ app.get('/archive/:selector', function(req, res) {
 });
 app.get('/site/:name', function(req, res) {
     req.params.page = 'site';
+    dispatchPromise('getCampaignPages', routes, req, res);
+});
+app.get('/:page', function(req, res) {
     dispatchPromise('getCampaignPages', routes, req, res);
 });
 app.get('/', function(req, res) {
