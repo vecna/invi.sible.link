@@ -6,7 +6,6 @@ var _ = require('lodash');
 var debug = require('debug')('servente');
 var nconf = require('nconf');
 
-
 var cfgFile = "config/social-pressure.json";
 
 nconf.argv()
@@ -103,6 +102,9 @@ app.get('/archive/:selector', function(req, res) {
 });
 app.get('/site/:name', function(req, res) {
     req.params.page = 'site';
+    dispatchPromise('getCampaignPages', routes, req, res);
+});
+app.get('/:page', function(req, res) {
     dispatchPromise('getCampaignPages', routes, req, res);
 });
 app.get('/', function(req, res) {
