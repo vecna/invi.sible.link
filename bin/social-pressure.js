@@ -100,15 +100,14 @@ app.get('/archive/:selector', function(req, res) {
     req.params.page = 'archive';
     dispatchPromise('getCampaignPages', routes, req, res);
 });
-app.get('/site/:name', function(req, res) {
-    req.params.page = 'site';
+app.get('/direct/:page', function(req, res) {
     dispatchPromise('getCampaignPages', routes, req, res);
 });
 app.get('/:page', function(req, res) {
-    dispatchPromise('getCampaignPages', routes, req, res);
+    dispatchPromise('getCampaignIndex', routes, req, res);
 });
 app.get('/', function(req, res) {
-    req.params.page = 'home';
-    dispatchPromise('getCampaignPages', routes, req, res);
+    req.params.page = 'landing';
+    dispatchPromise('getCampaignIndex', routes, req, res);
 });
 
