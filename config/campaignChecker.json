@@ -10,14 +10,29 @@
       { "name": "WS", "host": "http://ws-vp.sible.link:7300" }
   ],
   "campaigns": [{
-      "name": "itamedia",
-      "description": "Italian media",
-      "filter": { "name" : "italian-media" },
-      "dayswindow": 1
-  }, {
       "name": "BR",
       "description": "Brazil top sites",
       "filter": { "iso3166": "BR" },
+      "dayswindow": 1
+  }, {
+      "name": "culture",
+      "description": "culture",
+      "filter": { "taskName" : "culture" },
+      "dayswindow": 1
+  }, {
+      "name": "travel",
+      "description": "traval",
+      "filter": { "taskName" : "travel" },
+      "dayswindow": 1
+  }, {
+      "name": "halal",
+      "description": "halal",
+      "filter": { "taskName" : "halal" },
+      "dayswindow": 1
+  }, {
+      "name": "mosques",
+      "description": "mosques",
+      "filter": { "taskName" : "mosques" },
       "dayswindow": 1
   }],
   "evidences": "evidences",
