@@ -18,17 +18,17 @@ var pugCompiler = function(filePrefix) {
  * location does depend on the campaign name */
 
 var pageMap = {
-    'home': pugCompiler('home'),
-    'archive': pugCompiler('archive'),
-    'site': pugCompiler('site')
+    'landing': pugCompiler('pugs/landing'),
+    'what-to-do': pugCompiler('pugs/what-to-do'),
+    'about': pugCompiler('pugs/about'),
+    'archive': pugCompiler('pugs/archive'),
+    'site': pugCompiler('pugs/site')
 };
 
 var getCampaignPages = function(req) {
 
-    debugger;
     var pageName = _.get(req.params, 'page');
     debug("page name %s", pageName);
-    debugger;
 
     if(_.isUndefined(_.get(pageMap, pageName))) {
         debug("%s getCampaignPages on %s: not found", req.randomUnicode, pageName);
@@ -39,5 +39,6 @@ var getCampaignPages = function(req) {
 
     return { 'text': pageMap[pageName]() };
 };
+
 
 module.exports = getCampaignPages;
