@@ -1,4 +1,44 @@
-# invi.sible.link architecture design
+# toolchain command reference
+
+This is toolchain compsed by many small tools. The goal has been reduce 1 functionality per tool. below, or on the [website](https://invi.sible.link) you can find more contextual details
+
+### Installation
+
+clone the repository, `npm install`, have mongodb running on localhost.
+There are two kind of scripts: listening services (they listen via HTTP and execute REST commands) and standalone scripts
+
+## listening services
+
+on the **command and control** server:
+
+    npm run storyteller
+    npm run vigile
+
+special case, when there is a campaign to be managed:
+
+    npm run social-pressure
+
+on the vantage point:
+
+    npm run exposer
+
+## standalone scripts
+
+one shot commands 
+
+    DEBUG=*  bin/directionTool.js --csv ../amtrex/culture-list.csv --taskName culture
+
+scheduled execution (crontab) on the command and control:
+
+
+scheduled execution (crontab) on the vantage point:
+
+
+
+
+# Below, some alpha stage notes:
+
+## invi.sible.link architecture design
 
 **storyteller**: web publisher of lists and results
 
@@ -9,7 +49,7 @@ exectuion pipelines.
 Additionally, to replicate the advocacy declined for CodingRights 
 experiments, this might imply different boxes, management, etc.
 
-## storyteller
+### storyteller
 
 **Runs in the public web**, 7000
 
@@ -19,7 +59,7 @@ experiments, this might imply different boxes, management, etc.
  * implement basic API
  * fetch the data from machete
 
-## scheduled collectors 
+### scheduled collectors 
 
 Some high level data and visualisation takes sense only if computed separately.
 I was thinking to generalize this sequence of tasks through the toll named
@@ -39,7 +79,7 @@ It look through all the Vantage Point to get information over the subject
 of a specific investigation, and update a daily report on the subject.
 
 
-## vigile
+### vigile
 
 **Runs in one admin controller machine**, access restricted, 7200
 
@@ -51,7 +91,7 @@ execute activities in user time, no scheduled tasks
   * provide stats for the admin on what is happening
   * is managed by the adminstrators and only by them
 
-## chopsticks
+### chopsticks
 
 **Runs on the vantage point**
 
@@ -68,7 +108,7 @@ composition pipeline:
     mongo
 
 
-## exposer
+### exposer
 
 **Runs where chopstick run**, 7300
 
@@ -76,18 +116,14 @@ expose via API in a raw version what the chopsticks exectutions, can't
 be performed by chopstick itself because this is a webserver and chopstick
 has different execution pattern.
 
-## socialpressure
+### socialpressure
 
 **Runs whenever**
 
 Tooks input from scheduled resuls, generate output for the social media and
 contains the logic to automatize activities
 
-# requirements
-
-mongodb, node, npm, `npm install`
-
-# How to do a Vantage Point
+# How to setup a Vantage Point
 
 ```
 git clone git@github.com:vecna/invi.sible.link.git
