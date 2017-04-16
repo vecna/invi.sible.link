@@ -34,6 +34,11 @@
       "description": "mosques",
       "filter": { "taskName" : "mosques" },
       "dayswindow": 1
+  }, {
+      "name": "itanews",
+      "description": "Italian newspaper analysis",
+      "filter": { "taskName": "itanews" },
+      "dayswindow": 3
   }],
   "evidences": "evidences",
   "surface": "surface"
