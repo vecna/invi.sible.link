@@ -1,22 +1,36 @@
-# toolchain command reference
+# invi.sible.link
+### Toolchain command reference
 
-This is toolchain compsed by many small tools. The goal has been reduce 1 functionality per tool. below, or on the [website](https://invi.sible.link) you can find more contextual details
+This is toolchain compsed by many small tools. The goal has been reduce 1 functionality per tool. below, or on the [website](https://invi.sible.link) you can find more contextual details. If you want get in touch, [claudio at tracking dot exposed](keybase.io/vecna) is the email to write to, the link lead to the PGP key.
 
 ### Installation
 
-clone the repository, `npm install`, have mongodb running on localhost.
+Clone the repository, `npm install`, have mongodb running on localhost.
 There are two kind of scripts: listening services (they listen via HTTP and execute REST commands) and standalone scripts
+
+## Machines naming
+
+Exists two kind of boxes in invi.sible.link system: the **Vantage Point** (VP) and the **Coordinator**. In my test infrastructure, the Coordinator is [https://invi.sible.link](https://invi.sible.link) and the three VP are *ws-vp.sible.link, ams-vp.sible.link, hk-vp.sible.link*
+
+Using the code in this repository you have all the required software for replicate the analysis I'm doing. Both the boxes install the same package and needs mongodb, just they use different executables.
 
 ## listening services
 
-on the **command and control** server:
+on the **Coordinator** server:
 
     npm run storyteller
+
+`storyteller` is a binary located in `bin/storyteller` using the configuration file `config/storyteller.json`. It listen on the port 7000 in HTTP and serve the public website of the Coordinator box.
+
     npm run vigile
 
-special case, when there is a campaign to be managed:
+`vigile` is a binary located in `bin/vigile` using the configuration file `config/vigile.json`. It is consulted by the VPs to get the website to be tested.
+
+When you are managing a campaign there is this command to be executed in the Coordinator box:
 
     npm run social-pressure
+
+[Here a more extensive explanation on how Campaign works](tree/master/campaigns).
 
 on the vantage point:
 
@@ -24,15 +38,57 @@ on the vantage point:
 
 ## standalone scripts
 
-one shot commands 
+These are executed when new tests and campaign are going to begin. The commands are intended to be repeated follwing the *crontab scheduling* chapter below.
+
+**coordinate the test for a list of websites**. Requirement: a CSV list, a unique name to be associate to that test:
 
     DEBUG=*  bin/directionTool.js --csv ../amtrex/culture-list.csv --taskName culture
 
-scheduled execution (crontab) on the command and control:
+This command is intended to store a list of website in testing. With the following example you'll download a campaign package, a set of files respecting [this specifics](https://github.com/vecna/invi.sible.link/tree/master/campaigns)
 
+    git@github.com:tracking-exposed/intrex.git
+    cd intrex
+    npm i
 
-scheduled execution (crontab) on the vantage point:
+The command above generate such output:
 
+    directionTool CSV source defined in ../intrex/italian-media-2016.csv, I hope is an absolute path +0ms
+    directionTool Unspecified 'needsfile' ENV, using default config/dailyNeeds.json +2ms
+    directionTool Using config/dailyNeeds.json as needs generator +1ms
+    directionTool Importing CSV ../intrex/italian-media-2016.csv +1ms
+    directionTool content {"needName":"basic","lastFor":{"number":28,"period":"h"},"startFrom":"midnight"} +3ms
+    directionTool Timeframe: startFrom midnight (midnight|now), lastFor {"number":28,"period":"h"} +1ms
+    directionTool Window start Mon Apr 17 2017 00:00:00 GMT+0200 end Tue Apr 18 2017 04:00:00 GMT+0200 +2ms
+    directionTool 39 lines → keys [site,description] 'rank' will be add +2ms
+    directionTool Read 39 sites, everything with rank < 100 will be stripped off +3ms
+    directionTool Generated 39 needs +6ms
+      directionTool The first is {
+      "subjectId": "1c40afc685a418a5098aee28a33f818f5b6c3e14",
+      "taskName": "intrex",
+      "href": "http://www.repubblica.it",
+      "description": "11717",
+      "rank": 1,
+      "needName": "basic",
+      "start": "2017-04-17T00:00:00.000Z",
+      "end": "2017-04-18T00:00:00.000Z",
+      "id": "58b5d753e732edb69d2cfdf3d683a8b1e76ce49b"
+    } +0ms
+    lib:mongo writeMany: DONE, in promises 39 objects +36ms
+
+This command has set a list of task to be executed. The **VPs** contact `vigile` asking if there are some task to be done. If `vigile` has something to give back it log:
+
+    route:getTasks Ӫ getTasks max 30 from casa +2m
+    route:getTasks taskList returns 30 tasks updated for VP [casa] +76ms
+    route:getTasks Ϣ getTasks max 30 from casa +2m
+    route:getTasks taskList returns 9 tasks updated for VP [casa] +22ms
+
+Logs the number of task provided to the **VP**, named *casa* in this log. With a maximum of 30 task returned every time, and 39 website to be tested, 
+
+If there are not new task to be delegated, `vigile` log with some *underscores*, like this:
+
+    route:getTasks _________ casa +5ms
+
+## crontab scheduling
 
 
 
