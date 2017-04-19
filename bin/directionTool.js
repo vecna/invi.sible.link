@@ -38,13 +38,20 @@ function uniqueTargets(memo, subject) {
     });
 }
 
+function windowsOrUnix(content) {
+    var lines = content.split('\r\n');
+    if(_.size(lines) === 1)
+        lines = content.split('\n');
+    return lines;
+}
+
 function importCSV(fname) {
 
     var taskName = nconf.get('taskName') || "u-forgot-taskName";
     return fs
         .readFileAsync(fname, 'utf-8')
         .then(function(csvc) {
-            var lines = csvc.split('\r\n');
+            var lines = windowsOrUnix(csvc);
             debug("%d lines → keys [%s] 'rank' will be add",
                 _.size(lines)-1, lines[0] );
             return _.map(_.tail(lines), function(entry, i) {
@@ -134,7 +141,6 @@ function timeRanges(fname) {
                 end = moment()
                     .startOf('day')
                     .add(content.lastFor.number, content.lastFor.period);
-                debugger;
 
             } else if (content.startFrom === 'now') {
                 start = moment();

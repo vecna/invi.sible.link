@@ -55,5 +55,27 @@ They are accessed by this command:
 
 ### the JSON configuration format
 
+In my home istallation I've, for example:
+
+    ۞  ~/Dev/invi.sible.link/campaigns $ ls -l
+    drwxrwxr-x 5 oo oo 4096 Mar 26 06:24 amtrex
+    lrwxrwxrwx 1 oo oo   18 Mar 25 14:56 amtrex.json -> amtrex/amtrex.json
+    drwxrwxr-x 3 oo oo 4096 Abr 18 22:16 intrex
+    lrwxrwxrwx 1 oo oo   18 Abr 18 22:16 intrex.json -> intrex/intrex.json
+    -rw-rw-r-- 1 oo oo 5859 Abr 17 00:05 README.md
+    ۞  ~/Dev/invi.sible.link/campaigns $
+
+the JSON configuration file are read by the command:
+
+    $ campaign=intrex npm run social-pressure
+
+and contains simply information on the interface and the TCP listening port:
+
+    ۞  ~/Dev/invi.sible.link $ cat campaigns/intrex.json 
+    {
+        "interface": "127.0.0.1",
+        "port": 7510
+    }
+
 
 ### the directory content
