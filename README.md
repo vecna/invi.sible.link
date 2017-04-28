@@ -90,9 +90,10 @@ If there are not new task to be delegated, `vigile` log with some *underscores*,
 
 ## crontab scheduling
 
+TBD
 
-
-# Below, some alpha stage notes:
+# Still need revision below
+# -------------------------------------------------
 
 ## invi.sible.link architecture design
 

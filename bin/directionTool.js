@@ -108,11 +108,17 @@ function insertNeeds(fname, csv) {
         .then(function(tobecheck) {
             var uniquified = _.countBy(tobecheck, 'id');
             return _.reduce(uniquified, function(memo, amount, id) {
+
+                var element = _.find(tobecheck, {id: id});
+
+                if(amount === 1 && (!element.href || element.href === ''))
+                    return memo;
+
                 if(amount === 1)
                     return _.concat(memo, _.find(tobecheck, {id: id}));
 
-                debug("Duplicated (%d times) %j", amount, _.find(tobecheck, {id: id}));
-                return _.concat(memo, _.first(_.find(tobecheck, {id: id})));
+                /* else, there are more elements with the same id, are dups */
+                return _.concat(memo, _.first(element));
             }, []);
         })
         .then(_.compact)
