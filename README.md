@@ -88,12 +88,52 @@ If there are not new task to be delegated, `vigile` log with some *underscores*,
 
     route:getTasks _________ casa +5ms
 
+### Retrieve information
+
+In the previous section we saw ↓
+  * how `directionTool` (in `bin/directionTool`)
+  * create `promises` (in mongodb configured in `config/vigile.json` )
+  * these promises are dispatch by `vigile` (`bin/vigile` listening on 7200)
+  * Vantage Point contact `vigile` when is executed `bin/chopsticks`
+  * Vantage Point get the site to be analyzed and save their results in mongodb (`config/chopsticks.json`)
+  * Vantage Point notify to `vigile` if the analysis was successful or not, `promises` get updated with this result
+
+Now, from the box running `vigile` and `storyteller` we want retrieve the results obtained and do analysis, aggregation, visualizations.
+
+    DEBUG=* bin/campaignChecker.js --config config/experimentsCampaign.json --campaign intrex
+
+  * campaign: has to be a previously used `taskName` and has to be a field present in `config/experimentsCampaign.json`
+
+# Setup Tasks
+
 ## crontab scheduling
 
 TBD
 
+# Thug
+
+[thug](https://github.com/buffer/thug) is a powerful instrument used to detect client side attacks. It extend a javascript sandbox and this suits very well to our scope. It is not mandatory for the system to work, but might provide unique results.
+
+### Installing Thug
+
+Following https://buffer.github.io/thug/doc/build.html
+
+    # aptitude install libboost-all-dev graphviz libffi-dev libfuzzy-dev autoconf libgraphviz-dev pkg-config python-pip
+    # aptitude install libtiff5-dev libjpeg8-dev zlib1g-dev libfreetype6-dev liblcms2-dev libwebp-dev tcl8.6-dev tk8.6-dev python-tk
+    # aptitude install python-libemu libemu-dev
+    # pip install pygraphviz --install-option="--include-path=/usr/include/graphviz" --install-option="--library-path=/usr/lib/graphviz/"
+    # pip install pyv8
+    # pip install thug
+
+(otherwise I'll try with docker it don't work in the vantage point: the requirements here are a lot)
+
+### Experiments with Thug
+
+please refer to the file THUG.md
+
+
 # Still need revision below
-# -------------------------------------------------
+# -------------------------
 
 ## invi.sible.link architecture design
 

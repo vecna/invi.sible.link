@@ -7,37 +7,25 @@ var moment = require('moment');
 var nconf = require('nconf');
 var mongo = require('../lib/mongo');
 
-/* ¹ a great result in Keep it Simple and Stupid has 
- * caused the death of the themed componented "machete",
- * in memory of the Costa Rica vacation. now the tool
- * have a meaningful name and perfom some collection/analysis
- * operation before store to the DB. in theory, operation would
- * be more performant in mongo, so at the moment the reduction
- * is not done.  */
 var machetils = require('../lib/machetils');
-/*  ^^^^^^^^^ and above is explained why is machetils */
 var company = require('../lib/company');
 
 nconf.argv().env();
 
 var cfgFile = nconf.get('config') 
-if(!cfgFile)
-    throw new Error("config file has to be explicit and full path here");
+if(!cfgFile) machetils.fatalError("config file has to be specify via CLI/ENV");
+
 nconf.file({ file: cfgFile });
 
+debug("campaign available %j", _.map(nconf.get('campaigns'), 'name'));
+
 var tname = nconf.get('campaign');
-debug("using target name %s to be search in %j", tname, nconf.get('campaigns'));
-if(!tname)
-	throw new Error("specify --campaign or env `campaign`");
+if(!tname) machetils.fatalError("campaign has to be specify via CLI/ENV");
+
+debug("Looking for campaign %s", tname);
+
 var target = _.find(nconf.get('campaigns'), { name: tname });
-if(!target)
-	throw new Error("Not found campagin " + tname + " in config section");
-
-var taskName = nconf.get('taskName');
-if(!taskName)
-    throw new Error("need --taskName or env `taskName`");
-
-debug("Task %s running for campaign %j", taskName, target);
+if(!target) machetils.fatalError("Not found campagin " + tname + " in config section");
 
 function buildURLs(memo, page) {
 	var promiseURLs = _.map(nconf.get('vantages'), function(vp) {
@@ -63,8 +51,8 @@ function getPromiseURLs(target) {
     return mongo
         .read(nconf.get('schema').promises, target.filter)
         .tap(function(p) {
-            debug("With filter %j we have %d promises",
-                target.filter, _.size(p));
+            debug("Promises %j %d results (~ %d per day)",
+                target.filter, _.size(p), _.round(_.size(p) / target.dayswindow, 2) );
         })
 	    .reduce(buildURLs, []);
 }
@@ -72,7 +60,6 @@ function getPromiseURLs(target) {
 function saveAll(retrieved) {
     return Promise
         .reduce(retrieved, function (memo, subject) {
-            debugger;
 
             var target = _.find(subject.data, {target: true})
             if(!target)
@@ -89,12 +76,11 @@ function saveAll(retrieved) {
             return _.concat(memo, target, inclusions);
         }, [])
         .then(function(content) {
-            debug("saveAll has %d data", _.size(content));
+            debug("saving in evidences %d object", _.size(content));
 
-            if(_.size(content)) {
+            if(_.size(content))
                 return machetils
-                    .mongoSave(nconf.get('evidences'), content, taskName);
-            }
+                    .mongoSave(nconf.get('evidences'), content, target);
         });
 }
 
@@ -147,12 +133,11 @@ function updateSurface(retrieved) {
             return _.concat(memo, target);
         }, [])
         .then(function(content) {
-            debug("updateSurtface has %d data (has to be ~ subjects)",
-                _.size(content) );
+            debug("updateSurface has %d objects (~subjects)", _.size(content) );
 
             if(_.size(content)) {
                 return machetils
-                    .mongoSave(nconf.get('surface'), content, taskName);
+                    .mongoSave(nconf.get('surface'), content, target);
             }
         });
 };
@@ -163,7 +148,7 @@ function numerize(list) {
 
 return getPromiseURLs(target)
     .tap(numerize)
-    .map(machetils.jsonFetch, {concurrency: 10})
+    .map(machetils.jsonFetch, {concurrency: 5})
     .tap(numerize)
     .then(_.compact)
     .tap(numerize)
