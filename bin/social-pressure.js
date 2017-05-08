@@ -9,7 +9,9 @@ var machetils = require('../lib/machetils');
 
 var cfgFile = "config/social-pressure.json";
 
-nconf.argv().env();
+nconf.argv()
+     .env()
+     .file('config', cfgFile);
 
 var campaign = nconf.get('campaign');
 if(_.isUndefined(campaign) || campaign === "overwritewithenvorcommandline")
@@ -17,7 +19,11 @@ if(_.isUndefined(campaign) || campaign === "overwritewithenvorcommandline")
 
 var campaignc = 'campaigns/' + campaign + "/config/" + campaign + "-campaign.json";
 debug("Loading as campaign config: %s", campaignc);
-nconf.file({ file: campaignc });
+
+nconf.argv()
+     .env()
+     .file('campaign', campaignc)
+     .file('config', cfgFile);
 
 /* initialize libraries and inclusion only if the `campaign` variable set */
 var routes = require('../routes/_socialpressure');
@@ -35,11 +41,6 @@ if(!nconf.get('port')) {
 server.listen(nconf.get('port'), nconf.get('interface') );
 console.log( "http://" + nconf.get('interface') + ':' + nconf.get('port') + " listening");
 
-/* load this setting because they might be kept in ther other files, and we need it */
-nconf.argv()
-     .env()
-     .file({ file: cfgFile });
-
 /* API of social pressure */
 app.get('/api/v:version/mostUniqueTrackers/:task', function(req, res) {
     return dispatchPromise('getRanked', routes, req, res);
@@ -53,12 +54,14 @@ app.get('/api/v:version/surface/:task', function(req, res) {
     return dispatchPromise('getSurface', routes, req, res);
 });
 
+/* all tasks */
 app.get('/api/v:version/activeTasks', function(req, res) {
     return dispatchPromise('activeTasks', routes, req, res);
 });
 
-app.get('/api/v:version/campaign/:cname', function(req, res) {
-    return dispatchPromise('getCampaignSubject', routes, req, res);
+/* promises by taskName */
+app.get('/api/v:version/tasks/:cname', function(req, res) {
+    return dispatchPromise('getCampaignPromises', routes, req, res);
 });
 
 app.get('/api/v:version/subjects', function(req, res) {

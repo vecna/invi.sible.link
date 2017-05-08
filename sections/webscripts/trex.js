@@ -1,19 +1,31 @@
-function setupLanding(where) {
+var defaultCampaign = null;
+var initiativePrefix = null;
+
+function initializeLanding(where, defaultC, initiativeP, containerId) {
+
+    if(defaultC)
+        defaultCampaign = defaultC;
+
+    if(initiativeP)
+        initiativePrefix = initiativeP;
+
+    var validP = [ 'landing', 'what-to-do', 'about', 'archive' ];
 
     if(!where) {
         where = window.location.href.split('/').pop();
 
-        if(where !== 'landing' || where !== 'what-to-do' || where !== 'about')
+        if(validP.indexOf(where) == -1) {
+            console.log("Unknown location, forcing to 'landing'");
             where = 'landing';
+        }
     }
 
     $("#content").load('/direct/' + where, function () {
         if(where === 'landing')
-            trexRender('mosques', '#table');
+            trexRender(defaultCampaign, containerId);
 
         $('.' + where).addClass('active');
     });
-
 };
 
 function loadPage(containerId, destpage) {
@@ -23,19 +35,22 @@ function loadPage(containerId, destpage) {
 
     $("#content").load("/direct/" + destpage, function () {
 
-        setTimeout(function() {
-            if(destpage=== 'landing') {
-                trexRender(_.sample(['mosques', 'halal', 'travel', 'culture']), '#table');
-            }
-        }, 200);
-        history.pushState({'nothing': true}, "American Muslims " + destpage, destpage);
-    });
+        /* if a script need to be executed at the load, here it is fired */
+        if(destpage === 'landing') {
+            trexRender(defaultCampaign, '#table');
+        }
+        if(destpage === 'archive') {
+            trexArchive(defaultCampaign, '#archivetable', '#subjects');
+        }
 
+        console.log("Loading and recording as: " + initiativePrefix + " " + destpage);
+        history.pushState({'nothing': true}, initiativePrefix + " " + destpage, destpage);
+    });
 };
 
 function trexRender(campaignName, containerId) {
 
-    console.log("trexRender " + campaignName);
+    console.log("trexRender of " + campaignName);
     $(containerId).html("");
     $('.nav-justified li p').removeClass('selected');
     $('.nav-justified li#' + campaignName + ' p').addClass('selected');
@@ -47,13 +62,13 @@ function trexRender(campaignName, containerId) {
     var nodeWidth = 5;
     var nodePadding = 12;
 
-    d3.json("/api/v1/surface/" + campaignName, function (data) {
+    d3.json("/api/v1/surface/" + campaignName, function(data) {
 
         if(!data.length) {
             console.log("Error: no data available for this visualization");
             console.log("API: /api/v1/surface/" + campaignName );
             $(containerId).html("<b>No data available for this visualization</b><br>");
-            height = 0;
+            height = 30;
         }
 
         var formatNumber = d3.format(",.0f"),
@@ -203,4 +218,60 @@ function trexRender(campaignName, containerId) {
             .style("pointer-events","none");
 
     });
+};
+
+function trexArchive(campaignName, archiveTable, subjectTable) {
+
+    console.log("trexArchive");
+
+    $.getJSON("/api/v1/surface/" + campaignName, function(collections) {
+
+        console.log("surface");
+        console.log(collections);
+
+        var converted = _.map(collections, function(list) {
+            var inserted = moment
+                .duration(moment() - moment(list.creationTime) )
+                .humanize() + " ago";
+
+            /* order matter, so I want to be sure here */
+            return [
+                list.name,
+                list.kind,
+                moment(list.trueOn).format("YYYY-MM-DD"),
+                inserted,
+                list.siteCount
+            ];
+        });
+
+        $(archiveTable).DataTable( {
+            data: converted
+        });
+    });
+
+    $.getJSON("/api/v1/campaign/" + campaignName, function(collections) {
+
+        console.log("campaign");
+        console.log(collections);
+
+        var converted = _.map(collections, function(list) {
+            var inserted = moment
+                .duration(moment() - moment(list.creationTime) )
+                .humanize() + " ago";
+
+            /* order matter, so I want to be sure here */
+            return [
+                list.name,
+                list.kind,
+                moment(list.trueOn).format("YYYY-MM-DD"),
+                inserted,
+                list.siteCount
+            ];
+        });
+
+        $(subjectTable).DataTable( {
+            data: converted
+        });
+    });
+
 };

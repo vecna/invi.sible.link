@@ -19,7 +19,6 @@ var displaySubjects = function(containerId) {
             ];
         });
 
-
         $(containerId).DataTable( {
             data: converted
         });

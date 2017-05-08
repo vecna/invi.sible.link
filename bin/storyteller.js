@@ -53,7 +53,7 @@ app.get('/api/v:version/activeTasks', function(req, res) {
     return dispatchPromise('activeTasks', routes, req, res);
 });
 
-app.get('/api/v:version/campaign/:cc', function(req, res) {
+app.get('/api/v:version/campaign/:cname', function(req, res) {
     return dispatchPromise('getCampaignSubject', routes, req, res);
 });
 
