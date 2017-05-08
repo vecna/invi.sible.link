@@ -5,18 +5,19 @@ var server = require('http').Server(app);
 var _ = require('lodash');
 var debug = require('debug')('servente');
 var nconf = require('nconf');
+var machetils = require('../lib/machetils');
 
 var cfgFile = "config/social-pressure.json";
 
-nconf.argv()
-     .env()
-     .file({ file: cfgFile });
+nconf.argv().env();
 
 var campaign = nconf.get('campaign');
 if(_.isUndefined(campaign) || campaign === "overwritewithenvorcommandline")
-    throw new Error("MISSING: campaign environment variable");
+    machetils.fatalError("MISSING: campaign environment variable");
 
-nconf.file({ file: 'campaigns/' + campaign + ".json"});
+var campaignc = 'campaigns/' + campaign + "/config/" + campaign + "-campaign.json";
+debug("Loading as campaign config: %s", campaignc);
+nconf.file({ file: campaignc });
 
 /* initialize libraries and inclusion only if the `campaign` variable set */
 var routes = require('../routes/_socialpressure');
@@ -27,42 +28,45 @@ if(!nconf.get('port')) {
     console.error("Probabily the campaign suggested has not the settings file");
     console.error("campaigns/"+ campaign + ".json is required");
     console.error("check in campaigns/README.md the format");
-    throw new Error("missing configuration (port)");
+    machetils.fatalError("missing configuration (port)");
 }
 
 /* everything begin here, welcome */
 server.listen(nconf.get('port'), nconf.get('interface') );
-console.log( nconf.get('interface') + ':' + nconf.get('port') + " listening");
+console.log( "http://" + nconf.get('interface') + ':' + nconf.get('port') + " listening");
+
+/* load this setting because they might be kept in ther other files, and we need it */
+nconf.argv()
+     .env()
+     .file({ file: cfgFile });
 
 /* API of social pressure */
-
-/* API from storyteller (might be reused) */
 app.get('/api/v:version/mostUniqueTrackers/:task', function(req, res) {
-        return dispatchPromise('getRanked', routes, req, res);
+    return dispatchPromise('getRanked', routes, req, res);
 });
 
 app.get('/api/v:version/byCompanies/:task', function(req, res) {
-        return dispatchPromise('getCompanies', routes, req, res);
+    return dispatchPromise('getCompanies', routes, req, res);
 });
 
 app.get('/api/v:version/surface/:task', function(req, res) {
-        return dispatchPromise('getSurface', routes, req, res);
+    return dispatchPromise('getSurface', routes, req, res);
 });
 
 app.get('/api/v:version/activeTasks', function(req, res) {
-        return dispatchPromise('activeTasks', routes, req, res);
+    return dispatchPromise('activeTasks', routes, req, res);
 });
 
-app.get('/api/v:version/campaign/:cc', function(req, res) {
-        return dispatchPromise('getCampaignSubject', routes, req, res);
+app.get('/api/v:version/campaign/:cname', function(req, res) {
+    return dispatchPromise('getCampaignSubject', routes, req, res);
 });
 
 app.get('/api/v:version/subjects', function(req, res) {
-        return dispatchPromise('getSubjects', routes, req, res);
+    return dispatchPromise('getSubjects', routes, req, res);
 });
 
 app.get('/api/v:version/stats/:hours', function(req, res) {
-        return dispatchPromise('getStats', routes, req, res);
+    return dispatchPromise('getStats', routes, req, res);
 });
 
 /* ----------------------------------------------------- */
@@ -92,7 +96,7 @@ if(nconf.get('development') === 'true') {
 	app.use('/js/local', express.static(distPath + '/js/local'));
 }
 app.use('/js/vendor', express.static(distPath + '/js/vendor'));
-app.use('/campaign', express.static(distPath + '/../campaigns/' + campaign));
+app.use('/campaign', express.static(distPath + '/../campaigns/' + campaign + '/web-accessible'));
 app.use('/js', express.static(distPath + '/js/vendor'));
 
 /* setup the three static pages of social-pressure: home, test-archive, single-site */
@@ -110,4 +114,3 @@ app.get('/', function(req, res) {
     req.params.page = 'landing';
     dispatchPromise('getCampaignIndex', routes, req, res);
 });
-

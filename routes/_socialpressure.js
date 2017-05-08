@@ -2,5 +2,6 @@
 module.exports = {
     systemInfo:         require('./systemInfo'),
     getCampaignPages:   require('./getCampaignPages'),
-    getCampaignIndex:   require('./getCampaignIndex')
+    getCampaignIndex:   require('./getCampaignIndex'),
+    getSurface:         require('./getSurface')
 };

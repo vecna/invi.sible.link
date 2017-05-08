@@ -44,38 +44,50 @@ Is one or more person who:
 
 # Technical specification
 
-In this directory has to be found:
-
-  * `campaignName`.json file
-  * `campaignName` directory
-
-They are accessed by this command:
-
-    DEBUG=* node bin/social-pressure --campaign campaignName
-
-### the JSON configuration format
+In this directory you might find the campaigns package cloned (or implemented by you)
 
 In my home istallation I've, for example:
 
     ۞  ~/Dev/invi.sible.link/campaigns $ ls -l
     drwxrwxr-x 5 oo oo 4096 Mar 26 06:24 amtrex
-    lrwxrwxrwx 1 oo oo   18 Mar 25 14:56 amtrex.json -> amtrex/amtrex.json
     drwxrwxr-x 3 oo oo 4096 Abr 18 22:16 intrex
-    lrwxrwxrwx 1 oo oo   18 Abr 18 22:16 intrex.json -> intrex/intrex.json
     -rw-rw-r-- 1 oo oo 5859 Abr 17 00:05 README.md
     ۞  ~/Dev/invi.sible.link/campaigns $
 
-the JSON configuration file are read by the command:
+the JSON configuration file are located in:
 
-    $ campaign=intrex npm run social-pressure
+
+and by read by the command:
+
+    $ campaign=example npm run social-pressure
+
+you get:
+
+    ۞  ~/Dev/invi.sible.link campaign=example npm run social-pressure
+    > invi.sible.link@1.0.0 social-pressure /home/oo/Dev/invi.sible.link
+    > nodemon --config config/social-pressure.json bin/social-pressure
+    [nodemon] 1.11.0
+    [nodemon] reading config /home/oo/Dev/invi.sible.link/config/social-pressure.json
+    [nodemon] to restart at any time, enter `rs`
+    [nodemon] ignoring: /home/oo/Dev/invi.sible.link/.git/**/* .nyc_output .sass-cache bower_components coverage /home/oo/Dev/invi.sible.link/node_modules/**/*
+    [nodemon] watching: campaigns/*/pugs/*.pug campaigns/*/*.js campaigns/*/*.css dist/*/***/*
+    [nodemon] watching extensions: js,css,json,pug
+    [nodemon] starting `node bin/social-pressure index.js`
+    [nodemon] child pid: 9050
+    [nodemon] watching 127 files
+      Loading as campaign config: campaigns/example/config/example-campaign.json +0ms
+    http://127.0.0.1:7525 listening
+
 
 and contains simply information on the interface and the TCP listening port:
 
-    ۞  ~/Dev/invi.sible.link $ cat campaigns/intrex.json 
+    ۞  ~/Dev/invi.sible.link $ cat campaigns/example/config/example-campaign.json 
     {
         "interface": "127.0.0.1",
-        "port": 7510
+        "port": 7525
     }
 
+# Campaign repositories content
 
-### the directory content
+
+
