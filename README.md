@@ -98,17 +98,16 @@ In the previous section we saw ↓
   * Vantage Point get the site to be analyzed and save their results in mongodb (`config/chopsticks.json`)
   * Vantage Point notify to `vigile` if the analysis was successful or not, `promises` get updated with this result
 
-Now, from the box running `vigile` and `storyteller` we want retrieve the results obtained and do analysis, aggregation, visualizations.
+Then, from the box running `vigile` and `storyteller` we want retrieve the results obtained and do analysis, aggregation, visualizations.
 
     DEBUG=* bin/campaignChecker.js --config config/experimentsCampaign.json --campaign intrex
 
   * campaign: has to be a previously used `taskName` and has to be a field present in `config/experimentsCampaign.json`
 
-# Setup Tasks
+This create in mongodb:
 
-## crontab scheduling
-
-TBD
+  * as many entries in `evidences` as the request/response
+  * as many entries in `surface` as the website tested
 
 # Thug
 

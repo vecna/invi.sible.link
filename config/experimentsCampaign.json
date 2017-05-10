@@ -48,6 +48,11 @@
       "filter": { "taskName" : "mosques" },
       "dayswindow": 1
   }, {
+      "name": "example",
+      "description": "example",
+      "filter": { "taskName" : "example" },
+      "dayswindow": 1
+  }, {
       "name": "CodingRights",
       "description": "Latin American online clinics - CodingRights experiment",
       "filter": { "taskName" : "clinics" },
