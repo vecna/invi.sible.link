@@ -1,14 +1,14 @@
 
 var _ = require('lodash');
 var Promise = require('bluebird');
-var debug = require('debug')('route:getRanked');
+var debug = require('debug')('route:getCompanies');
 var moment = require('moment');
 var nconf = require('nconf');
  
 var campaignOps = require('../lib/campaignOps');
 
 /* This API return a reduction of evidences used by c3, it is used to show the sources of third parties */
-function getRanked(req) {
+function getCompanies(req) {
 
     var filter = { task: req.params.task };
     return campaignOps.pickLastHours(filter, 36)
@@ -23,4 +23,4 @@ function getRanked(req) {
         });
 };
 
-module.exports = getRanked;
+module.exports = getCompanies;

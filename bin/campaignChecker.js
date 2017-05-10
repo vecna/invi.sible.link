@@ -7,37 +7,26 @@ var moment = require('moment');
 var nconf = require('nconf');
 var mongo = require('../lib/mongo');
 
-/* ¹ a great result in Keep it Simple and Stupid has 
- * caused the death of the themed componented "machete",
- * in memory of the Costa Rica vacation. now the tool
- * have a meaningful name and perfom some collection/analysis
- * operation before store to the DB. in theory, operation would
- * be more performant in mongo, so at the moment the reduction
- * is not done.  */
+var various = require('../lib/various');
 var machetils = require('../lib/machetils');
-/*  ^^^^^^^^^ and above is explained why is machetils */
 var company = require('../lib/company');
 
 nconf.argv().env();
 
 var cfgFile = nconf.get('config') 
-if(!cfgFile)
-    throw new Error("config file has to be explicit and full path here");
+if(!cfgFile) machetils.fatalError("config file has to be specify via CLI/ENV");
+
 nconf.file({ file: cfgFile });
 
+debug("campaign available %j", _.map(nconf.get('campaigns'), 'name'));
+
 var tname = nconf.get('campaign');
-debug("using target name %s to be search in %j", tname, nconf.get('campaigns'));
-if(!tname)
-	throw new Error("specify --campaign or env `campaign`");
-var target = _.find(nconf.get('campaigns'), { name: tname });
-if(!target)
-	throw new Error("Not found campagin " + tname + " in config section");
+if(!tname) machetils.fatalError("campaign has to be specify via CLI/ENV");
 
-var taskName = nconf.get('taskName');
-if(!taskName)
-    throw new Error("need --taskName or env `taskName`");
+debug("Looking for campaign %s", tname);
 
-debug("Task %s running for campaign %j", taskName, target);
+var campConf = _.find(nconf.get('campaigns'), { name: tname });
+if(!campConf) machetils.fatalError("Not found campagin " + tname + " in config section");
 
 function buildURLs(memo, page) {
 	var promiseURLs = _.map(nconf.get('vantages'), function(vp) {
@@ -63,8 +52,8 @@ function getPromiseURLs(target) {
     return mongo
         .read(nconf.get('schema').promises, target.filter)
         .tap(function(p) {
-            debug("With filter %j we have %d promises",
-                target.filter, _.size(p));
+            debug("Promises %j %d results (~ %d per day)",
+                target.filter, _.size(p), _.round(_.size(p) / target.dayswindow, 2) );
         })
 	    .reduce(buildURLs, []);
 }
@@ -72,7 +61,6 @@ function getPromiseURLs(target) {
 function saveAll(retrieved) {
     return Promise
         .reduce(retrieved, function (memo, subject) {
-            debugger;
 
             var target = _.find(subject.data, {target: true})
             if(!target)
@@ -88,13 +76,22 @@ function saveAll(retrieved) {
 
             return _.concat(memo, target, inclusions);
         }, [])
+        .map(function(evidenceO, i) {
+            var timeString = moment().format("YYYY-MM-DD");
+            evidenceO.id = various.hash({
+                daily: timeString,
+                campaign: campConf.name,
+                tested: evidenceO.href,
+                i: i
+            });
+            return evidenceO;
+        })
         .then(function(content) {
-            debug("saveAll has %d data", _.size(content));
+            debug("saving in evidences %d object", _.size(content));
 
-            if(_.size(content)) {
+            if(_.size(content))
                 return machetils
-                    .mongoSave(nconf.get('evidences'), content, taskName);
-            }
+                    .mongoSave(nconf.get('evidences'), content, campConf.name);
         });
 }
 
@@ -117,7 +114,7 @@ function updateSurface(retrieved) {
             /* unrecognized domain */
             target.unrecognized = [];
 
-            _.each(_.reject(subject.data, {target: true}), function(rr) {
+            _.each(_.reject(subject.data, {target: true}), function(rr, cnt) {
 
                 if(_.isUndefined(target.unique[rr.domainId]))
                     _.set(target.unique, rr.domainId, 0);
@@ -127,15 +124,20 @@ function updateSurface(retrieved) {
                 if(rr['Content-Type'] && rr['Content-Type'].match('script'))
                     target.javascripts += 1;
 
-                if(rr.company && target.companies.indexOf(rr.company)  === -1 ) {
-                    target.companies.push(rr.company);
-                } else {
-                    target.unrecognized.push(rr.domaindottld)
+                if(rr.company) {
+                    if(target.companies.indexOf(rr.company) === -1 ) {
+                        target.companies.push(rr.company);
+                    }
+                }
+                else {
+                    if(target.unrecognized.indexOf(rr.domaindottld) === -1) {
+                        target.unrecognized.push(rr.domaindottld);
+                    }
                 }
 
                 if(rr['Server'] === 'cloudflare-nginx') {
-                    debug("CF server spot in %s (company %s)!", rr.domaindottld, rr.company);
-                    target.companies.push("Cloudflare");
+                    // debug("CF server spot in %s (company %s)!", rr.domaindottld, rr.company);
+                    target.cloudFlare = true;
                 }
 
                 if(rr.cookies && _.size(rr.cookies)) {
@@ -146,13 +148,21 @@ function updateSurface(retrieved) {
 
             return _.concat(memo, target);
         }, [])
-        .then(function(content) {
-            debug("updateSurtface has %d data (has to be ~ subjects)",
-                _.size(content) );
+        .map(function(surfaceO) {
+            var timeString = moment().format("YYYY-MM-DD");
+            surfaceO.id = various.hash({
+                daily: timeString,
+                campaign: campConf.name,
+                tested: surfaceO.href
+            });
+            return surfaceO;
+        })
+        .tap(function(content) {
+            debug("updateSurface has %d objects (~subjects)", _.size(content) );
 
             if(_.size(content)) {
                 return machetils
-                    .mongoSave(nconf.get('surface'), content, taskName);
+                    .mongoSave(nconf.get('surface'), content, campConf.name);
             }
         });
 };
@@ -161,15 +171,16 @@ function numerize(list) {
     debug("The list in this step has %d elements", _.size(list));
 }
 
-return getPromiseURLs(target)
+return getPromiseURLs(campConf)
     .tap(numerize)
-    .map(machetils.jsonFetch, {concurrency: 10})
+    .map(machetils.jsonFetch, {concurrency: 5})
     .tap(numerize)
     .then(_.compact)
     .tap(numerize)
     .map(company.attribution)
     .tap(saveAll)
-    .tap(updateSurface)
+    .then(updateSurface)
+    // summary ?
     .tap(function(r) {
         debug("Operationg compeleted successfully");
     });

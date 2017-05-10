@@ -1,0 +1,63 @@
+{
+  "name": "campaignChecker",
+  "schema": {
+    "promises": "promises"
+  },
+  "mongodb": "mongodb://localhost/ivl",
+  "vantages": [
+      { "name": "localhost", "host": "http://localhost:7300" }
+  ],
+  "campaigns": [{
+      "name": "intrex",
+      "description": "Italian newspaper analysis",
+      "filter": { "taskName" : "intrex" },
+      "dayswindow": 1
+  }, {
+      "name": "BR",
+      "description": "Brazil top sites",
+      "filter": { "iso3166": "BR" },
+      "dayswindow": 1
+  }, {
+      "name": "itatopex",
+      "description": "Italian, national top 25 content producer",
+      "filter": { "taskName": "itatopex" },
+      "dayswindow": 1
+  }, {
+      "name": "EI",
+      "description": "European Institutions third party trackers analysis",
+      "filter": { "taskName" : "EI" },
+      "dayswindow": 3
+  }, {
+      "name": "culture",
+      "description": "culture",
+      "filter": { "taskName" : "culture" },
+      "dayswindow": 1
+  }, {
+      "name": "travel",
+      "description": "traval",
+      "filter": { "taskName" : "travel" },
+      "dayswindow": 1
+  }, {
+      "name": "halal",
+      "description": "halal",
+      "filter": { "taskName" : "halal" },
+      "dayswindow": 1
+  }, {
+      "name": "mosques",
+      "description": "mosques",
+      "filter": { "taskName" : "mosques" },
+      "dayswindow": 1
+  }, {
+      "name": "example",
+      "description": "example",
+      "filter": { "taskName" : "example" },
+      "dayswindow": 1
+  }, {
+      "name": "CodingRights",
+      "description": "Latin American online clinics - CodingRights experiment",
+      "filter": { "taskName" : "clinics" },
+      "dayswindow": 3
+  }],
+  "evidences": "evidences",
+  "surface": "surface"
+}

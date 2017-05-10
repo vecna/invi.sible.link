@@ -45,7 +45,7 @@ app.get('/api/v:version/byCompanies/:task', function(req, res) {
     return dispatchPromise('getCompanies', routes, req, res);
 });
 
-app.get('/api/v:version/surface/:task', function(req, res) {
+app.get('/api/v:version/surface/:campaign', function(req, res) {
     return dispatchPromise('getSurface', routes, req, res);
 });
 
@@ -53,7 +53,7 @@ app.get('/api/v:version/activeTasks', function(req, res) {
     return dispatchPromise('activeTasks', routes, req, res);
 });
 
-app.get('/api/v:version/campaign/:cc', function(req, res) {
+app.get('/api/v:version/campaign/:cname', function(req, res) {
     return dispatchPromise('getCampaignSubject', routes, req, res);
 });
 
