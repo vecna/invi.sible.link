@@ -108,6 +108,7 @@ This create in mongodb:
 
   * as many entries in `evidences` as the request/response
   * as many entries in `surface` as the website tested
+  * one entry in `sankeys`
 
 # Thug
 

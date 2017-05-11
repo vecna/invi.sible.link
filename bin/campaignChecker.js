@@ -180,8 +180,92 @@ return getPromiseURLs(campConf)
     .map(company.attribution)
     .tap(saveAll)
     .then(updateSurface)
-    // summary ?
+    .then(sankeys)
     .tap(function(r) {
         debug("Operationg compeleted successfully");
     });
+
+function sankeys(surface) {
+
+  return various
+    .loadJSONfile("fixtures/companyCountries.json")
+    .then(function(companyMap) {
+
+        debugger;
+        var nodes = _.reduce(surface, function(memo, e) {
+            
+            if(!_.size(e.companies)) {
+                debug("Site %s has not trackers!", s.href);
+                return memo;
+            }
+
+            memo.push({
+                "href": s.href,
+                "name": s.href.replace(/https?:\/\//, ''),
+                "group": "site",
+                "node": _.size(memo)
+            });
+
+            _.each(e.companies, function(comp) {
+                if(!_.find(memo, {"name": comp, "group": "company" })) {
+                    memo.push({
+                        "name": comp,
+                        "group": "company",
+                        "node": _.size(memo)
+                    });
+
+                    var nation = companyMap[comp];
+                    if(!_.isString(nation)) {
+                        debug("Warning, company %s lack of nation associated!", comp);
+                        debug("https://duckduckgo.com/%s", comp);
+                        nation = "0x00";
+                        companyMap[comp] = nation;
+                    }
+
+                    if(!_.find(memo, {"name": nation, "group": "country"})) {
+                        memo.push({
+                            "name": nation,
+                            "group": "country",
+                            "node": _.size(memo)
+                        });
+                    }
+                }
+            });
+            return memo;
+        }, []);
+
+        var companySize = {};
+        var links = [];
+
+        _.each(_.filter(nodes, {"group": "site" }), function(sentry) {
+            var e = _.find(surface, {'href': sentry.href });
+
+            _.each(_.uniq(e.companies), function(cname) {
+                var t = _.find(nodes, {"group": "company", "name": cname});
+
+                if(!companySize[cname])
+                    companySize[cname] = 0;
+                companySize[cname] += 1;
+
+                links.push({
+                    'source': sentry.node,
+                    'target': t.node,
+                    'value': 1
+                });
+            });
+        });
+
+        _.each(companySize, function(size, cname) {
+            var t = _.find(nodes,{group:"company",name:cname});
+            var n = _.find(nodes,{group:"country",name:companyMap[cname] });
+            links.push({source: t.node, target: n.node, value: size });
+        });
+
+        debug("sankeys: %d nodes, %d links", _.size(nodes), _.size(links));
+        return { nodes: nodes, links: links };
+    })
+    .then(function(sanflows) {
+        debugger;
+    });
+};
 

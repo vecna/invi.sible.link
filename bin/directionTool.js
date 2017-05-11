@@ -22,7 +22,10 @@ function loadJSONfile(fname) {
 
 /* uniqueTargets _.reduce every source: DB or CSV */
 function uniqueTargets(memo, subject) {
-    var taskName = nconf.get('taskName') || "u-forgot-taskName";
+    var taskName = nconf.get('taskName');
+    if(!taskName)
+        throw new Error("taskName it is necessary");
+
     var alist = _.map(subject.pages, function(site) {
         return {
             subjectId: site.id,
@@ -47,7 +50,10 @@ function windowsOrUnix(content) {
 
 function importCSV(fname) {
 
-    var taskName = nconf.get('taskName') || "u-forgot-taskName";
+    var taskName = nconf.get('taskName');
+    if(!taskName)
+        throw new Error("taskName variable it is required");
+
     return fs
         .readFileAsync(fname, 'utf-8')
         .then(function(csvc) {
@@ -82,6 +88,13 @@ function insertNeeds(fname, csv) {
         promises.push( importCSV(csv) );
     } else {
         debug("Using mongo as source (%j)", filter);
+        if(!nconf.get('IMSURE'))
+            throw new Error("Remind Claudio, last time, without the CSV, has been trigger 8000+ promises");
+            /* and check if subjectId it is unique or not, because this concept of campaing/subject/href 
+             * has to be clean and documented. 
+             *
+             * Claudio, from your future: PLEASE DO NOT CHANGE WHAT IS WORKING */
+
         promises.push( 
             mongo
                 .read(nconf.get('schema').subjects, filter)
@@ -169,6 +182,7 @@ csv = nconf.get('csv');
 if(csv)
     debug("CSV source defined in %s, I hope is an absolute path", csv);
 
+/* this daily needs has not proven yet its usefulness */
 if(_.isUndefined(nconf.get('needsfile'))) {
     var fname = 'config/dailyNeeds.json';
     debug("Unspecified 'needsfile' ENV, using default %s", fname);
