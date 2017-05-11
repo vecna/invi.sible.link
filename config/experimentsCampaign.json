@@ -1,7 +1,8 @@
 {
   "name": "campaignChecker",
   "schema": {
-    "promises": "promises"
+    "promises": "promises",
+    "sankeys": "sankeys"
   },
   "mongodb": "mongodb://localhost/ivl",
   "vantages": [

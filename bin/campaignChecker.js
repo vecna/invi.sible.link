@@ -171,21 +171,9 @@ function numerize(list) {
     debug("The list in this step has %d elements", _.size(list));
 }
 
-return getPromiseURLs(campConf)
-    .tap(numerize)
-    .map(machetils.jsonFetch, {concurrency: 5})
-    .tap(numerize)
-    .then(_.compact)
-    .tap(numerize)
-    .map(company.attribution)
-    .tap(saveAll)
-    .then(updateSurface)
-    .then(sankeys)
-    .tap(function(r) {
-        debug("Operationg compeleted successfully");
-    });
-
 function sankeys(surface) {
+
+  debug("Generating sankeys");
 
   return various
     .loadJSONfile("fixtures/companyCountries.json")
@@ -195,13 +183,13 @@ function sankeys(surface) {
         var nodes = _.reduce(surface, function(memo, e) {
             
             if(!_.size(e.companies)) {
-                debug("Site %s has not trackers!", s.href);
+                debug("Site %s has not trackers!", e.href);
                 return memo;
             }
 
             memo.push({
-                "href": s.href,
-                "name": s.href.replace(/https?:\/\//, ''),
+                "href": e.href,
+                "name": e.href.replace(/https?:\/\//, ''),
                 "group": "site",
                 "node": _.size(memo)
             });
@@ -216,8 +204,6 @@ function sankeys(surface) {
 
                     var nation = companyMap[comp];
                     if(!_.isString(nation)) {
-                        debug("Warning, company %s lack of nation associated!", comp);
-                        debug("https://duckduckgo.com/%s", comp);
                         nation = "0x00";
                         companyMap[comp] = nation;
                     }
@@ -233,6 +219,20 @@ function sankeys(surface) {
             });
             return memo;
         }, []);
+
+        var missing = _.reduce(surface, function(memo, e) {
+            _.each(e.companies, function(comp) {
+                if(companyMap[comp] == '0x00') {
+                    memo.hack[comp] = "";
+                    memo.help[comp] = "https://duckduckgo.com/" + _.replace(comp, /\ /g, '%20');
+                }
+            });
+            return memo;
+        }, { hack: {}, help: {} });
+
+        debug("For missing companies: %s %s",
+            JSON.stringify(missing.hack, undefined, 2),
+            JSON.stringify(missing.help, undefined, 2));
 
         var companySize = {};
         var links = [];
@@ -265,7 +265,25 @@ function sankeys(surface) {
         return { nodes: nodes, links: links };
     })
     .then(function(sanflows) {
-        debugger;
+        return mongo.writeOne(nconf.get('schema').sankeys, {
+            when: new Date(),
+            campaign: campConf.name,
+            nodes: sanflows.nodes,
+            links: sanflows.links
+        });
     });
 };
 
+return getPromiseURLs(campConf)
+    .tap(numerize)
+    .map(machetils.jsonFetch, {concurrency: 5})
+    .tap(numerize)
+    .then(_.compact)
+    .tap(numerize)
+    .map(company.attribution)
+    .tap(saveAll)
+    .then(updateSurface)
+    .then(sankeys)
+    .tap(function(r) {
+        debug("Operationg compeleted successfully");
+    });

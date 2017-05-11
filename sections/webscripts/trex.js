@@ -56,7 +56,7 @@ function trexRender(campaignName, containerId) {
     $('.nav-justified li#' + campaignName + ' p').addClass('selected');
 
     var margin = {top: 30, right: 30, bottom: 30, left: 30},
-        width = $('#table').width() - margin.left - margin.right,
+        width = $(containerId).width() - margin.left - margin.right,
         height = 900 - margin.top - margin.bottom;
 
     var nodeWidth = 5;
@@ -64,13 +64,22 @@ function trexRender(campaignName, containerId) {
 
     d3.json("/api/v1/sankeys/" + campaignName, function(data) {
 
-        if(!data.length) {
+        if(!data.when) {
             console.log("Error: no data available for this visualization");
             console.log("API: /api/v1/surface/" + campaignName );
-            $(containerId).html("<b>No data available for this visualization</b><br>");
+            $(containerId).html("<b class='sad'> ✮  ✮  No data available for this visualization</b>");
+            $('.sad').each(function() {
+                var elem = $(this);
+                setInterval(function() {
+                    if (elem.css('visibility') == 'hidden') {
+                        elem.css('visibility', 'visible');
+                    } else {
+                        elem.css('visibility', 'hidden');
+                    }    
+                }, 500);
+            });
             return;
         }
-        console.log("Data available: " + data.length);
         console.log(data);
 
         var formatNumber = d3.format(",.0f"),

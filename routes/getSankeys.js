@@ -1,3 +1,4 @@
+var _ = require('lodash');
 var debug = require('debug')('route:getSankeys');
 var nconf = require('nconf');
 
@@ -10,10 +11,10 @@ function getSankeys(req) {
     debug("%s getSankeys filter %j", req.randomUnicode, filter);
 
     return mongo
-        .readLimit(nconf.get('schema').sankeys, filter, { when: 1 }, 0, 1) 
+        .readLimit(nconf.get('schema').sankeys, filter, { when: -1 }, 1, 0) 
         .then(function(sankey) {
             return {
-                'json': sankey
+                'json': _.pick(sankey[0], ['when', 'links', 'nodes'])
             }
         });
 };
