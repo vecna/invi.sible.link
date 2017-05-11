@@ -54,6 +54,10 @@ app.get('/api/v:version/surface/:campaign', function(req, res) {
     return dispatchPromise('getSurface', routes, req, res);
 });
 
+app.get('/api/v:version/sankeys/:campaign', function(req, res) {
+    return dispatchPromise('getSankeys', routes, req, res);
+});
+
 /* all tasks */
 app.get('/api/v:version/activeTasks', function(req, res) {
     return dispatchPromise('activeTasks', routes, req, res);

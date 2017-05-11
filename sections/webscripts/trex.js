@@ -40,7 +40,7 @@ function loadPage(containerId, destpage) {
             trexRender(defaultCampaign, '#table');
         }
         if(destpage === 'archive') {
-            trexArchive(defaultCampaign, '#archivetable', '#subjects');
+            trexArchive(defaultCampaign, '#archivetable');
         }
 
         console.log("Loading and recording as: " + initiativePrefix + " " + destpage);
@@ -62,14 +62,16 @@ function trexRender(campaignName, containerId) {
     var nodeWidth = 5;
     var nodePadding = 12;
 
-    d3.json("/api/v1/surface/" + campaignName, function(data) {
+    d3.json("/api/v1/sankeys/" + campaignName, function(data) {
 
         if(!data.length) {
             console.log("Error: no data available for this visualization");
             console.log("API: /api/v1/surface/" + campaignName );
             $(containerId).html("<b>No data available for this visualization</b><br>");
-            height = 30;
+            return;
         }
+        console.log("Data available: " + data.length);
+        console.log(data);
 
         var formatNumber = d3.format(",.0f"),
             format = function(d) { return formatNumber(d); };
@@ -220,7 +222,7 @@ function trexRender(campaignName, containerId) {
     });
 };
 
-function trexArchive(campaignName, archiveTable, subjectTable) {
+function trexArchive(campaignName, archiveTable) {
 
     console.log("trexArchive");
 
@@ -231,45 +233,20 @@ function trexArchive(campaignName, archiveTable, subjectTable) {
 
         var converted = _.map(collections, function(list) {
             var inserted = moment
-                .duration(moment() - moment(list.creationTime) )
+                .duration(moment() - moment(list.when) )
                 .humanize() + " ago";
 
             /* order matter, so I want to be sure here */
             return [
-                list.name,
-                list.kind,
-                moment(list.trueOn).format("YYYY-MM-DD"),
-                inserted,
-                list.siteCount
+                list.url,
+                _.size(list.companies),
+                list.javascripts,
+                _.size(list.unique),
+                inserted
             ];
         });
 
         $(archiveTable).DataTable( {
-            data: converted
-        });
-    });
-
-    $.getJSON("/api/v1/campaign/" + campaignName, function(collections) {
-
-        console.log("campaign");
-        console.log(collections);
-
-        var converted = _.map(collections, function(list) {
-            var inserted = moment
-                .duration(moment() - moment(list.creationTime) )
-                .humanize() + " ago";
-
-            /* order matter, so I want to be sure here */
-            return [
-                list.name,
-                list.kind,
-                moment(list.trueOn).format("YYYY-MM-DD"),
-                inserted,
-                list.siteCount
-            ];
-        });
-
-        $(subjectTable).DataTable( {
             data: converted
         });
     });
