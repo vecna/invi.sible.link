@@ -1,3 +1,6 @@
+**I'm reviewing the struct and the content of this document**
+
+
 # How to do a campaigns
 ### and what me/you have to do, if you want to do a campaign
 
