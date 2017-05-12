@@ -49,6 +49,16 @@
       "filter": { "taskName" : "mosques" },
       "dayswindow": 1
   }, {
+      "name": "irantrex",
+      "description": "irantrex",
+      "filter": { "taskName" : "irantrex" },
+      "dayswindow": 1
+  }, {
+      "name": "chuptrex",
+      "description": "chuptrex",
+      "filter": { "taskName" : "chuptrex" },
+      "dayswindow": 1
+  }, {
       "name": "example",
       "description": "example",
       "filter": { "taskName" : "example" },
