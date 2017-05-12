@@ -2,7 +2,8 @@
     "name": "social-pressure",
     "schema": {
         "evidences": "evidences",
-        "surface": "surface"
+        "surface": "surface",
+        "sankeys": "sankeys"
     },
     "mongodb": "mongodb://localhost/ivl",
     "campaign": "overwritewithenvorcommandline",

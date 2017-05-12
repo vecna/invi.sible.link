@@ -20,7 +20,7 @@ if(!task) {
 
 
 /* localhost → development, NODE_ENV === 'production', not really used ↓ */
-if(process.env['HOME'] === '/home/oo') {
+if(process.env['HOME']==='/home/oo' || process.env['HOME']==='/home/aa') {
     /* Hardcoded by Claudio, to be triggered a gift to the first adopter
      * that spot it because want execute the tool */
     var rootdir = os.homedir() + "/Dev/invi.sible.link/";

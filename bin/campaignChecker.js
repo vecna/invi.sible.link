@@ -13,6 +13,8 @@ var company = require('../lib/company');
 
 nconf.argv().env();
 
+var MISSING_NATION = 'UNKNOW';
+
 var cfgFile = nconf.get('config') 
 if(!cfgFile) machetils.fatalError("config file has to be specify via CLI/ENV");
 
@@ -171,6 +173,109 @@ function numerize(list) {
     debug("The list in this step has %d elements", _.size(list));
 }
 
+function sankeys(surface) {
+
+  debug("Generating sankeys");
+
+  return various
+    .loadJSONfile("fixtures/companyCountries.json")
+    .then(function(companyMap) {
+
+        debugger;
+        var nodes = _.reduce(surface, function(memo, e) {
+            
+            if(!_.size(e.companies)) {
+                debug("Site %s has not trackers!", e.href);
+                return memo;
+            }
+
+            memo.push({
+                "href": e.href,
+                "name": e.href.replace(/https?:\/\//, ''),
+                "group": "site",
+                "node": _.size(memo)
+            });
+
+            _.each(e.companies, function(comp) {
+                if(!_.find(memo, {"name": comp, "group": "company" })) {
+                    memo.push({
+                        "name": comp,
+                        "group": "company",
+                        "node": _.size(memo)
+                    });
+
+                    var nation = companyMap[comp];
+                    if(!_.isString(nation)) {
+                        nation = "MISSING_NATION";
+                        companyMap[comp] = nation;
+                    }
+
+                    if(!_.find(memo, {"name": nation, "group": "country"})) {
+                        memo.push({
+                            "name": nation,
+                            "group": "country",
+                            "node": _.size(memo)
+                        });
+                    }
+                }
+            });
+            return memo;
+        }, []);
+
+        var missing = _.reduce(surface, function(memo, e) {
+            _.each(e.companies, function(comp) {
+                if(companyMap[comp] == 'MISSING_NATION') {
+                    memo.hack[comp] = "";
+                    memo.help[comp] = "https://duckduckgo.com/" + _.replace(comp, /\ /g, '%20');
+                }
+            });
+            return memo;
+        }, { hack: {}, help: {} });
+
+        debug("For missing companies: %s %s",
+            JSON.stringify(missing.hack, undefined, 2),
+            JSON.stringify(missing.help, undefined, 2));
+
+        var companySize = {};
+        var links = [];
+
+        _.each(_.filter(nodes, {"group": "site" }), function(sentry) {
+            var e = _.find(surface, {'href': sentry.href });
+
+            _.each(_.uniq(e.companies), function(cname) {
+                var t = _.find(nodes, {"group": "company", "name": cname});
+
+                if(!companySize[cname])
+                    companySize[cname] = 0;
+                companySize[cname] += 1;
+
+                links.push({
+                    'source': sentry.node,
+                    'target': t.node,
+                    'value': 1
+                });
+            });
+        });
+
+        _.each(companySize, function(size, cname) {
+            var t = _.find(nodes,{group:"company",name:cname});
+            var n = _.find(nodes,{group:"country",name:companyMap[cname] });
+            links.push({source: t.node, target: n.node, value: size });
+        });
+
+        debug("sankeys: %d nodes, %d links", _.size(nodes), _.size(links));
+        return { nodes: nodes, links: links };
+    })
+    .then(function(sanflows) {
+        return mongo.writeOne(nconf.get('schema').sankeys, {
+            when: new Date(),
+            campaign: campConf.name,
+            nodes: sanflows.nodes,
+            links: sanflows.links
+        });
+    });
+};
+
 return getPromiseURLs(campConf)
     .tap(numerize)
     .map(machetils.jsonFetch, {concurrency: 5})
@@ -180,8 +285,7 @@ return getPromiseURLs(campConf)
     .map(company.attribution)
     .tap(saveAll)
     .then(updateSurface)
-    // summary ?
+    .then(sankeys)
     .tap(function(r) {
         debug("Operationg compeleted successfully");
     });
-

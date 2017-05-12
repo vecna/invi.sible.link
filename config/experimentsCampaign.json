@@ -1,7 +1,8 @@
 {
   "name": "campaignChecker",
   "schema": {
-    "promises": "promises"
+    "promises": "promises",
+    "sankeys": "sankeys"
   },
   "mongodb": "mongodb://localhost/ivl",
   "vantages": [
@@ -46,6 +47,16 @@
       "name": "mosques",
       "description": "mosques",
       "filter": { "taskName" : "mosques" },
+      "dayswindow": 1
+  }, {
+      "name": "irantrex",
+      "description": "irantrex",
+      "filter": { "taskName" : "irantrex" },
+      "dayswindow": 1
+  }, {
+      "name": "chuptrex",
+      "description": "chuptrex",
+      "filter": { "taskName" : "chuptrex" },
       "dayswindow": 1
   }, {
       "name": "example",

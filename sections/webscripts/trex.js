@@ -1,7 +1,7 @@
 var defaultCampaign = null;
 var initiativePrefix = null;
 
-function initializeLanding(where, defaultC, initiativeP, containerId) {
+function initializeLanding(where, defaultC, initiativeP) {
 
     if(defaultC)
         defaultCampaign = defaultC;
@@ -21,14 +21,12 @@ function initializeLanding(where, defaultC, initiativeP, containerId) {
     }
 
     $("#content").load('/direct/' + where, function () {
-        if(where === 'landing')
-            trexRender(defaultCampaign, containerId);
-
+        loadPage(where);
         $('.' + where).addClass('active');
     });
 };
 
-function loadPage(containerId, destpage) {
+function loadPage(destpage) {
 
     $('li').removeClass('active');
     $('.' + destpage).addClass('active');
@@ -36,12 +34,18 @@ function loadPage(containerId, destpage) {
     $("#content").load("/direct/" + destpage, function () {
 
         /* if a script need to be executed at the load, here it is fired */
-        if(destpage === 'landing') {
-            trexRender(defaultCampaign, '#table');
-        }
-        if(destpage === 'archive') {
-            trexArchive(defaultCampaign, '#archivetable', '#subjects');
-        }
+        setTimeout(function() {
+
+            if(destpage === 'landing') {
+                console.log("loadPage- trexRender to " + defaultCampaign);
+                trexRender(defaultCampaign, '#sankeytable');
+            }
+            if(destpage === 'archive') {
+                console.log("loadPage- trexArchive to " + defaultCampaign);
+                trexArchive(defaultCampaign, '#archivetable');
+            }
+
+        }, 300);
 
         console.log("Loading and recording as: " + initiativePrefix + " " + destpage);
         history.pushState({'nothing': true}, initiativePrefix + " " + destpage, destpage);
@@ -50,26 +54,38 @@ function loadPage(containerId, destpage) {
 
 function trexRender(campaignName, containerId) {
 
-    console.log("trexRender of " + campaignName);
+    console.log("trexRender of " + campaignName + " in " + containerId);
     $(containerId).html("");
+
     $('.nav-justified li p').removeClass('selected');
     $('.nav-justified li#' + campaignName + ' p').addClass('selected');
 
     var margin = {top: 30, right: 30, bottom: 30, left: 30},
-        width = $('#table').width() - margin.left - margin.right,
+        width = $(containerId).width() - margin.left - margin.right,
         height = 900 - margin.top - margin.bottom;
 
     var nodeWidth = 5;
     var nodePadding = 12;
 
-    d3.json("/api/v1/surface/" + campaignName, function(data) {
+    d3.json("/api/v1/sankeys/" + campaignName, function(data) {
 
-        if(!data.length) {
+        if(!data.when) {
             console.log("Error: no data available for this visualization");
             console.log("API: /api/v1/surface/" + campaignName );
-            $(containerId).html("<b>No data available for this visualization</b><br>");
-            height = 30;
+            $(containerId).html("<b class='sad'> ✮  ✮  No data available for this visualization</b>");
+            $('.sad').each(function() {
+                var elem = $(this);
+                setInterval(function() {
+                    if (elem.css('visibility') == 'hidden') {
+                        elem.css('visibility', 'visible');
+                    } else {
+                        elem.css('visibility', 'hidden');
+                    }    
+                }, 500);
+            });
+            return;
         }
+        console.log(data);
 
         var formatNumber = d3.format(",.0f"),
             format = function(d) { return formatNumber(d); };
@@ -220,56 +236,37 @@ function trexRender(campaignName, containerId) {
     });
 };
 
-function trexArchive(campaignName, archiveTable, subjectTable) {
+function trexArchive(campaignName, archiveTable) {
 
-    console.log("trexArchive");
+    console.log("trexArchive of " + campaignName + " in " + archiveTable);
+
+    if ( $.fn.dataTable.isDataTable(archiveTable) ) {
+        table = $(archiveTable).DataTable();
+        table.destroy();
+    }
 
     $.getJSON("/api/v1/surface/" + campaignName, function(collections) {
 
-        console.log("surface");
+        console.log("getting surface data: " + _.size(collections) );
         console.log(collections);
 
         var converted = _.map(collections, function(list) {
+
             var inserted = moment
-                .duration(moment() - moment(list.creationTime) )
+                .duration(moment() - moment(list.when) )
                 .humanize() + " ago";
 
             /* order matter, so I want to be sure here */
             return [
-                list.name,
-                list.kind,
-                moment(list.trueOn).format("YYYY-MM-DD"),
-                inserted,
-                list.siteCount
+                list.url,
+                _.size(list.companies),
+                list.javascripts,
+                _.size(list.unique),
+                inserted
             ];
         });
 
         $(archiveTable).DataTable( {
-            data: converted
-        });
-    });
-
-    $.getJSON("/api/v1/campaign/" + campaignName, function(collections) {
-
-        console.log("campaign");
-        console.log(collections);
-
-        var converted = _.map(collections, function(list) {
-            var inserted = moment
-                .duration(moment() - moment(list.creationTime) )
-                .humanize() + " ago";
-
-            /* order matter, so I want to be sure here */
-            return [
-                list.name,
-                list.kind,
-                moment(list.trueOn).format("YYYY-MM-DD"),
-                inserted,
-                list.siteCount
-            ];
-        });
-
-        $(subjectTable).DataTable( {
             data: converted
         });
     });

@@ -5,40 +5,14 @@
 body {
     background-color: #d9f9e1;
     font-size: 18px;
-}
-
-h1,h2,h3,h4,h5{
-    font-family: 'Sanchez', serif;
-    margin-bottom:1em;
-    font-weight:bold;
-}
-
-.textL {
-    font-size: 20px;
     font-family: 'Work Sans', sans-serif;
-    padding-left: 3em;
-    background-color: #b3fcc5;
-    padding-bottom: 1em;
-    padding-top: 1em;
 }
 
-
-.textR {
-    font-size: 20px;
-    font-family: 'Work Sans', sans-serif;
-    padding-left: 3em;
-    padding-bottom: 1em;
-    padding-top: 1em;
-    border: #b3fcc5;
-}
-
-.textL, .textR{
-  margin-left:-3em;
-}
-
-#table {
-    /* background-image: url('fixtures/background.png'); */
-    background-color: #f1ffea;
+@font-face {
+    font-family: 'FrancoisOne';
+    font-style: normal;
+    font-weight: 400;
+    src: local('FrancoisOne'), url("/js/local/FrancoisOne.ttf") format('truetype');
 }
 
 @font-face {
@@ -48,9 +22,41 @@ h1,h2,h3,h4,h5{
     src: local('Work Sans'), url("/js/local/WorkSans.ttf") format('truetype');
 }
 
+h1,h2,h3,h4,h5{
+    font-family: 'FrancoisOne', serif;
+    margin-bottom:1em;
+    font-weight:bold;
+}
+
+.text {
+    font-size: 20px;
+    padding-left: 1em;
+    padding-bottom: 0.25em;
+    padding-top: 0.25em;
+}
+
+#table {
+    /* background-image: url('fixtures/background.png'); */
+    background-color: #f1ffea;
+}
+
+.lighter {
+    background-color: rgb(240, 255, 243);
+    border-radius: 10px;
+}
+
+.lighter a, .lighter a:hover {
+    color: darkgreen;
+    text-decoration: underline;
+}
+
 .yellow {
     padding: 40px 0;
     text-align: justify;
+}
+
+.sad {
+    text-color: blue;
 }
 
 .quote {
@@ -62,14 +68,19 @@ h1,h2,h3,h4,h5{
     font-weight: 500;
     font-style: italic;
     font-size: 18px;
+    border-radius: 10px;
+}
+
+.sad {
+    text-align: center;
 }
 
 .source {
     background-color: yellow;
     text-align: right;
     font-size: 0.8em;
-    font-family: 'Work Sans';
-
+    padding-right: 20px;
+    border-radius: 10px;
 }
 .source a, .source a:hover {
     color: black;
@@ -78,14 +89,13 @@ h1,h2,h3,h4,h5{
 
 .author {
     font-size: 0.5em;
-    // background-color: black;
 }
 
 .footer {
     border-top: black 1px solid;
 }
 
-/* I don't remember why I put this and where it is used */
+/* used by the citation block */
 @media (min-width: 768px) {
     .yellow {
         padding: 40px 140px;
@@ -94,4 +104,13 @@ h1,h2,h3,h4,h5{
     .quote {
         line-height: 1.7;
     }
+}
+
+.tableborder {
+    margin-bottom: 2px;
+}
+
+.reduced {
+    margin-left: 10px;
+    font-size: 0.9em;
 }

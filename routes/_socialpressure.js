@@ -6,5 +6,6 @@ module.exports = {
     getSurface:             require('./getSurface'),
     getCampaignSubject:     require('./getCampaignSubject'),
     getCampaignPromises:    require('./getCampaignPromises'),
-    activeTasks:            require('./activeTasks')
+    activeTasks:            require('./activeTasks'),
+    getSankeys:             require('./getSankeys')
 };
