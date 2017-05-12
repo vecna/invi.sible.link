@@ -13,6 +13,8 @@ var company = require('../lib/company');
 
 nconf.argv().env();
 
+var MISSING_NATION = 'UNKNOW';
+
 var cfgFile = nconf.get('config') 
 if(!cfgFile) machetils.fatalError("config file has to be specify via CLI/ENV");
 
@@ -204,7 +206,7 @@ function sankeys(surface) {
 
                     var nation = companyMap[comp];
                     if(!_.isString(nation)) {
-                        nation = "0x00";
+                        nation = "MISSING_NATION";
                         companyMap[comp] = nation;
                     }
 
@@ -222,7 +224,7 @@ function sankeys(surface) {
 
         var missing = _.reduce(surface, function(memo, e) {
             _.each(e.companies, function(comp) {
-                if(companyMap[comp] == '0x00') {
+                if(companyMap[comp] == 'MISSING_NATION') {
                     memo.hack[comp] = "";
                     memo.help[comp] = "https://duckduckgo.com/" + _.replace(comp, /\ /g, '%20');
                 }

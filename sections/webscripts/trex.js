@@ -1,7 +1,7 @@
 var defaultCampaign = null;
 var initiativePrefix = null;
 
-function initializeLanding(where, defaultC, initiativeP, containerId) {
+function initializeLanding(where, defaultC, initiativeP) {
 
     if(defaultC)
         defaultCampaign = defaultC;
@@ -21,14 +21,12 @@ function initializeLanding(where, defaultC, initiativeP, containerId) {
     }
 
     $("#content").load('/direct/' + where, function () {
-        if(where === 'landing')
-            trexRender(defaultCampaign, containerId);
-
+        loadPage(where);
         $('.' + where).addClass('active');
     });
 };
 
-function loadPage(containerId, destpage) {
+function loadPage(destpage) {
 
     $('li').removeClass('active');
     $('.' + destpage).addClass('active');
@@ -36,12 +34,18 @@ function loadPage(containerId, destpage) {
     $("#content").load("/direct/" + destpage, function () {
 
         /* if a script need to be executed at the load, here it is fired */
-        if(destpage === 'landing') {
-            trexRender(defaultCampaign, '#table');
-        }
-        if(destpage === 'archive') {
-            trexArchive(defaultCampaign, '#archivetable');
-        }
+        setTimeout(function() {
+
+            if(destpage === 'landing') {
+                console.log("loadPage- trexRender to " + defaultCampaign);
+                trexRender(defaultCampaign, '#sankeytable');
+            }
+            if(destpage === 'archive') {
+                console.log("loadPage- trexArchive to " + defaultCampaign);
+                trexArchive(defaultCampaign, '#archivetable');
+            }
+
+        }, 300);
 
         console.log("Loading and recording as: " + initiativePrefix + " " + destpage);
         history.pushState({'nothing': true}, initiativePrefix + " " + destpage, destpage);
@@ -50,8 +54,9 @@ function loadPage(containerId, destpage) {
 
 function trexRender(campaignName, containerId) {
 
-    console.log("trexRender of " + campaignName);
+    console.log("trexRender of " + campaignName + " in " + containerId);
     $(containerId).html("");
+
     $('.nav-justified li p').removeClass('selected');
     $('.nav-justified li#' + campaignName + ' p').addClass('selected');
 
@@ -233,14 +238,20 @@ function trexRender(campaignName, containerId) {
 
 function trexArchive(campaignName, archiveTable) {
 
-    console.log("trexArchive");
+    console.log("trexArchive of " + campaignName + " in " + archiveTable);
+
+    if ( $.fn.dataTable.isDataTable(archiveTable) ) {
+        table = $(archiveTable).DataTable();
+        table.destroy();
+    }
 
     $.getJSON("/api/v1/surface/" + campaignName, function(collections) {
 
-        console.log("surface");
+        console.log("getting surface data: " + _.size(collections) );
         console.log(collections);
 
         var converted = _.map(collections, function(list) {
+
             var inserted = moment
                 .duration(moment() - moment(list.when) )
                 .humanize() + " ago";

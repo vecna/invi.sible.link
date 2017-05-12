@@ -75,10 +75,6 @@ h1,h2,h3,h4,h5{
     text-align: center;
 }
 
-.infotable {
-    font-size: 0.7em;
-};
-
 .source {
     background-color: yellow;
     text-align: right;
@@ -108,4 +104,13 @@ h1,h2,h3,h4,h5{
     .quote {
         line-height: 1.7;
     }
+}
+
+.tableborder {
+    margin-bottom: 2px;
+}
+
+.reduced {
+    margin-left: 10px;
+    font-size: 0.9em;
 }
