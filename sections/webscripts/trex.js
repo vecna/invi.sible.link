@@ -37,7 +37,7 @@ function loadPage(destpage) {
         setTimeout(function() {
 
             if(destpage === 'landing') {
-                console.log("loadPage- trexRender to " + defaultCampaign);
+                console.log("loadPage dispatch for " + defaultCampaign);
                 if( $("#simplerender").length ) {
                     trexSimpleRender(defaultCampaign, '#simplerender');
                 }
@@ -54,6 +54,20 @@ function loadPage(destpage) {
 
         console.log("Loading and recording as: " + initiativePrefix + " " + destpage);
         history.pushState({'nothing': true}, initiativePrefix + " " + destpage, destpage);
+    });
+};
+
+function setBlink() {
+    console.log("90ies style blink hardcoded on class .sad");
+    $('.sad').each(function() {
+        var elem = $(this);
+        setInterval(function() {
+            if (elem.css('visibility') == 'hidden') {
+                elem.css('visibility', 'visible');
+            } else {
+                elem.css('visibility', 'hidden');
+            }
+        }, 300 );
     });
 };
 
@@ -78,16 +92,7 @@ function trexRender(campaignName, containerId) {
             console.log("Error: no data available for this visualization");
             console.log("API: /api/v1/surface/" + campaignName );
             $(containerId).html("<b class='sad'> ✮  ✮  No data available for this visualization</b>");
-            $('.sad').each(function() {
-                var elem = $(this);
-                setInterval(function() {
-                    if (elem.css('visibility') == 'hidden') {
-                        elem.css('visibility', 'visible');
-                    } else {
-                        elem.css('visibility', 'hidden');
-                    }    
-                }, 500);
-            });
+            setBlink();
             return;
         }
         console.log(data);
@@ -375,6 +380,11 @@ function trexSimpleRender(campaignName, simpleRender) {
     console.log("trexSimpleRender of " + campaignName + " in " + simpleRender);
 
     $.getJSON("/api/v1/surface/" + campaignName, function(collections) {
+        console.log(collections);
+        if(!collections.length) {
+            $(simpleRender).html("<b class='sad'> ✮  ✮  No data available for this visualization</b>");
+            setBlink();
+        }
 
         _.each(collections, function(c, i) {
 
