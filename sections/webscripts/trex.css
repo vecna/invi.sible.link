@@ -114,3 +114,26 @@ h1,h2,h3,h4,h5{
     margin-left: 10px;
     font-size: 0.9em;
 }
+
+/* bar chart */
+.axis .domain {
+    display: none;
+}
+
+/* jquery line chart */
+.entry {
+    display: block;
+    float: left;
+}
+.underline {
+    border-bottom: 1px solid #d7ffad;
+    font-size: 0.7em;
+}
+
+.site {
+    background-color: #fffdad;
+}
+
+.company {
+    background-color: #ffd4ad;
+}

@@ -226,7 +226,11 @@ function sankeys(surface) {
             _.each(e.companies, function(comp) {
                 if(companyMap[comp] == 'MISSING_NATION') {
                     memo.hack[comp] = "";
-                    memo.help[comp] = "https://duckduckgo.com/" + _.replace(comp, /\ /g, '%20');
+                    memo.help[comp] = "<a href='https://duckduckgo.com/" +
+                                         _.replace(comp, /\ /g, '%20') +
+                                      "'>" +
+                                      comp +
+                                      "</a>";
                 }
             });
             return memo;

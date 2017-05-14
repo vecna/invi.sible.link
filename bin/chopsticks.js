@@ -15,9 +15,8 @@ nconf.argv()
      .file({ file: cfgFile });
 
 var VP = nconf.get('VP');
-if(_.isUndefined(VP) || _.size(VP) === 0 ) {
-    VP = 'dummy';
-}
+if(_.isUndefined(VP) || _.size(VP) === 0 )
+    throw new Error("Missing the Vantage Point (VP) in the config file");
 
 var concValue = nconf.get('concurrency') || 1;
 concValue = _.parseInt(concValue);
