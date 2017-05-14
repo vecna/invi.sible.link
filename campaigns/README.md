@@ -2,7 +2,7 @@
 # How to do a campaigns
 ### and what me/you have to do, if you want to do a campaign
 
-This text is intended to define a roadmap for collaborations, as temporarly example, you can check [this experiment](https://american.muslims.tracking.exposed).
+This text is intended to define a roadmap for collaborations, as temporarly example, you can check [the amtrex experiment](https://american.muslims.tracking.exposed), the [example campaign code](https://github.com/vecna/example) and how the [example looks like](https://example.of.invi.sible.link).
 
 ### This document
 
@@ -17,7 +17,8 @@ Define the structure of a website, intended to do a campaign about third party t
 # How to do campaigns
 ### and what me/you have to do if you want to do a campaign
 
-This text is intended to define a roadmap for collaborations, as a temporary example, you can check [the example](https://example.of.invi.sible.link), and the [github repository of *example*](https://github.com/vecna/example)
+This text is intended to clarify some aspect of the framework usage for campaign and analysis.
+
 ### Sections
 
 The sections are merely indicative.  A campaign has to be framed by the organization promoting it.
@@ -26,6 +27,7 @@ The campaign might leverage on third party privacy, on transport security, polic
 When I made the sections in the [example campaign](https://example.of.invi.sible.link) I mostly tried been generic and provide some inspiration.
 
 ### Actual blocks, why are they there?
+
   * Introduction: small section explaining the framing of the analysis. Explain why third party trackers matter might be tricky, but some report and previous analysis help us. For example, [Amnesty International Data Broker](https://www.amnesty.org/en/latest/research/2017/02/muslim-registries-big-data-and-human-rights/) [Princeton Web census analysis](https://webtransparency.cs.princeton.edu/webcensus/), an [article explaining linkability between browsing history and identity](https://www.theatlantic.com/technology/archive/2017/02/browsing-history-identity/515763/) and this is the most compressive [link collection, made by Monica Cheng, former Mozilla developer working on tracking protection](http://monica-at-mozilla.blogspot.it/2015/04/some-links-about-tracking-and-security.html).
 
   * **Categories**: to explain this, let me use an example **healthcare and third party trackers**. The hypothesis is "web trackers can guess which disease you are suffering.".
@@ -96,3 +98,4 @@ and contains simply information on the interface and the TCP listening port:
         "port": 7525
     }
 
+And then with nginx or apache, you might manage https and do Proxy.
