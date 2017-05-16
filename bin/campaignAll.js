@@ -16,7 +16,7 @@ _.each(_.map(nconf.get('campaigns'), 'name'), function(avail) {
             config: ccfg,
             campaign: avail
         };
-        debug("Collecting from %s", avail);
+        debug("Aggregating for %s", avail);
         var cmd = 'bin/campaignChecker.js';
         // > /tmp/campaignChecker.log 2>&1';
         child_process.execSync(cmd, { 'env': mockenv });

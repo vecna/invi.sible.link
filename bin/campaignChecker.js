@@ -44,6 +44,27 @@ function buildURLs(memo, page) {
 	return _.concat(memo, promiseURLs);
 };
 
+function onePerSite(retrieved) {
+
+    var pages = _.uniq(_.map(retrieved, 'page'));
+    debug("onePerSite, pages available: %d", _.size(pages));
+
+    /* every Vantage Point might have a proper analysis, some
+     * with less data, some with more. here is kept only the
+     * result with more retrieved third parties */
+    return _.reduce(retrieved, function(memo, s) {
+        var exists = _.find(memo, { page: s.page });
+
+        if(exists) {
+            if( _.size(exists.data) > _.size(s.data) )
+                return memo;
+            memo = _.reject(memo, { page: s.page });
+        }
+        memo.push(s);
+        return memo;
+    }, []);
+};
+
 function getPromiseURLs(target) {
     /* note: correctly is returning only the promises requested,
      * in theory we can check VP operating -- remind, before was subject,
@@ -181,7 +202,6 @@ function sankeys(surface) {
     .loadJSONfile("fixtures/companyCountries.json")
     .then(function(companyMap) {
 
-        debugger;
         var nodes = _.reduce(surface, function(memo, e) {
             
             if(!_.size(e.companies)) {
@@ -285,6 +305,7 @@ return getPromiseURLs(campConf)
     .map(machetils.jsonFetch, {concurrency: 5})
     .tap(numerize)
     .then(_.compact)
+    .then(onePerSite)
     .tap(numerize)
     .map(company.attribution)
     .tap(saveAll)
