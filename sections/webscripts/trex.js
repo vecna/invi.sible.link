@@ -393,9 +393,13 @@ function trexSimpleRender(campaignName, simpleRender) {
 
             var lineC = _.reduce(c.companies, function(memo, cname, x, t) {
 
-                if(x < 10) {
+                if(x < 9) {
                     var slotId = 'company-' + x + '-' + i;
                     memo += getSpan(cname, slotId, 'company col-md-1');
+                } else if (x === 9 ){
+                    var slodId = 'company-' + x + '-' + i;
+                    memo += getSpan("+ " + (_.size(t) - 9),
+                        slotId, 'company col-md-1');
                 }
                 return memo;
 
