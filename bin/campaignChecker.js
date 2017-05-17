@@ -44,6 +44,27 @@ function buildURLs(memo, page) {
 	return _.concat(memo, promiseURLs);
 };
 
+function onePerSite(retrieved) {
+
+    var pages = _.uniq(_.map(retrieved, 'page'));
+    debug("onePerSite, pages available: %d", _.size(pages));
+
+    /* every Vantage Point might have a proper analysis, some
+     * with less data, some with more. here is kept only the
+     * result with more retrieved third parties */
+    return _.reduce(retrieved, function(memo, s) {
+        var exists = _.find(memo, { page: s.page });
+
+        if(exists) {
+            if( _.size(exists.data) > _.size(s.data) )
+                return memo;
+            memo = _.reject(memo, { page: s.page });
+        }
+        memo.push(s);
+        return memo;
+    }, []);
+};
+
 function getPromiseURLs(target) {
     /* note: correctly is returning only the promises requested,
      * in theory we can check VP operating -- remind, before was subject,
@@ -54,10 +75,11 @@ function getPromiseURLs(target) {
     return mongo
         .read(nconf.get('schema').promises, target.filter)
         .tap(function(p) {
-            debug("Promises %j %d results (~ %d per day)",
-                target.filter, _.size(p), _.round(_.size(p) / target.dayswindow, 2) );
+            debug("Promises by %j: %d results (~ %d per day)",
+                target.filter, _.size(p),
+                _.round(_.size(p) / target.dayswindow, 2) );
         })
-	    .reduce(buildURLs, []);
+        .reduce(buildURLs, []);
 }
 
 function saveAll(retrieved) {
@@ -88,12 +110,15 @@ function saveAll(retrieved) {
             });
             return evidenceO;
         })
-        .then(function(content) {
-            debug("saving in evidences %d object", _.size(content));
+        .tap(function(content) {
 
-            if(_.size(content))
+            if(_.size(content)) {
+                debug("saving in evidences %d object", _.size(content));
                 return machetils
                     .mongoSave(nconf.get('evidences'), content, campConf.name);
+            }
+            else
+                debug("No evidences to be saved");
         });
 }
 
@@ -175,13 +200,21 @@ function numerize(list) {
 
 function sankeys(surface) {
 
-  debug("Generating sankeys");
+  var limit = 10;
+  debug("Generating sankeys: cutting the result %d to %d",
+      _.size(surface), limit);
+  /* it is truncated here
+   * limits are pick by graph representation issues,
+   * if you've sankey with more than 10/14 entries, get annoying */
+
+  surface = _.slice(_.reverse(_.orderBy(surface, function(e) {
+      return _.size(e.companies);
+  })), 0, limit);
 
   return various
     .loadJSONfile("fixtures/companyCountries.json")
     .then(function(companyMap) {
 
-        debugger;
         var nodes = _.reduce(surface, function(memo, e) {
             
             if(!_.size(e.companies)) {
@@ -285,6 +318,7 @@ return getPromiseURLs(campConf)
     .map(machetils.jsonFetch, {concurrency: 5})
     .tap(numerize)
     .then(_.compact)
+    .then(onePerSite)
     .tap(numerize)
     .map(company.attribution)
     .tap(saveAll)

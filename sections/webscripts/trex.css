@@ -1,5 +1,5 @@
 .firstcontent {
-    padding-top: 70px;
+    padding-top: 60px;
 }
 
 body {
@@ -132,8 +132,12 @@ h1,h2,h3,h4,h5{
 
 .site {
     background-color: #fffdad;
+    border-radius: 5px;
 }
 
 .company {
     background-color: #ffd4ad;
+    background: linear-gradient(to right, #ffd4ad, #fffdad); /* Standard syntax */
+    font-weight: bold;
+    border-radius: 5px;
 }
