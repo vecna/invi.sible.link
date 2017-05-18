@@ -69,7 +69,14 @@ function getPromiseURLs(target) {
     /* note: correctly is returning only the promises requested,
      * in theory we can check VP operating -- remind, before was subject,
      * maybe something need a revision  */
-    var reference = new Date( moment().subtract(target.dayswindow, 'd').format("YYYY-MM-DD") );
+    var normal = moment().subtract(target.dayswindow, 'd');
+    if(nconf.get('DAYSAGO')) {
+        var days = _.parseInt(nconf.get('DAYSAGO'));
+        debug("Moving back in time of %d days ago", days);
+        normal.subtract(days, 'd');
+    }
+    var reference = new Date( normal.format("YYYY-MM-DD") );
+
     var filter = _.extend(target.filter, { start: { "$gt": reference } });
 
     return mongo
@@ -131,7 +138,8 @@ function updateSurface(retrieved) {
                 return memo;
 
             /* this to keep track of the unique third party domains */
-            target.unique = {};
+            // target.unique = {};
+
             /* this to keep track of total javascriptps present to be analyzed */
             target.javascripts = 0;
             /* this to keep track the domain setting a cookie */
@@ -142,11 +150,13 @@ function updateSurface(retrieved) {
             target.unrecognized = [];
 
             _.each(_.reject(subject.data, {target: true}), function(rr, cnt) {
+                /* target.unique 
+                 * is not used, and is going to be removed when
+                 * debugging before italian.tracking.exposed release */
 
-                if(_.isUndefined(target.unique[rr.domainId]))
-                    _.set(target.unique, rr.domainId, 0);
-
-                target.unique[rr.domainId] += 1;
+                // if(_.isUndefined(target.unique[rr.domainId]))
+                //     _.set(target.unique, rr.domainId, 0);
+                // target.unique[rr.domainId] += 1;
 
                 if(rr['Content-Type'] && rr['Content-Type'].match('script'))
                     target.javascripts += 1;
@@ -321,6 +331,7 @@ return getPromiseURLs(campConf)
     .then(onePerSite)
     .tap(numerize)
     .map(company.attribution)
+    .map(company.countries)
     .tap(saveAll)
     .then(updateSurface)
     .then(sankeys)
