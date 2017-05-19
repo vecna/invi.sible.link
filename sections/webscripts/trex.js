@@ -37,7 +37,7 @@ function loadPage(destpage) {
         setTimeout(function() {
 
             if(destpage === 'landing') {
-                console.log("loadPage dispatch for " + defaultCampaign);
+                console.log("loadPage/landing " + defaultCampaign);
                 if( $("#simplerender").length ) {
                     trexSimpleRender(defaultCampaign, '#simplerender');
                 }
@@ -45,9 +45,15 @@ function loadPage(destpage) {
                     trexRender(defaultCampaign, '#sankeytable');
                 }
             }
+
             if(destpage === 'archive') {
-                console.log("loadPage- trexArchive to " + defaultCampaign);
-                trexArchive(defaultCampaign, '#archivetable');
+                console.log("loadPage/archive " + defaultCampaign);
+                if( $("#archivetable").length ) {
+                    trexArchive(defaultCampaign, '#archivetable');
+                }
+                if( $("#detailedlist").length ) {
+                    trexDetails(defaultCampaign, '#detailedlist');
+                }
             }
 
         }, 300);
