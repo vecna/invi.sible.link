@@ -28,15 +28,12 @@ var pageMap = {
 var getCampaignPages = function(req) {
 
     var pageName = _.get(req.params, 'page');
-    debug("page name %s", pageName);
+    debug("page request an returned: %s", pageName);
 
     if(_.isUndefined(_.get(pageMap, pageName))) {
         debug("%s getCampaignPages on %s: not found", req.randomUnicode, pageName);
         pageName = '404';
-    } else {
-        debug("%s getCampaignPages of %s", req.randomUnicode, pageName);
     }
-
     return { 'text': pageMap[pageName]() };
 };
 

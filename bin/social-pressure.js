@@ -121,6 +121,11 @@ app.get('/archive/:selector', function(req, res) {
 app.get('/direct/:page', function(req, res) {
     dispatchPromise('getCampaignPages', routes, req, res);
 });
+
+app.get('/site-:sitename', function(req, res) {
+    req.params.page = 'site';
+    dispatchPromise('getCampaignIndex', routes, req, res);
+});
 app.get('/:page', function(req, res) {
     dispatchPromise('getCampaignIndex', routes, req, res);
 });

@@ -26,7 +26,7 @@ var pageMap = {
 var getCampaignIndex = function(req) {
 
     var pageName = _.get(req.params, 'page');
-    debug("page name %s", pageName);
+    debug("page name [%s]", pageName);
 
     return { 'text': pageMap[pageName]() };
 };
