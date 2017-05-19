@@ -172,8 +172,9 @@ function updateSurface(retrieved) {
 
             return _.concat(memo, target);
         }, [])
+        .then(company.leaderCompanies)
         .map(function(surfaceO) {
-            var timeString = moment().format("YYYY-MM-DD");
+            var timeString = moment().format("YYYY-MM-DD-HH");
             surfaceO.id = various.hash({
                 daily: timeString,
                 campaign: campConf.name,
