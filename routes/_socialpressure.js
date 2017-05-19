@@ -7,5 +7,6 @@ module.exports = {
     getCampaignSubject:     require('./getCampaignSubject'),
     getCampaignPromises:    require('./getCampaignPromises'),
     activeTasks:            require('./activeTasks'),
-    getSankeys:             require('./getSankeys')
+    getSankeys:             require('./getSankeys'),
+    getCSV:                 require('./getCSV')
 };
