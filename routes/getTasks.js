@@ -1,5 +1,6 @@
 var _ = require('lodash');
 var Promise = require('bluebird');
+var moment = require('moment');
 var debug = require('debug')('route:getTasks');
 var nconf = require('nconf');
  
@@ -27,17 +28,15 @@ function getTasks(req) {
     debug("%s getTasks max %d from %s",
         req.randomUnicode, amount, vantagePoint);
 
+    /* this is redundant with lib/promises, but here there is 
+     * specify the vantagePoint filter below */
     var selector = {
-        "start": { "$lt": new Date() },
-        "end": { "$gt": new Date() }
+        "start": new Date( moment().startOf('day').format("YYYY-MM-DD")) 
     };
     _.set(selector, vantagePoint, { "$exists": false });
 
     return mongo
         .readLimit(nconf.get('schema').promises, selector, {}, amount, 0)
-        .map(function(site) {
-            return _.omit(site, ['_id']);
-        })
         .then(function(taskList) {
             return markVantagePoint(vantagePoint, taskList)
                 .tap(function(marked) {

@@ -7,9 +7,11 @@ var fs = Promise.promisifyAll(require('fs'));
 var debug = require('debug')('directionTool');
 var nconf = require('nconf');
 var process = require('process');
-var mongo = require('../lib/mongo');
 var moment = require('moment');
+
+var mongo = require('../lib/mongo');
 var various = require('../lib/various');
+var promises = require('../lib/promises');
 
 nconf.argv().env().file({ file: 'config/vigile.json' });
 
@@ -112,8 +114,7 @@ function insertNeeds(fname, csv) {
                 var p = _.extend(t, inputs[0]);
                 p.id = various.hash({
                     'href': p.href,
-                    'start': p.start,
-                    'end': p.end
+                    'start': p.start
                 });
                 return p;
             });
@@ -151,28 +152,18 @@ function timeRanges(fname) {
             debug("content %j", content);
         })
         .then(function(content) {
-            var start, end;
-            debug("Timeframe: startFrom %s (midnight|now), lastFor %j",
+            var start;
+            debug("Timeframe: startFrom %s (midnight), lastFor %j",
                 content.startFrom, content.lastFor);
             if(content.startFrom === 'midnight') {
-                start = moment()
-                    .startOf('day');
-                end = moment()
-                    .startOf('day')
-                    .add(content.lastFor.number, content.lastFor.period);
-
-            } else if (content.startFrom === 'now') {
-                start = moment();
-                end = moment()
-                    .add(content.lastFor.number, content.lastFor.period);
+                start = moment().startOf('day');
             } else {
                 throw new Error("Invalid keyword in startFrom");
             }
-            debug("Window start %s end %s", start, end);
+            debug("Window start %s", start);
             return {
                 needName: content.needName,
-                start: new Date(start.format("YYYY-MM-DD")),
-                end: new Date(end.format("YYYY-MM-DD"))
+                start: new Date(start.format("YYYY-MM-DD"))
             };
         });
 }

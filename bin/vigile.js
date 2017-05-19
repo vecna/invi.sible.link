@@ -11,6 +11,8 @@ var nconf = require('nconf');
 
 var various = require('../lib/various');
 var mongo = require('../lib/mongo');
+var promises = require('../lib/promises');
+
 var routes = require('../routes/_vigile');
 var dispatchPromise = require('../lib/dispatchPromise');
 var defaultSetup = require('../lib/sharedExpress');
@@ -34,17 +36,10 @@ app.use(bodyParser.urlencoded({limit: '3mb', extended: true}));
 
 /* see actually how many directive are available when vigile get started */
 Promise.resolve(
-    mongo
-        .readLimit(nconf.get('schema').promises, {
-            "start": { "$lt": new Date() },
-            "end": { "$gt": new Date() }
-        }, {}, 10000, 0)
+    promises.retrieve(nconf.get('DAYSAGO'))
 )
 .then(function(promises) {
-   if(_.size(promises) === 10000)
-       debug("initial check: Promises are more than 1000");
-   else
-       debug("initial check: Promises are %d", _.size(promises) );
+    debug("initial check: Promises are %d", _.size(promises) );
 });
 
 
