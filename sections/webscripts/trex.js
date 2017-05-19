@@ -33,27 +33,41 @@ function loadPage(destpage) {
 
     $("#content").load("/direct/" + destpage, function () {
 
-        /* if a script need to be executed at the load, here it is fired */
+        /* if a script need to be executed at the load, here it is fired,
+         * this is a sloppy code: in fact I'm waiting 300ms hoping the <div>
+         * has been put in the DOM */
         setTimeout(function() {
 
             if(destpage === 'landing') {
                 console.log("loadPage/landing " + defaultCampaign);
-                if( $("#simplerender").length ) {
+                if( $("#cookiesrank").length )
+                    trexCookiesRank(defaultCampaign, '#cookiesrank');
+                if( $("#companyrank").length )
+                    trexCompanyRank(defaultCampaign, '#companyrank');
+                if( $("#simplerender").length )
                     trexSimpleRender(defaultCampaign, '#simplerender');
-                }
-                if( $("#sankeytable").length ) {
+                if( $("#sankeytable").length )
                     trexRender(defaultCampaign, '#sankeytable');
-                }
             }
 
             if(destpage === 'archive') {
                 console.log("loadPage/archive " + defaultCampaign);
-                if( $("#archivetable").length ) {
+                if( $("#archivetable").length )
                     trexArchive(defaultCampaign, '#archivetable');
-                }
-                if( $("#detailedlist").length ) {
+                if( $("#detailedlist").length )
                     trexDetails(defaultCampaign, '#detailedlist');
-                }
+            }
+
+            if(destpage === 'site') {
+
+                var siten = window.location.pathname.split('/').pop();
+                console.log("loadPage/site " + siten);
+                if( $('#sitename').length )
+                    trexSiteName(siten, '#sitename');
+                if( $('#sitepiegraph').length )
+                    trexSiteDetails(siten, '#sitepiegraph');
+                if( $('#sitedetails').length )
+                    trexSitePie(siten, '#sitedetails');
             }
 
         }, 300);
@@ -397,12 +411,12 @@ function trexSimpleRender(campaignName, simpleRender) {
             var siteId = 'url-' + i;
             var spanHtml = getSpan(c.url, siteId, 'site col-md-2');
 
-            var lineC = _.reduce(c.companies, function(memo, cname, x, t) {
+            var lineC = _.reduce(c.leaders, function(memo, l, x, t) {
 
                 if(x < 9) {
                     var slotId = 'company-' + x + '-' + i;
-                    memo += getSpan(cname, slotId, 'company col-md-1');
-                } else if (x === 9 ){
+                    memo += getSpan(l.company, slotId, 'company col-md-1');
+                } else if (x === 9 ) {
                     var slodId = 'company-' + x + '-' + i;
                     memo += getSpan("+ " + (_.size(t) - 9),
                         slotId, 'company col-md-1');
@@ -416,3 +430,104 @@ function trexSimpleRender(campaignName, simpleRender) {
         });
     });
 };
+
+function trexSiteName(sitename, destId) {
+
+}
+
+function trexSiteDetails(sitename, destId) {
+
+}
+
+function trexSitePie(sitename, destId) {
+
+}
+
+function trexCookiesRank(campaignName, destId) {
+
+    d3.json("/api/v1/surface/" + campaignName, function(collections) {
+
+        console.log("CookiesRank: campaign " + campaignName + 
+                " dest " + destId + " surface #" + _.size(collections) );
+
+        var cookiesInfo = _.reduce(collections, function(memo, site) {
+
+            if(!_.size(site.cookies))
+                return memo;
+
+            memo.push({
+                site: site.domaindottld,
+                cookies: _.size(site.cookies),
+                info: site.cookies
+            });
+            return memo;
+        }, []);
+
+        cookiesInfo = _.reverse(_.orderBy(cookiesInfo, 'cookies'));
+
+        return c3.generate({
+            bindto: destId,
+            data: {
+                json: cookiesInfo,
+                keys: {
+                    x: 'site',
+                    value: [ 'cookies' ]
+                },
+                type: 'bar',
+            },
+            legend: { show: false },
+            axis: {
+                x: {
+                    type: 'categories',
+                    tick: { rotate: 45 }
+                }
+            }
+        });
+    });
+};
+
+
+function trexCompanyRank(campaignName, destId) {
+
+    d3.json("/api/v1/surface/" + campaignName, function(collections) {
+
+        console.log("companyRank: campaign " + campaignName + 
+                " dest " + destId + " surface #" + _.size(collections) );
+
+        var leaders = _.reduce(collections, function(memo, site) {
+            _.each(site.leaders, function(l) {
+                if(l.p < 10)
+                    return memo;
+
+                var x = _.find(memo, {company: l.company });
+
+                if(!x)
+                    memo.push(l);
+            });
+            return memo;
+        }, []);
+
+        leaders = _.reverse(_.orderBy(leaders, 'p'));
+
+        return c3.generate({
+            bindto: destId,
+            data: {
+                json: leaders,
+                keys: {
+                    x: 'company',
+                    value: [ 'p' ]
+                },
+                type: 'bar',
+            },
+            legend: { show: false },
+            axis: {
+                x: {
+                    type: 'categories',
+                    // categories: _.map(leaders, 'company')
+                    tick: { rotate: 45 }
+                }
+            }
+        });
+    });
+};
+

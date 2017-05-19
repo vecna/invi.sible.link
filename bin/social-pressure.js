@@ -92,6 +92,9 @@ app.get('/api/v:version/system/info', function(req, res) {
 app.get('/favicon.ico', function(req, res) {
 	res.sendFile(distPath + '/favicon.ico');
 });
+app.get('/robots.txt', function(req, res) {
+    res.sendFile(distPath + '/robots.txt');
+});
 
 app.use('/css', express.static(distPath + '/css'));
 app.use('/lib', express.static(distPath + '/lib'));
