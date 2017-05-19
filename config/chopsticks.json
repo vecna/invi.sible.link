@@ -7,7 +7,7 @@
     "phantom": "phantom",
     "anomalies": "anomalies"
   },
-  "amount": 30,
-  "concurrency": 10,
+  "amount": 20,
+  "concurrency": 5,
   "mongodb": "mongodb://localhost/chopsticks"
 }

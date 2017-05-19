@@ -5,11 +5,12 @@ var debug = require('debug')('campaignChecker');
 
 var moment = require('moment');
 var nconf = require('nconf');
-var mongo = require('../lib/mongo');
 
+var mongo = require('../lib/mongo');
 var various = require('../lib/various');
 var machetils = require('../lib/machetils');
 var company = require('../lib/company');
+var promises = require('../lib/promises');
 
 nconf.argv().env();
 
@@ -66,21 +67,7 @@ function onePerSite(retrieved) {
 };
 
 function getPromiseURLs(target) {
-    /* note: correctly is returning only the promises requested,
-     * in theory we can check VP operating -- remind, before was subject,
-     * maybe something need a revision  */
-    var normal = moment().subtract(target.dayswindow, 'd');
-    if(nconf.get('DAYSAGO')) {
-        var days = _.parseInt(nconf.get('DAYSAGO'));
-        debug("Moving back in time of %d days ago", days);
-        normal.subtract(days, 'd');
-    }
-    var reference = new Date( normal.format("YYYY-MM-DD") );
-
-    var filter = _.extend(target.filter, { start: { "$gt": reference } });
-
-    return mongo
-        .read(nconf.get('schema').promises, target.filter)
+    return promises.retrieve(nconf.get('DAYSAGO'), target.filter)
         .tap(function(p) {
             debug("Promises by %j: %d results (~ %d per day)",
                 target.filter, _.size(p),
