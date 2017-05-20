@@ -490,13 +490,13 @@ function trexCookiesRank(campaignName, destId) {
                     value: [ 'cookies' ]
                 },
                 type: 'bar',
+                colors: { 'cookies': '#339199' },
                 onclick: function(d, element) {
                     console.log(d);
                     console.log(this);
                 }
             },
             size: { height: 800 },
-            colors: { 'cookies': '#d9faf2' },
             legend: { show: false },
             axis: {
                 x: {
@@ -540,13 +540,13 @@ function trexCompanyRank(campaignName, destId) {
                     x: 'company',
                     value: [ 'p' ]
                 },
+                colors: { 'p': '#C44F9D' },
                 type: 'bar',
                 names: {
                     p: 'frequenza in percentuale %'
                 }
             },
             size: { height: 800 },
-            colors: { 'cookies': '#e2fad9' },
             legend: { show: false },
             axis: {
                 x: {
@@ -555,9 +555,9 @@ function trexCompanyRank(campaignName, destId) {
                 rotated: true
             },
             grid: {
-                x: {
+                y: {
                     lines: [
-                        { value: 50, text: '50%' }
+                        { value: 50, text: '50%', position: 'middle' }
                     ]
                 }
             }
