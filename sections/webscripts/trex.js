@@ -495,6 +495,8 @@ function trexCookiesRank(campaignName, destId) {
                     console.log(this);
                 }
             },
+            size: { height: 800 },
+            colors: { 'cookies': '#d9faf2' },
             legend: { show: false },
             axis: {
                 x: {
@@ -543,12 +545,21 @@ function trexCompanyRank(campaignName, destId) {
                     p: 'frequenza in percentuale %'
                 }
             },
+            size: { height: 800 },
+            colors: { 'cookies': '#e2fad9' },
             legend: { show: false },
             axis: {
                 x: {
                     type: 'categories'
                 },
                 rotated: true
+            },
+            grid: {
+                x: {
+                    lines: [
+                        { value: 50, text: '50%' }
+                    ]
+                }
             }
         });
     });
