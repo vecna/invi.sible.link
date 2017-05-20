@@ -15,7 +15,7 @@ function initializeLanding(where, defaultC, initiativeP) {
         where = window.location.href.split('/').pop();
 
         if(validP.indexOf(where) == -1) {
-            console.log("Unknown location, forcing to 'landing'");
+            console.log("Unknown location: "+ where +", forcing to 'landing'");
             where = 'landing';
         }
     }
@@ -30,6 +30,11 @@ function loadPage(destpage) {
 
     $('li').removeClass('active');
     $('.' + destpage).addClass('active');
+
+    if(destpage.indexOf('site-') !== -1) {
+        var siten = window.location.pathname.split('site-').pop();
+        destpage = 'site';
+    }
 
     $("#content").load("/direct/" + destpage, function () {
 
@@ -60,7 +65,6 @@ function loadPage(destpage) {
 
             if(destpage === 'site') {
 
-                var siten = window.location.pathname.split('/').pop();
                 console.log("loadPage/site " + siten);
                 if( $('#sitename').length )
                     trexSiteName(siten, '#sitename');
@@ -425,22 +429,34 @@ function trexSimpleRender(campaignName, simpleRender) {
 
             }, spanHtml);
             var lineId = 'site-' + i;
-            $(simpleRender).append("<div class='col-md-12 underline entry' id='" + lineId + "'>" + lineC + "</div>");
+            $(simpleRender).append("<div class='col-md-12 underline entry' domaindottld='"+
+                    c.domaindottld  +"' id='" +
+                    lineId + "'>" +
+                    lineC + "</div>"
+            );
             $(simpleRender).addClass("entry");
+            $("#" + lineId).click(function(e) {
+                var ddtld = $(this).attr('domaindottld');
+                loadPage('site-' + ddtld, ddtld);
+            });
         });
     });
 };
 
 function trexSiteName(sitename, destId) {
-
+    $(destId).text(sitename);
 }
 
 function trexSiteDetails(sitename, destId) {
 
+    d3.json("/api/v1/evidences/" + sitename, function(collections) {
+        console.log(collections);
+    });
 }
 
 function trexSitePie(sitename, destId) {
 
+    console.log(sitename, " pie ", destId);
 }
 
 function trexCookiesRank(campaignName, destId) {
@@ -474,13 +490,18 @@ function trexCookiesRank(campaignName, destId) {
                     value: [ 'cookies' ]
                 },
                 type: 'bar',
+                onclick: function(d, element) {
+                    console.log(d);
+                    console.log(this);
+                }
             },
             legend: { show: false },
             axis: {
                 x: {
                     type: 'categories',
                     tick: { rotate: 45 }
-                }
+                },
+                rotated: true
             }
         });
     });
@@ -518,14 +539,16 @@ function trexCompanyRank(campaignName, destId) {
                     value: [ 'p' ]
                 },
                 type: 'bar',
+                names: {
+                    p: 'frequenza in percentuale %'
+                }
             },
             legend: { show: false },
             axis: {
                 x: {
-                    type: 'categories',
-                    // categories: _.map(leaders, 'company')
-                    tick: { rotate: 45 }
-                }
+                    type: 'categories'
+                },
+                rotated: true
             }
         });
     });
