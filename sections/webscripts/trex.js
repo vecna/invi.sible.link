@@ -1,6 +1,11 @@
 var defaultCampaign = null;
 var initiativePrefix = null;
 
+window.addEventListener('popstate', function(event) {
+    console.log("popstate, loading page from location");
+    loadPage();
+}, false);
+
 function initializeLanding(defaultC, initiativeP) {
 
     if(defaultC)
