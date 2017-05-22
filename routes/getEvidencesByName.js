@@ -24,7 +24,6 @@ function getEvidencesByName(req) {
             var promiseFilter = { promiseId: p };
             return campaignOps.getEvidences(promiseFilter, past);
         })
-        .then(_.reverse)
         .then(function(clean) {
             return _.reject(clean, function(o) {
                 return _.startsWith(o.url, 'data:');

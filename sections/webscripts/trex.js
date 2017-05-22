@@ -492,6 +492,7 @@ function trexSiteDetails(sitename) {
             },
         });
 
+        /*
         var piecountry = _.countBy(
             _.filter(collections, function(o) {
                 return !_.isUndefined(o.companyC)
@@ -504,6 +505,7 @@ function trexSiteDetails(sitename) {
                 type: 'donut',
             },
         });
+        */
 
         var ext = _.reject(collections, {domaindottld: sitename});
 
