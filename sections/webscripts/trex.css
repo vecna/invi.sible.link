@@ -35,6 +35,11 @@ h1,h2,h3,h4,h5{
     padding-top: 0.25em;
 }
 
+.small-text {
+    font-size: 0.6em;
+    text-align: center;
+}
+
 #table {
     /* background-image: url('fixtures/background.png'); */
     background-color: #f1ffea;
@@ -120,7 +125,15 @@ h1,h2,h3,h4,h5{
     display: none;
 }
 
-/* jquery line chart */
+#cookiesrank .c3-event-rect {
+    cursor: pointer;
+}
+
+.links {
+    cursor: pointer;
+}
+
+/* jquery shitty abandoned line chart */
 .entry {
     display: block;
     float: left;
@@ -141,3 +154,16 @@ h1,h2,h3,h4,h5{
     font-weight: bold;
     border-radius: 5px;
 }
+
+/* current ordered list of third party inclusions */
+.noverflow {
+    font-size: 0.8em;
+    overflow-wrap: break-word;
+}
+
+#orderedL {
+    font-size: 0.7em;
+    font-family: 'Monospace';
+    background-color: white;
+}
+

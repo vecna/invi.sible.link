@@ -54,6 +54,10 @@ app.get('/api/v:version/surface/:campaign', function(req, res) {
     return dispatchPromise('getSurface', routes, req, res);
 });
 
+app.get('/api/v:version/evidences/:sitename', function(req, res) {
+    return dispatchPromise('getEvidencesByName', routes, req, res);
+});
+
 app.get('/api/v:version/sankeys/:campaign', function(req, res) {
     return dispatchPromise('getSankeys', routes, req, res);
 });
@@ -121,8 +125,11 @@ app.get('/archive/:selector', function(req, res) {
 app.get('/direct/:page', function(req, res) {
     dispatchPromise('getCampaignPages', routes, req, res);
 });
+app.get('/direct/:sitename/:page', function(req, res) {
+    dispatchPromise('getCampaignPages', routes, req, res);
+});
 
-app.get('/site-:sitename', function(req, res) {
+app.get('/:sitename/site', function(req, res) {
     req.params.page = 'site';
     dispatchPromise('getCampaignIndex', routes, req, res);
 });

@@ -1,7 +1,7 @@
 var defaultCampaign = null;
 var initiativePrefix = null;
 
-function initializeLanding(where, defaultC, initiativeP) {
+function initializeLanding(defaultC, initiativeP) {
 
     if(defaultC)
         defaultCampaign = defaultC;
@@ -9,41 +9,49 @@ function initializeLanding(where, defaultC, initiativeP) {
     if(initiativeP)
         initiativePrefix = initiativeP;
 
-    var validP = [ 'landing', 'what-to-do', 'about', 'archive' ];
-
-    if(!where) {
-        where = window.location.href.split('/').pop();
-
-        if(validP.indexOf(where) == -1) {
-            console.log("Unknown location: "+ where +", forcing to 'landing'");
-            where = 'landing';
-        }
-    }
-
-    $("#content").load('/direct/' + where, function () {
-        loadPage(where);
-        $('.' + where).addClass('active');
-    });
 };
 
 function loadPage(destpage) {
 
-    $('li').removeClass('active');
-    $('.' + destpage).addClass('active');
-
-    if(destpage.indexOf('site-') !== -1) {
-        var siten = window.location.pathname.split('site-').pop();
-        destpage = 'site';
+    var guessed = false;
+    if(!destpage) {
+        console.log("destpage undeclared, guessing from location");
+        guessed = true;
+        destpage = window.location.pathname;
     }
 
-    $("#content").load("/direct/" + destpage, function () {
+    var validP = [ '/site', '/landing', '/what-to-do', '/about' ];
+
+    console.log("destpage " + destpage);
+
+    if(_.endsWith(destpage, '/site')) {
+        var a = destpage.split('/');
+        a.pop();
+        var siten = a.pop();
+        destpage = '/site';
+        console.log("Extracted site from location: [" + siten + "]");
+    }
+
+    if(validP.indexOf(destpage) == -1) {
+        console.log("Unknown location: "+ destpage +", forcing to 'landing'");
+        destpage = '/landing';
+    }
+
+    $('li').removeClass('active');
+
+    /* nothig is active when a site is look-at */
+    if(destpage === '/site')
+        $('.' + _.trim(destpage, '/') ).addClass('active');
+
+    console.log("Loading page request: " + destpage + " to /direct ");
+    $("#content").load("/direct" + destpage, function () {
 
         /* if a script need to be executed at the load, here it is fired,
          * this is a sloppy code: in fact I'm waiting 300ms hoping the <div>
          * has been put in the DOM */
         setTimeout(function() {
 
-            if(destpage === 'landing') {
+            if(destpage === '/landing') {
                 console.log("loadPage/landing " + defaultCampaign);
                 if( $("#cookiesrank").length )
                     trexCookiesRank(defaultCampaign, '#cookiesrank');
@@ -55,7 +63,8 @@ function loadPage(destpage) {
                     trexRender(defaultCampaign, '#sankeytable');
             }
 
-            if(destpage === 'archive') {
+            if(destpage === '/archive') {
+                /* not used ATM */
                 console.log("loadPage/archive " + defaultCampaign);
                 if( $("#archivetable").length )
                     trexArchive(defaultCampaign, '#archivetable');
@@ -63,21 +72,26 @@ function loadPage(destpage) {
                     trexDetails(defaultCampaign, '#detailedlist');
             }
 
-            if(destpage === 'site') {
-
+            if(_.endsWith(destpage,'/site')) {
                 console.log("loadPage/site " + siten);
-                if( $('#sitename').length )
-                    trexSiteName(siten, '#sitename');
-                if( $('#sitepiegraph').length )
-                    trexSiteDetails(siten, '#sitepiegraph');
+                /* piegraph is expected to exist, and .sitename is a class,
+                 * like #firstpartyn -- clean this pattern */
                 if( $('#sitedetails').length )
-                    trexSitePie(siten, '#sitedetails');
+                    trexSiteDetails(siten);
             }
 
         }, 300);
 
-        console.log("Loading and recording as: " + initiativePrefix + " " + destpage);
-        history.pushState({'nothing': true}, initiativePrefix + " " + destpage, destpage);
+        console.log("Loading and recording as: " + initiativePrefix + destpage);
+        if(_.endsWith(destpage, 'site'))
+            destpage = siten + destpage;
+
+        if(!guessed)
+            history.pushState(
+                {'nothing': false},
+                initiativePrefix,
+                destpage
+            );
     });
 };
 
@@ -437,33 +451,98 @@ function trexSimpleRender(campaignName, simpleRender) {
             $(simpleRender).addClass("entry");
             $("#" + lineId).click(function(e) {
                 var ddtld = $(this).attr('domaindottld');
-                loadPage('site-' + ddtld, ddtld);
+                loadPage(ddtld + '/site');
             });
         });
     });
 };
 
-function trexSiteName(sitename, destId) {
-    $(destId).text(sitename);
-}
-
-function trexSiteDetails(sitename, destId) {
+function trexSiteDetails(sitename) {
 
     d3.json("/api/v1/evidences/" + sitename, function(collections) {
-        console.log(collections);
+
+        var pied = _.countBy(
+            _.reject(collections, {domaindottld: sitename}),
+            'domaindottld');
+
+        var first = _.filter(collections, {domaindottld: sitename});
+
+        $("#firstpartyn").text(_.size(first));
+        $("." + "sitename").text(sitename);
+
+        c3.generate({
+            bindto: '#domainpiegraph',
+            data: {
+                json: pied,
+                type: 'donut',
+            },
+            donut: { title: sitename }
+        });
+
+        var piecompany = _.countBy(
+            _.filter(collections, function(o) {
+                return !_.isUndefined(o.company);
+            }), 'company');
+
+        c3.generate({
+            bindto: '#companypiegraph',
+            data: {
+                json: piecompany,
+                type: 'donut',
+            },
+        });
+
+        var piecountry = _.countBy(
+            _.filter(collections, function(o) {
+                return !_.isUndefined(o.companyC)
+            }), 'companyC');
+
+        c3.generate({
+            bindto: '#countrypiegraph',
+            data: {
+                json: piecountry,
+                type: 'donut',
+            },
+        });
+
+        var ext = _.reject(collections, {domaindottld: sitename});
+
+        $('#sitedetails').html('<ol id="orderedL">');
+        _.each(ext, function(o) {
+            var info = '';
+
+            if(o['Content-Type']) {
+                info = o['Content-Type'].replace(/;.*/, '');
+            }
+
+            if(o['cookies']) {
+
+                if(info !== '')
+                    info += ", ";
+
+                if(_.size(o['cookies']) === 1)
+                    info += "un Cookie installato";
+                else
+                  info += _.size(o['cookies']) + " Cookie installati";
+            }
+
+            if(info !== '')
+                info = '<ul><li>' + info + '</ul></li>';
+
+            $('#orderedL').append('<li>' + 
+                '<span class="noverflow">' + o.url + '</span>' +
+                info +
+                '</li>');
+        });
+
     });
-}
-
-function trexSitePie(sitename, destId) {
-
-    console.log(sitename, " pie ", destId);
 }
 
 function trexCookiesRank(campaignName, destId) {
 
     d3.json("/api/v1/surface/" + campaignName, function(collections) {
 
-        console.log("CookiesRank: campaign " + campaignName + 
+        console.log("trexCookiesRank: campaign " + campaignName + 
                 " dest " + destId + " surface #" + _.size(collections) );
 
         var cookiesInfo = _.reduce(collections, function(memo, site) {
@@ -492,16 +571,19 @@ function trexCookiesRank(campaignName, destId) {
                 type: 'bar',
                 colors: { 'cookies': '#339199' },
                 onclick: function(d, element) {
-                    console.log(d);
-                    console.log(this);
-                }
+                    if(!$(element).hasClass('_selected_')) {
+                        var ddtld = this.categories()[d.x];
+                        loadPage(ddtld + '/site');
+                    }
+                },
+                selection: { enabled: true },
+
             },
             size: { height: 800 },
             legend: { show: false },
             axis: {
                 x: {
                     type: 'categories',
-                    tick: { rotate: 45 }
                 },
                 rotated: true
             }
@@ -514,7 +596,7 @@ function trexCompanyRank(campaignName, destId) {
 
     d3.json("/api/v1/surface/" + campaignName, function(collections) {
 
-        console.log("companyRank: campaign " + campaignName + 
+        console.log("trexCompanyRank: campaign " + campaignName + 
                 " dest " + destId + " surface #" + _.size(collections) );
 
         var leaders = _.reduce(collections, function(memo, site) {

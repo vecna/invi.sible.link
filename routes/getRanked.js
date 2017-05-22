@@ -11,7 +11,7 @@ var campaignOps = require('../lib/campaignOps');
 function getRanked(req) {
 
     var filter = { task: req.params.task };
-    return campaignOps.getEvidences(filter)
+    return campaignOps.getEvidences(filter, 36)
         .then(campaignOps.rankEvidences)
         .then(function(ranked) {
             return {
