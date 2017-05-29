@@ -7,6 +7,7 @@ var nconf = require('nconf');
 var debug = require('debug')('campaignAll');
 
 var ccfg = 'config/experimentsCampaign.json';
+debug("Loading hardcoded %s", ccfg);
 nconf.argv().env().file({ file: ccfg });
 
 _.each(_.map(nconf.get('campaigns'), 'name'), function(avail) {

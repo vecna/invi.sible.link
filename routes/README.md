@@ -46,4 +46,7 @@
 `systemInfo`:
     **all the columns**, and systemInfo (social-pressure)
 
+`getCampaignNames`:
+    It read from `config/campaignChecker.json`
+
 
