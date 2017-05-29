@@ -6,7 +6,9 @@
   },
   "mongodb": "mongodb://localhost/ivl",
   "vantages": [
-      { "name": "localhost", "host": "http://localhost:7300" }
+	{ "name": "HK", "host": "http://hk-vp.sible.link:7300" },
+	{ "name": "AMS", "host": "http://ams-vp.sible.link:7300" },
+	{ "name": "WS", "host": "http://ws-vp.sible.link:7300" }
   ],
   "campaigns": [{
       "name": "intrex",
@@ -64,10 +66,15 @@
       "filter": { "taskName" : "example" },
       "dayswindow": 1
   }, {
-      "name": "CodingRights",
+      "name": "irantrex",
+      "description": "irantrex",
+      "filter": { "taskName" : "irantrex" },
+      "dayswindow": 1
+  }, {
+      "name": "chuptrex",
       "description": "Latin American online clinics - CodingRights experiment",
-      "filter": { "taskName" : "clinics" },
-      "dayswindow": 3
+      "filter": { "taskName" : "chuptrex" },
+      "dayswindow": 1
   }],
   "evidences": "evidences",
   "surface": "surface"
