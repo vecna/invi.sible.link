@@ -50,20 +50,26 @@ if(task === 'statistics') {
     simpleAppend("chopsticks", "completed");
 } else if(task === 'vigile') {
     var logentry ="calling now";
-    var filter = nconf.get('filter') || "";
-    if(filter) logentry += ", with filter " + filter;
-    var taskName = nconf.get('taskName') || 'scheduled';
-    if(taskName) logentry += ", with taskName " + taskName;
+
+    var taskName = nconf.get('taskName');
+    if(!taskName) { simpleAppend("missing taskName"); }
+    else logentry += ", with taskName " + taskName;
+
+    var csv = nconf.get('csv');
+    if(!csv) { simpleAppend("missing CSV");  }
+    else logentry += ", with CSV " + csv;
 
     simpleAppend("vigile", logentry);
-    var cmd = 'bin/directionTool.js > /tmp/vigile-direction.log 2>&1'
-    child_process.execSync(cmd, {
-        'env': {
-            'DEBUG': '*',
-            'taskName': taskName,
-            'filter': filter
-        }
-    });
+    if(csv && taskName) {
+        var cmd = 'bin/directionTool.js > /tmp/vigile-direction.log 2>&1'
+        child_process.execSync(cmd, {
+            'env': {
+                'DEBUG': '*',
+                'taskName': taskName,
+                'csv': csv
+            }
+        });
+    }
     simpleAppend("vigile", "completed");
 } else if(task === 'campaign') {
     var campname = nconf.get('campaign');

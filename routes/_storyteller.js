@@ -5,6 +5,7 @@ module.exports = {
     getPage:            require('./getPage'),
     getStats:           require('./getStats'),
     getCampaignSubject: require('./getCampaignSubject'),
+    getCampaignNames:   require('./getCampaignNames'),
     getSurface:         require('./getSurface'),
     getRanked:          require('./getRanked'),
     getCompanies:       require('./getCompanies'),
