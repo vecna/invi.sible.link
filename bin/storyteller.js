@@ -61,6 +61,10 @@ app.get('/api/v:version/campaign/:cname', function(req, res) {
     return dispatchPromise('getCampaignSubject', routes, req, res);
 });
 
+app.get('/api/v:version/campaignNames', function(req, res) {
+    return dispatchPromise('getCampaignNames', routes, req, res);
+});
+
 app.get('/api/v:version/subjects', function(req, res) {
     return dispatchPromise('getSubjects', routes, req, res);
 });
