@@ -9,5 +9,6 @@ module.exports = {
     getRanked:          require('./getRanked'),
     getCompanies:       require('./getCompanies'),
     activeTasks:        require('./activeTasks'),
-    getRaw:             require('./getRaw')
+    getRaw:             require('./getRaw'),
+    getRecentActivities:require('./getRecentActivities')
 };
