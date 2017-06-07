@@ -13,9 +13,10 @@ function getRecentActivities(req) {
     debug("%s getRecentActivities", req.randomUnicode);
 
     return Promise.all([
-        getInfo.lastDayCount('promises', 'start'),
+        getInfo.lastDayCount('surface', 'when'),
         getInfo.lastDayCount('evidences', 'when'),
-        getInfo.lastDayCount('surface', 'when')
+        getInfo.lastDayCount('promises', 'start'),
+        getInfo.lastDayCount('statistics', 'when')
     ])
     .then(function(results) {
         return {

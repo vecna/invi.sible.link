@@ -7,11 +7,12 @@ var nconf = require('nconf');
  
 var campaignOps = require('../lib/campaignOps');
 
-/* This API return a reduction of evidences used by c3, it is used to show the sources of third parties */
+/* This API return a reduction of evidences used by c3, it is used to show 
+ * the sources of third parties */
 function getRanked(req) {
 
     var filter = { task: req.params.task };
-    return campaignOps.getEvidences(filter, 36)
+    return campaignOps.getEvidences(filter, 24)
         .then(campaignOps.rankEvidences)
         .then(function(ranked) {
             return {
