@@ -11,7 +11,8 @@ var campaignOps = require('../lib/campaignOps');
  * the sources of third parties */
 function getRanked(req) {
 
-    var filter = { task: req.params.task };
+    var filter = { campaign: req.params.task };
+    debug("getRanked → getEvidences with filter %j on last 24H", filter)
     return campaignOps.getEvidences(filter, 24)
         .then(campaignOps.rankEvidences)
         .then(function(ranked) {
