@@ -1,11 +1,36 @@
+function displayRecent(containerId) {
+
+    $.getJSON("/api/v1/recent", function(data) {
+        console.log(data);
+        _.each(data, function(d) {
+            var seq = [ '<div>', '<h2>', d.name, '</h2>',
+                '<p>', 'last activity: ', d.dayStr, ', objects ', d.count,
+                '</p><pre>', JSON.stringify(d.last, undefined, 2), '</pre>',
+                '</div>' ];
+            $(containerId).append(seq.join(''));
+        });
+    });
+
+};
 
 function displayCampaign(containerId) {
+
+    var C = { 'itatopex': 'Italian Top websites',
+              'halal': 'few Halal food shop US',
+              'mosques': 'Mosques in US and Canada',
+              'culture': 'Websites of Islamic culture (Alexa)',
+              'irantrex': 'Iran websites https://github.com/vecna/irantrex',
+              'chuptrex': 'Chupadados research' };
 
     $.getJSON("/api/v1/campaignNames", function(data) {
         console.log(data);
 
-        _.each(data, function(cname) {
-            $(containerId).append('<li><a href="#" class="entries" id="' + cname + '">' + cname + '</a></li>');
+        _.each(C, function(displayN, cname) {
+            if(data.indexOf(cname) == -1) {
+                $(containerId).append('<li>Missing from configuration '+cname +'</li>');
+            } else {
+                $(containerId).append('<li><a href="#" class="entries" id="' + cname + '">' + displayN + '</a></li>');
+            }
         });
 
         $(".entries").click(function(e, a) {
