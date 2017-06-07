@@ -15,7 +15,7 @@ html
 
     title ⛅  Active analysis 
 
-  body(onload="displayCampaign('#campaignList');")
+  body(onload="displayRecent('#recent'); displayCampaign('#campaignList');")
 
     .container-fluid
       .jumbotron
@@ -23,6 +23,10 @@ html
         small ß release 
 
     include navbar
+
+    .container-fluid
+      div.text Recent activities, server processing debug
+      #recent
 
     .container-fluid
       div.text Below a list of the campaign who should run daily on this server
