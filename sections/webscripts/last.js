@@ -1,10 +1,11 @@
 function displayRecent(containerId) {
 
     $.getJSON("/api/v1/recent", function(data) {
-        console.log(data);
         _.each(data, function(d) {
             var seq = [ '<div>', '<h2>', d.name, '</h2>',
-                '<p>', 'last activity: ', d.dayStr, ', objects ', d.count,
+                '<p>', 'last activity: ', d.dayStr, ' [',
+                moment.duration( moment(d.dayStr) - moment() ).humanize(), 
+                ' ago], objects in the same day ', d.count,
                 '</p><pre>', JSON.stringify(d.last, undefined, 2), '</pre>',
                 '</div>' ];
             $(containerId).append(seq.join(''));
@@ -17,13 +18,13 @@ function displayCampaign(containerId) {
 
     var C = { 'itatopex': 'Italian Top websites',
               'halal': 'few Halal food shop US',
+              'travel': 'Travel agency for religious trip',
               'mosques': 'Mosques in US and Canada',
               'culture': 'Websites of Islamic culture (Alexa)',
               'irantrex': 'Iran websites https://github.com/vecna/irantrex',
               'chuptrex': 'Chupadados research' };
 
     $.getJSON("/api/v1/campaignNames", function(data) {
-        console.log(data);
 
         _.each(C, function(displayN, cname) {
             if(data.indexOf(cname) == -1) {
@@ -36,6 +37,9 @@ function displayCampaign(containerId) {
         $(".entries").click(function(e, a) {
             console.log("Click on ", e.currentTarget.id);
             preliminaryViz(e.currentTarget.id);
+            subjectList('#executedList', e.currentTarget.id);
+            mostUniqueTrackers('#mostUnique', e.currentTarget.id);
+            mostCompanies('#mostCompanies', e.currentTarget.id);
         });
     });
 };

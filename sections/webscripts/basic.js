@@ -11,39 +11,14 @@ lastTrends: create a c3 simple graph with the top 10/? websites from the last an
 
  */
 
-var subjectList= function(containerId, iso3166) {
+function subjectList(containerId, iso3166) {
     var url = '/api/v1/campaign/' + iso3166;
 
     $.getJSON(url, function(response) {
 
         console.log(response);
-        var inserted = moment
-            .duration(moment() - moment(response.info.creationTime) )
-            .humanize() + " ago";
-
-        console.log(inserted);
         $(containerId).DataTable( {
             data: response.table
-        });
-    });
-};
-
-
-function lastOne(containerId, campaignName) {
-
-    var url = '/api/v1/surface/' + campaignName;
-
-    $.getJSON(url, function(data) {
-
-        var tablized = _.map(data, function(e) {
-            var when = moment
-                .duration(moment() - moment(e.when) )
-                .humanize() + " ago";
-            return [ e.url, e.VP, e.javascripts, _.size(e.unique), when ];
-        });
-
-        $(containerId).DataTable( {
-            data: tablized
         });
     });
 };

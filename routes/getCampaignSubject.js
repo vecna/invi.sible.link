@@ -1,44 +1,52 @@
 
 var _ = require('lodash');
 var Promise = require('bluebird');
+var moment = require('moment');
 var debug = require('debug')('route:getCampaignSubject');
 var nconf = require('nconf');
  
 var mongo = require('../lib/mongo');
 var subjectsOps = require('../lib/subjectsOps');
 
-/* This API return a surface table of the last day scan results, picking from tasks
- * absolved in the last 24 hours, and returning them for DataTable format */
+/* This API return a surface table of the promises got in the last
+ * $RANGE days, in two format (raw and tablized for DataFormat) */
+
 function getCampaignSubject(req) {
 
-    if (_.size(req.params.cname) === 2)
-        var filter = { iso3166 : req.params.cname };
-    else
-        var filter = { name: req.params.cname };
+    var RANGE = 7;
+    var filter = {
+        taskName: req.params.cname,
+        start: { "$gt": new Date(moment()
+                                  .subtract(RANGE, 'd')
+                                  .format('YYYY-MM-DD')
+                                ) }
+    };
 
-    debug("Looking for campaign %s %j", req.params.cname, filter);
+    debug("Looking for promises with for the last week %j", filter);
     return mongo
-        .read(nconf.get('schema').subjects, filter)
+        .read(nconf.get('schema').promises, filter, { start: -1 })
+        .reduce(function(memo, promise) {
+            var exists = _.find(memo, { href: promise.href });
+            if(!exists)
+                memo.push(promise);
+            return memo;
+        }, [] )
+        .tap(function(tested) {
+            debug("The tested website in the last %d days are %d",
+                RANGE, _.size(tested));
+        })
         .then(function(all) {
-            var clean = _.map(all[0].pages, function(e) {
-                return _.extend(e, {
-                    creationTime: all[0].creationTime,
-                    population: all[0].population
-                }); 
-            });
-            debug("GetCampaignSubject with %d pages keys avail %j",
-                _.size(all[0].pages), _.keys(clean[0]));
 
-            var genericInfo = _.omit(all[0], ["_id","pages"]);
+            var tablized = _.map(all, function(e) {
+                 var inserted = moment.duration(moment() - moment(e.start) )
+                                      .humanize() + " ago";
 
-            var tablized = _.map(clean, function(e) {
-                return [ e.href, e.description, e.rank ];
+                return [ e.href, e.description, e.start, inserted ];
             });
-            debug("returning %j + %d of %j",
-                genericInfo, _.size(tablized), _.first(tablized));
+
             return {
                 'json': {
-                    'info': genericInfo,
+                    'info': all,
                     'table': tablized
                 }
             }
