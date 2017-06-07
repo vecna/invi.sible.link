@@ -1,3 +1,4 @@
+
 function displayRecent(containerId) {
 
     $.getJSON("/api/v1/recent", function(data) {
@@ -11,10 +12,15 @@ function displayRecent(containerId) {
             $(containerId).append(seq.join(''));
         });
     });
-
 };
 
 function displayCampaign(containerId) {
+
+    $('#preliminaryGraph').hide();
+    $('#preliminaryName').hide();
+    $('#executedList').hide();
+    $('#mostUnique').hide();
+    $('#mostCompanies').hide();
 
     var C = { 'itatopex': 'Italian Top websites',
               'halal': 'few Halal food shop US',
@@ -35,7 +41,14 @@ function displayCampaign(containerId) {
         });
 
         $(".entries").click(function(e, a) {
-            console.log("Click on ", e.currentTarget.id);
+            console.log("Just clicked on ", e.currentTarget.id);
+
+            $('#preliminaryGraph').show();
+            $('#preliminaryName').show();
+            $('#executedList').show();
+            $('#mostUnique').show();
+            $('#mostCompanies').show();
+
             preliminaryViz(e.currentTarget.id);
             subjectList('#executedList', e.currentTarget.id);
             mostUniqueTrackers('#mostUnique', e.currentTarget.id);
@@ -43,7 +56,6 @@ function displayCampaign(containerId) {
         });
     });
 };
-
 
 function preliminaryViz(campaignName) {
 

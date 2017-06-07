@@ -1,15 +1,3 @@
-/*
- *
- * ---------- NOT USED ANYMORE 
- *
- */
-/*
-
-subjectList: create a DataTable with basic information on the subject under analysis
-lastOne: create a DataTable with basic information on the analysis performed on the subjects
-lastTrends: create a c3 simple graph with the top 10/? websites from the last analysis
-
- */
 
 function subjectList(containerId, iso3166) {
     var url = '/api/v1/campaign/' + iso3166;
@@ -27,7 +15,7 @@ function mostUniqueTrackers(containerId, campaignName) {
 
     var url= '/api/v1/mostUniqueTrackers/' + campaignName;
 
-    console.log(url);
+    console.log("mostUniqueTrackers", url);
     d3.json(url, function(data) {
 
         console.log(data);
@@ -69,16 +57,15 @@ function mostCompanies(containerId, campaignName) {
 
     var url = '/api/v1/byCompanies/' + campaignName;
 
+    console.log("mostCompanies", url);
     $.getJSON(url, function(data) {
         _.each(data, function(site, i) {
-            console.log(i);
-            console.log(site);
+            console.log("mostCompanies: append of ", site.url);
             var HT = [ 
-                '<div class="text">',
-                '<h4>', i + 1, " • ", site.url, 
-                    '<i>  • ', moment(site.requestTime).format("DD-MM-YY"), '  • </i>', 
-                    ' companies:', _.size(site.companies), 
-                '</h4>',
+                '<div class="text">', '<h4>', 
+                i + 1, " • ", site.url, '<i>  • ',
+                moment(site.requestTime).format("DD-MM-YY"), '  • </i>', 
+                ' companies:', _.size(site.companies), '</h4>',
                 '<small>', _.reduce(site.companies, function(memo, c) {
                     if(memo)
                         memo += ", " + c;
