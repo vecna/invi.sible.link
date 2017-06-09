@@ -37,14 +37,6 @@ app.get('/api/v:version/raw/:column/:key/:value', function(req, res) {
 
 /* API specs: dispatchPromise is in /lib/, the argument is in ./routes */
 
-app.get('/api/v:version/mostUniqueTrackers/:task', function(req, res) {
-    return dispatchPromise('getRanked', routes, req, res);
-});
-
-app.get('/api/v:version/byCompanies/:task', function(req, res) {
-    return dispatchPromise('getCompanies', routes, req, res);
-});
-
 app.get('/api/v:version/surface/:campaign', function(req, res) {
     return dispatchPromise('getSurface', routes, req, res);
 });
@@ -59,6 +51,10 @@ app.get('/api/v:version/recent', function(req, res) {
 
 app.get('/api/v:version/campaign/:cname', function(req, res) {
     return dispatchPromise('getCampaignSubject', routes, req, res);
+});
+
+app.get('/api/v:version/history/:href', function(req, res) {
+    return dispatchPromise('getEvidencesByHref', routes, req, res);
 });
 
 app.get('/api/v:version/campaignNames', function(req, res) {
