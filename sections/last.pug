@@ -38,7 +38,8 @@ html
         ol#campaignList
 
       div.text Click on one of the name above to see see here a preliminary analysis
-        h2 Campaign codename: #preliminaryName
+        h2 Campaign codename: 
+          span#preliminaryName
         #preliminaryGraph
 
         table#executedList.display(cellspacing='0', width='100%')
@@ -55,10 +56,9 @@ html
               th Start
               th When
 
-        h2 Most unique trackers
-        #mostUnique
-        h2 Most frequent companies
-        #mostCompanies
+        h2 Single site history expansion
+        ol#siteList
+        #historyGraph
         h2 Raw dump of all the surface analysis
         ul#previewDump
 

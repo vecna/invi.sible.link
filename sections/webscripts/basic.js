@@ -1,6 +1,39 @@
+function renderHistory(containerId, hrefname) {
+    console.log("renderHistory");
 
-function subjectList(containerId, iso3166) {
-    var url = '/api/v1/campaign/' + iso3166;
+    var url = '/api/v1/history/' + hrefname;
+
+    console.log("renderHistory", url);
+
+    d3.json(url, function(something) {
+
+        c3.generate({
+            bindto: containerId,
+            data: {
+								json:
+								keys:
+								xFormat: '%Y-%m-%d %H:%M:%S',
+								types: {
+								},
+								axes: {
+								}
+						},	
+            axis: {
+						    x: {
+                		type: 'timeseries',
+                    tick: {
+                        format: '%Y-%m-%d'
+                    } 
+                }
+						}
+				});
+		});
+};
+
+function subjectList(containerId, siteContainerId, cname) {
+    var url = '/api/v1/campaign/' + cname;
+
+    console.log("subjectList+siteList", url);
 
     $.getJSON(url, function(response) {
 
@@ -8,72 +41,19 @@ function subjectList(containerId, iso3166) {
         $(containerId).DataTable( {
             data: response.table
         });
-    });
-};
 
-function mostUniqueTrackers(containerId, campaignName) {
-
-    var url= '/api/v1/mostUniqueTrackers/' + campaignName;
-
-    console.log("mostUniqueTrackers", url);
-    d3.json(url, function(data) {
-
-        console.log(data);
-        return c3.generate({
-            bindto: containerId,
-            size: {
-                height: 800
-            },
-            data: {
-                keys: {
-                    x: 'url',
-                    value: data.trackers
-                },
-                json: data.content,
-                type: 'scatter',
-            },
-            axis: {
-                x: {
-                    type: 'category'
-                }, 
-                y: {
-                    show: false
-                },
-            },
-            grid: {
-                x: {
-                    show: true
-                }
-            },
-            point: {
-                  r: 5
-            }
+        _.each(response.info, function(site) {
+            $(siteContainerId).append('<li><a href="#" class="sitename" id="'     + site.domaindottld + '">' + site.href + '</a></li>');
         });
+
     });
+
+    $(".sitename").click(function(e, a) {
+        console.log("Just clicked site", e.currentTarget.id);
+        renderHistory('#historyGraph', e.currentTarget.id);
+    });
+
 };
 
 
-function mostCompanies(containerId, campaignName) {
 
-    var url = '/api/v1/byCompanies/' + campaignName;
-
-    console.log("mostCompanies", url);
-    $.getJSON(url, function(data) {
-        _.each(data, function(site, i) {
-            console.log("mostCompanies: append of ", site.url);
-            var HT = [ 
-                '<div class="text">', '<h4>', 
-                i + 1, " • ", site.url, '<i>  • ',
-                moment(site.requestTime).format("DD-MM-YY"), '  • </i>', 
-                ' companies:', _.size(site.companies), '</h4>',
-                '<small>', _.reduce(site.companies, function(memo, c) {
-                    if(memo)
-                        memo += ", " + c;
-                    else
-                        memo = c;
-                    return memo;
-                }, null), '</small>', '</div>' ];
-            $(containerId).append(HT.join(''));
-        });
-    });
-}

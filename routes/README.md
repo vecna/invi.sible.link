@@ -19,14 +19,14 @@
 `getCampaignSubject`:
     `subjects`: by `iso3166` or `name` based on the API input; it checks if is two letter code or not (storyteller)
 
-`getCompanies`:
-    `surface`, last (argument specify) hours, (social-pressure, storyteller)
-
-`getRanked`:
-    `evidences` last 36 hours in absolute (social-pressure, storyteller)
-
 `getSurface`:
     `surface`: by campaign name and hours, (social-pressure, storyteller)
+
+`getEvidencesByName`:
+    `evidences` by campaign name and pick just last hours (social-pressure)
+
+`getEvidencesByPromise`:
+    `evidences` by promiseId (storyteller)
 
 `getRaw`:
     **any kind of column can be requested**, only the last 24 hours are returned (storyteller)

@@ -42,13 +42,6 @@ server.listen(nconf.get('port'), nconf.get('interface') );
 console.log( "http://" + nconf.get('interface') + ':' + nconf.get('port') + " listening");
 
 /* API of social pressure */
-app.get('/api/v:version/mostUniqueTrackers/:task', function(req, res) {
-    return dispatchPromise('getRanked', routes, req, res);
-});
-
-app.get('/api/v:version/byCompanies/:task', function(req, res) {
-    return dispatchPromise('getCompanies', routes, req, res);
-});
 
 app.get('/api/v:version/surface/:campaign', function(req, res) {
     return dispatchPromise('getSurface', routes, req, res);
