@@ -12,6 +12,8 @@ function displayRecent(containerId) {
             $(containerId).append(seq.join(''));
         });
     });
+
+    $('.secondaryDetails').addClass('hidden');
 };
 
 function displayCampaign(containerId) {
@@ -52,6 +54,7 @@ function preliminaryViz(campaignName) {
 
     $(destId).html("");
     $("#previewDump").html("");
+    $(".secondaryDetails").removeClass('hidden');
 
     console.log("preliminaryViz of", campaignName, destId);
 
