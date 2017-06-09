@@ -10,24 +10,24 @@ function renderHistory(containerId, hrefname) {
         c3.generate({
             bindto: containerId,
             data: {
-								json:
-								keys:
-								xFormat: '%Y-%m-%d %H:%M:%S',
-								types: {
-								},
-								axes: {
-								}
-						},	
+                json: ['1'],
+                keys: ['a'],
+                xFormat: '%Y-%m-%d %H:%M:%S',
+                types: {
+                },
+                axes: {
+                }
+            },
             axis: {
-						    x: {
-                		type: 'timeseries',
+                x: {
+                    type: 'timeseries',
                     tick: {
                         format: '%Y-%m-%d'
                     } 
                 }
-						}
-				});
-		});
+            }
+      });
+    });
 };
 
 function subjectList(containerId, siteContainerId, cname) {

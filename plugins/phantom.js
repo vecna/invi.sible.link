@@ -55,7 +55,7 @@ var setupDirectory = function(need) {
                   args: [ "-p", need.disk.directory ]
     })
     .catch(function(error) {
-        debug("mkdirError %j", JSON.stringify(error, undefined, 2));
+        debug("mkdir Error %s", JSON.stringify(error, undefined, 2));
         throw new Error("Impossible proceed after mkdir failure");
     })
     .return(need);
