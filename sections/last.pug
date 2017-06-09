@@ -29,15 +29,11 @@ html
     include navbar
 
     .container-fluid
-      div.text Recent activities, server processing debug
-      #recent
-
-    .container-fluid
-      div.text Below a list of the campaign who should run daily on this server
-
+      div.text Here the experiments running daily on this server; click in one of them to fill the entries below.
         ol#campaignList
 
-      div.text Click on one of the name above to see see here a preliminary analysis
+    .container-fluid.secondaryDetails
+
         h2 Campaign codename: 
           span#preliminaryName
         #preliminaryGraph
@@ -61,5 +57,10 @@ html
         #historyGraph
         h2 Raw dump of all the surface analysis
         ul#previewDump
+
+    .container-fluid
+      div.text Recent activities, 
+        b debug content:
+      #recent
 
     include footer
