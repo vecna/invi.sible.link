@@ -6,6 +6,8 @@ function renderHistory(containerId, hrefname) {
     console.log("renderHistory", url);
 
     d3.json(url, function(something) {
+       
+        console.log(something);
 
         c3.generate({
             bindto: containerId,
