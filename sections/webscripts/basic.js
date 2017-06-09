@@ -6,28 +6,30 @@ function renderHistory(containerId, hrefname) {
     console.log("renderHistory", url);
 
     d3.json(url, function(something) {
+       
+        console.log(something);
 
         c3.generate({
             bindto: containerId,
             data: {
-								json:
-								keys:
-								xFormat: '%Y-%m-%d %H:%M:%S',
-								types: {
-								},
-								axes: {
-								}
-						},	
+                json: ['1'],
+                keys: ['a'],
+                xFormat: '%Y-%m-%d %H:%M:%S',
+                types: {
+                },
+                axes: {
+                }
+            },
             axis: {
-						    x: {
-                		type: 'timeseries',
+                x: {
+                    type: 'timeseries',
                     tick: {
                         format: '%Y-%m-%d'
                     } 
                 }
-						}
-				});
-		});
+            }
+      });
+    });
 };
 
 function subjectList(containerId, siteContainerId, cname) {
