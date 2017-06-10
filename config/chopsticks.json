@@ -1,12 +1,12 @@
 {
   "name": "chopsticks",
-  "VP": "virtual",
-  "source": "http://localhost:7200",
+  "VP": "WS",
+  "source": "http://invi.sible.link:7200",
   "schema": {
     "phantom": "phantom",
     "badger": "badger"
   },
-  "amount": 20,
-  "concurrency": 2,
+  "amount": 4,
+  "concurrency": 4,
   "mongodb": "mongodb://localhost/chopsticks"
 }
