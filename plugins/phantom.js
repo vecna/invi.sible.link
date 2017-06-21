@@ -91,7 +91,6 @@ var performPhantom = function(need) {
         return need;
     })
     .catch(function(error) {
-        debug("phantomError %j", JSON.stringify(error, undefined, 2));
         if(error.name === "TimeoutError") {
             need.phantom = {
                 startTime: startTime.toISOString(),
@@ -102,11 +101,12 @@ var performPhantom = function(need) {
                 endMem: os.freemem(),
                 completed: false
             };
-            debug("Timeout ☞ 「%s」to 「%s」",
-                moment.duration(moment().diff(startTime)).humanize(),
+            debug("Timeout reached ☞ 「%s」to 「%s」",
+                moment.duration(moment().diff(startTime)).asSeconds(),
                 need.href );
             return need;
         }
+        debug("phantomError %j", JSON.stringify(error, undefined, 2));
         console.stack();
         debug("! %s", JSON.stringify(error, undefined, 2));
         throw new Error(error);
