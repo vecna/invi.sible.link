@@ -12,9 +12,6 @@ function displayTrends(graphContainerId, titleContainerId, domaindottld) {
 
     d3.json("/api/v1/history/" + domaindottld, function(byDay) {
 
-        console.log("preliminaryViz of campaign " + campaignName + 
-                " dest " + destId + " surface #" + _.size(collections) );
-
         $(titleContainerId).text(domaindottld);
 
         if(_.size(byDay) === 1) {
