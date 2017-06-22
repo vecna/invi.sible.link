@@ -12,25 +12,47 @@ var mongo = require('../lib/mongo');
  */
 function getEvidencesByHref(req) {
 
-    var filter = { domaindottld: req.params.href };
-    var days = 1;
+    var maxDays = 26;
+    var filter = {};
 
     filter.when = { '$gt': new Date( moment()
-            .subtract(days, 'd')
+            .subtract(maxDays, 'd')
             .format("YYYY-MM-DD") 
         ) };
+    filter.href = new RegExp(req.params.href);
 
-    debug("getEvidencesByHref →  with filter %j on last %d days",
-        filter, days);
+    var omitf = [ "VP", "_id", "campaign", "domain",
+                  "href", "id", "needName", "tld", "promiseId",
+                  "subdomain", "subjectId", "version" ];
 
     return mongo
         .readLimit(nconf.get('schema').evidences, filter, {
             when: -1
         }, 5000, 0)
+        .map(function(e) {
+            e.da = _.parseInt(moment.duration(moment() - 
+                              moment(e.when)).asDays() );
+            return _.omit(e, omitf);
+        })
+        .tap(function(l) {
+            debug("Before reduction list size %d", _.size(l));
+        })
+        .reduce(function(memo, e) {
+            if(e.target)
+                memo.push(e);
+            else if(e.domaindottld !== req.params.href)
+                memo.push(e);
+            return memo;
+        }, [])
+        .tap(function(l) {
+            debug("After reduction list size %d", _.size(l));
+        })
         .then(function(C) {
             if(_.size(C) === 5000)
                 debug("Warning! reach readLimit limit of 5k");
-            return { 'json': C };
+            var grouped =  _.groupBy(C, 'da');
+            debug("getEvidencesByHref group %d days", _.size(grouped));
+            return { 'json': grouped };
         });
 };
 

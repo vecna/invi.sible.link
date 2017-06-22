@@ -49,4 +49,8 @@
 `getCampaignNames`:
     It read from `config/campaignChecker.json`
 
+`getStatsByHref`:
+    `surfaces` return the number of tests available in the last 30 days and their IDs, by `domaindottld`
 
+`getEvidencesByHref`:
+    `evidences` return all the evidences by `domaindottld` capped to 5k

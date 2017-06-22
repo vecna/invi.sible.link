@@ -40,7 +40,8 @@ function displayCampaign(containerId) {
             console.log("Just clicked on ", e.currentTarget.id);
 
             preliminaryViz(e.currentTarget.id);
-            subjectList('#executedList','#historyGraph',e.currentTarget.id);
+            /* basic.js */
+            subjectList('#executedList', e.currentTarget.id);
         });
     });
 };
@@ -49,6 +50,7 @@ function preliminaryViz(campaignName) {
 
     var destId = '#preliminaryGraph';
     var titleId = '#preliminaryName';
+    var siteContainerId = '#siteList';
 
     $(titleId).text(campaignName);
 
@@ -62,6 +64,16 @@ function preliminaryViz(campaignName) {
 
         console.log("preliminaryViz of campaign " + campaignName + 
                 " dest " + destId + " surface #" + _.size(collections) );
+
+        _.each(collections, function(site) {
+            $(siteContainerId).append('<li><a class="sitename" id="' + 
+                site.domaindottld + '">' + site.url + '</a></li>');
+        });
+
+        $(".sitename").click(function(e, a) {
+            console.log("Just clicked site", e.currentTarget.id);
+            displayTrends('#historyGraph', '#historyName', e.currentTarget.id);
+        });
 
         var cookiesInfo = _.reduce(collections, function(memo, site) {
 
