@@ -66,6 +66,11 @@
       "filter": { "taskName" : "example" },
       "dayswindow": 1
   }, {
+      "name": "gptrex",
+      "description": "Germany Parties",
+      "filter": { "taskName" : "gptrex" },
+      "dayswindow": 1
+  }, {
       "name": "irantrex",
       "description": "irantrex",
       "filter": { "taskName" : "irantrex" },

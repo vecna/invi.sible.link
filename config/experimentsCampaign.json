@@ -56,6 +56,11 @@
       "filter": { "taskName" : "irantrex" },
       "dayswindow": 1
   }, {
+      "name": "gptrex",
+      "description": "German Parties",
+      "filter": { "taskName" : "gptrex" },
+      "dayswindow": 1
+  }, {
       "name": "chuptrex",
       "description": "chuptrex",
       "filter": { "taskName" : "chuptrex" },
