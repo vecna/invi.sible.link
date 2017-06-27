@@ -11,25 +11,10 @@
 	{ "name": "WS", "host": "http://ws-vp.sible.link:7300" }
   ],
   "campaigns": [{
-      "name": "intrex",
-      "description": "Italian newspaper analysis",
-      "filter": { "taskName" : "intrex" },
-      "dayswindow": 1
-  }, {
-      "name": "BR",
-      "description": "Brazil top sites",
-      "filter": { "iso3166": "BR" },
-      "dayswindow": 1
-  }, {
       "name": "itatopex",
       "description": "Italian, national top 25 content producer",
       "filter": { "taskName": "itatopex" },
       "dayswindow": 1
-  }, {
-      "name": "EI",
-      "description": "European Institutions third party trackers analysis",
-      "filter": { "taskName" : "EI" },
-      "dayswindow": 3
   }, {
       "name": "culture",
       "description": "culture",
@@ -56,11 +41,6 @@
       "filter": { "taskName" : "irantrex" },
       "dayswindow": 1
   }, {
-      "name": "chuptrex",
-      "description": "chuptrex",
-      "filter": { "taskName" : "chuptrex" },
-      "dayswindow": 1
-  }, {
       "name": "example",
       "description": "example",
       "filter": { "taskName" : "example" },
@@ -71,17 +51,15 @@
       "filter": { "taskName" : "gptrex" },
       "dayswindow": 1
   }, {
-      "name": "irantrex",
-      "description": "irantrex",
-      "filter": { "taskName" : "irantrex" },
+      "name": "clinics-BR",
+      "description": "Brasil clinics - CodingRights experiment",
+      "filter": { "taskName" : "clinics-BR" },
       "dayswindow": 1
   }, {
-      "name": "chuptrex",
-      "description": "Latin American online clinics - CodingRights experiment",
-      "filter": { "taskName" : "chuptrex" },
+      "name": "clinics-CO",
+      "description": "Colombian clinics - CodingRights experiment",
+      "filter": { "taskName" : "clinics-CO" },
       "dayswindow": 1
-  }],
-  "evidences": "evidences",
-  "surface": "surface"
+  }]
 }
 
