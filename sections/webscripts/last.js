@@ -18,13 +18,17 @@ function displayRecent(containerId) {
 
 function displayCampaign(containerId) {
 
-    var C = { 'itatopex': 'Italian Top websites',
-              'halal': 'few Halal food shop US',
-              'travel': 'Travel agency for religious trip',
-              'mosques': 'Mosques in US and Canada',
-              'culture': 'Websites of Islamic culture (Alexa)',
-              'irantrex': 'Iran websites https://github.com/vecna/irantrex',
-              'chuptrex': 'Chupadados research' };
+    var C = {
+        'itatopex': 'Italian Top websites',
+        'halal': 'few Halal food shop US',
+        'travel': 'Travel agency for religious trip',
+        'mosques': 'Mosques in US and Canada',
+        'culture': 'Websites of Islamic culture (Alexa)',
+        'irantrex': 'Iran websites https://github.com/vecna/irantrex',
+        'clinics-BR': 'Brasil Clinics - Chupadados research',
+        'clinics-CO': 'Colombian Clinics - Chupadados research',
+        'gptrex': 'German parties'
+    };
 
     $.getJSON("/api/v1/campaignNames", function(data) {
 
