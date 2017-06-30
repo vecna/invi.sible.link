@@ -2,7 +2,9 @@
   "name": "campaignChecker",
   "schema": {
     "promises": "promises",
-    "sankeys": "sankeys"
+    "sankeys": "sankeys",
+    "evidences": "evidences",
+    "surface": "surface"
   },
   "mongodb": "mongodb://localhost/ivl",
   "vantages": [
@@ -62,4 +64,3 @@
       "dayswindow": 1
   }]
 }
-

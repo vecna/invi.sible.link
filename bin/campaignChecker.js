@@ -16,7 +16,7 @@ nconf.argv().env();
 
 var MISSING_NATION = 'UNKNOW';
 
-var cfgFile = nconf.get('config') 
+var cfgFile = nconf.get('config');
 if(!cfgFile) machetils.fatalError("config file has to be specify via CLI/ENV");
 
 nconf.file({ file: cfgFile });
@@ -109,7 +109,7 @@ function saveAll(retrieved) {
             if(_.size(content)) {
                 debug("saving in evidences %d object", _.size(content));
                 return machetils
-                    .mongoSave(nconf.get('evidences'), content, campConf.name);
+                    .mongoSave(nconf.get('schema').evidences, content, campConf.name);
             }
             else
                 debug("No evidences to be saved");
@@ -187,7 +187,7 @@ function updateSurface(retrieved) {
 
             if(_.size(content)) {
                 return machetils
-                    .mongoSave(nconf.get('surface'), content, campConf.name);
+                    .mongoSave(nconf.get('schema').surface, content, campConf.name);
             }
         });
 };

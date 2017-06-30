@@ -2,7 +2,9 @@
   "name": "campaignChecker",
   "schema": {
     "promises": "promises",
-    "sankeys": "sankeys"
+    "sankeys": "sankeys",
+    "evidences": "evidences",
+    "surface": "surface"
   },
   "mongodb": "mongodb://localhost/ivl",
   "vantages": [
@@ -80,8 +82,6 @@
       "description": "Latin American online clinics - CodingRights experiment",
       "filter": { "taskName" : "chuptrex" },
       "dayswindow": 1
-  }],
-  "evidences": "evidences",
-  "surface": "surface"
+  }]
 }
 
