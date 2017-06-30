@@ -50,7 +50,7 @@
     "nconf": "^0.8.4",
     "node-geoip": "^1.0.1",
     "nodemon": "^1.11.0",
-    "phantomjs": "^2.1.7",
+    "phantomjs-prebuilt": "^2.1.7",
     "pug": "^2.0.0-beta6",
     "request": "^2.79.0",
     "reveal.js": "^3.3.0",
