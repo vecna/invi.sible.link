@@ -27,6 +27,8 @@ function displayCampaign(containerId) {
         'irantrex': 'Iran websites https://github.com/vecna/irantrex',
         'clinics-BR': 'Brasil Clinics - Chupadados research',
         'clinics-CO': 'Colombian Clinics - Chupadados research',
+        'clinics-MX': 'Mexican Clinics - Chupadados research',
+        'clinics-CL': 'Chile Clinics - Chupadados research',
         'gptrex': 'German parties'
     };
 
