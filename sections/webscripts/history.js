@@ -11,11 +11,6 @@ function displayTrends(graphContainerId, titleContainerId, domaindottld) {
         graphContainerId, titleContainerId, domaindottld);
 
     var url = "/api/v1/history/" + domaindottld;
-    if(true !== false) {
-        url = "/js/vendor/x.json";
-        console.log("hacking the url", url);
-    }
-
     d3.json(url, function(byDay) {
 
         $(titleContainerId).text(domaindottld);
