@@ -53,6 +53,16 @@
       "filter": { "taskName" : "gptrex" },
       "dayswindow": 1
   }, {
+      "name": "clinics-MX",
+      "description": "Mexican clinics - CodingRights experiment",
+      "filter": { "taskName" : "clinics-MX" },
+      "dayswindow": 1
+  }, {
+      "name": "clinics-CL",
+      "description": "Chile clinics - CodingRights experiment",
+      "filter": { "taskName" : "clinics-CL" },
+      "dayswindow": 1
+  }, {
       "name": "clinics-BR",
       "description": "Brasil clinics - CodingRights experiment",
       "filter": { "taskName" : "clinics-BR" },

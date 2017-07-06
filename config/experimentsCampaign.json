@@ -8,30 +8,13 @@
   },
   "mongodb": "mongodb://localhost/ivl",
   "vantages": [
-	{ "name": "HK", "host": "http://hk-vp.sible.link:7300" },
-	{ "name": "AMS", "host": "http://ams-vp.sible.link:7300" },
-	{ "name": "WS", "host": "http://ws-vp.sible.link:7300" }
+	{ "name": "casa", "host": "http://127.0.0.1:7300" }
   ],
   "campaigns": [{
-      "name": "intrex",
-      "description": "Italian newspaper analysis",
-      "filter": { "taskName" : "intrex" },
-      "dayswindow": 1
-  }, {
-      "name": "BR",
-      "description": "Brazil top sites",
-      "filter": { "iso3166": "BR" },
-      "dayswindow": 1
-  }, {
       "name": "itatopex",
       "description": "Italian, national top 25 content producer",
       "filter": { "taskName": "itatopex" },
       "dayswindow": 1
-  }, {
-      "name": "EI",
-      "description": "European Institutions third party trackers analysis",
-      "filter": { "taskName" : "EI" },
-      "dayswindow": 3
   }, {
       "name": "culture",
       "description": "culture",
@@ -58,30 +41,34 @@
       "filter": { "taskName" : "irantrex" },
       "dayswindow": 1
   }, {
-      "name": "gptrex",
-      "description": "German Parties",
-      "filter": { "taskName" : "gptrex" },
-      "dayswindow": 1
-  }, {
-      "name": "chuptrex",
-      "description": "chuptrex",
-      "filter": { "taskName" : "chuptrex" },
-      "dayswindow": 1
-  }, {
       "name": "example",
       "description": "example",
       "filter": { "taskName" : "example" },
       "dayswindow": 1
   }, {
-      "name": "irantrex",
-      "description": "irantrex",
-      "filter": { "taskName" : "irantrex" },
+      "name": "gptrex",
+      "description": "Germany Parties",
+      "filter": { "taskName" : "gptrex" },
       "dayswindow": 1
   }, {
-      "name": "chuptrex",
-      "description": "Latin American online clinics - CodingRights experiment",
-      "filter": { "taskName" : "chuptrex" },
+      "name": "clinics-MX",
+      "description": "Mexican clinics - CodingRights experiment",
+      "filter": { "taskName" : "clinics-MX" },
+      "dayswindow": 1
+  }, {
+      "name": "clinics-CL",
+      "description": "Chile clinics - CodingRights experiment",
+      "filter": { "taskName" : "clinics-CL" },
+      "dayswindow": 1
+  }, {
+      "name": "clinics-BR",
+      "description": "Brasil clinics - CodingRights experiment",
+      "filter": { "taskName" : "clinics-BR" },
+      "dayswindow": 1
+  }, {
+      "name": "clinics-CO",
+      "description": "Colombian clinics - CodingRights experiment",
+      "filter": { "taskName" : "clinics-CO" },
       "dayswindow": 1
   }]
 }
-
