@@ -139,7 +139,11 @@ function insertNeeds(fname, csv) {
         .then(function(needs) {
             debug("Generated %d needs", _.size(needs));
             debug("The first is %s", JSON.stringify(needs[0], undefined, 2) );
-            return mongo.writeMany(nconf.get('schema').promises, needs);
+	    var fixedNeeds = _.map(needs, function(n) {
+                n.start = new Date(n.start);
+                return n;
+	    });
+            return mongo.writeMany(nconf.get('schema').promises, fixedNeeds);
         });
 }
 
@@ -163,7 +167,7 @@ function timeRanges(fname) {
             debug("Window start %s", start);
             return {
                 needName: content.needName,
-                start: new Date(start.format("YYYY-MM-DD"))
+                start: start.format("YYYY-MM-DD")
             };
         });
 }
