@@ -1,0 +1,32 @@
+doctype html
+html
+  head
+    link(rel='stylesheet', href='/css/index.css')
+    link(rel='stylesheet', href='/css/bootstrap.css')
+    link(rel='stylesheet', href='/css/c3.css')
+    script(type='text/javascript', src='/js/vendor/jquery.js')
+    script(type='text/javascript', src='/js/vendor/collapse.js')
+    script(type='text/javascript', src='/js/vendor/lodash.min.js')
+    script(type='text/javascript', src='/js/vendor/moment.min.js')
+    script(type='text/javascript', src='/js/vendor/d3.min.js')
+    script(type='text/javascript', src='/js/vendor/c3.min.js')
+    script(type='text/javascript', src='/js/local/history.js')
+    title ⛅  Subject under scrutiny
+
+  body(onload="prepareDisplayTrends('#siteTrend', '#siteName');")
+  
+  .container-fluid
+    .jumbotron
+      h1 ⛅  Subjects under scrutiny
+      small α release - See how a website behave along the time
+
+  include navbar
+
+  .container-fluid
+    p(class="text") The following visualization it is just an access to download and see 
+      b some 
+      | of the evidences collected. 
+
+  h1#siteName
+  .container-fluid#siteTrend
+  include footer

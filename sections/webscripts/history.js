@@ -1,28 +1,34 @@
+function prepareDisplayTrends(graphContainerId, titleContainerId) {
+    var x = window.location.pathname.split('/');
+    var domaindottld = x.pop();
+    console.log("Extracted domaindottld", domaindottld);
+    displayTrends(graphContainerId, titleContainerId, domaindottld);
+}
 
 function displayTrends(graphContainerId, titleContainerId, domaindottld) {
 
-    if(!domaindottld) {
-        var x = window.location.pathname.split('/');
-        console.log(x);
-        domaindottld = x.pop();
-    }
-
-    console.log("displayTrends", 
+    console.log("displayTrends",
         graphContainerId, titleContainerId, domaindottld);
 
-    d3.json("/api/v1/history/" + domaindottld, function(byDay) {
+    var url = "/api/v1/history/" + domaindottld;
+    if(true !== false) {
+        url = "/js/vendor/x.json";
+        console.log("hacking the url", url);
+    }
+
+    d3.json(url, function(byDay) {
 
         $(titleContainerId).text(domaindottld);
 
         if(_.size(byDay) === 1) {
             $(graphContainerId).html("<h2>Impossible render a graph for "+
-                hrefname+", only one day is available</h2>");
+                url+", only one day is available</h2>");
             return;
         }
 
         if(_.size(byDay) === 0) {
             $(graphContainerId).html("<h2>Impossible render a graph for "+
-                hrefname+": Zero day available!</h2>");
+                url+": Zero day available!</h2>");
             return;
         }
 
@@ -30,31 +36,76 @@ function displayTrends(graphContainerId, titleContainerId, domaindottld) {
             domaindottld + "</h2>");
 
         console.log(byDay);
-/*
-        return c3.generate({
-            bindto: destId,
-            data: {
-                json: cookiesInfo,
-                keys: {
-                    x: 'site',
-                    value: [ 'cookies', 'notattributed', 'companies' ]
-                },
-                type: 'bar',
-                colors: { 'cookies': '#339199' }
 
+        var transfdata = _.reduce(byDay, function(memo, day) {
+            var daySt = moment(day[0].when).format('YYYY-MM-DD');
+            console.log(daySt);
+            var trg = _.find(day, {target: true});
+            if(!trg.phantom)
+                console.warn("Error ahead!");
+
+            var companies = _.reduce(day, function(memo, d) {
+                var r = _.get(d, 'company');
+                if(r)
+                    memo.push(r);
+                return memo;
+            }, []);
+
+            var cookies = _.reduce(day, function(memo, d) {
+                var c = _.get(d, 'cookies');
+                if (c)
+                    memo.push(c);
+                return memo;
+            }, []);
+
+            console.log(companies);
+
+            var a = {
+                x: daySt,
+                inclusions: _.size(day) -1,
+                companies: _.size(_.uniq(companies)),
+                cookies: _.size(_.uniq(cookies)),
+                timings: trg.phantom,
+                site: trg.url
+            };
+            memo.push(a);
+            return memo;
+        }, []);
+
+        console.log(transfdata);
+
+        return c3.generate({
+            bindto: graphContainerId,
+            data: {
+                json: transfdata,
+                keys: {
+                    x: 'x',
+                    value: [ 'inclusions', 'companies', 'cookies' ]
+                },
+                colors: { 'companies': '#339199', 'inclusions': '#83ffe3', 'cookies': '#AA00BB' },
+                types: {
+                    inclusions: 'bar',
+                    companies: 'spline',
+                    cookies: 'spline'
+                },
+                axes: {
+                    inclusions: 'y',
+                    companies: 'y2',
+                    cookies: 'y2'
+                }
             },
-            size: { height: 1000 },
-            legend: { show: false },
             axis: {
                 x: {
-                    type: 'categories',
+                    type: 'timeseries'
                 },
-                rotated: true
+                y2: {
+                    show: true,
+                    label: 'third parties'
+                }
             }
         });
-        */
     });
-};
+}
 
 function subjectList(containerId, cname) {
     var url = '/api/v1/campaign/' + cname;

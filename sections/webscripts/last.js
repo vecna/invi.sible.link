@@ -33,7 +33,7 @@ function displayCampaign(containerId) {
     $.getJSON("/api/v1/campaignNames", function(data) {
 
         _.each(C, function(displayN, cname) {
-            if(data.indexOf(cname) == -1) {
+            if(data.indexOf(cname) === -1) {
                 $(containerId).append('<li>Missing from configuration '+cname +'</li>');
             } else {
                 $(containerId).append('<li><a href="#" class="entries" id="' + cname + '">' + displayN + '</a></li>');
@@ -120,20 +120,18 @@ function preliminaryViz(campaignName) {
                 },
                 type: 'bar',
                 colors: { 'cookies': '#339199' }
-
             },
             size: { height: 1000 },
             legend: { show: false },
             axis: {
                 x: {
-                    type: 'categories',
+                    type: 'categories'
                 },
                 rotated: true
             }
         });
     });
 };
-
 
 function doPreliminary(campaignName, destId) {
 

@@ -1,3 +1,4 @@
+/* subjects.pug has been removed, this function it is not called anymore */
 var displaySubjects = function(containerId) {
     var url = '/api/v1/subjects';
 

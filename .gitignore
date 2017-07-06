@@ -58,3 +58,7 @@ dist/*
 # Campaign
 #
 campaigns/*
+
+# webstorm
+.idea/*
+
