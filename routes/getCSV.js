@@ -57,6 +57,10 @@ function getCSV(req) {
             var t = blob.csv;
             debug("csv long %d bytes", _.size(t));
             return {
+                headers: {
+                    "Content-Type": "csv/text",
+                    "content-disposition": 'attachment; filename="' + req.params.campaign + '.csv"'
+                },
                 text: t
             };
         });

@@ -12,7 +12,7 @@ var mongo = require('../lib/mongo');
  */
 function getEvidencesByHref(req) {
 
-    var maxDays = 26;
+    var maxDays = 7;
     var filter = {};
 
     filter.when = { '$gt': new Date( moment()
@@ -28,7 +28,7 @@ function getEvidencesByHref(req) {
     return mongo
         .readLimit(nconf.get('schema').evidences, filter, {
             when: -1
-        }, 5000, 0)
+        }, 7000, 0)
         .map(function(e) {
             e.da = _.parseInt(moment.duration(moment() - 
                               moment(e.when)).asDays() );
