@@ -80,7 +80,7 @@ function saveAll(retrieved) {
     return Promise
         .reduce(retrieved, function (memo, subject) {
 
-            var target = _.find(subject.data, {target: true})
+            var target = _.find(subject.data, {target: true});
             if(!target)
                 return memo;
 
@@ -90,7 +90,7 @@ function saveAll(retrieved) {
             var fieldstrip = ['disk','phantom' ];
             var inclusions = _.map(_.reject(subject.data, {target: true}), function(rr) {
                 return _.omit(rr, fieldstrip);
-            })
+            });
 
             return _.concat(memo, target, inclusions);
         }, [])
@@ -120,7 +120,7 @@ function updateSurface(retrieved) {
     return Promise
         .reduce(retrieved, function (memo, subject, i, total) {
 
-            var target = _.find(subject.data, {target: true})
+            var target = _.find(subject.data, {target: true});
             if(!target)
                 return memo;
 
@@ -154,7 +154,9 @@ function updateSurface(retrieved) {
                     }
                 }
                 else {
-                    if(target.unrecognized.indexOf(rr.domaindottld) === -1) {
+                    if(target.unrecognized.indexOf(rr.domaindottld) === -1
+                        && rr.domaindottld !== target.domaindottld
+                        && !_.startsWith(rr.domaindottld, "data:") ) {
                         target.unrecognized.push(rr.domaindottld);
                     }
                 }
