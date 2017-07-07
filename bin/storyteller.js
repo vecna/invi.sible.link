@@ -65,6 +65,10 @@ app.get('/api/v:version/campaignNames', function(req, res) {
     return dispatchPromise('getCampaignNames', routes, req, res);
 });
 
+app.get('/api/v:version/tableau/:cname', function(req, res) {
+    return dispatchPromise('getTableauJSON', routes, req, res);
+});
+
 app.get('/api/v:version/subjects', function(req, res) {
     return dispatchPromise('getSubjects', routes, req, res);
 });

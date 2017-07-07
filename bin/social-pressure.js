@@ -59,6 +59,10 @@ app.get('/api/v:version/csv/:campaign', function(req, res) {
     return dispatchPromise('getCSV', routes, req, res);
 });
 
+app.get('/api/v:version/tableau/:cname', function(req, res) {
+    return dispatchPromise('getTableauJSON', routes, req, res);
+});
+
 /* all tasks */
 app.get('/api/v:version/activeTasks', function(req, res) {
     return dispatchPromise('activeTasks', routes, req, res);

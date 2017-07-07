@@ -10,6 +10,7 @@ module.exports = {
     getCSV:             require('./getCSV'),
     activeTasks:        require('./activeTasks'),
     getRaw:             require('./getRaw'),
+    getTableauJSON:	require('./getTableauJSON'),
 
     getRecentActivities: require('./getRecentActivities'),
     getEvidencesByHref: require('./getEvidencesByHref')

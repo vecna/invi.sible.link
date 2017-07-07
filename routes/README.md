@@ -56,4 +56,7 @@
     `surfaces` return the number of tests available in the last 30 days and their IDs, by `domaindottld`
 
 `getEvidencesByHref`:
-    `evidences` return all the evidences by `domaindottld` capped to 5k
+    `evidences` return last 7days of evidences by `domaindottld` (target and third party) capped to 7k
+
+ getTableauJSON:
+    `evidences` return last day, query by campaignName, content ready for experiments in Tableau
