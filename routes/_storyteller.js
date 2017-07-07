@@ -7,6 +7,7 @@ module.exports = {
     getCampaignSubject: require('./getCampaignSubject'),
     getCampaignNames:   require('./getCampaignNames'),
     getSurface:         require('./getSurface'),
+    getCSV:             require('./getCSV'),
     activeTasks:        require('./activeTasks'),
     getRaw:             require('./getRaw'),
 

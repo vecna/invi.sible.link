@@ -22,6 +22,9 @@
 `getSurface`:
     `surface`: by campaign name and hours, (social-pressure, storyteller)
 
+`getCSV`:
+    `surface`: by campaign name and hours, in CSV format reduce for Tableau, (social-pressure, storyteller)
+
 `getEvidencesByName`:
     `evidences` by campaign name and pick just last hours (social-pressure)
 

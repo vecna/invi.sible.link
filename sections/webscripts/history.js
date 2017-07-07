@@ -34,8 +34,9 @@ function displayTrends(graphContainerId, titleContainerId, domaindottld) {
 
         var transfdata = _.reduce(byDay, function(memo, day) {
             var daySt = moment(day[0].when).format('YYYY-MM-DD');
-            console.log(daySt);
             var trg = _.find(day, {target: true});
+            if(!trg)
+                return memo;
             if(!trg.phantom)
                 console.warn("Error ahead!");
 
@@ -52,8 +53,6 @@ function displayTrends(graphContainerId, titleContainerId, domaindottld) {
                     memo.push(c);
                 return memo;
             }, []);
-
-            console.log(companies);
 
             var a = {
                 x: daySt,
