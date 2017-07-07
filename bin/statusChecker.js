@@ -27,6 +27,8 @@ return Promise
     .then(function(content) {
         return _.map(content, function(c) {
             return _.extend({ name: c.name,
+                              task: 'default-stats',
+                              when: new Date(),
                               loadavg: c.data.loadavg },
                             c.data.columns,
                             c.data.freespace);
@@ -35,7 +37,7 @@ return Promise
     .then(function(cc) {
         if(_.size(cc)) {
             debug("Saving %j", cc);
-            return machetils.mongoSave(nconf.get('target'), cc, taskName);
+            return machetils.statsSave(nconf.get('target'), cc);
         } else {
             debug("Network or application error: no data available!");
         }
