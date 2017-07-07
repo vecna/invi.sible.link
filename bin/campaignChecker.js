@@ -95,7 +95,7 @@ function saveAll(retrieved) {
             return _.concat(memo, target, inclusions);
         }, [])
         .map(function(evidenceO, i) {
-            var timeString = moment().format("YYYY-MM-DD");
+            var timeString = moment(evidenceO.requestTime).format("YYYY-MM-DD");
             evidenceO.id = various.hash({
                 daily: timeString,
                 campaign: campConf.name,
@@ -105,9 +105,8 @@ function saveAll(retrieved) {
             return evidenceO;
         })
         .tap(function(content) {
-
             if(_.size(content)) {
-                debug("saving in evidences %d object", _.size(content));
+                debug("Saving in evidences %d object", _.size(content));
                 return machetils
                     .mongoSave(nconf.get('schema').evidences, content, campConf.name);
             }
