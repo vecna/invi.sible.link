@@ -39,7 +39,7 @@ if(task === 'statistics') {
     child_process.execSync(cmd, {
         'env': {
             'DEBUG': '*',
-            'task': 'default-stats'
+            'taskName': 'default-stats'
         }
     });
     simpleAppend("statistics", "completed");
