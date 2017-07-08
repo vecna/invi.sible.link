@@ -61,4 +61,6 @@ campaigns/*
 
 # webstorm
 .idea/*
+# vim for windows
 **/.*~
+**/*~

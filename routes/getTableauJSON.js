@@ -34,12 +34,19 @@ function getTableauJSON(req) {
 		    debug("missing promiseId in init?");
 		    return memo;
 	        }
+                var ct = _.replace(_.replace(e['Content-Type'], /.*\//, ''), /;.*/, '');
+
+                if(_.endsWith(ct, 'javascript'))
+                    ct = "javascript";
+	        else if(_.endsWith(ct, 'woff'))
+                    ct = "font";
+                else if(_.size(ct) === 0)
+                    ct = "Unknown";
+
                 var d = {
 		    connects: e.domaindottld,
                     company: e.company,
-                    "Content-Type": _.replace(_.replace(
-			    e['Content-Type'], /.*\//,
-			    ''), /;.*/, '')
+                    "Content-Type": ct
 		};
 		memo[e.promiseId].i.push(d);
                 return memo;
