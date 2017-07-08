@@ -61,4 +61,4 @@ campaigns/*
 
 # webstorm
 .idea/*
-
+**/.*~
