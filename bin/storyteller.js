@@ -70,7 +70,7 @@ app.get('/api/v:version/tableau/:cname', function(req, res) {
 });
 
 app.get('/api/v:version/subjects', function(req, res) {
-    return dispatchPromise('getSubjects', routes, req, res);
+    return dispatchPromise('getSubjectsStats', routes, req, res);
 });
 
 app.get('/api/v:version/stats/:hours', function(req, res) {

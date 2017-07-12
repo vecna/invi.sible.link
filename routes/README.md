@@ -40,8 +40,8 @@
 `getStats`:
     `statistics`, return some other OS non repetible data (exposer, social-pressure, storyteller)
 
-`getSubjects`:
-    `subjects`: by name, only if `public: true` (social-pressure, storyteller)
+`getSubjectsStats`:
+    `subjects`: it is became a statistics only tool, it return by campaign/day, the subjects and few numeric breakdown from the entries stored in the last # days. (social-pressure, storyteller)
 
 `getTasks`:
     `promises`: from a dateTime, in between `start` and `end` (vigile)

@@ -68,25 +68,14 @@ function lastHours(config) {
 
 }
 
-
 function tasksInsertion(containerId) {
 
-    var url = '/api/v1/activeTasks';
+    var url = '/api/v1/subjects';
 
-    /* this API return the currently active tasks directed by Vigile, so
-     * it take in account the window of the last 48 hours by default, returnin
-     * grouped by today - yesterday - daybefore */
+    /* this API return the daily stats for campaign and for collection */
 
     console.log("tasksInsertion in ", containerId);
     d3.json(url, function(data) {
-
-        var fields = _.keys(_.reduce(data, function(memo, daily) {
-            _.each(daily, function(value, key) {
-                if(!_.get(memo, key))
-                    _.set(memo, key, true);
-            });
-            return memo;
-        }, []));
 
         console.log(data);
 
@@ -95,18 +84,18 @@ function tasksInsertion(containerId) {
             data: {
                 json: data,
                 keys: {
-                    x: 'when',
-                    value: _.orderBy(fields)
+                    x: 'date',
+                    value: ["amount"] //, "campaign", "kind" ]
                 },
                 type: 'bar',
             },
             axis: {
                 x: {
-                    type: 'category',
+                    type: 'timeseries', // 'category',
+                    xFormat: "%yyyy-%mm-%dd"
                 }
             }
         });
-        console.log(data);
 
     });
 };
