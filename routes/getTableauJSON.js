@@ -28,7 +28,7 @@ function getTableauJSON(req) {
           debug('missing promiseId in init?');
           return memo;
         }
-        const ct = _.replace(_.replace(e['Content-Type'], /.*\//, ''), /;.*/, '');
+        let ct = _.replace(_.replace(e['Content-Type'], /.*\//, ''), /;.*/, '');
 
         if (_.endsWith(ct, 'javascript')) { ct = 'javascript'; } else if (_.endsWith(ct, 'woff')) { ct = 'font'; } else if (_.size(ct) === 0) { ct = 'Unknown'; }
 
