@@ -78,6 +78,8 @@ function tasksInsertion(containerId) {
     d3.json(url, function(data) {
 
         console.log(data);
+        var bc = _.groupBy(data, 'campaign');
+        var keynames = _.keys(bc);
 
         return c3.generate({
             bindto: containerId,
@@ -85,7 +87,7 @@ function tasksInsertion(containerId) {
                 json: data,
                 keys: {
                     x: 'date',
-                    value: ["amount"] //, "campaign", "kind" ]
+                    value: keynames
                 },
                 type: 'bar',
             },
