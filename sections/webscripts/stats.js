@@ -33,7 +33,7 @@ function renderStats(jsonData, containerId, VPs, keywords) {
             x: {
                 type: 'timeseries',
                 tick: {
-                    format: '%d ፨ %H:%M'
+                    format: '%d %H:%M'
                 },
             }
         }
@@ -77,17 +77,31 @@ function tasksInsertion(containerId) {
     console.log("tasksInsertion in ", containerId);
     d3.json(url, function(data) {
 
-        console.log(data);
-        var bc = _.groupBy(data, 'campaign');
-        var keynames = _.keys(bc);
         var nd = _.reduce(data, function(memo, e) {
             var o = { date: e.date }
             var keyname = e.campaign + '-' + e.kind;
+
+            if(e.kind === 'promises')
+                return memo;
+
+            memo.kn.push(keyname);
+
+            if(e.kind === 'evidences') {
+                _.set(memo.ax, keyname, 'y2');
+                _.set(memo.ty, keyname, 'area');
+            }
+            else {
+                _.set(memo.ax, keyname, 'y');
+                _.set(memo.ty, keyname, 'bar');
+            }
+
             _.set(o, keyname, e.amount);
             memo.v.push(o);
-            memo.kn.push(keyname);
+
             return memo;
-        }, { kn: [], v: [] });
+        }, { kn: [], v: [], ax: {}, ty: {} });
+
+        console.log(nd);
 
         return c3.generate({
             bindto: containerId,
@@ -95,14 +109,19 @@ function tasksInsertion(containerId) {
                 json: nd.v,
                 keys: {
                     x: 'date',
-                    value: _.unique(nd.kn)
+                    value: _.uniq(nd.kn)
                 },
-                type: 'bar',
+                types: nd.ty,
+                axes: nd.ax
             },
+            legend: { show: false },
             axis: {
                 x: {
-                    type: 'timeseries', // 'category',
-                    xFormat: "%yyyy-%mm-%dd"
+                    type: 'timeseries',
+                    xFormat: "day %d"
+                },
+                y2: {
+                    show: true,
                 }
             }
         });
