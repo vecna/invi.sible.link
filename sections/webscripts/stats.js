@@ -80,14 +80,22 @@ function tasksInsertion(containerId) {
         console.log(data);
         var bc = _.groupBy(data, 'campaign');
         var keynames = _.keys(bc);
+        var nd = _.reduce(data, function(memo, e) {
+            var o = { date: e.date }
+            var keyname = e.campaign + '-' + e.kind;
+            _.set(o, keyname, e.amount);
+            memo.v.push(o);
+            memo.kn.push(keyname);
+            return memo;
+        }, { kn: [], v: [] });
 
         return c3.generate({
             bindto: containerId,
             data: {
-                json: data,
+                json: nd.v,
                 keys: {
                     x: 'date',
-                    value: keynames
+                    value: _.unique(nd.kn)
                 },
                 type: 'bar',
             },

@@ -18,7 +18,7 @@ function countPromises(timet) {
 
 function countEvidences(timet) {
     return mongo
-        .countByDay(nconf.get('schema').evidences, '$when', { when: { "$gt": timet} }, { campaign: "$campaing" })
+        .countByDay(nconf.get('schema').evidences, '$when', { when: { "$gt": timet} }, { campaign: "$campaign" })
         .map(amountify)
         .map(function (x) {
             return _.extend(x, {kind: 'evidences'});
