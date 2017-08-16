@@ -71,17 +71,22 @@ function lastHours(config) {
 /* small library function used to generate stats for every campaign */
 var campaignList = [{
     title: "Chupadados research, 4 country so far",
-    match: "clinics-",
+    match: [ "clinics-MX", "clinics-CL", "clinics-CO", "clinics-BR" ],
     idn: "clinicsBlock"
 },{
-    title: "All the others",
-    match: "",
+    title: "Amtrex",
+    match: [ "travel", "culture", "halal", "mosques" ],
+    idn: "amtrexBlock"
+},{
+    title: "Others",
+    match: [ "irantrex", "gptrex", "itatopex" ],
     idn: "remainingBlock"
 }];
 
 function filterStats(data, campMatch) {
+
     var filtered = _.filter(data, function(o) {
-        return _.startsWith(o.campaign, campMatch);
+        return (campMatch.indexOf(o.campaign) !== -1)
     });
     // _.reject(data, _.startWith(campMatch, campaign));
     console.log(filtered);
@@ -109,10 +114,9 @@ function filterStats(data, campMatch) {
 
         return memo;
     }, { kn: [], v: [], ax: {}, ty: {} });
-    console.log(nd);
 
+    /* meh, to create a big object with only one date */
     nd.v = _.reduce(_.groupBy(nd.v, 'date'), function(memo, s, d) {
-        console.log(d);
         var x = { date: d };
         _.each(s, function(o) {
             var co = _.omit(o, [ 'date' ]);
@@ -121,11 +125,11 @@ function filterStats(data, campMatch) {
         memo.push(x);
         return memo;
     }, []);
-    console.log(nd);
+
     return nd;
 };
 function c3Append(destId, nd) {
-    console.log("c3append");
+
     return c3.generate({
         bindto: destId,
         data: {
@@ -156,12 +160,15 @@ function tasksInsertion(containerId) {
     var url = '/api/v1/subjects';
 
     /* this API return the daily stats for campaign and for collection */
-
     console.log("tasksInsertion in ", containerId);
     d3.json(url, function(data) {
 
         _.each(campaignList, function(C) {
-            d3.select(containerId).append('div').attr('id', C.idn);
+            d3.select(containerId)
+                .append('h2')
+                .text(C.title)
+                .append('div')
+                .attr('id', C.idn);
             var cleanData = filterStats(data, C.match);
             c3Append('#' + C.idn, cleanData);
         });
