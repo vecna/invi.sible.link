@@ -68,6 +68,89 @@ function lastHours(config) {
 
 }
 
+/* small library function used to generate stats for every campaign */
+var campaignList = [{
+    title: "Chupadados research, 4 country so far",
+    match: "clinics-",
+    idn: "clinicsBlock"
+},{
+    title: "All the others",
+    match: "",
+    idn: "remainingBlock"
+}];
+
+function filterStats(data, campMatch) {
+    var filtered = _.filter(data, function(o) {
+        return _.startsWith(o.campaign, campMatch);
+    });
+    // _.reject(data, _.startWith(campMatch, campaign));
+    console.log(filtered);
+    var nd = _.reduce(filtered, function(memo, e) {
+
+        var o = { date: e.date };
+        var keyname = e.campaign + '-' + e.kind;
+
+        if(e.kind === 'promises')
+            return memo;
+
+        memo.kn.push(keyname);
+
+        if(e.kind === 'evidences') {
+            _.set(memo.ax, keyname, 'y2');
+            _.set(memo.ty, keyname, 'line');
+        }
+        else {
+            _.set(memo.ax, keyname, 'y');
+            _.set(memo.ty, keyname, 'bar');
+        }
+
+        _.set(o, keyname, e.amount);
+        memo.v.push(o);
+
+        return memo;
+    }, { kn: [], v: [], ax: {}, ty: {} });
+    console.log(nd);
+
+    nd.v = _.reduce(_.groupBy(nd.v, 'date'), function(memo, s, d) {
+        console.log(d);
+        var x = { date: d };
+        _.each(s, function(o) {
+            var co = _.omit(o, [ 'date' ]);
+            _.set(x, _.first(_.keys(co)), _.first(_.values(co)) );
+        });
+        memo.push(x);
+        return memo;
+    }, []);
+    console.log(nd);
+    return nd;
+};
+function c3Append(destId, nd) {
+    console.log("c3append");
+    return c3.generate({
+        bindto: destId,
+        data: {
+            json: nd.v,
+            keys: {
+                x: 'date',
+                value: _.uniq(nd.kn)
+            },
+            types: nd.ty,
+            axes: nd.ax
+        },
+        legend: { show: false },
+        axis: {
+            x: {
+                type: 'timeseries',
+                xFormat: "day %d"
+            },
+            y2: {
+                show: true,
+            }
+        }
+    });
+}
+/* end */
+
 function tasksInsertion(containerId) {
 
     var url = '/api/v1/subjects';
@@ -77,53 +160,10 @@ function tasksInsertion(containerId) {
     console.log("tasksInsertion in ", containerId);
     d3.json(url, function(data) {
 
-        var nd = _.reduce(data, function(memo, e) {
-            var o = { date: e.date }
-            var keyname = e.campaign + '-' + e.kind;
-
-            if(e.kind === 'promises')
-                return memo;
-
-            memo.kn.push(keyname);
-
-            if(e.kind === 'evidences') {
-                _.set(memo.ax, keyname, 'y2');
-                _.set(memo.ty, keyname, 'area');
-            }
-            else {
-                _.set(memo.ax, keyname, 'y');
-                _.set(memo.ty, keyname, 'bar');
-            }
-
-            _.set(o, keyname, e.amount);
-            memo.v.push(o);
-
-            return memo;
-        }, { kn: [], v: [], ax: {}, ty: {} });
-
-        console.log(nd);
-
-        return c3.generate({
-            bindto: containerId,
-            data: {
-                json: nd.v,
-                keys: {
-                    x: 'date',
-                    value: _.uniq(nd.kn)
-                },
-                types: nd.ty,
-                axes: nd.ax
-            },
-            legend: { show: false },
-            axis: {
-                x: {
-                    type: 'timeseries',
-                    xFormat: "day %d"
-                },
-                y2: {
-                    show: true,
-                }
-            }
+        _.each(campaignList, function(C) {
+            d3.select(containerId).append('div').attr('id', C.idn);
+            var cleanData = filterStats(data, C.match);
+            c3Append('#' + C.idn, cleanData);
         });
 
     });
