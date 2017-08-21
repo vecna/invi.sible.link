@@ -53,6 +53,9 @@ Promise.resolve(
 app.get('/api/v:version/getTasks/:vantagePoint/:amount', function(req, res) {
     return dispatchPromise('getTasks', routes, req, res);
 });
+app.get('/api/v:version/getMandatory/:vantagePoint/:amount', function(req, res) {
+    return dispatchPromise('getMandatoryTasks', routes, req, res);
+});
 app.get('/api/v:version/doneTask/:vantagePoint/:id', function(req, res) {
     return dispatchPromise('doneTask', routes, req, res);
 });
