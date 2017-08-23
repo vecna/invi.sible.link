@@ -64,3 +64,8 @@ campaigns/*
 # vim for windows
 **/.*~
 **/*~
+
+# imported by install script
+badger-claw/*
+privacybadger/*
+
