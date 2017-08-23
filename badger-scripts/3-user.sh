@@ -5,6 +5,12 @@ cd privacybadger
 make
 git commit -a -m "xxx"
 make
-echo "supposedly now is create the .crx"
-ls *.crx
-cp *.crx ../badger-claw
+echo "supposedly now is create the .crx:"
+en=`ls *.crx`
+rm -i ../badger-claw/*.crx 
+cp $en ../badger-claw
+cd ../badger-claw
+ln -s $en privacy-badger-symlink.crx
+echo "created symlink to $en"
+ls -l *.crx
+cd ..
