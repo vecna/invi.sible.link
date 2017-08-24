@@ -18,18 +18,33 @@ var VP = nconf.get('VP');
 if(_.isUndefined(VP) || _.size(VP) === 0 )
     throw new Error("Missing the Vantage Point (VP) in the config file");
 
+var mandatory = nconf.get('mandatory') ? true : false;
 var concValue = nconf.get('concurrency') || 1;
 concValue = _.parseInt(concValue);
 
 var directionByKind = {
     "basic": {
-        "plugins": [ "systemState", "phantom", "saver", "confirmation" ],
+        "plugins": [ "systemState", "phantom", "phantomSaver", "confirmation" ],
         "config": {
             maxSeconds: 30,
             root: "./phantomtmp",
             VP: VP
         }
-    }
+    },
+    "badger": {
+        "plugins": [ "systemState", "badger", "badgerSaver", "confirmation" ],
+        "config": {
+            maxSeconds: 50,
+            root: "./badgertmp",
+            VP: VP
+        }
+    },
+    "urlscan": {
+        "plugins": [ "systemState", "urlscan", "urlscanSaver", "confirmation" ],
+        "config": {
+            VP: VP
+        }
+    },
 };
 
 function keepPromises(N, i) {
@@ -50,7 +65,9 @@ var url = choputils
             .composeURL(
                 choputils.getVP(nconf.get('VP')),
                 nconf.get('source'),
-                { what: 'getTasks', param: nconf.get('amount') }
+                { what: mandatory ? 'getMandatory' : 'getTasks', 
+                  param: nconf.get('amount') 
+                }
             );
 
 debug("Starting with concurrency %d", concValue);
@@ -72,7 +89,6 @@ return request
           debug("To be: managed Timeouted %s", JSON.stringify(timeouted, undefined, 2));
     })
     .catch(function(error) {
-        console.trace();
-        debug("%s %s", error, JSON.stringify(error, undefined, 2));
-        debug("Unmanaged exception!");
+        debug("Unmanaged error: %s", error);
+        return false;
     });

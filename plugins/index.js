@@ -1,6 +1,10 @@
 module.exports = {
     systemState: require('./systemState'),
     phantom: require('./phantom'),
-    saver: require('./saver'),
-    confirmation: require('./confirmation')
+    phantomSaver: require('./phantomSaver'),
+    confirmation: require('./confirmation'),
+    badger: require('./badger'),
+    badgerSaver: require('./badgerSaver'),
+    urlscan: require('./urlscan'),
+    urlscanSaver: require('./urlscanSaver')
 };
