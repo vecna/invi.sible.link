@@ -38,6 +38,7 @@ var performBadger = function(need) {
     var startTime = moment();
     var outfile = path.join(need.disk.incompath, 'badger-output.json');
 
+    debug("performBadger to %s in %s", need.href, need.id);
     return spawnCommand({
         binary: '/usr/bin/python2.7',
         args: [ 'badger-claw/crawler.py', need.href ],

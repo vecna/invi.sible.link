@@ -38,7 +38,7 @@ app.get('/api/v:version/getRetrieved/:what/:id', function(req, res) {
     return dispatchPromise('getRetrieved', routes, req, res);
 });
 
-app.get('/api/v:version/:promiseId/BP', function(req, res) {
+app.get('/api/v:version/:promiseId/:type/BP', function(req, res) {
     return dispatchPromise('byPromise', routes, req, res);
 });
 

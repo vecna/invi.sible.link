@@ -24,14 +24,16 @@ function getTasks(req) {
 
     var vantagePoint = req.params.vantagePoint;
     var amount = _.parseInt(req.params.amount);
+    var type = req.params.type;
 
-    debug("%s getTasks max %d from %s",
-        req.randomUnicode, amount, vantagePoint);
+    debug("%s getTasks max %d from %s by %s",
+        req.randomUnicode, amount, vantagePoint, type);
 
     /* this is redundant with lib/promises, but here there is 
      * specify the vantagePoint filter below */
     var selector = {
-        "start": new Date( moment().startOf('day').format("YYYY-MM-DD")) 
+        "start": new Date( moment().startOf('day').format("YYYY-MM-DD")),
+        "needName": type
     };
     _.set(selector, vantagePoint, { "$exists": false });
 

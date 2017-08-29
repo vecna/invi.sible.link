@@ -7,14 +7,17 @@ var nconf = require('nconf');
 
 var choputils = require('../lib/choputils');
 
+nconf.argv().env();
 
 module.exports = function(need, conf) {
 
+    var type = nconf.get('type');
     var url = choputils.composeURL(
         choputils.getVP(nconf.get('VP')),
         nconf.get('source'),
         {
             what: 'doneTask',
+            type: type,
             param: need.id
         });
         

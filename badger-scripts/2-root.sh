@@ -9,5 +9,6 @@ apt-get install -y make zip # pb needs these
 apt-get install -y python-pip
 apt-get install -y chromium-browser chromium-chromedriver xvfb
 cd badger-claw
-pip install -r requirements.txt
+pip2 install -r requirements.txt
+ln -s `whereis chromedriver | cut -b 15-` /usr/bin/chromedriver
 cd ..

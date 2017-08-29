@@ -47,6 +47,14 @@ var directionByKind = {
     },
 };
 
+var type = nconf.get('type');
+/* validation of the type requested */
+if(_.keys(directionByKind).indexOf(type) === -1) {
+    console.error("Invalid --type "+type+" expected: "+
+        _.keys(directionByKind));
+    return -1;
+}
+
 function keepPromises(N, i) {
     var direction = directionByKind[N.needName];
     return Promise
@@ -65,8 +73,10 @@ var url = choputils
             .composeURL(
                 choputils.getVP(nconf.get('VP')),
                 nconf.get('source'),
-                { what: mandatory ? 'getMandatory' : 'getTasks', 
-                  param: nconf.get('amount') 
+                {
+                    what: mandatory ? 'getMandatory' : 'getTasks',
+                    type: type,
+                    param: nconf.get('amount')
                 }
             );
 

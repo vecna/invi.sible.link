@@ -46,7 +46,7 @@ function saveBadger(gold, conf) {
     core.VP = conf.VP;
     core.when = new Date(moment().toISOString());
 
-    debug("using as input %s", sourcefile);
+    debug("Reading as source %s", sourcefile);
 
     return fs
         .readFileAsync(sourcefile, 'utf-8')
@@ -55,26 +55,29 @@ function saveBadger(gold, conf) {
 
             var cc = _.reduce(content.fingerprint, badgerFingerprint, []);
             /* ioByPeer has key as the phantom.id increment numb */
+            debugger;
             return _.map(cc, function(value) {
                 return _.extend(value, core);
             });
         })
         .then(function(data) {
             console.log(JSON.stringify(data, undefined, 5));
-            debug("Saving %d keys/value in .badger (%s promiseId)",
+            debug("+ Saving %d keys/value in .badger (%s promiseId)",
                 _.size(data), data[0].promiseId);
-            return mongo.writeMany(nconf.get('schema').badger, data);
+
+            return mongo
+                .writeMany(nconf.get('schema').badger, data);
         })
-        .return(true)
         .catch(function(error) {
-            debug("Exception managed! %s -- not written db any entry for promiseId %s",
-                    error, core.promisedId);
-            return false;
-        });
+            debug("- %s: lost results .promises[%s]",
+                    error, core.promiseId);
+
+        })
+        .return(gold);
 };
 
 module.exports = function(val, conf) {
 
     /* indepotent function saver is */
-    return saveBadger(val, conf).return(val);
+    return saveBadger(val, conf);
 }
