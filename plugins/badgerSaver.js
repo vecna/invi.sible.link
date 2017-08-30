@@ -46,38 +46,34 @@ function saveBadger(gold, conf) {
     core.VP = conf.VP;
     core.when = new Date(moment().toISOString());
 
-    debug("Reading as source %s", sourcefile);
+    debug("Looking for source %s", sourcefile);
 
     return fs
-        .readFileAsync(sourcefile, 'utf-8')
+        .readFileAsync(sourcefile, 'utf8')
         .then(JSON.parse)
         .then(function(content) {
-
             var cc = _.reduce(content.fingerprint, badgerFingerprint, []);
-            /* ioByPeer has key as the phantom.id increment numb */
-            debugger;
+
             return _.map(cc, function(value) {
                 return _.extend(value, core);
             });
         })
         .then(function(data) {
-            console.log(JSON.stringify(data, undefined, 5));
             debug("+ Saving %d keys/value in .badger (%s promiseId)",
                 _.size(data), data[0].promiseId);
 
             return mongo
                 .writeMany(nconf.get('schema').badger, data);
-        })
-        .catch(function(error) {
-            debug("- %s: lost results .promises[%s]",
-                    error, core.promiseId);
-
-        })
-        .return(gold);
+        });
 };
 
 module.exports = function(val, conf) {
 
-    /* indepotent function saver is */
-    return saveBadger(val, conf);
+    /* fully indepotent, return always $val to be confirmed */
+    return saveBadger(val, conf)
+        .catch(function(error) {
+            debug("- %s: lost results .promises[%s]", error, val.promiseId);
+            val.saveError = true;
+        })
+        .return(val);
 }

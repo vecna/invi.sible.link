@@ -48,8 +48,7 @@ var performBadger = function(need) {
             PATH: process.env.PATH,
             EXTENSION_PATH: 'badger-claw/privacy-badger-symlink.crx'
         }
-    }, (need.conf.maxSeconds + 20) * 1000)
-    /* ^^^^^^^^^^^^^^^^^^^^^^^^^^^  This is important, timeout not managed by selenium! */
+    }, 0)
     .then(function() {
         need.badger = {
             startTime: startTime.toISOString(),
@@ -60,7 +59,7 @@ var performBadger = function(need) {
             endMem: os.freemem(),
             closed: true
         };
-        debug("Selenium get properly closes ☞ 「%s」to 「%s」",
+        debug("Clean close of Selenium: ☞ 「%s」to 「%s」",
             moment.duration(moment().diff(startTime)).humanize(),
             need.href );
         return need;
@@ -81,8 +80,7 @@ var performBadger = function(need) {
                 need.href );
             return need;
         }
-        debug("badgerError %j", JSON.stringify(error, undefined, 2));
-        debug("! %s", JSON.stringify(error, undefined, 2));
+        debug("Unexpected error %j", JSON.stringify(error, undefined, 2));
         throw new Error(error);
     });
 };
@@ -90,12 +88,10 @@ var performBadger = function(need) {
 /* the need is only one, always, and contains one URL per need */
 module.exports = function(need, conf) {
 
-  return Promise
-      .map([ _.extend(need, {
-          conf: conf,
-          'disk': null,
-          'badger': null
-      }) ], setupDirectory)
-      .then(_.first)
-      .then(performBadger);
+    return setupDirectory(_.extend(need, {
+        conf: conf,
+            'disk': null,
+            'badger': null
+    }))
+    .then(performBadger);
 };

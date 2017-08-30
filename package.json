@@ -13,7 +13,7 @@
     "social-pressure": "nodemon --config config/social-pressure.json bin/social-pressure",
     "vigile": "nodemon --config config/vigile.json bin/vigile",
     "exposer": "nodemon --config config/exposer.json bin/exposer",
-    "chopsticks": "DEBUG=*,-lib:urlutils,-lib:spawnCommand node bin/chopsticks"
+    "chopsticks": "DEBUG=*,-lib:urlutils node bin/chopsticks"
   },
   "repository": {
     "type": "git",

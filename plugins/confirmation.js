@@ -20,7 +20,8 @@ module.exports = function(need, conf) {
             type: type,
             param: need.id
         });
-        
+
+    debug("Confirming %s: %s", need.id, need.href);
     return request
         .getAsync(url)
         .then(function(response) {

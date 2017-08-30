@@ -93,12 +93,7 @@ return request
     })
     .map(keepPromises, { concurrency: concValue })
     .then(function(results) {
-        /* check where 'completed' was false, is an anomaly to report back */
-        var timeouted = _.filter(results, { completed: false});
-        if(_.size(timeouted))
-          debug("To be: managed Timeouted %s", JSON.stringify(timeouted, undefined, 2));
-    })
-    .catch(function(error) {
-        debug("Unmanaged error: %s", error);
-        return false;
+        var e = _.filter(results, { saveError: true});
+        if(_.size(e))
+          debug("Note: %d website failed on %d", _.size(e), _.size(results));
     });

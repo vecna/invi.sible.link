@@ -5,6 +5,7 @@
   "schema": {
     "thug": "thug",
     "phantom": "phantom",
+    "badger": "badger",
     "accesses": "accesses",
     "anomalies": "anomalies"
   },

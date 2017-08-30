@@ -67,7 +67,8 @@ function onePerSite(retrieved) {
 };
 
 function getPromiseURLs(target) {
-    return promises.retrieve(nconf.get('DAYSAGO'), target.filter)
+    return promises
+        .retrieve(nconf.get('DAYSAGO'), target.filter)
         .tap(function(p) {
             debug("Promises by %j: %d results (~ %d per day)",
                 target.filter, _.size(p),
