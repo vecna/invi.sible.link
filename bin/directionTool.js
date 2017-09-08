@@ -179,9 +179,7 @@ if(csv)
 
 /* this daily needs has not proven yet its usefulness */
 if(_.isUndefined(nconf.get('needsfile'))) {
-    var fname = 'config/dailyNeeds.json';
-    debug("Unspecified 'needsfile' ENV, using default %s", fname);
-    return insertNeeds(fname, csv);
+    debug("Unspecified 'needsfile': required!");
 } else {
     debug("needsfile: %s", nconf.get('needsfile'));
     return insertNeeds(nconf.get('needsfile'), csv);

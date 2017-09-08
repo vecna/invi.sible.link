@@ -27,7 +27,7 @@ if(!tname) machetils.fatalError("campaign has to be specify via CLI/ENV");
 debug("Looking for campaign %s", tname);
 
 var campConf = _.find(nconf.get('campaigns'), { name: tname });
-if(!campConf) machetils.fatalError("Not found campagin " + tname + " in config section");
+if(!campConf) machetils.fatalError("Not found campagin named " + tname + " in config section");
 
 function buildURLs(memo, page) {
 	var promiseURLs = _.map(nconf.get('vantages'), function(vp) {
@@ -42,6 +42,32 @@ function buildURLs(memo, page) {
 	});
 	return _.concat(memo, promiseURLs);
 };
+
+/* map of JS calles, used to associate a static fixed number which will
+ * prevent scalability and data-reuse, sorry future Claudio! */
+
+var JScallMap = [
+    "Date_prototype_getTimezoneOffset",
+    "navigator_cpuClass", 
+    "navigator_doNotTrack", 
+    "navigator_hardwareConcurrency", 
+    "navigator_language", 
+    "navigator_languages", 
+    "navigator_maxTouchPoints", 
+    "navigator_platform", 
+    "navigator_plugins", 
+    "navigator_userAgent", 
+    "screen_availWidth", 
+    "screen_colorDepth", 
+    "screen_width", 
+    "window_CanvasRenderingContext2D_prototype_rect", 
+    "window_WebGLRenderingContext_prototype_createBuffer", 
+    "window_devicePixelRatio", 
+    "window_indexedDB", 
+    "window_localStorage", 
+    "window_openDatabase", 
+    "window_sessionStorage"
+];
 
 function onePerSite(retrieved) {
 
@@ -116,6 +142,41 @@ function clean(memo, imported) {
     return memo;
 };
 
+function summary(detailsL) {
+
+    return _.reduce(_.groupBy(detailsL, 'href'), function(memo, evidences, href) {
+
+        if(!_.size(evidences))
+            return memo;
+
+        var small = {
+            href: href,
+            when: new Date(),
+            campaign: evidences[0].campaign,
+            js: []
+        };
+
+        var fixedf = ['inclusion', 'subjectId', 'href', 'needName', 'promiseId', 'version', 'VP', 'when', 'scriptacts',
+            'scriptHash', 'acquired', 'campaign', 'id', '_id' ];
+
+        _.each(evidences, function(e) {
+            var x = { source: e.inclusion, behavior: _.omit(e, fixedf) };
+            small.js.push(x);
+        });
+        memo.push(small);
+        return memo;
+    }, []);
+};
+
+function saveSummary(content) {
+    if(_.size(content)) {
+        debug("Saving in summary %d object", _.size(content));
+        return machetils.statsSave(nconf.get('schema').summary, content);
+    }
+    else
+        debug("No summary to be saved");
+};
+
 return getPromiseURLs(campConf)
     .tap(numerize)
     .map(machetils.jsonFetch, {concurrency: 5})
@@ -126,6 +187,9 @@ return getPromiseURLs(campConf)
     .reduce(clean, [])
     .tap(numerize)
     .tap(saveAll)
+    .then(summary)
+    .tap(numerize)
+    .tap(saveSummary)
     .tap(function(r) {
-        debug("Operationg compeleted successfully");
+        debug("Operations completed");
     });

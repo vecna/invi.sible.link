@@ -3,7 +3,9 @@
     "schema": {
         "evidences": "evidences",
         "surface": "surface",
-        "sankeys": "sankeys"
+        "sankeys": "sankeys",
+        "details": "details",
+        "summary": "summary"
     },
     "mongodb": "mongodb://localhost/ivl",
     "campaign": "overwritewithenvorcommandline",

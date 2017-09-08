@@ -77,4 +77,8 @@ app.get('/api/v:version/stats/:hours', function(req, res) {
     return dispatchPromise('getStats', routes, req, res);
 });
 
+app.get('/api/v:version/summary/:cname', function(req, res) {
+    return dispatchPromise('getSummary', routes, req, res);
+});
+
 defaultSetup(app, dispatchPromise, express, routes, 'storyteller');

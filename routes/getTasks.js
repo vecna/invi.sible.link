@@ -5,17 +5,8 @@ var debug = require('debug')('route:getTasks');
 var nconf = require('nconf');
  
 var mongo = require('../lib/mongo');
+var updateVP = require('../lib/updateVP');
 
-function markVantagePoint(vp, siteList) {
-    
-    return Promise.map(siteList, function(s) {
-        _.set(s, vp, false);
-
-        return mongo.upsertOne(nconf.get('schema').promises, {
-            id: s.id
-        }, s);
-    });
-};
 
 /* this function is constantly called, like, every minute, 
  * through this function might be possible organize a coordinated
@@ -26,30 +17,33 @@ function getTasks(req) {
     var amount = _.parseInt(req.params.amount);
     var type = req.params.type;
 
-    debug("%s getTasks max %d from %s by %s",
-        req.randomUnicode, amount, vantagePoint, type);
+    debug("getTasks %d from %s type %s", amount, vantagePoint, type);
 
     /* this is redundant with lib/promises, but here there is 
      * specify the vantagePoint filter below */
     var selector = {
-        "start": new Date( moment().startOf('day').format("YYYY-MM-DD")),
+        "start": { $lt: new Date(),
+                   $gt: new Date( moment().startOf('day').subtract(1, 'm').toISOString() ) },
         "needName": type
     };
     _.set(selector, vantagePoint, { "$exists": false });
 
     return mongo
         .readLimit(nconf.get('schema').promises, selector, {}, amount, 0)
+        .tap(function(d) {
+            debug("retrieved %d .promises with selector %j", _.size(d), selector);
+        })
         .then(function(taskList) {
-            return markVantagePoint(vantagePoint, taskList)
-                .tap(function(marked) {
-                    if(!_.size(taskList))
+            return updateVP.byList(taskList, vantagePoint, false)
+                .then(function(c) {
+                    if(!_.size(c))
                         debug("_________ %s", vantagePoint);
                     else
                         debug("taskList returns %d tasks updated for VP [%s]",
-                            _.size(taskList), vantagePoint);
-                })
-                .return({
-                    json: taskList
+                            _.size(c), vantagePoint);
+                    return {
+                        json: c 
+                    };
                 });
         });
 };

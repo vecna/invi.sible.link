@@ -16,7 +16,7 @@ html
 
     title ⛅  invi.sible.link - Statistics
 
-    body(onload="tasksInsertion('#tasks'); lastHours({'hours': 48, 'loadavg': '#loadavg', 'memory': '#memory', 'mongo': '#database'});")
+    body(onload="tasksInsertion('#tasks'); lastHours({'hours': 48, 'loadavg': '#loadavg', 'memory': '#memory', 'mongo': '#database'}); localInfo('#orchestration'); ")
 
     .container-fluid
       .jumbotron
@@ -24,6 +24,10 @@ html
         h2 ⛅  invi.sible.link
 
     include navbar
+
+    .container-fluid.text
+        h2 Orchestration point DB
+        div(id="orchestration")
 
     .container-fluid.text
         h2 Tasks: promises and solutions

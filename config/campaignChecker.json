@@ -4,7 +4,9 @@
     "promises": "promises",
     "sankeys": "sankeys",
     "evidences": "evidences",
-    "surface": "surface"
+    "surface": "surface",
+    "details": "details",
+    "summary": "summary"
   },
   "mongodb": "mongodb://localhost/ivl",
   "vantages": [

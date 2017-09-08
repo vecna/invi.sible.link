@@ -175,3 +175,20 @@ function tasksInsertion(containerId) {
 
     });
 };
+
+
+/* this function has to represent the number of:
+ *
+ * sankey
+ * evidences
+ * surface
+ * details
+ * promises
+ */
+
+function localInfo(containerId) {
+    var url = '/api/v1/orchestrationStats';
+    d3.json(url, function(data) {
+        console.log(data);
+    });
+};
