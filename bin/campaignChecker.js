@@ -304,8 +304,12 @@ function sankeys(surface) {
         return { nodes: nodes, links: links };
     })
     .then(function(sanflows) {
+        var whenD = nconf.get('DAYSAGO') ? 
+            new Date() : 
+            new Date(moment().subtract(_.parseInt(nconf.get('DAYSAGO')), 'd'));
+
         return mongo.writeOne(nconf.get('schema').sankeys, {
-            when: new Date(),
+            when: whenD,
             campaign: campConf.name,
             nodes: sanflows.nodes,
             links: sanflows.links

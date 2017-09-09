@@ -3,10 +3,8 @@
   "VP": "virtual",
   "source": "http://localhost:7200",
   "schema": {
-    "thug": "thug",
     "phantom": "phantom",
-    "badger": "badger",
-    "anomalies": "anomalies"
+    "badger": "badger"
   },
   "amount": 20,
   "concurrency": 2,

@@ -17,6 +17,10 @@ nconf.argv().env();
 var cfgFile = nconf.get('config');
 if(!cfgFile) machetils.fatalError("config file has to be specify via CLI/ENV");
 
+var whenD = nconf.get('DAYSAGO') ? 
+    new Date() : 
+    new Date(moment().subtract(_.parseInt(nconf.get('DAYSAGO')), 'd'));
+
 nconf.file({ file: cfgFile });
 
 debug("campaign available %j", _.map(nconf.get('campaigns'), 'name'));
@@ -42,32 +46,6 @@ function buildURLs(memo, page) {
 	});
 	return _.concat(memo, promiseURLs);
 };
-
-/* map of JS calles, used to associate a static fixed number which will
- * prevent scalability and data-reuse, sorry future Claudio! */
-
-var JScallMap = [
-    "Date_prototype_getTimezoneOffset",
-    "navigator_cpuClass", 
-    "navigator_doNotTrack", 
-    "navigator_hardwareConcurrency", 
-    "navigator_language", 
-    "navigator_languages", 
-    "navigator_maxTouchPoints", 
-    "navigator_platform", 
-    "navigator_plugins", 
-    "navigator_userAgent", 
-    "screen_availWidth", 
-    "screen_colorDepth", 
-    "screen_width", 
-    "window_CanvasRenderingContext2D_prototype_rect", 
-    "window_WebGLRenderingContext_prototype_createBuffer", 
-    "window_devicePixelRatio", 
-    "window_indexedDB", 
-    "window_localStorage", 
-    "window_openDatabase", 
-    "window_sessionStorage"
-];
 
 function onePerSite(retrieved) {
 
@@ -130,7 +108,7 @@ function clean(memo, imported) {
         entry.scriptHash = various.hash(_.omit(entry, fields));
 
         entry.acquired = new Date(entry.when);
-        entry.when = new Date();
+        entry.when = whenD;
         entry.campaign = tname;
         entry.id = various.hash({
             today: moment().format("YYYY-mm-DD"),
@@ -151,7 +129,7 @@ function summary(detailsL) {
 
         var small = {
             href: href,
-            when: new Date(),
+            when: whenD,
             campaign: evidences[0].campaign,
             js: []
         };

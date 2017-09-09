@@ -4,9 +4,7 @@
   "name": "storyteller",
   "schema": {
     "accesses": "accesses",
-    "subjects": "subjects",
     "statistics": "statistics",
-    "campaigns": "campaigns",
     "promises": "promises",
     "surface": "surface",
     "evidences": "evidences",

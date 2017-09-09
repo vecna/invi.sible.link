@@ -52,7 +52,7 @@
   }, {
       "name": "gptrex",
       "description": "Germany Parties",
-      "filter": { "taskName" : "gptrex" },
+      "filter": { "taskName" : "germany" },
       "dayswindow": 1
   }, {
       "name": "clinics-MX",
