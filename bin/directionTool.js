@@ -22,27 +22,6 @@ function loadJSONfile(fname) {
         .then(JSON.parse);
 }
 
-/* uniqueTargets _.reduce every source: DB or CSV */
-function uniqueTargets(memo, subject) {
-    var taskName = nconf.get('taskName');
-    if(!taskName)
-        throw new Error("taskName it is necessary");
-
-    var alist = _.map(subject.pages, function(site) {
-        return {
-            subjectId: site.id,
-            href: site.href,
-            rank: site.rank,
-            taskName: taskName
-        };
-    });
-    var uniqued = _.uniqBy(_.concat(memo, alist), 'subjectId');
-    /* reject forcefully everything with a rank < than 100 */
-    return _.reject(uniqued, function(entry) {
-        return entry.rank > 100;
-    });
-}
-
 function windowsOrUnix(content) {
     var lines = content.split('\r\n');
     if(_.size(lines) === 1)
@@ -85,24 +64,11 @@ function insertNeeds(fname, csv) {
     filter = JSON.parse(filter);
     var promises = [ timeRanges(fname) ];
 
-    if(csv) {
-        debug("Importing CSV %s", csv);
-        promises.push( importCSV(csv) );
-    } else {
-        debug("Using mongo as source (%j)", filter);
-        if(!nconf.get('IMSURE'))
-            throw new Error("Remind Claudio, last time, without the CSV, has been trigger 8000+ promises");
-            /* and check if subjectId it is unique or not, because this concept of campaing/subject/href 
-             * has to be clean and documented. 
-             *
-             * Claudio, from your future: PLEASE DO NOT CHANGE WHAT IS WORKING */
+    if(!csv)
+        throw new Error("Only CSV is supported");
 
-        promises.push( 
-            mongo
-                .read(nconf.get('schema').subjects, filter)
-                .reduce(uniqueTargets, [])
-        );
-    }
+    debug("Importing CSV %s", csv);
+    promises.push( importCSV(csv) );
 
     return Promise
         .all(promises)
