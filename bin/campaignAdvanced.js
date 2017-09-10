@@ -121,6 +121,10 @@ function clean(memo, imported) {
 };
 
 function summary(detailsL) {
+    /* 1) retrieve details of the previous day(s),
+     * 2) outline few statistics, ranks, values
+     * 3) write into the DB
+     */
 
     return _.reduce(_.groupBy(detailsL, 'href'), function(memo, evidences, href) {
 

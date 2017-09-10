@@ -1,20 +1,21 @@
 
 var _ = require('lodash');
-var debug = require('debug')('route:getSummary');
+var debug = require('debug')('route:getDetails');
 var moment = require('moment');
 var nconf = require('nconf');
 var mongo = require('../lib/mongo');
  
-function getSummary(req) {
+function getDetails(req) {
 
     var filter = { campaign: req.params.cname };
-    var MAXENTRY = 2;
+    /* can be useful having the number of subject per campaign, and estimate 5-15 entries per site */
+    var MAXSITE = 500;
 
     debug("Looking for %j in .summary", filter);
     return mongo
-        .readLimit(nconf.get('schema').summary, filter, { when: -1 }, MAXENTRY, 0)
+        .readLimit(nconf.get('schema').details, filter, { acquired: -1 }, MAXSITE, 0)
         .then(function(x) {
-            var lastDay = moment(x[0].when).format('DD');
+            var lastDay = moment(x[0].acquired).format('DD');
             return _.filter(x, function(entry) {
                 return moment(entry.when).format('DD') == lastDay;
             });
@@ -27,7 +28,4 @@ function getSummary(req) {
         });
 };
 
-module.exports = getSummary;
-
-// test iniziato alle 8:17
-
+module.exports = getDetails;
