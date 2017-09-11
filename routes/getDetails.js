@@ -15,7 +15,11 @@ function getDetails(req) {
     return mongo
         .readLimit(nconf.get('schema').details, filter, { acquired: -1 }, MAXSITE, 0)
         .then(function(x) {
+            if(!(x && x[0] && x[0].acquired))
+                return [];
+
             var lastDay = moment(x[0].acquired).format('DD');
+
             return _.filter(x, function(entry) {
                 return moment(entry.when).format('DD') == lastDay;
             });
