@@ -13,7 +13,7 @@
     "social-pressure": "nodemon --config config/social-pressure.json bin/social-pressure",
     "vigile": "nodemon --config config/vigile.json bin/vigile",
     "exposer": "nodemon --config config/exposer.json bin/exposer",
-    "chopsticks": "DEBUG=*,-lib:urlutils node bin/chopsticks"
+    "chopsticks": "DEBUG=*,-lib:urlutils,-lib:spawnCommand node bin/chopsticks"
   },
   "repository": {
     "type": "git",
@@ -43,6 +43,7 @@
     "datatables.net": "^1.10.12",
     "datatables.net-dt": "^1.10.12",
     "debug": "^2.6.8",
+    "diskusage": "^0.2.3",
     "express": "^4.14.0",
     "jquery": "^3.1.1",
     "lodash": "^4.17.2",

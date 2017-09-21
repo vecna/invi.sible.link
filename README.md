@@ -233,6 +233,12 @@ crontab -e
 */2 * * * * bin/ISL-scheduled --task chopsticks
 ```
 
+## tool (queries)
+
+This can be used to extract evidences and domain based on a specific pattern collected
+
+    mongodb=mongodb://10.0.2.2/ivl company=Criteo node bin/queries.js --config config/storyteller.json 
+
 ## ISL-scheduled
 
 ```

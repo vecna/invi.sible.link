@@ -72,7 +72,8 @@ module.exports = function(val, conf) {
     /* fully indepotent, return always $val to be confirmed */
     return saveBadger(val, conf)
         .catch(function(error) {
-            debug("- %s: lost results .promises[%s]", error, val.promiseId);
+            debug("!! %s: zero info from %s",
+                error, JSON.stringify(val, undefined, 2));
             val.saveError = true;
         })
         .return(val);

@@ -1,0 +1,59 @@
+h1(class="reportTitle" id="August-17") August and September 2017
+
+section(class="preliminary-7")
+    h2 Analysis of javascript finterprinting
+    p.text Has been implemented the usage of Chrome with PrivacyBadger as part of the testing suite, this permit to get detailed informations like these:
+
+    h2 Advanced visualization (first try)
+    p.text Implemented in the HK server, the experimental new fetcher 
+        a(href="https://hk-vp.sible.link/details/clinics-CL") Clinics-CL
+    p.text 
+        img(src="/images/details.png")
+
+    pre.
+        "VP": "virtual", 
+        "_id": "59b3ef87f50635667354b8b6", 
+        "acquired": "2017-09-09T13:06:06.072Z", 
+        "campaign": "germany", 
+        "href": "http://www.gulli.com/", 
+        "id": "2db2fd4cbf447b63c7be59cb0d0993f95164b68e", 
+        "inclusion": "imagesrv.adition.com", 
+        "navigator_plugins": 7, 
+        "navigator_userAgent": 1, 
+        "needName": "badger", 
+        "promiseId": "e70987de9f779c3924cffa601cd53f2c926d7973", 
+        "screen_width": 1, 
+        "scriptHash": "32f51deedfd3dd9a2f3a52a352367f6d6bae6a67", 
+        "scriptacts": 9, 
+        "subjectId": "a6074ec62e6d2d3775919ed4a8b53ba4f990e885", 
+        "version": 1, 
+        "when": "2017-09-09T13:41:24.310Z"
+        }{
+        "VP": "virtual", 
+        "_id": "59b3ef87f50635667354b8b7", 
+        "acquired": "2017-09-09T13:06:06.072Z", 
+        "campaign": "germany", 
+        "href": "http://www.gulli.com/", 
+        "id": "2db2fd4cbf447b63c7be59cb0d0993f95164b68e", 
+        "inclusion": "pagead2.googlesyndication.com", 
+        "navigator_userAgent": 7, 
+        "needName": "badger", 
+        "promiseId": "e70987de9f779c3924cffa601cd53f2c926d7973", 
+        "screen_availWidth": 2, 
+        "screen_width": 2, 
+        "scriptHash": "63d92bc0c16414f12fd8bb04e6e8189fb9a62ea6", 
+        "scriptacts": 18, 
+        "subjectId": "a6074ec62e6d2d3775919ed4a8b53ba4f990e885", 
+        "version": 1, 
+        "when": "2017-09-09T13:41:24.310Z", 
+        "window_localStorage": 7
+
+    p.text This result of an API (/api/v1/details/$campaignName) contains:
+        ul
+            li navigator.plugins
+            li navigator.userAgent
+            li screen.width
+            li screen.availWidth
+            li window.localStorage
+        | are the javascript calls executed by the script.
+

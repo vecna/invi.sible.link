@@ -13,8 +13,9 @@ var promises = require('../lib/promises');
 console.log("option -v availabe, checking last 24 hours, sort by last, specify a config file");
 
 nconf.argv().env();
-console.log("config file: " + nconf.get('config') );
-nconf.file({ file: nconf.get('config') });
+var cfg = nconf.get('config') || 'config/storyteller.json';
+console.log("config file: " + cfg);
+nconf.file({ file: cfg });
 
 var timeVar = {
     promises: 'start',
