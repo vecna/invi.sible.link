@@ -39,12 +39,16 @@ Promise.resolve(
     promises.retrieve(nconf.get('DAYSAGO'))
 )
 .then(function(promises) {
-    var x = _.map(promises, function(p) {
-        return { 'keys': _.size(_.keys(p)) - 9 };
+    _.each(['badger', 'basic'], function(c) {
+        var f = _.filter(promises, {needName: c});
+        var x = _.map(f, function(p) {
+            return { 'keys': _.size(_.keys(p)) - 9 };
+        });
+        debug("Type %s, %d Promises, status: %s",
+            c, _.size(f),
+            JSON.stringify(_.countBy(x, 'keys'), undefined, 2)
+        );
     });
-    debug("initial check: %d Promises: %s",
-        _.size(promises), JSON.stringify(_.countBy(x, 'keys'), undefined, 2)
-    );
 });
 
 
