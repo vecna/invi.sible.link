@@ -15,12 +15,26 @@ var promises = require('../lib/promises');
 
 nconf.argv().env().file({ file: 'config/vigile.json' });
 
-function loadJSONfile(fname) {
-    debug("opening %s", fname);
-    return fs
-        .readFileAsync(fname, "utf-8")
-        .then(JSON.parse);
-}
+function insertNeeds(fname, csv) {
+
+    var filter = nconf.get('filter') || JSON.stringify({});
+    filter = JSON.parse(filter);
+
+    var taskName = nconf.get('taskName');
+    if(!taskName)
+        throw new Error("taskName variable it is required");
+
+    return readConfig(fname, taskName)
+        .then(function(inputc) {
+            debug("Importing CSV %s", csv);
+            return importCSV(inputc, csv);
+        })
+        .then(function(needs) {
+            debug("Generated %d needs", _.size(needs));
+            debug("The first is %s", JSON.stringify(needs[0], undefined, 2) );
+            return mongo.writeMany(nconf.get('schema').promises, needs);
+        });
+};
 
 function windowsOrUnix(content) {
     var lines = content.split('\r\n');
@@ -29,97 +43,62 @@ function windowsOrUnix(content) {
     return lines;
 }
 
-function importCSV(fname) {
-
-    var taskName = nconf.get('taskName');
-    if(!taskName)
-        throw new Error("taskName variable it is required");
+function importCSV(configi, fname) {
 
     return fs
         .readFileAsync(fname, 'utf-8')
         .then(function(csvc) {
             var lines = windowsOrUnix(csvc);
-            debug("%d lines → keys [%s] 'rank' will be add",
+            debug("%d lines → keys <%s> 'rank' will be add",
                 _.size(lines)-1, lines[0] );
-            return _.map(_.tail(lines), function(entry, i) {
-                var comma = entry.indexOf(',');
-                return {
-                    'subjectId': various.hash({
-                        'fname': fname,
-                        'content': csvc,
-                        'name': taskName
-                    }),
-                    'taskName': taskName,
-                    'href': entry.substring(0, comma),
-                    'description': _.trim(entry.substring(comma+1), '"'),
+
+            return _.reduce(_.tail(lines), function(memo, entry, i) {
+
+                var comma = entry.split(',');
+
+                if(_.size(comma) != 2 || _.size(comma[0]) < 7 ) {
+                    debug("nope? %d", i);
+                    return memo;
+                }
+
+                var imported = _.extend({}, configi, {
+                    'href': comma[0],
                     'rank': i + 1
-                };
-            });
+                });
+
+                if(_.size(comma[1]) > 2) {
+                    var d = _.trim(comma[1], '"');
+                    imported.description = d;
+                }
+                else
+                    imported.description = "";
+
+                imported.id = various.hash({
+                    'href': imported.href,
+                    'type': configi.needName,
+                    'start': imported.start,
+                });
+                imported.subjectId = various.hash({
+                    'target': imported.href,
+                    'campaign': configi.taskName
+                });
+                memo.push(imported);
+                return memo;
+            }, []);
+        })
+        .then(function(c) {
+            return _.sortBy(c, 'rank');
         });
 };
 
-function insertNeeds(fname, csv) {
 
-    var filter = nconf.get('filter') || JSON.stringify({});
-    filter = JSON.parse(filter);
-    var promises = [ timeRanges(fname) ];
-
-    if(!csv)
-        throw new Error("Only CSV is supported");
-
-    debug("Importing CSV %s", csv);
-    promises.push( importCSV(csv) );
-
-    return Promise
-        .all(promises)
-        .then(function(inputs) {
-            debug("Read %d sites, everything with rank < 100 will be stripped off",
-                _.size(inputs[1]) );
-            /* TODO check that CSV and DB are producing here the same output */
-            return _.map(inputs[1], function(t) {
-                var p = _.extend(t, inputs[0]);
-                p.id = various.hash({
-                    'href': p.href,
-                    'start': p.start
-                });
-                return p;
-            });
-        })
-        .then(function(tobecheck) {
-            var uniquified = _.countBy(tobecheck, 'id');
-            return _.reduce(uniquified, function(memo, amount, id) {
-
-                var element = _.find(tobecheck, {id: id});
-
-                if(amount === 1 && (!element.href || element.href === ''))
-                    return memo;
-
-                if(amount === 1)
-                    return _.concat(memo, _.find(tobecheck, {id: id}));
-
-                /* else, there are more elements with the same id, are dups */
-                return _.concat(memo, _.first(element));
-            }, []);
-        })
-        .then(_.compact)
-        .then(function(needs) {
-            debug("Generated %d needs", _.size(needs));
-            debug("The first is %s", JSON.stringify(needs[0], undefined, 2) );
-	    var fixedNeeds = _.map(needs, function(n) {
-                n.start = new Date(n.start);
-                return n;
-	    });
-            return mongo.writeMany(nconf.get('schema').promises, fixedNeeds);
-        });
-}
-
-function timeRanges(fname) {
+function readConfig(fname, taskName) {
     debug("Using %s as needs generator", fname);
     return fs
         .readFileAsync(fname, 'utf-8')
         .then(JSON.parse)
-        .tap(function(content) {
-            debug("content %j", content);
+        .tap(function(configc) {
+            debug("config content %j", configc);
         })
         .then(function(content) {
             var start;
@@ -133,20 +112,23 @@ function timeRanges(fname) {
             debug("Window start %s", start);
             return {
                 needName: content.needName,
-                start: start.format("YYYY-MM-DD")
+                start: new Date(start.format("YYYY-MM-DD")),
+                taskName: taskName
             };
         });
-}
-
+};
 
 csv = nconf.get('csv');
-if(csv)
-    debug("CSV source defined in %s, I hope is an absolute path", csv);
+if(!csv) {
+    console.log("missinfg csv option");
+    process.exit(1);
+}
 
-/* this daily needs has not proven yet its usefulness */
 if(_.isUndefined(nconf.get('needsfile'))) {
     debug("Unspecified 'needsfile': required!");
-} else {
-    debug("needsfile: %s", nconf.get('needsfile'));
-    return insertNeeds(nconf.get('needsfile'), csv);
+    process.exit(1);
 }
+
+debug("CSV source defined in %s, I hope is an absolute path", csv);
+debug("needsfile: %s", nconf.get('needsfile'));
+return insertNeeds(nconf.get('needsfile'), csv);
