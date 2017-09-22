@@ -1,7 +1,7 @@
 #!/usr/bin/env nodejs
 var _ = require('lodash');
 var Promise = require('bluebird');
-var debug = require('debug')('campaignAdvanced');
+var debug = require('debug')('analyzeBadger');
 
 var moment = require('moment');
 var nconf = require('nconf');
@@ -12,41 +12,25 @@ var machetils = require('../lib/machetils');
 var company = require('../lib/company');
 var promises = require('../lib/promises');
 
+/* ENV/options init */
 nconf.argv().env();
+nconf.file({ file: nconf.get('config') });
+nconf.file({ file: "config/campaigns.json" }); 
 
-var cfgFile = nconf.get('config');
-if(!cfgFile) machetils.fatalError("config file has to be specify via CLI/ENV");
+var tname = promises.manageOptions();
 
-var whenD = nconf.get('DAYSAGO') ? 
-    new Date() : 
-    new Date(moment().subtract(_.parseInt(nconf.get('DAYSAGO')), 'd'));
+/* still to be decided how to clean this */
+var whenD = nconf.get('DAYSAGO') ?
+    moment()
+        .startOf('day')
+        .subtract(_.parseInt(nconf.get('DAYSAGO')), 'd')
+        .toISOString() :
+    moment()
+        .startOf('day')
+        .toISOString();
+debug("Saving date set to: %s", whenD);
 
-nconf.file({ file: cfgFile });
-
-debug("campaign available %j", _.map(nconf.get('campaigns'), 'name'));
-
-var tname = nconf.get('campaign');
-if(!tname) machetils.fatalError("campaign has to be specify via CLI/ENV");
-
-debug("Looking for campaign %s", tname);
-
-var campConf = _.find(nconf.get('campaigns'), { name: tname });
-if(!campConf) machetils.fatalError("Not found campagin named " + tname + " in config section");
-
-function buildURLs(memo, page) {
-	var promiseURLs = _.map(nconf.get('vantages'), function(vp) {
-		var url = [ vp.host, 'api', 'v1',
-					page.id, 'badger', 'BP' ].join('/');
-		return {
-			url: url,
-			page: page.href,
-			VP: vp.name,
-			subjectId: page.id
-        }
-	});
-	return _.concat(memo, promiseURLs);
-};
-
+/* code begin here */
 function onePerSite(retrieved) {
 
     var pages = _.uniq(_.map(retrieved, 'page'));
@@ -67,17 +51,6 @@ function onePerSite(retrieved) {
         return memo;
     }, []);
 };
-
-function getPromiseURLs(target) {
-    return promises
-        .retrieve(nconf.get('DAYSAGO'), target.filter)
-        .tap(function(p) {
-            debug("Promises by %j: %d results (~ %d per day)",
-                target.filter, _.size(p),
-                _.round(_.size(p) / target.dayswindow, 2) );
-        })
-        .reduce(buildURLs, []);
-}
 
 function saveAll(content) {
     if(_.size(content)) {
@@ -108,7 +81,7 @@ function clean(memo, imported) {
         entry.scriptHash = various.hash(_.omit(entry, fields));
 
         entry.acquired = new Date(entry.when);
-        entry.when = whenD;
+        entry.when = new Date(whenD);
         entry.campaign = tname;
         entry.id = various.hash({
             today: moment().format("YYYY-mm-DD"),
@@ -133,13 +106,14 @@ function summary(detailsL) {
 
         var small = {
             href: href,
-            when: whenD,
+            when: new Date(whenD),
             campaign: evidences[0].campaign,
             js: []
         };
 
-        var fixedf = ['inclusion', 'subjectId', 'href', 'needName', 'promiseId', 'version', 'VP', 'when', 'scriptacts',
-            'scriptHash', 'acquired', 'campaign', 'id', '_id' ];
+        var fixedf = ['inclusion', 'href', 'needName',
+                      'promiseId', 'version', 'VP', 'when', 'scriptacts',
+                      'scriptHash', 'acquired', 'campaign', 'id', '_id' ];
 
         _.each(evidences, function(e) {
             var x = { source: e.inclusion, behavior: _.omit(e, fixedf) };
@@ -159,7 +133,9 @@ function saveSummary(content) {
         debug("No summary to be saved");
 };
 
-return getPromiseURLs(campConf)
+return promises
+    .retrieve(nconf.get('DAYSAGO'), tname, 'badger')
+    .reduce(_.partial(promises.buildURLs, 'badger'), [])
     .tap(numerize)
     .map(machetils.jsonFetch, {concurrency: 5})
     .tap(numerize)

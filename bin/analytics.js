@@ -26,7 +26,8 @@ var timeVar = {
     details: 'when',
     summary: 'when',
     badger: 'when',
-    phantom: 'requestTime'
+    phantom: 'requestTime',
+    sankeys: 'when'
 };
 
 var mongoQlist = _.reduce(nconf.get('schema'), function(memo, column, name) {

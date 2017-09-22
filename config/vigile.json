@@ -24,7 +24,7 @@
   "verbose": true,
   "exitcrash": false,
   "env": {
-        "DEBUG": "vigile,route:*,lib:*,-lib:mongo,-lib:dispatchPromise"
+        "DEBUG": "vigile,route:*,lib:*"
   },
   "ext": "js css json pug"
 }
