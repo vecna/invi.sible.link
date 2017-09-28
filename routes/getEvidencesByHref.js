@@ -25,6 +25,7 @@ function getEvidencesByHref(req) {
                   "href", "id", "needName", "tld", "promiseId",
                   "subdomain", "subjectId", "version" ];
 
+    debug("getEvidencesByHref with filter %j", filter);
     return mongo
         .readLimit(nconf.get('schema').evidences, filter, {
             when: -1

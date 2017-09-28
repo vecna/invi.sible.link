@@ -11,4 +11,4 @@ DEBUG=* bin/campaignChecker.js --config config/campaignChecker.json --campaign "
 DEBUG=* bin/campaignChecker.js --config config/campaignChecker.json --campaign "travel"
 DEBUG=* bin/campaignChecker.js --config config/campaignChecker.json --campaign "halal"
 DEBUG=* bin/campaignChecker.js --config config/campaignChecker.json --campaign "mosques"
-
+DEBUG=* bin/campaignChecker.js --config config/campaignChecker.json --campaign "poland"

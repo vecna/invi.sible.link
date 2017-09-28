@@ -18,6 +18,11 @@
       "filter": { "taskName": "itatopex" },
       "dayswindow": 1
   }, {
+      "name": "catalunya",
+      "description": "catalunya",
+      "filter": { "taskName" : "catalunya" },
+      "dayswindow": 1
+  }, {
       "name": "culture",
       "description": "culture",
       "filter": { "taskName" : "culture" },
@@ -51,6 +56,11 @@
       "name": "gptrex",
       "description": "Germany Parties",
       "filter": { "taskName" : "gptrex" },
+      "dayswindow": 1
+  }, {
+      "name": "poland",
+      "description": "Poland top 50",
+      "filter": { "taskName" : "poland" },
       "dayswindow": 1
   }, {
       "name": "clinics-MX",

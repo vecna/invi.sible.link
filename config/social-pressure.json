@@ -20,7 +20,7 @@
     "verbose": true,
     "exitcrash": false,
     "env": {
-        "DEBUG": "*,-ffi:*,-ref*,-send,-express:*,-lib:mongo"
+        "DEBUG": "*,-ffi:*,-ref*,-send,-express:*"
     },
     "ext": "js css json pug"
 }
