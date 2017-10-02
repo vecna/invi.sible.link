@@ -22,9 +22,13 @@ function getSurface(req) {
     return campaignOps.pickLastHours(filter, RANGE * 24)
         .then(function(surface) {
             /* for every website, if duplicated, keep the one with most */
+
+            debug("Keeping only one entry per site: Starting from %d",
+                _.size(surface));
             return _.reduce(surface, function(memo, s) {
                 var exists = _.find(memo, { url: s.url });
 
+                // XXX fallo
                 if(exists) {
                     if( _.size(exists.companies) > _.size(s.companies) )
                         return memo;
