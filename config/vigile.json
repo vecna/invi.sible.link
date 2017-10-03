@@ -7,24 +7,5 @@
     "accesses": "accesses",
     "subjects": "subjects"
   },
-  "mongodb": "mongodb://localhost/ivl",
-
-  "watch": [
-      "bin/vigile.js",
-      "lib/*.js",
-      "sections/*.pug",
-      "routes/*.js",
-      "dist/css/**",
-      "dist/js/**"
-  ],
-  "ignore": [
-      "node_modules/**/node_modules",
-      "sections/webscripts/*.js"
-  ],
-  "verbose": true,
-  "exitcrash": false,
-  "env": {
-        "DEBUG": "vigile,route:*,lib:*"
-  },
-  "ext": "js css json pug"
+  "mongodb": "mongodb://localhost/ivl"
 }

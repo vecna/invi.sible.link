@@ -62,6 +62,11 @@ function orderBySubject(m) {
      * associated evidences */
     var ev = _.groupBy(m[0], 'subjectId');
     var det = _.groupBy(m[1], 'subjectId');
+    /* this function just aggregate the results obtain from
+     * different sources. evidences and details.
+     *
+     * later on these information will be processed
+     */
 
     debugger;
     var rank = _.map(_.keys(det), function(sid) {

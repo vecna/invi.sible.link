@@ -88,6 +88,11 @@ var performBadger = function(need) {
 /* the need is only one, always, and contains one URL per need */
 module.exports = function(need, conf) {
 
+    if(!_.startsWith(need.href, 'http')) {
+        debug("The URL has to begin with http!");
+        process.exit();
+    }
+
     return setupDirectory(_.extend(need, {
         conf: conf,
             'disk': null,

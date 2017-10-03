@@ -59,8 +59,9 @@ function keepPromises(N, i) {
     var direction = directionByKind[N.needName];
     return Promise
         .reduce(direction.plugins, function(state, p) {
-            debug("%d Call %s about %s: state keys #%d",
-                i, p, state.href, _.size(_.keys(state)) );
+            debug("%d Call %s about %s(%s): state keys #%d",
+                i, p, state.href, state.taskName,
+                _.size(_.keys(state)) );
             return plugins[p](state, direction.config);
         }, N)
         .tap(function(product) {
