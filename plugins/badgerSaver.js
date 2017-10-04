@@ -72,8 +72,7 @@ module.exports = function(val, conf) {
     /* fully indepotent, return always $val to be confirmed */
     return saveBadger(val, conf)
         .catch(function(error) {
-            debug("!! %s: zero info from %s",
-                error, JSON.stringify(val, undefined, 2));
+            debug("!! %s: zero info from %s %s", error, val.href, val.id);
             val.saveError = true;
         })
         .return(val);
