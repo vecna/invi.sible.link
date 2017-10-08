@@ -14,6 +14,7 @@ var promises = require('../lib/promises');
 
 /* ENV/options init */
 nconf.argv().env();
+if(!nconf.get('config')) { console.log("--config is necessary"); return }
 nconf.file({ file: nconf.get('config') });
 nconf.file({ file: "config/campaigns.json" }); 
 
