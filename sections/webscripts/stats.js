@@ -45,7 +45,7 @@ function lastHours(config) {
     var fieldSet = {
         'loadavg': [ 'load-0', 'load-1'], //, 'load-2' ],
         'memory': [ 'free' ], // , 'total' ],
-        'mongo': [ 'saved' ] // , 'accesses' ]
+        'mongo': [ 'saved', 'badger', 'accesses' ]
     };
     var VPs = [ 'HK', 'WS', 'AMS' ];
     var url = '/api/v1/stats/' + config.hours;
