@@ -6,7 +6,7 @@
     "phantom": "phantom",
     "badger": "badger"
   },
-  "amount": 4,
+  "amount": 8,
   "concurrency": 4,
   "mongodb": "mongodb://localhost/chopsticks"
 }
