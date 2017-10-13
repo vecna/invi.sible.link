@@ -45,7 +45,8 @@ if(task === 'statistics') {
     simpleAppend("statistics", "completed");
 } else if(task === 'chopsticks') {
     simpleAppend("chopsticks", "calling now");
-    var cmd = 'npm run chopsticks > /tmp/chopsticks.log 2>&1'
+
+    var cmd = 'npm run phantom >> /tmp/chopsticks.log 2>&1 ; npm run badger >> /tmp/chopsticks.log 2>&1 '
     child_process.execSync(cmd);
     simpleAppend("chopsticks", "completed");
 } else if(task === 'vigile') {
