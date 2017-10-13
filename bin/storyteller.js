@@ -84,4 +84,8 @@ app.get('/api/v:version/details/:cname', function(req, res) {
     return dispatchPromise('getDetails', routes, req, res);
 });
 
+app.get('/api/v:version/url/:check', function(req, res) {
+    return dispatchPromise('getCheckURL', routes, req, res);
+});
+
 defaultSetup(app, dispatchPromise, express, routes, 'storyteller');

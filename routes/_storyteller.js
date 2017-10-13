@@ -13,6 +13,7 @@ module.exports = {
     activeTasks:           require('./activeTasks'),
     getRaw:                require('./getRaw'),
     getTableauJSON:	       require('./getTableauJSON'),
+    getCheckURL:           require('./getCheckURL'),
 
     getRecentActivities:   require('./getRecentActivities'),
     getEvidencesByHref:    require('./getEvidencesByHref')
