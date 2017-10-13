@@ -1,7 +1,7 @@
 {
   "name": "chopsticks",
-  "VP": "WS",
-  "source": "http://invi.sible.link:7200",
+  "VP": "virtual",
+  "source": "http://localhost:7200",
   "schema": {
     "phantom": "phantom",
     "badger": "badger"
