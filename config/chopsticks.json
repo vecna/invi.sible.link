@@ -1,6 +1,6 @@
 {
   "name": "chopsticks",
-  "VP": "virtual",
+  "VP": "IVL",
   "source": "http://localhost:7200",
   "schema": {
     "phantom": "phantom",
