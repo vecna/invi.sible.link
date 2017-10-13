@@ -1,7 +1,7 @@
 var _ = require('lodash');
 var Promise = require('bluebird');
 var fs = Promise.promisifyAll(require('fs'));
-var debug = require('debug')('plugin:saver');
+var debug = require('debug')('plugin:phantomSaver');
 var moment = require('moment');
 var nconf = require('nconf');
 
@@ -53,7 +53,6 @@ function cookieDissect(memo, block) {
 
 function manageCookies(memo, cookie) {
     var cookieinfo = _.reduce(cookie.split(';'), cookieDissect, {});
-    debugger;
     memo.push(cookieinfo);
     return memo;
 }
@@ -189,22 +188,17 @@ function savePhantom(gold, conf) {
             debug("Saving %d keys/value in .phantom (%s promiseId)",
                 _.size(data), data[0].promiseId);
             return mongo.writeMany(nconf.get('schema').phantom, data);
-        })
-        .return(true)
-        .catch(function(error) {
-            debug("Exception managed! %s %j indepotent function, not written db for promiseId %s",
-                    error, error, core.promisedId);
-            return false;
         });
-};
-
-function saveThug(gold) {
 };
 
 module.exports = function(val, conf) {
 
     /* indepotent function saver is */
-    return Promise
-        .all([ savePhantom(val, conf), saveThug(val) ])
-        .return(val);
+    return savePhantom(val, conf)
+        .catch(function(error) {
+            debug("Exception managed! %s, not .phantom for id %s",
+                    error, core.promisedId);
+            val.saveError = true;
+        })
+        .return(val)
 }

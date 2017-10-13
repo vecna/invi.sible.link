@@ -7,10 +7,13 @@ module.exports = {
     getCampaignSubject:    require('./getCampaignSubject'),
     getCampaignNames:      require('./getCampaignNames'),
     getSurface:            require('./getSurface'),
+    getSummary:            require('./getSummary'),
+    getDetails:            require('./getDetails'),
     getCSV:                require('./getCSV'),
     activeTasks:           require('./activeTasks'),
     getRaw:                require('./getRaw'),
-    getTableauJSON:	   require('./getTableauJSON'),
+    getTableauJSON:	       require('./getTableauJSON'),
+    getCheckURL:           require('./getCheckURL'),
 
     getRecentActivities:   require('./getRecentActivities'),
     getEvidencesByHref:    require('./getEvidencesByHref')

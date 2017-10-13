@@ -4,12 +4,12 @@
   "name": "storyteller",
   "schema": {
     "accesses": "accesses",
-    "subjects": "subjects",
     "statistics": "statistics",
-    "campaigns": "campaigns",
     "promises": "promises",
     "surface": "surface",
-    "evidences": "evidences"
+    "evidences": "evidences",
+    "details": "details",
+    "summary": "summary"
   },
   "mongodb": "mongodb://localhost/ivl",
   "expected": [ "HK", "AMS", "WS", "casa" ],

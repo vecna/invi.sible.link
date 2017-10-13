@@ -1,13 +1,12 @@
 {
   "name": "chopsticks",
-  "VP": "ISL",
+  "VP": "virtual",
   "source": "http://localhost:7200",
   "schema": {
-    "thug": "thug",
     "phantom": "phantom",
-    "anomalies": "anomalies"
+    "badger": "badger"
   },
   "amount": 20,
-  "concurrency": 5,
+  "concurrency": 2,
   "mongodb": "mongodb://localhost/chopsticks"
 }

@@ -11,7 +11,7 @@ function getRetrieved(req) {
     var what = req.params.what;
     var id = req.params.id;
 
-    debug("%s getRetrieved from %s of %s",
+    debug("%s getRetrieved from [what] %s [id] %s",
         req.randomUnicode, what, id);
 
     if (_.keys(nconf.get('schema')).indexOf(what) === -1) {

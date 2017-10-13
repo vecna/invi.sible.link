@@ -1,7 +1,7 @@
 #!/usr/bin/env nodejs
 var _ = require('lodash');
 var Promise = require('bluebird');
-var debug = require('debug')('campaignChecker');
+var debug = require('debug')('analyzePhantom');
 
 var moment = require('moment');
 var nconf = require('nconf');
@@ -13,37 +13,24 @@ var company = require('../lib/company');
 var promises = require('../lib/promises');
 
 nconf.argv().env();
+nconf.file({ file: nconf.get('config') });
+nconf.file({ file: "config/campaigns.json" });
 
+var tname = promises.manageOptions();
+
+/* code begin here */
 var MISSING_NATION = 'UNKNOW';
 
-var cfgFile = nconf.get('config');
-if(!cfgFile) machetils.fatalError("config file has to be specify via CLI/ENV");
+var whenD = nconf.get('DAYSAGO') ? 
+    moment()
+        .startOf('day')
+        .subtract(_.parseInt(nconf.get('DAYSAGO')), 'd')
+        .toISOString() :
+    moment()
+        .startOf('day')
+        .toISOString();
+debug("Saving date set to: %s", whenD);
 
-nconf.file({ file: cfgFile });
-
-debug("campaign available %j", _.map(nconf.get('campaigns'), 'name'));
-
-var tname = nconf.get('campaign');
-if(!tname) machetils.fatalError("campaign has to be specify via CLI/ENV");
-
-debug("Looking for campaign %s", tname);
-
-var campConf = _.find(nconf.get('campaigns'), { name: tname });
-if(!campConf) machetils.fatalError("Not found campagin " + tname + " in config section");
-
-function buildURLs(memo, page) {
-	var promiseURLs = _.map(nconf.get('vantages'), function(vp) {
-		var url = [ vp.host, 'api', 'v1',
-					page.id, 'BP' ].join('/');
-		return {
-			url: url,
-			page: page.href,
-			VP: vp.name,
-			subjectId: page.id
-        }
-	});
-	return _.concat(memo, promiseURLs);
-};
 
 function onePerSite(retrieved) {
 
@@ -66,15 +53,6 @@ function onePerSite(retrieved) {
     }, []);
 };
 
-function getPromiseURLs(target) {
-    return promises.retrieve(nconf.get('DAYSAGO'), target.filter)
-        .tap(function(p) {
-            debug("Promises by %j: %d results (~ %d per day)",
-                target.filter, _.size(p),
-                _.round(_.size(p) / target.dayswindow, 2) );
-        })
-        .reduce(buildURLs, []);
-}
 
 function saveAll(retrieved) {
     return Promise
@@ -95,20 +73,21 @@ function saveAll(retrieved) {
             return _.concat(memo, target, inclusions);
         }, [])
         .map(function(evidenceO, i) {
-            var timeString = moment(evidenceO.requestTime).format("YYYY-MM-DD");
             evidenceO.id = various.hash({
-                daily: timeString,
-                campaign: campConf.name,
+                daily: whenD,
+                campaign: tname,
                 tested: evidenceO.href,
                 i: i
             });
+            evidenceO.when = new Date(whenD);
+            evidenceO.campaign = tname;
             return evidenceO;
         })
         .tap(function(content) {
             if(_.size(content)) {
                 debug("Saving in evidences %d object", _.size(content));
                 return machetils
-                    .mongoSave(nconf.get('schema').evidences, content, campConf.name);
+                    .statsSave(nconf.get('schema').evidences, content);
             }
             else
                 debug("No evidences to be saved");
@@ -175,12 +154,13 @@ function updateSurface(retrieved) {
         }, [])
         .then(company.leaderCompanies)
         .map(function(surfaceO) {
-            var timeString = moment().format("YYYY-MM-DD-HH");
             surfaceO.id = various.hash({
-                daily: timeString,
-                campaign: campConf.name,
+                daily: whenD,
+                campaign: tname,
                 tested: surfaceO.href
             });
+            surfaceO.when = new Date(whenD);
+            surfaceO.campaign = tname;
             return surfaceO;
         })
         .tap(function(content) {
@@ -188,7 +168,7 @@ function updateSurface(retrieved) {
 
             if(_.size(content)) {
                 return machetils
-                    .mongoSave(nconf.get('schema').surface, content, campConf.name);
+                    .statsSave(nconf.get('schema').surface, content);
             }
         });
 };
@@ -303,16 +283,19 @@ function sankeys(surface) {
         return { nodes: nodes, links: links };
     })
     .then(function(sanflows) {
+
         return mongo.writeOne(nconf.get('schema').sankeys, {
-            when: new Date(),
-            campaign: campConf.name,
+            when: new Date(whenD),
+            campaign: tname,
             nodes: sanflows.nodes,
             links: sanflows.links
         });
     });
 };
 
-return getPromiseURLs(campConf)
+return promises
+    .retrieve(nconf.get('DAYSAGO'), tname, 'basic')
+    .reduce(_.partial(promises.buildURLs, 'basic'), [])
     .tap(numerize)
     .map(machetils.jsonFetch, {concurrency: 5})
     .tap(numerize)

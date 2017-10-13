@@ -18,26 +18,50 @@ var VP = nconf.get('VP');
 if(_.isUndefined(VP) || _.size(VP) === 0 )
     throw new Error("Missing the Vantage Point (VP) in the config file");
 
+var mandatory = nconf.get('mandatory') ? true : false;
 var concValue = nconf.get('concurrency') || 1;
 concValue = _.parseInt(concValue);
 
 var directionByKind = {
     "basic": {
-        "plugins": [ "systemState", "phantom", "saver", "confirmation" ],
+        "plugins": [ "systemState", "phantom", "phantomSaver", "confirmation" ],
         "config": {
             maxSeconds: 30,
             root: "./phantomtmp",
             VP: VP
         }
-    }
+    },
+    "badger": {
+        "plugins": [ "systemState", "badger", "badgerSaver", "confirmation" ],
+        "config": {
+            maxSeconds: 50,
+            root: "./badgertmp",
+            VP: VP
+        }
+    },
+    "urlscan": {
+        "plugins": [ "systemState", "urlscan", "urlscanSaver", "confirmation" ],
+        "config": {
+            VP: VP
+        }
+    },
 };
+
+var type = nconf.get('type');
+/* validation of the type requested */
+if(_.keys(directionByKind).indexOf(type) === -1) {
+    console.error("Invalid --type "+type+" expected: "+
+        _.keys(directionByKind));
+    return -1;
+}
 
 function keepPromises(N, i) {
     var direction = directionByKind[N.needName];
     return Promise
         .reduce(direction.plugins, function(state, p) {
-            debug("%d Call %s about %s: state keys #%d",
-                i, p, state.href, _.size(_.keys(state)) );
+            debug("%d Call %s about %s(%s): state keys #%d",
+                i, p, state.href, state.taskName,
+                _.size(_.keys(state)) );
             return plugins[p](state, direction.config);
         }, N)
         .tap(function(product) {
@@ -50,7 +74,11 @@ var url = choputils
             .composeURL(
                 choputils.getVP(nconf.get('VP')),
                 nconf.get('source'),
-                { what: 'getTasks', param: nconf.get('amount') }
+                {
+                    what: mandatory ? 'getMandatory' : 'getTasks',
+                    type: type,
+                    param: nconf.get('amount')
+                }
             );
 
 debug("Starting with concurrency %d", concValue);
@@ -66,13 +94,7 @@ return request
     })
     .map(keepPromises, { concurrency: concValue })
     .then(function(results) {
-        /* check where 'completed' was false, is an anomaly to report back */
-        var timeouted = _.filter(results, { completed: false});
-        if(_.size(timeouted))
-          debug("To be: managed Timeouted %s", JSON.stringify(timeouted, undefined, 2));
-    })
-    .catch(function(error) {
-        console.trace();
-        debug("%s %s", error, JSON.stringify(error, undefined, 2));
-        debug("Unmanaged exception!");
+        var e = _.filter(results, { saveError: true});
+        if(_.size(e))
+          debug("Note: %d website failed on %d", _.size(e), _.size(results));
     });

@@ -1,3 +1,4 @@
+#!/usr/bin/env nodejs
 var express = require('express');
 var app = express();
 var server = require('http').Server(app);
@@ -39,21 +40,28 @@ Promise.resolve(
     promises.retrieve(nconf.get('DAYSAGO'))
 )
 .then(function(promises) {
-    var x = _.map(promises, function(p) {
-        return { 'keys': _.size(_.keys(p)) - 9 };
+    _.each(['badger', 'basic'], function(c) {
+        var f = _.filter(promises, {needName: c});
+        var x = _.map(f, function(p) {
+            return { 'keys': _.size(_.keys(p)) - 9 };
+        });
+        debug("Type %s, %d Promises, status: %s",
+            c, _.size(f),
+            JSON.stringify(_.countBy(x, 'keys'), undefined, 2)
+        );
     });
-    debug("initial check: %d Promises: %s",
-        _.size(promises), JSON.stringify(_.countBy(x, 'keys'), undefined, 2)
-    );
 });
 
 
 /* API specs: dispatchPromise is in /lib/, the argument is in ./routes */
 
-app.get('/api/v:version/getTasks/:vantagePoint/:amount', function(req, res) {
+app.get('/api/v:version/getTasks/:vantagePoint/:type/:amount', function(req, res) {
     return dispatchPromise('getTasks', routes, req, res);
 });
-app.get('/api/v:version/doneTask/:vantagePoint/:id', function(req, res) {
+app.get('/api/v:version/getMandatory/:vantagePoint/:type/:amount', function(req, res) {
+    return dispatchPromise('getMandatoryTasks', routes, req, res);
+});
+app.get('/api/v:version/doneTask/:vantagePoint/:type/:id', function(req, res) {
     return dispatchPromise('doneTask', routes, req, res);
 });
 

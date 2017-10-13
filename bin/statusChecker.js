@@ -16,10 +16,6 @@ function prepareURLs(srcobj) {
     return srcobj;
 }
 
-var taskName = nconf.get('taskName');
-if(!taskName)
-	throw new Error("need --taskName or env `taskName`");
-
 return Promise
     .map(nconf.get('sources'), prepareURLs)
     .map(machetils.jsonFetch, {concurrency: 4})

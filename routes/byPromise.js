@@ -8,13 +8,22 @@ var mongo = require('../lib/mongo');
 
 function byPromise(req) {
 
-    var promiseId = req.params.promiseId;
-    var filter = { promiseId: promiseId };
+    var filter = {
+        promiseId: req.params.promiseId,
+        needName: req.params.type
+    };
 
-    debug(" %s byPromise, filter %j", req.randomUnicode, filter);
+    if(req.params.type === 'basic')
+        var cName = nconf.get('schema').phantom;
+    else if(req.params.type === 'badger')
+        var cName = nconf.get('schema').badger;
+    else
+        throw new Error("Invalid type requested");
+
+    debug(" %s byPromise, in %s filter %j", req.randomUnicode, cName, filter);
 
     return mongo
-        .read(nconf.get('schema').phantom, filter)
+        .read(cName, filter)
         .map(function(ret) {
             return _.omit(ret, ['_id']);
         })

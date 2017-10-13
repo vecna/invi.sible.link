@@ -11,9 +11,9 @@
     "start": "echo 'nop, call run storyteller or the others components separately' ",
     "storyteller": "nodemon --config config/storyteller.json bin/storyteller",
     "social-pressure": "nodemon --config config/social-pressure.json bin/social-pressure",
-    "vigile": "nodemon --config config/vigile.json bin/vigile",
+    "vigile": "config=config/vigile.json DEBUG=vigile,lib:*,routes:* node bin/vigile",
     "exposer": "nodemon --config config/exposer.json bin/exposer",
-    "chopsticks": "DEBUG=chopsticks,lib:*,plugin:*,-lib:urlutils node bin/chopsticks"
+    "chopsticks": "DEBUG=*,-lib:urlutils,-lib:spawnCommand node bin/chopsticks"
   },
   "repository": {
     "type": "git",
@@ -32,6 +32,7 @@
   },
   "homepage": "https://github.com/vecna/invi.sible.link#readme",
   "dependencies": {
+    "abp-filter-parser": "^0.2.0",
     "bluebird": "^3.4.6",
     "body-parser": "^1.15.2",
     "bootstrap": "^3.3.7",
@@ -42,6 +43,7 @@
     "datatables.net": "^1.10.12",
     "datatables.net-dt": "^1.10.12",
     "debug": "^2.6.8",
+    "diskusage": "^0.2.3",
     "express": "^4.14.0",
     "jquery": "^3.1.1",
     "lodash": "^4.17.2",
