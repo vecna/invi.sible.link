@@ -16,8 +16,9 @@ function transform(coll) {
             memo[W] = { date: moment(entry.when).format(formatstr) };
             
         if(_.size(entry.name) <= 3) {
-            /* is a Vantage Point, the only with 'saved' */
+            /* AMS|HK|WS: is a Vantage Point, the only with 'saved' */
             _.set(memo[W], entry.name + 'saved', entry.phantom);
+            _.set(memo[W], entry.name + 'badger', entry.badger);
         } 
         _.set(memo[W], entry.name + 'accesses', entry.accesses);
         return memo;
