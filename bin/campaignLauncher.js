@@ -1,7 +1,7 @@
 #!/usr/bin/env nodejs
 var _ = require('lodash');
 
-var debug = require('debug')('director');
+var debug = require('debug')('campaignLauncher');
 var Promise = require('bluebird');
 var moment = require('moment');
 var spawnCommand = require('../lib/cmdspawn');
@@ -75,13 +75,12 @@ function rollDirections(reqname) {
             }
         }, 0);
     });
-
 }
 
 var requested = _.reduce(process.argv, function(memo, e) {
-    if(_.endsWith(e, 'node'))
+    if(_.endsWith(e, 'nodejs'))
         return memo;
-    if(_.endsWith(e, 'director.js'))
+    if(_.endsWith(e, 'campaignLauncher.js'))
         return memo;
     memo.push(e);
     return memo;
