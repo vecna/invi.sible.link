@@ -74,7 +74,7 @@ function rollDirections(reqname) {
                 taskName: reqname
             }
         }, 0);
-    });
+    }, { concurrency: 1});
 }
 
 var requested = _.reduce(process.argv, function(memo, e) {
@@ -86,10 +86,15 @@ var requested = _.reduce(process.argv, function(memo, e) {
     return memo;
 }, []);
 
-debug("Considering campaigns: %s, using PATH %s", requested, PATH);
+if(_.size(requested) === 0) {
+    console.log("Because no campaign name get provided, all are pick");
+    requested = _.map(C, 'name');
+}
+
+debug("Looking for: %s, in PATH variable: %s", requested, PATH);
 
 return Promise
-    .map(requested, rollDirections)
+    .map(requested, rollDirections, { concurrency: 1 })
     .tap(function() {
         console.log("Execution completed, wait command returns...");
     });
