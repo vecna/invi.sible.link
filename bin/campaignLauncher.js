@@ -74,7 +74,8 @@ function rollDirections(reqname) {
                 taskName: reqname
             }
         }, 0);
-    }, { concurrency: 1});
+    }, { concurrency: 1})
+    .delay(1000);
 }
 
 var requested = _.reduce(process.argv, function(memo, e) {

@@ -4,8 +4,7 @@
   "sources": [
       { "name": "HK", "host": "http://hk-vp.sible.link:7300" },
       { "name": "AMS", "host": "http://ams-vp.sible.link:7300" },
-      { "name": "WS", "host": "http://ws-vp.sible.link:7300" },
-      { "name": "Core", "host": "https://invi.sible.link" }
+      { "name": "WS", "host": "http://ws-vp.sible.link:7300" }
   ],
   "target": "statistics"
 }
