@@ -64,7 +64,7 @@ function rollDirections(reqname) {
     var csvpath = path.join(PATH, found.cfgf);
     debug("Processing %s: %s", reqname, csvpath);
 
-    _.map(conflist, function(kindOf) {
+    return Promise.map(conflist, function(kindOf) {
         return spawnCommand({
             binary: '/usr/bin/env',
             args: [ 'nodejs', 'bin/directionTool.js' ],
@@ -74,8 +74,8 @@ function rollDirections(reqname) {
                 taskName: reqname
             }
         }, 0);
-    }, { concurrency: 1})
-    .delay(1000);
+    })
+    .delay(2000);
 }
 
 var requested = _.reduce(process.argv, function(memo, e) {
