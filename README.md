@@ -1,6 +1,17 @@
 # invi.sible.link
 ### Toolchain command reference
 
+# Usage made Simple
+
+### Server
+
+(services has to be: storyteller, vigile, optional is social-pressure)
+
+
+### Vantage Point
+
+(has to run exposer, and `ISL-scheduled --task chopsticks` has to be in crontab every two minutes)
+
 This is toolchain compsed by many small tools. The goal has been reduce 1 functionality per tool. below, or on the [website](https://invi.sible.link) you can find more contextual details. If you want get in touch, [claudio at tracking dot exposed](keybase.io/vecna) is the email to write to, the link lead to the PGP key.
 
 ### Installation
