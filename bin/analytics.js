@@ -38,7 +38,12 @@ var mongoQlist = _.reduce(nconf.get('schema'), function(memo, column, name) {
     }
     if(!tv)
         throw new Error("has to be configured " + name);
-    var timef = { "$gt": new Date(moment().subtract(24, 'h')) };
+
+    var timestr = _.isUndefined(nconf.get('DAYSAGO')) ? 
+                    moment().subtract(24, 'h').format() :
+                    moment().subtract(_.parseInt(nconf.get('DAYSAGO')), 'd').format();
+    var timef = { "$gt": new Date(timestr) };
+
     var filter = _.set({}, tv, timef);
     var sort =  _.set({}, tv, -1);
     memo.push(
