@@ -1,7 +1,7 @@
 #!/usr/bin/env nodejs
 var _ = require('lodash');
 var Promise = require('bluebird');
-var debug = require('debug')('testnow');
+var debug = require('debug')('bin:queueSite');
 var nconf = require('nconf');
 var moment = require('moment');
 

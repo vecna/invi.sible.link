@@ -1,17 +1,9 @@
 #!/usr/bin/env nodejs
 var _ = require('lodash');
-var Promise = require('bluebird');
-var util = require('util');
-var request = Promise.promisifyAll(require('request'));
-var fs = Promise.promisifyAll(require('fs'));
-var debug = require('debug')('directionTool');
-var nconf = require('nconf');
-var process = require('process');
+var debug = require('debug')('bin:queueCampaign');
 var moment = require('moment');
+var nconf = require('nconf');
 
-var mongo = require('../lib/mongo');
-var various = require('../lib/various');
-var promises = require('../lib/promises');
 var queue = require('../lib/queue');
 
 nconf.argv().env().file({ file: 'config/vigile.json' });

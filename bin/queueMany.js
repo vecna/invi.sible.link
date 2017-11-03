@@ -1,83 +1,72 @@
 #!/usr/bin/env nodejs
-
 var _ = require('lodash');
-var debug = require('debug')('campaignLauncher');
+var debug = require('debug')('bin:queueMany');
 var Promise = require('bluebird');
 var moment = require('moment');
-var spawnCommand = require('../lib/cmdspawn');
 var path = require('path');
 var nconf = require('nconf');
+var fs = require('fs');
 
-var ccfg = 'config/experimentsCampaign.json';
+var queue = require('../lib/queue');
+
 var confcamp = 'config/campaigns.json';
+debug("Loading hardcoded", confcamp);
 
-debug("Loading hardcoded %s", ccfg, "and", confcamp);
-nconf
-    .argv()
-    .env()
-    .file({ file: ccfg })
-    .file({ file: 'config/campaigns.json' });
+nconf.argv().env().file({ file: confcamp });
 
-var done = false;
+var campaigns = nconf.get('campaigns');
+var campaignSequence = [];
 
-var confs = ['config/dailyBadger.json', 'config/dailyPhantom.json'];
+function csvExists(root, fname) {
+    var testp = path.join(root, fname);
+    return fs.existsSync(testp) ? testp : null;
+};
 
-function rollDirections(reqname) {
+function prepareCampaign(cname, cinfo) {
+    /* not exactly the best, but I avoided loop because the same file was appearing twice */
+    var paths = [ '../campaigns', './campaigns/', '../' ];
+    return _.reduce(cinfo, function(memo, centry) {
 
-    if(_.startsWith(reqname, '-')) {
-        reqname = _.trim(reqname, '-');
-        var conflist = [ confs[1] ];
-        debug("%s will be setup only for phantom", reqname);
-    } else if(_.startsWith(reqname, '+')) {
-        reqname = _.trim(reqname, '+');
-        var conflist = [ confs[0] ];
-        debug("%s will be setup only for phantom", reqname);
-    } else 
-        var conflist = confs;
+        var z = csvExists(paths[0], centry.csv);
+        var o = csvExists(paths[1], centry.csv);
+        var t = csvExists(paths[2], centry.csv);
 
-    var found = _.find(C, { name: reqname });
-    if(!found) {
-        debug("Not found %s", reqname);
-        return null;
+        if(z)
+            memo.push({ macro: cname, name: centry.name, csv: z });
+        else if(o)
+            memo.push({ macro: cname, name: centry.name, csv: o });
+        else if(t)
+            memo.push({ macro: cname, name: centry.name, csv: t });
+        else
+            debug("Path not found for campaing %s", centry.name);
+        return memo;
+
+    }, []);
+}
+
+_.each(campaigns, function(campaign, cname) {
+    /* campaign is the campaign name, if exists in nconf, is because it is specify with --campaignName */
+    if(nconf.get(cname)) {
+        var cinfo = _.get(campaigns, cname);
+        debug("Starting campaign %s, composed by %d files", cname, _.size(cinfo) );
+        campaignSequence = _.concat(campaignSequence, prepareCampaign(cname, cinfo) );
     }
+});
 
-    var csvpath = path.join(PATH, found.cfgf);
-    debug("Processing %s: %s", reqname, csvpath);
-
-    return Promise.map(conflist, function(kindOf) {
-        return spawnCommand({
-            binary: '/usr/bin/env',
-            args: [ 'nodejs', 'bin/directionTool.js' ],
-            environment: {
-                needsfile: kindOf,
-                csv: csvpath,
-                taskName: reqname
-            }
-        }, 0);
-    })
-    .delay(2000);
-}
-
-debugger;
-var requested = _.reduce(process.argv, function(memo, e) {
-    if(_.startsWith(e, 'node'))
-        return memo;
-    if(_.endsWith(e, 'campaignLauncher.js'))
-        return memo;
-    memo.push(e);
-    return memo;
-}, []);
-
-if(_.size(requested) === 0) {
+if(!_.size(campaignSequence)) {
     console.log("Because no campaign name get provided, all are pick");
-    requested = _.map(C, 'name');
+    _.each(campaigns, function(cinfo, cname) {
+        campaignSequence = _.concat(campaignSequence, prepareCampaign(cname, cinfo));
+    });
 }
 
-debug("Looking for: %s, in PATH variable: %s", requested, PATH);
+nconf.argv().env().file({ file: 'config/vigile.json' });
 
-return Promise
-    .map(requested, rollDirections, { concurrency: 1 })
-    .tap(function() {
-        console.log("Execution completed, wait command returns...");
-    });
-
+debug("There are %d files to be commited", _.size(campaignSequence));
+return Promise.map(campaignSequence, function(centry) {
+    return queue
+        .csvToDirectives(centry.csv, ["basic", "badger"], centry.name)
+        .then(queue.add)
+})
+.then(_.flatten)
+.then(queue.report);
