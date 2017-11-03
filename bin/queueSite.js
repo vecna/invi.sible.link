@@ -8,16 +8,18 @@ var moment = require('moment');
 var mongo = require('../lib/mongo');
 var various = require('../lib/various');
 var promises = require('../lib/promises');
+var queue = require('../lib/queue');
 
 nconf.argv().env().file({ file: 'config/vigile.json' });
 
-var target = nconf.get('target');
+var url = nconf.get('url');
 var testkind = nconf.get('type');
 var description = nconf.get('description') || "";
+var campaign = nconf.get('campaign') || "manuallyInserted";
 
 var accepted = [ "basic", "badger", "urlscan" ] ;
-if(!target || !testkind) {
-    console.log("required variables target (url) and type:", accepted);
+if(!url || !testkind) {
+    console.log("required variables --url http://url.. --type ", accepted);
     return 1;
 }
 
@@ -26,21 +28,10 @@ if(accepted.indexOf(testkind) === -1) {
     return 1;
 }
 
-var now = moment().startOf('day');
-var directive = {
-    needName: testkind,
-    start: new Date(now.format("YYYY-MM-DD")),
-    id: various.hash({
-        'href': target,
-        'unique': _.random(1, 0xffffff)
-    }),
-    href: target,
-    description: description,
-    rank: 0,
-    subjectId: various.hash({
-        'manuallyInserted': now.format("YYYY-MM-DD")
-    })
-};
+var now = moment();
+var directive = queue.buildDirective(testkind, now, url, campaign, description, 0);
 
-debug("Writing %s", JSON.stringify(directive, undefined, 2));
-return mongo.writeOne(nconf.get('schema').promises, directive);
+return queue
+    .add([ directive ])
+    .tap(queue.report);
+

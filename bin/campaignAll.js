@@ -7,10 +7,13 @@ var nconf = require('nconf');
 var debug = require('debug')('campaignAll');
 
 var ccfg = 'config/experimentsCampaign.json';
-debug("Loading hardcoded %s", ccfg);
-nconf.argv().env().file({ file: ccfg });
+var confcamp = 'config/campaigns.json';
 
-_.each(_.map(nconf.get('campaigns'), 'name'), function(avail) {
+debug("Loading hardcoded %s", ccfg, "and", confcamp);
+nconf.argv().env().file({ file: ccfg }).file({ file: 'config/campaigns.json' });
+var done = false;
+
+_.each(nconf.get('campaigns'), function(avail) {
     if(nconf.get(avail)) {
         var mockenv = {
             DEBUG: '*',
@@ -23,3 +26,6 @@ _.each(_.map(nconf.get('campaigns'), 'name'), function(avail) {
         child_process.execSync(cmd, { 'env': mockenv });
     }
 });
+
+if(!done)
+    console.log("Error, no campaings specified in the command, you have to use --campaigName --otherName");

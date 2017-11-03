@@ -18,7 +18,7 @@ console.log("config file: " + cfg);
 nconf.file({ file: cfg });
 
 var timeVar = {
-    promises: 'start',
+    promises2: 'start',
     accesses: 'when',
     statistics: null,
     surface: 'when',

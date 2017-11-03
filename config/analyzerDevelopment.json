@@ -1,7 +1,6 @@
 {
-  "name": "campaignChecker",
   "schema": {
-    "promises": "promises",
+    "promises": "promises2",
     "sankeys": "sankeys",
     "evidences": "evidences",
     "surface": "surface",
@@ -10,6 +9,6 @@
   },
   "mongodb": "mongodb://localhost/ivl",
   "vantages": [
-	{ "name": "casa", "host": "http://127.0.0.1:7300" }
+	{ "name": "home", "host": "http://127.0.0.1:7300" }
   ]
 }

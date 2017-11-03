@@ -1,3 +1,0 @@
-#!/bin/sh
-su storyteller -c "cd ~/invi.sible.link; git pull origin master && npm run build; date >> /tmp/storyteller_localUpdate.log"
-# bin/talktobobby "https://invi.sible.link" "updated repository using master branch"

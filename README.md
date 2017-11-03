@@ -1,12 +1,35 @@
 # invi.sible.link
 ### Toolchain command reference
 
-# Usage made Simple
+## Command scripts
 
-### Server
+    $ DEBUG=* bin/queueMany.js --itatopex --catalunya --halal
+
+remind: with **+** means **only badger**, with **-**, means **only phantom**. without imply both
+
+    $ DEBUG=* bin/queueCampaign.js --csv path/to/list.csv --campaign itatopex --type badger
+
+This commands provide more control, if --type is not specifiy, all are inserted.
+
+    $ DEBUG=* bin/queueSite.js --url http://www.giantitp.com --type badger
+
+The impact can be see with
+
+    $ DEBUG=* bin/analytics.js
+
+The collection happen with:
+
+    $ npm run chopsticks
+
+When the collection is complete, the analysis can be done
+    
+    $ config=config/analyzerDevelopment.json DEBUG=* bin/analyzeBadger.js --campaign catalunya
+    $ config=config/analyzerDevelopment.json DEBUG=* bin/analyzePhantom.js --campaign catalunya
+    $ config=config/analyzerDevelopment.json DEBUG=* bin/analyzeGroup.js --campaign catalunya
+
+## Servers
 
 (services has to be: storyteller, vigile, optional is social-pressure)
-
 
 ### Vantage Point
 
@@ -46,38 +69,6 @@ When you are managing a campaign there is this command to be executed in the Coo
 on the vantage point:
 
     npm run exposer
-
-# Command scripts
-
-    $ DEBUG=* bin/director.js +itatopex catalunya
-
-remind: with **+** means **only badger**, with **-**, means **only phantom**. without imply both
-
-    $ npm run chopsticks
-    
-    $ config=config/analyzerDevelopment.json DEBUG=* bin/analyzeBadger.js --campaign catalunya
-    $ config=config/analyzerDevelopment.json DEBUG=* bin/analyzePhantom.js --campaign catalunya
-    $ config=config/analyzerDevelopment.json DEBUG=* bin/analyzeGroup.js --campaign catalunya
-
-
-# information below are unmaintained 
-
-### Installing Thug
-
-Following https://buffer.github.io/thug/doc/build.html
-
-    # aptitude install libboost-all-dev graphviz libffi-dev libfuzzy-dev autoconf libgraphviz-dev pkg-config python-pip
-    # aptitude install libtiff5-dev libjpeg8-dev zlib1g-dev libfreetype6-dev liblcms2-dev libwebp-dev tcl8.6-dev tk8.6-dev python-tk
-    # aptitude install python-libemu libemu-dev
-    # pip install pygraphviz --install-option="--include-path=/usr/include/graphviz" --install-option="--library-path=/usr/lib/graphviz/"
-    # pip install pyv8
-    # pip install thug
-
-(otherwise I'll try with docker it don't work in the vantage point: the requirements here are a lot)
-
-### Experiments with Thug
-
-please refer to the file THUG.md
 
 
 # Still need revision below

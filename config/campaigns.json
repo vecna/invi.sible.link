@@ -1,21 +1,28 @@
-{
-    "campaigns": [
-        "itatopex",
-        "germany",
-        "culture",
-        "travel",
-        "halal",
-        "mosques",
-        "irantrex",
-        "example",
-        "gptrex",
-        "clinics-MX",
-        "clinics-CL",
-        "clinics-BR",
-        "clinics-CO",
-        "catalunya",
-        "usprotest",
-        "kenya3",
-        "social-media-feed"
-    ]
-}
+{ "campaigns": [
+    "name": "clinics-MX",
+    "cfgf": "chuptrex/clinics-MX.csv" }, {
+    "name": "clinics-CL",
+    "cfgf": "chuptrex/clinics-CL.csv" }, {
+    "name": "clinics-BR",
+    "cfgf": "chuptrex/clinics-BR.csv" }, {
+    "name": "clinics-CO",
+    "cfgf": "chuptrex/clinics-CO.csv" }, {
+
+    "name": "halal",
+    "cfgf": "amtrex/halal-list.csv"   }, {
+    "name": "culture",
+    "cfgf": "amtrex/culture-list.csv" }, {
+    "name": "mosques",
+    "cfgf": "amtrex/mosques-list.csv" }, {
+    "name": "travel",
+    "cfgf": "amtrex/travel-list.csv"  }, {
+
+    "name": "irantrex",
+    "cfgf": "irantrex/iran1st.csv"    }, {
+    "name": "itatopex",
+    "cfgf": "itatopex/lista.csv"      }, {
+    "name": "gptrex",
+    "cfgf": "gptrex/gptrex.csv"       }, {
+    "name": "catalunya",
+    "cfgf": "catalunya/lista.csv"     }
+]}
