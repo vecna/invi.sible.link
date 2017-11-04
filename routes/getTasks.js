@@ -22,8 +22,8 @@ function getTasks(req) {
     /* this is redundant with lib/promises, but here there is 
      * specify the vantagePoint filter below */
     var selector = {
-        "start": { $lt: new Date( moment().startOf('day').add(1, 'd').toISOString() ),
-                   $gt: new Date( moment().startOf('day').toISOString() ) },
+        "start": { $lte: new Date( moment().startOf('day').add(1, 'd').toISOString() ),
+                   $gte: new Date( moment().startOf('day').toISOString() ) },
         "kind": type
     };
     _.set(selector, vantagePoint, { "$exists": false });
@@ -45,6 +45,9 @@ function getTasks(req) {
                         json: c 
                     };
                 });
+        })
+        .catch(function(error) {
+            debug("Exception: %s", error);
         });
 };
 

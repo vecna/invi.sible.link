@@ -61,7 +61,7 @@ function keepPromises(N, i) {
     return Promise
         .reduce(direction.plugins, function(state, p) {
             debug("%d Call %s about %s(%s): state keys #%d",
-                i, p, state.href, state.taskName,
+                i, p, state.href, state.campaign,
                 _.size(_.keys(state)) );
             return plugins[p](state, direction.config);
         }, N)

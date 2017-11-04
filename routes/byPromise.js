@@ -9,8 +9,7 @@ var mongo = require('../lib/mongo');
 function byPromise(req) {
 
     var filter = {
-        promiseId: req.params.promiseId,
-        kind: req.params.type
+        promiseId: req.params.promiseId
     };
 
     if(req.params.type === 'basic')

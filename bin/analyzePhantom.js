@@ -12,11 +12,12 @@ var machetils = require('../lib/machetils');
 var company = require('../lib/company');
 var promises = require('../lib/promises');
 
+/* ENV/options init */
 nconf.argv().env();
-nconf.file({ file: nconf.get('config') });
-nconf.file({ file: "config/campaigns.json" });
-
+if(!nconf.get('config')) { console.log("--config is necessary"); return }
+/* tname uses config/campaigns.json */
 var tname = promises.manageOptions();
+nconf.argv().env().file({ file: nconf.get('config') });
 
 /* code begin here */
 var MISSING_NATION = 'UNKNOW';
@@ -173,10 +174,6 @@ function updateSurface(retrieved) {
         });
 };
 
-function numerize(list) {
-    debug("The list in this step has %d elements", _.size(list));
-}
-
 function sankeys(surface) {
 
   var limit = 10;
@@ -295,17 +292,20 @@ function sankeys(surface) {
 
 return promises
     .retrieve(nconf.get('DAYSAGO'), tname, 'basic')
+    .tap(machetils.numerize)
     .reduce(_.partial(promises.buildURLs, 'basic'), [])
-    .tap(numerize)
+    .tap(machetils.numerize)
     .map(machetils.jsonFetch, {concurrency: 5})
-    .tap(numerize)
+    .tap(machetils.numerize)
     .then(_.compact)
     .then(onePerSite)
-    .tap(numerize)
+    .tap(machetils.numerize)
     .map(company.attribution)
     .map(company.countries)
+    .tap(machetils.numerize)
     .tap(saveAll)
     .then(updateSurface)
+    .tap(machetils.numerize)
     .then(sankeys)
     .tap(function(r) {
         debug("Operationg compeleted successfully");

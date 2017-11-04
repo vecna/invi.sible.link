@@ -196,8 +196,7 @@ module.exports = function(val, conf) {
     /* indepotent function saver is */
     return savePhantom(val, conf)
         .catch(function(error) {
-            debug("Exception managed! %s, not .phantom for id %s",
-                    error, core.promisedId);
+            debug("Exception: %s with %s", error, JSON.stringify(val, undefined, 2));
             val.saveError = true;
         })
         .return(val)

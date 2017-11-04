@@ -10,13 +10,17 @@ function doneTask(req) {
     var vantagePoint = req.params.vantagePoint;
     var pid = {id: req.params.id, kind: req.params.type};
 
-    debug("doneTask, marking confirmation for %j", pid);
+    debug("doneTask, marking confirmation for %j on VP %s",
+        pid, vantagePoint);
 
     return updateVP.byId(pid, vantagePoint, true)
         .then(function(c) { 
             return {
                 json: _.extend(pid, {'result': 'OK'})
             }
+        })
+        .catch(function(error) {
+            debug("Exception: %s", error);
         });
 };
 

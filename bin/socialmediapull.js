@@ -25,7 +25,7 @@ function addNewHrefs(input) {
 
     var direction = {
         href: input.link,
-        taskName: "social-media-feed",
+        campaign: "social-media-feed",
         start: moment().startOf('day')
     };
 

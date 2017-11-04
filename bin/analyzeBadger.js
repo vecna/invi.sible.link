@@ -15,10 +15,10 @@ var promises = require('../lib/promises');
 /* ENV/options init */
 nconf.argv().env();
 if(!nconf.get('config')) { console.log("--config is necessary"); return }
-nconf.file({ file: nconf.get('config') });
-nconf.file({ file: "config/campaigns.json" }); 
-
+/* tname uses config/campaigns.json */
 var tname = promises.manageOptions();
+nconf.argv().env().file({ file: nconf.get('config') });
+
 
 /* still to be decided how to clean this */
 var whenD = nconf.get('DAYSAGO') ?
@@ -60,10 +60,6 @@ function saveAll(content) {
     }
     else
         debug("No evidences to be saved");
-}
-
-function numerize(list) {
-    debug("The list in this step has %d elements", _.size(list));
 }
 
 function clean(memo, imported) {
@@ -137,17 +133,17 @@ function saveSummary(content) {
 return promises
     .retrieve(nconf.get('DAYSAGO'), tname, 'badger')
     .reduce(_.partial(promises.buildURLs, 'badger'), [])
-    .tap(numerize)
+    .tap(machetils.numerize)
     .map(machetils.jsonFetch, {concurrency: 5})
-    .tap(numerize)
+    .tap(machetils.numerize)
     .then(_.compact)
     .then(onePerSite)
-    .tap(numerize)
+    .tap(machetils.numerize)
     .reduce(clean, [])
-    .tap(numerize)
+    .tap(machetils.numerize)
     .tap(saveAll)
     .then(summary)
-    .tap(numerize)
+    .tap(machetils.numerize)
     .tap(saveSummary)
     .tap(function(r) {
         debug("Operations completed");

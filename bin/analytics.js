@@ -53,7 +53,7 @@ var mongoQlist = _.reduce(nconf.get('schema'), function(memo, column, name) {
             .read(column, filter, sort)
             .then(function(e) {
                 return {
-                    sample: e[0],
+                    sample: _.size(e) ? _.sample(e) : null,
                     count: _.size(e),
                     name: name
                 }
@@ -65,6 +65,6 @@ var mongoQlist = _.reduce(nconf.get('schema'), function(memo, column, name) {
 return Promise.all(mongoQlist)
     .map(function(c) {
         debug("%s\t%d", c.name, c.count);
-        if(nconf.get('v'))
+        if(nconf.get('v') && c.sample)
             console.log(JSON.stringify(c.sample, undefined, 2));
     });
