@@ -8,7 +8,7 @@ var updateVP = require('../lib/updateVP');
 function doneTask(req) {
     /* switch the $VantagePoint: false to true */
     var vantagePoint = req.params.vantagePoint;
-    var pid = {id: req.params.id, needName: req.params.type};
+    var pid = {id: req.params.id, kind: req.params.type};
 
     debug("doneTask, marking confirmation for %j", pid);
 

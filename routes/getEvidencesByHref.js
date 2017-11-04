@@ -22,7 +22,7 @@ function getEvidencesByHref(req) {
     filter.href = new RegExp(req.params.href);
 
     var omitf = [ "VP", "_id", "campaign", "domain",
-                  "href", "id", "needName", "tld", "promiseId",
+                  "href", "id", "kind", "tld", "promiseId",
                   "subdomain", "subjectId", "version" ];
 
     debug("getEvidencesByHref with filter %j", filter);

@@ -68,7 +68,7 @@ function numerize(list) {
 
 function clean(memo, imported) {
 
-    var fields = [ "subjectId", "href", "needName", "promiseId", "version", "VP", "when"];
+    var fields = [ "subjectId", "href", "kind", "promiseId", "version", "VP", "when"];
 
     _.each(imported.data, function(entry) {
 
@@ -78,7 +78,7 @@ function clean(memo, imported) {
                 return memo;
             }, 0);
 
-        /* inclusion + fingerprinting: execution ordeer MATTER! */
+        /* inclusion + fingerprinting: execution order MATTER! */
         entry.scriptHash = various.hash(_.omit(entry, fields));
 
         entry.acquired = new Date(entry.when);
@@ -112,7 +112,7 @@ function summary(detailsL) {
             js: []
         };
 
-        var fixedf = ['inclusion', 'href', 'needName',
+        var fixedf = ['inclusion', 'href', 'kind',
                       'promiseId', 'version', 'VP', 'when', 'scriptacts',
                       'scriptHash', 'acquired', 'campaign', 'id', '_id' ];
 

@@ -13,10 +13,11 @@ var mongo = require('../lib/mongo');
 var various = require('../lib/various');
 var promises = require('../lib/promises');
 
+
 nconf.argv().env().file({ file: 'config/vigile.json' });
-var type = nconf.get('type');
-if(type !== 'basic' && type !== 'badger' ) {
-    console.log("Invalid 'type' requested!");
+var kind = nconf.get('kind');
+if(kind !== 'basic' && kind !== 'badger' ) {
+    console.log("Invalid 'kind' requested!");
     process.exit(0);
 }
 
@@ -34,10 +35,10 @@ function addNewHrefs(input) {
     });
     direction.start = new Date(direction.start.format("YYYY-MM-DD"));
 
-    direction.needName = type;
+    direction.kind = kind;
     direction.id = various.hash({
         'href': direction.href,
-        'type': direction.needName,
+        'kind': direction.kind,
         'start': direction.start,
     });
 

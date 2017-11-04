@@ -56,7 +56,8 @@ if(_.keys(directionByKind).indexOf(type) === -1) {
 }
 
 function keepPromises(N, i) {
-    var direction = directionByKind[N.needName];
+    /* N is the need, the promise, the object written by lib/queue.js */
+    var direction = directionByKind[N.kind];
     return Promise
         .reduce(direction.plugins, function(state, p) {
             debug("%d Call %s about %s(%s): state keys #%d",

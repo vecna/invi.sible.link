@@ -19,7 +19,8 @@ The impact can be see with
 
 The collection happen with:
 
-    $ npm run chopsticks
+    $ npm run badger
+    $ npm run phantom
 
 When the collection is complete, the analysis can be done
     

@@ -10,7 +10,7 @@ function byPromise(req) {
 
     var filter = {
         promiseId: req.params.promiseId,
-        needName: req.params.type
+        kind: req.params.type
     };
 
     if(req.params.type === 'basic')

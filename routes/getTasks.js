@@ -22,9 +22,9 @@ function getTasks(req) {
     /* this is redundant with lib/promises, but here there is 
      * specify the vantagePoint filter below */
     var selector = {
-        "start": { $lt: new Date(),
-                   $gt: new Date( moment().startOf('day').subtract(1, 'm').toISOString() ) },
-        "needName": type
+        "start": { $lt: new Date( moment().startOf('day').add(1, 'd').toISOString() ),
+                   $gt: new Date( moment().startOf('day').toISOString() ) },
+        "kind": type
     };
     _.set(selector, vantagePoint, { "$exists": false });
 

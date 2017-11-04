@@ -111,7 +111,7 @@ function phantomCleaning(memo, rr, i) {
         };
         if(rr.method === "POST") {
             memo[id].post = true;
-            debug("Manage POST! %j", rr);
+            memo[id].postContent = rr;
         }
 
         /* if is not the first object, don't save phantom and disk 

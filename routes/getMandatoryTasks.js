@@ -17,11 +17,12 @@ function getMandatoryTasks(req) {
     debug("%s getMandatoryTasks max %d from %s %s",
         req.randomUnicode, amount, vantagePoint, type);
 
-    /* this is redundant with lib/promises, but here there is 
-     * specify the vantagePoint filter below */
+    /* this could looks redundant with lib/promises,
+     * but here is ignored the vantagePoint condition */
     var selector = {
-        "start": new Date( moment().startOf('day').format("YYYY-MM-DD")),
-        needName: type
+        "start": { $lt: new Date( moment().startOf('day').add(1, 'd').toISOString() ),
+                   $gt: new Date( moment().startOf('day').toISOString() ) },
+        kind: type
     };
 
     return mongo

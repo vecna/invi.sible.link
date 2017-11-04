@@ -41,7 +41,7 @@ Promise.resolve(
 )
 .then(function(promises) {
     _.each(['badger', 'basic'], function(c) {
-        var f = _.filter(promises, {needName: c});
+        var f = _.filter(promises, {kind: c});
         var x = _.map(f, function(p) {
             return { 'keys': _.size(_.keys(p)) - 9 };
         });
