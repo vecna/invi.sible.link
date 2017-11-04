@@ -18,7 +18,7 @@ console.log("config file: " + cfg);
 nconf.file({ file: cfg });
 
 var timeVar = {
-    promises2: 'start',
+    promises: 'start',
     accesses: 'when',
     statistics: null,
     surface: 'when',
@@ -36,8 +36,10 @@ var mongoQlist = _.reduce(nconf.get('schema'), function(memo, column, name) {
         debug("skipping %s", name);
         return memo;
     }
-    if(!tv)
-        throw new Error("has to be configured " + name);
+    if(!tv) {
+        console.log("has to be configured " + name);
+        process.exit(1);
+    }
 
     var timestr = _.isUndefined(nconf.get('DAYSAGO')) ? 
                     moment().subtract(24, 'h').format() :
