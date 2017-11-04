@@ -19,7 +19,7 @@ function byPromise(req) {
     else
         throw new Error("Invalid type requested");
 
-    debug(" %s byPromise, in %s filter %j", req.randomUnicode, cName, filter);
+    debug("%s byPromise, in [%s] filter %j", req.randomUnicode, cName, filter);
 
     return mongo
         .read(cName, filter)

@@ -44,9 +44,9 @@ function saveBadger(gold, conf) {
     core.promiseId = gold.id;
     core.version = 1;
     core.VP = conf.VP;
-    core.when = new Date(moment().toISOString());
+    core.when = new Date();
 
-    debug("Looking for source %s", sourcefile);
+    debug("%s: Looking for json output in %s", core.promiseId, sourcefile);
 
     return fs
         .readFileAsync(sourcefile, 'utf8')
