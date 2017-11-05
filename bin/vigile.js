@@ -6,7 +6,6 @@ var _ = require('lodash');
 var moment = require('moment');
 var bodyParser = require('body-parser');
 var Promise = require('bluebird');
-var mongodb = Promise.promisifyAll(require('mongodb'));
 var debug = require('debug')('vigile');
 var nconf = require('nconf');
 
@@ -18,14 +17,11 @@ var routes = require('../routes/_vigile');
 var dispatchPromise = require('../lib/dispatchPromise');
 var defaultSetup = require('../lib/sharedExpress');
 
-
 var cfgFile = "config/vigile.json";
 var redOn = "\033[31m";
 var redOff = "\033[0m";
 
-nconf.argv()
-     .env()
-     .file({ file: cfgFile });
+nconf.argv().env().file({ file: cfgFile });
 console.log(redOn + "ઉ nconf loaded, using " + cfgFile + redOff);
 
 /* everything begin here, welcome */
@@ -52,9 +48,9 @@ Promise.resolve(
     });
 });
 
-
-/* API specs: dispatchPromise is in /lib/, the argument is in ./routes */
-
+app.get('/api/v:version/queueCampaigns', function(req, res) {
+    return dispatchPromise('queueCampaigns', routes, req, res);
+});
 app.get('/api/v:version/getTasks/:vantagePoint/:type/:amount', function(req, res) {
     return dispatchPromise('getTasks', routes, req, res);
 });

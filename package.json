@@ -11,7 +11,7 @@
     "start": "echo 'nop, call run storyteller or the others components separately' ",
     "storyteller": "nodemon --config config/storyteller.json bin/storyteller",
     "social-pressure": "nodemon --config config/social-pressure.json bin/social-pressure",
-    "vigile": "config=config/vigile.json DEBUG=vigile,lib:*,routes:* node bin/vigile",
+    "vigile": "nodemon --config config/vigile.json bin/vigile",
     "exposer": "DEBUG=*:-express:* node bin/exposer",
     "badger": "type=badger DEBUG=*,-lib:urlutils,-lib:spawnCommand node bin/chopsticks",
     "phantom": "type=basic DEBUG=*,-lib:urlutils,-lib:spawnCommand node bin/chopsticks"
