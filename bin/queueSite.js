@@ -13,18 +13,18 @@ var queue = require('../lib/queue');
 nconf.argv().env().file({ file: 'config/vigile.json' });
 
 var url = nconf.get('url');
-var testkind = nconf.get('type');
+var testkind = nconf.get('kind');
 var description = nconf.get('description') || "";
 var campaign = nconf.get('campaign') || "manuallyInserted";
 
 var accepted = [ "basic", "badger", "urlscan" ] ;
 if(!url || !testkind) {
-    console.log("required variables --url http://url.. --type ", accepted);
+    console.log("required variables --url http://url.. --kind ", accepted);
     return 1;
 }
 
 if(accepted.indexOf(testkind) === -1) {
-    console.log("type not accepted", testkind, accepted);
+    console.log("kind not accepted", testkind, accepted);
     return 1;
 }
 

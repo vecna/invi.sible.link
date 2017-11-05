@@ -12,77 +12,37 @@ var moment = require('moment');
 var mongo = require('../lib/mongo');
 var various = require('../lib/various');
 var promises = require('../lib/promises');
+var queue = require('../lib/queue');
 
+nconf.argv().env().file({ file: 'config/socialmedia.json' });
+
+var remote = nconf.get('remote');
+var testkind = nconf.get('kind');
+var campaign = nconf.get('campaign') || "socialmedia";
+var now = moment();
+var endpoint = nconf.get('endpoint');
+var url = remote + endpoint;
+var accepted = [ "basic", "badger", "urlscan" ] ;
 
 nconf.argv().env().file({ file: 'config/vigile.json' });
-var kind = nconf.get('kind');
-if(kind !== 'basic' && kind !== 'badger' ) {
-    console.log("Invalid 'kind' requested!");
-    process.exit(0);
+
+if(!testkind) {
+    console.log("required variables --url http://url.. --kind ", accepted);
+    return 1;
 }
 
-function addNewHrefs(input) {
-
-    var direction = {
-        href: input.link,
-        campaign: "social-media-feed",
-        start: moment().startOf('day')
-    };
-
-    direction.subjectId = various.hash({
-        'target': direction.href,
-        'campaign': direction.campaign
-    });
-    direction.start = new Date(direction.start.format("YYYY-MM-DD"));
-
-    direction.kind = kind;
-    direction.id = various.hash({
-        'href': direction.href,
-        'kind': direction.kind,
-        'start': direction.start,
-    });
-
-    return mongo
-        .read(nconf.get('schema').promises, { id: direction.id })
-        .then(function(exists) {
-            if(_.get(exists[0], 'id')  === direction.id)
-                return null;
-
-            return direction;
-        });
-}
-
-remote = nconf.get('remote');
-
-if(_.isUndefined(remote)) {
-    debug("You need to specify a variable 'remote' containing the config file");
-    process.exit(1);
+if(accepted.indexOf(testkind) === -1) {
+    console.log("kind not accepted", testkind, accepted);
+    return 1;
 }
 
 return various
-    .loadJSONfile(remote)
+    .loadJSONurl(url)
     .tap(function(c) {
-        if(!c.server || !_.size(c.server)) {
-            console.log("The json file as 'remote' do not contains key: server");
-            // others key expected: 'url'
-            process.exit(1);
-        }
+        debug("Retrieved %d urls from %s", _.size(c), url);
     })
-    .then(function(c) {
-        var url = c.server + c.url;
-        return various.loadJSONurl(url);
+    .map(function(block) {
+        return queue.buildDirective(testkind, now, block.link, campaign, block.putime, 0);
     })
-    .map(addNewHrefs, { concurrency: 1})
-    .then(_.flatten)
-    .then(_.compact)
-    .tap(function(content) {
-        if(content && _.size(content))
-            debug("The first of %d is %s",
-                _.size(content), JSON.stringify(content[0], undefined, 2));
-        else
-            debug("Empty list: all duplicates?");
-    })
-    .map(function(doc) {
-        return mongo
-            .save(nconf.get('schema').promises, doc);
-    }, {concurrency: 1});
+    .then(queue.add)
+    .tap(queue.report);

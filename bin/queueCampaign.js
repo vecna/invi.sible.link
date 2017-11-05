@@ -21,14 +21,14 @@ if(!campaign) {
     process.exit(1);
 }
 
-var testkind = nconf.get('type');
+var testkind = nconf.get('kind');
 
 var accepted = [ "basic", "badger", "urlscan" ] ;
 if(!testkind) {
     testkind = [ "basic", "badger" ];
 } else {
     if(accepted.indexOf(testkind) === -1) {
-        console.log("Error, you requested an invalid --type", testkind, "accepted:", accepted);
+        console.log("Error, you requested an invalid --kind", testkind, "accepted:", accepted);
         process.exit(1);
     }
     testkind = [ testkind ];

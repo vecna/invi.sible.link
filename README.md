@@ -7,11 +7,11 @@
 
 remind: with **+** means **only badger**, with **-**, means **only phantom**. without imply both
 
-    $ DEBUG=* bin/queueCampaign.js --csv path/to/list.csv --campaign itatopex --type badger
+    $ DEBUG=* bin/queueCampaign.js --csv path/to/list.csv --campaign itatopex --kind badger
 
-This commands provide more control, if --type is not specifiy, all are inserted.
+This commands provide more control, if --kind is not specifiy, all are inserted.
 
-    $ DEBUG=* bin/queueSite.js --url http://www.giantitp.com --type badger
+    $ DEBUG=* bin/queueSite.js --url http://www.giantitp.com --kind badger
 
 The impact can be see with
 

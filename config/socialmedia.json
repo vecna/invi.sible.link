@@ -1,0 +1,4 @@
+{
+    "remote":"http://localhost:8000",
+    "endpoint":"/api/v1/opendata/href"
+}
