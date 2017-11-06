@@ -1,31 +1,29 @@
 h1(class="reportTitle" id="August-17") August, September and October 2017
 
-p.text This montlthy report is published after three months, in two of them the felloship got suspended to follow up on an unique occasion, in experimenting a conjuncted analysis between social media links spreading and trackers analysis. In the moment I'm writing, beginning of November 2017, a report in the hand of a third party organisation is under dedevelpment. 
+p.text This montlthy report is published after three months. I collaborated with a third party organization in experimenting an analysis based on the scraping of links from social media links and trackers analysis. In the moment I'm writing, beginning of November 2017, a report is in development (is not related to trackers analysis), and the opportuniy raised a new research branch in this research.
 
 section(class="operative-4 improvements-4")
     h2 Social media observer and realtime analysis
     p.text One of the challenge in web analysis, is the impossibility to test all the condition in which an user will navigate. Doing an average assumption, you can end up in doing an mass analysis but not to spot some deeply targeted behavior, because the script you hope to catch will just trigger in certain content.
     p.text The solution so far has been:
     ul
-        li permitting to experts in providing their own list
-        li exporting your own history, in this year a good improvement has been made by EDRI fellow XXX developer of Hackuna metadata
-        li monitor only the homepages of meaningful websites (this is what me, princeton university or amaranta media did)
-    p.text Considering how Facebook and Google are the effective gatekeeper of the WWW, the most appropriate solution to monitor the quality of web pages, is look at what is effectively shared. Both of the platform mentioned offer personalized experience, what you see depends on your profile, behavior, sources you decided and what the algoritmih is selecting for you. Whit a browser extention is possible capture the public post in an user timeline, extract the external links, and 
+        li permitting to experts in providing their own list (as per personal experience, it is quite hard get people self-profile their community and report back generic but detailed links)
+        li exporting your own history, in this year a good improvement has been made by EDRI fellow 
+            a(href="http://www.privacypies.org/blog/metadata/2017/02/28/hakuna-metadata-1.html") Sid with Hackuna metadata
+            |.
+        li monitor only the homepage (this is what me or WebTAP of Princeton University did), and increase the size of the tested sites. But this can't see when a specific trackers runs only on few selected pages of the site.
+    p.text Considering how Facebook and Google are the 
+        a(href="https://staltz.com/the-web-began-dying-in-2014-heres-how.html") de-facto gatekeeper of the WWW
+        |, the most appropriate solution to monitor the quality of web pages, is look at what is effectively provided by these platform. But, in order to do so, you have to observe the personalized experience of the users. With a browser extention is possible capture the public post in an user timeline, extract the external links, and analyzed them. 
+    p.text This approach is currently in use.
 
 section(class="operative-8")
     h2 LatAm realtime tracking experiment
-    p.text Despite the current visualization is actually 
+    p.text A work in progress is the development of argentinin.tracking.exposed, analyzing the links shared by Argentinian media and political figures.
 
 section(class="preliminary-7 operative-1")
     h2 Analysis of javascript tracking behavior
-    p.text Has been implemented the usage of Chrome with PrivacyBadger as part of the testing suite, this permit to get detailed informations like these:
-finterprinting
-
-    h2 Advanced visualization (first try)
-    p.text Implemented in the HK server, the experimental new fetcher 
-        a(href="https://hk-vp.sible.link/details/clinics-CL") Clinics-CL
-    p.text 
-        img(src="/images/details.png")
+    p.text Has been implemented the usage of Chrome with PrivacyBadger as part of the testing suite, this permit the first javascript fingerprinting and visual reporting.
 
     pre.
         "VP": "virtual", 
@@ -65,24 +63,9 @@ finterprinting
         "when": "2017-09-09T13:41:24.310Z", 
         "window_localStorage": 7
 
-    p.text This result of an API (/api/v1/details/$campaignName) contains:
-        ul
-            li navigator.plugins
-            li navigator.userAgent
-            li screen.width
-            li screen.availWidth
-            li window.localStorage
-        | are the javascript calls executed by the script.
+    p.text This result can be fetched via API (i.e.: https://invi.sible.link/api/v1/details/itatopex ), it contains most of the javascript calls usable in browser fingerprinting.
 
+    h2 JS details visualization 
+    p.text The interface wannts to show graphically what the third parties can potentially access. Every campaign is producing this outut daily, the incomplete visualization can be this example from the Cilean online clinics: 
+        a(href="https://invi.sible.link/details/clinics-CL") Clinics-CL
     
-section(class="prototype-12")
-    h2 Lists of TODO to complete the fellowship
-    ul
-        li restructure the website sections: "last analysis", "running tests", "analysis", "about"
-        li having Iran initiative running
-        li having Argentinian social media monitor
-        li document and complete the visualization: superficial, site-specific, (site-trend?), companies impact, advanced
-        li having Chupadados made with CodingRights in a website and their data documented
-        li Organize the final report (project usage and experience + insights from test selection)
-        li Telegram & Twitter bot
-
