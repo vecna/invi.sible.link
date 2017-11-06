@@ -34,5 +34,9 @@
     "itatopex": [ {
         "name": "itatopex",
         "csv": "itatopex/lista.csv"
+    } ],
+    "socialmedia": [ {
+        "name": "socialmedia",
+        "csv": "/dev/null"
     } ]
 }}
