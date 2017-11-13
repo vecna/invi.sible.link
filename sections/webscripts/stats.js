@@ -70,15 +70,15 @@ function lastHours(config) {
 
 /* small library function used to generate stats for every campaign */
 var campaignList = [{
-    title: "Chupadados research, 4 country so far",
+    title: "Chupadados analysis",
     match: [ "clinics-MX", "clinics-CL", "clinics-CO", "clinics-BR" ],
     idn: "clinicsBlock"
 },{
-    title: "Amtrex",
+    title: "amtrex",
     match: [ "travel", "culture", "halal", "mosques" ],
     idn: "amtrexBlock"
 },{
-    title: "Others",
+    title: "National based analysis",
     match: [ "irantrex", "gptrex", "itatopex" ],
     idn: "remainingBlock"
 }];
