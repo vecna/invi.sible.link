@@ -4,6 +4,7 @@ var Promise = require('bluebird');
 var debug = require('debug')('chopsticks');
 var request = Promise.promisifyAll(require('request'));
 var nconf = require('nconf');
+var spawnCommand = require('../lib/cmdspawn');
 
 var plugins = require('../plugins');
 var choputils = require('../lib/choputils');
@@ -98,4 +99,10 @@ return request
         var e = _.filter(results, { saveError: true});
         if(_.size(e))
           debug("Note: %d website failed on %d", _.size(e), _.size(results));
+
+        return Promise.all([
+            spawnCommand({ binary: "/usr/bin/killall", args: [ "Xvfb" ] }),
+            spawnCommand({ binary: "/usr/bin/killall", args: [ "chromedriver" ] }),
+            spawnCommand({ binary: "/usr/bin/killall", args: [ "phantomjs" ] })
+        ]);
     });
