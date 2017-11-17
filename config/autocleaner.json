@@ -10,7 +10,7 @@
         "days": "30"
     }, {
         "collection": "phantom",
-        "timevar": "when",
+        "timevar": "requestTime",
         "days": "30"
     }]
 }

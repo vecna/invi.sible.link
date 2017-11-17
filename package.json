@@ -55,6 +55,7 @@
     "nodemon": "^1.11.0",
     "phantomjs-prebuilt": "^2.1.7",
     "pug": "^2.0.0-beta6",
+    "puppeteer": "^0.13.0",
     "request": "^2.79.0",
     "reveal.js": "^3.3.0",
     "rimraf": "^2.5.4",
