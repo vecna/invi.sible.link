@@ -2,7 +2,6 @@
 var _ = require('lodash');
 var moment = require('moment');
 var Promise = require('bluebird');
-var mongodb = Promise.promisifyAll(require('mongodb'));
 var debug = require('debug')('autocleaner');
 var nconf = require('nconf');
 
@@ -17,7 +16,29 @@ nconf.argv()
      .file({ file: cfgFile });
 console.log(redOn + "ઉ nconf loaded, using " + cfgFile + redOff);
 
+function countRemove(cName, timew, timevar) {
+    var filter = {};
+    var lastDay = moment().subtract(timew, 'd').format();
+    _.set(filter, timevar, { '$lt': new Date(lastDay) });
+
+    return mongo
+        .count(cName, filter)
+        .tap(function(amount) {
+            debug("From column %s removing %d entries older then %d days", cName, amount, timew);
+            return mongo.remove(cName, filter);
+        })
+        .delay(300);
+}
+
 return Promise.map(nconf.get('targets'), function(c) {
     /* c has .column .timewindow */
+    return countRemove(c.collection, c.days, c.timevar);
+}, {concurrency: 1})
+.reduce(function(memo, amount) {
+    memo += amount;
+    return memo;
+}, 0)
+.tap(function(total) {
+    debug("Deleted %d total entries", total);
 });
 

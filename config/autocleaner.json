@@ -1,0 +1,16 @@
+{
+    "mongodb": "mongodb://localhost/chopsticks",
+    "targets": [{
+        "collection": "accesses",
+        "timevar": "when",
+        "days": "30"
+    }, {
+        "collection": "badger",
+        "timevar": "when",
+        "days": "30"
+    }, {
+        "collection": "phantom",
+        "timevar": "when",
+        "days": "30"
+    }]
+}
