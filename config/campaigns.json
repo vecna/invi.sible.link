@@ -38,5 +38,9 @@
     "socialmedia": [ {
         "name": "socialmedia",
         "csv": "/dev/null"
+    } ],
+    "ngos": [ {
+        "name": "ngos",
+        "csv": "ngos/crowdfunding.csv"
     } ]
 }}

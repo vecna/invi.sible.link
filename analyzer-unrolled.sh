@@ -37,3 +37,6 @@ DEBUG=* bin/analyzeBadger.js --config config/analyzerProduction.json --campaign 
 
 DEBUG=* bin/analyzePhantom.js --config config/analyzerProduction.json --campaign "poland"
 DEBUG=* bin/analyzeBadger.js --config config/analyzerProduction.json --campaign "poland"
+
+DEBUG=* bin/analyzeBadger.js --config config/analyzerProduction.json --campaign "ngos"
+DEBUG=* bin/analyzePhantom.js --config config/analyzerProduction.json --campaign "ngos"
