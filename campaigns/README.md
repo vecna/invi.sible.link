@@ -99,3 +99,15 @@ and contains simply information on the interface and the TCP listening port:
     }
 
 And then with nginx or apache, you might manage https and do Proxy.
+
+
+## Personal reminder
+
+git clone git@github.com:tracking-exposed/catalunya.git
+git clone git@github.com:tracking-exposed/gptrex.git
+git clone git@github.com:tracking-exposed/amtrex.git
+git clone git@github.com:tracking-exposed/intrex.git
+git clone git@github.com:vecna/itatopex.git
+git clone git@github.com:vecna/chuptrex.git
+git clone git@github.com:vecna/fiftyshadesofpoland.git
+git clone git@github.com:vecna/irantrex.git
