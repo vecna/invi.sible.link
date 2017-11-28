@@ -13,8 +13,8 @@
     "social-pressure": "nodemon --config config/social-pressure.json bin/social-pressure",
     "vigile": "nodemon --config config/vigile.json bin/vigile",
     "exposer": "DEBUG=*:-express:* node bin/exposer",
-    "badger": "type=badger DEBUG=*,-lib:urlutils,-lib:spawnCommand node bin/chopsticks",
-    "phantom": "type=basic DEBUG=*,-lib:urlutils,-lib:spawnCommand node bin/chopsticks"
+    "badger": "type=badger DEBUG=*,-lib:urlutils,-lib:cmdspawn node bin/chopsticks",
+    "phantom": "type=basic DEBUG=*,-lib:urlutils,-lib:cmdspawn node bin/chopsticks"
   },
   "repository": {
     "type": "git",
@@ -53,7 +53,7 @@
     "nconf": "^0.8.4",
     "node-geoip": "^1.0.1",
     "nodemon": "^1.11.0",
-    "phantomjs-prebuilt": "^2.1.7",
+    "phantomjs-prebuilt": "^2.1.16",
     "pug": "^2.0.0-beta6",
     "puppeteer": "^0.13.0",
     "request": "^2.79.0",

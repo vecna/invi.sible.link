@@ -30,7 +30,7 @@ var whenD = nconf.get('DAYSAGO') ?
     moment()
         .startOf('day')
         .toISOString();
-debug("Saving date set to: %s", whenD);
+debug("This analysis will be saved as made on %s", whenD);
 
 
 function onePerSite(retrieved) {

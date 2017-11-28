@@ -15,6 +15,7 @@ var promises = require('../lib/promises');
 
 var routes = require('../routes/_vigile');
 var dispatchPromise = require('../lib/dispatchPromise');
+var vigilantes = require('../lib/vigilantes');
 var defaultSetup = require('../lib/sharedExpress');
 
 var cfgFile = "config/vigile.json";
@@ -36,16 +37,7 @@ Promise.resolve(
     promises.retrieve(nconf.get('DAYSAGO'))
 )
 .then(function(promises) {
-    _.each(['badger', 'basic'], function(c) {
-        var f = _.filter(promises, {kind: c});
-        var x = _.map(f, function(p) {
-            return { 'keys': _.size(_.keys(p)) - 9 };
-        });
-        debug("Type %s, %d Promises, status: %s",
-            c, _.size(f),
-            JSON.stringify(_.countBy(x, 'keys'), undefined, 2)
-        );
-    });
+    return vigilantes.dump(promises, false);
 });
 
 app.get('/api/v:version/queueCampaigns', function(req, res) {

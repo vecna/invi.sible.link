@@ -1,7 +1,7 @@
 #!/usr/bin/env nodejs
 var _ = require('lodash');
 var Promise = require('bluebird');
-var debug = require('debug')('analyzeGroup');
+var debug = require('debug')('bin:analyzeGroup');
 
 var moment = require('moment');
 var nconf = require('nconf');
@@ -9,7 +9,6 @@ var nconf = require('nconf');
 var mongo = require('../lib/mongo');
 var various = require('../lib/various');
 var promises = require('../lib/promises');
-
 
 var tname = promises.manageOptions();
 var daysago = nconf.get('DAYSAGO') ? _.parseInt(nconf.get('DAYSAGO')) : 0;

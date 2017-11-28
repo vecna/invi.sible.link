@@ -1,0 +1,21 @@
+@font-face {
+	font-family: 'FrancoisOne';
+	font-style: normal;
+	font-weight: 400;
+	src: local('FrancoisOne'), url("FrancoisOne.ttf") format('truetype');
+}
+
+@font-face {
+	font-family: 'Work Sans';
+	font-style: normal;
+	font-weight: 400;
+	src: local('Work Sans'), url("WorkSans.ttf") format('truetype');
+}
+
+.worksans {
+	font-family: 'Work Sans', sans-serif;
+}
+
+.francois {
+	font-family: 'FrancoisOne', serif;
+}
