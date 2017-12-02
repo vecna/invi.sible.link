@@ -72,7 +72,8 @@ module.exports = function(val, conf) {
     /* fully indepotent, return always $val to be confirmed */
     return saveBadger(val, conf)
         .catch(function(error) {
-            debug("!! %s: zero info from %s %s", error, val.href, val.id);
+            debug("!! %s", error);
+	    debug("TIMEOUT=60 OUT_FILE=badgertmp/%s/%s/badger-output.json EXTENSION_PATH=badger-claw/privacy-badger-symlink.crx badger-claw/crawler.py %s", val.id, moment().format("YYYY-MM-DD"), val.href);
             val.saveError = true;
         })
         .return(val);

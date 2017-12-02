@@ -14,6 +14,7 @@ module.exports = {
     getRaw:                require('./getRaw'),
     getTableauJSON:	       require('./getTableauJSON'),
     getCheckURL:           require('./getCheckURL'),
+    getMixed:              require('./getMixed'),
 
     getRecentActivities:   require('./getRecentActivities'),
     getEvidencesByHref:    require('./getEvidencesByHref')

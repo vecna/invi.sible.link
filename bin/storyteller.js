@@ -88,4 +88,8 @@ app.get('/api/v:version/url/:check', function(req, res) {
     return dispatchPromise('getCheckURL', routes, req, res);
 });
 
+app.get('/api/v:version/mixed/:cname/:daysago', function(req, res) {
+    return dispatchPromise('getMixed', routes, req, res);
+});
+
 defaultSetup(app, dispatchPromise, express, routes, 'storyteller');

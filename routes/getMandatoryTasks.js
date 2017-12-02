@@ -31,8 +31,8 @@ function getMandatoryTasks(req) {
             var info = _.map(taskList, function(t) {
                 return _.omit(t, ['subjectId', 'start', 'id', 'description', 'rank', '_id' ]);
             });
-            debug("returning %d tasks, status: %s",
-                _.size(taskList), JSON.stringify(info, undefined, 2));
+            debug("returning %d tasks", _.size(taskList));
+            // TODO: small debug enhancement on the status of the promises?	
             return {
                 json: taskList
             };

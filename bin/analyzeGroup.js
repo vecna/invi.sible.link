@@ -19,17 +19,19 @@ var whenD = nconf.get('DAYSAGO') ?
     new Date(moment().subtract(_.parseInt(nconf.get('DAYSAGO')), 'd'));
 
 /* code begin here */
-
 function saveAll(content) {
     if(content) {
-        debug("Saving in results the product");
-        return machetils.statsSave(nconf.get('schema').results, content);
+        debug("Saving in results the product in 'judgment' table");
+        return machetils.statsSave(nconf.get('schema').judgment, content);
     }
     else
         debug("No output produced");
 }
 
-function getReductions(daysago, target) {
+function getEvidenceAndDetails(daysago, target) {
+
+
+    return loadJSONurl(url);
 
     nconf.argv().env();
     nconf.file({ file: nconf.get('config') });
@@ -39,7 +41,7 @@ function getReductions(daysago, target) {
     var min = when.toISOString();
     var max = when.add(25, 'h').toISOString();
 
-    debug("looking for 'surface' and 'summary' daysago %s [%s-%s] target %s",
+    debug("looking for 'surface' and 'details' %d days ago [%s-%s] campaign %s",
         daysago, min, max, target);
 
     var filter = {
@@ -49,23 +51,42 @@ function getReductions(daysago, target) {
     };
 
     return Promise.all([
-        mongo.read(nconf.get('schema').evidences, filter),
+        mongo.read(nconf.get('schema').surface, filter),
         mongo.read(nconf.get('schema').details, filter)
     ])
 };
 
 
-function orderBySubject(m) {
+function rankTheWorst(m) {
+    /* the current concept of "worst" is pretty experimental, there
+     * is not a scientifical measurement on which network behavior
+     * causes the bigger damage to privacy/security, but this is 
+     * a metric in which research and investigations can provide 
+     * input. The output object is:
+     *  - name (the url)
+     *  - totalNjs (total number of js)
+     *  - post (if XMLHttpRequest has triggered some POST)
+     *  - canvas
+     *  - reply session
+     *  - storage (indexDB or localStorage) usage
+     *  - companies number
+     *  - total "score" still to be done well
+     * */
 
     /* use summary as reference, extend the info there with the
      * associated evidences */
     var ev = _.groupBy(m[0], 'subjectId');
     var det = _.groupBy(m[1], 'subjectId');
+
     /* this function just aggregate the results obtain from
-     * different sources. evidences and details.
-     *
-     * later on these information will be processed
+     * different sources. evidences and details, now we can get 
+     * a complex object with all the results
      */
+    var mixed = [];
+
+    _.each(m[0], function(evidence) {
+        _.find(mixed, { name: 
+    });
 
     debugger;
     var rank = _.map(_.keys(det), function(sid) {
@@ -87,11 +108,11 @@ function computeStatus(both) {
     /* position 0, `today`, position 1, `today -1` */
 };
 
-return getReductions(daysago, tname)
-    .then(orderBySubject)
+return getEvidenceAndDetails(daysago, tname)
+    .then(rankTheWorst)
     .then(function(fr) {
         debugger;
-        // getReductions(daysago-1, tname).then(orderBySubject)
+        // getEvidenceAndDetails(daysago-1, tname).then(rankTheWorst)
     })
 /*
 Promise.all([
