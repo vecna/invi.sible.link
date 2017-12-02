@@ -298,7 +298,7 @@ return promises
     .tap(machetils.numerize)
     .reduce(_.partial(promises.buildURLs, 'basic'), [])
     .tap(machetils.numerize)
-    .map(machetils.jsonFetch, {concurrency: 5})
+    .map(machetils.jsonFetch, {concurrency: 10})
     .tap(machetils.numerize)
     .then(_.compact)
     .then(onePerSite)
