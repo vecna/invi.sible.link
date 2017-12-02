@@ -66,7 +66,7 @@ function rendert() {
 	var inputO = {
 		name: "www.repubblica.it",
 		totalNjs: 40, // from privacy badger 
-		xhr: true,
+		post: true,
 		canvas: false,
 		reply: false,
 		storage: true,
@@ -109,12 +109,12 @@ function rendert() {
 		.style("font-size", 60)
 		.text(inputO.companies);
 
-	/* square boxes, xhr, canvas, store, reply */
-	var xhr = d3.path();
-	xhr.rect(560, 170, 40, 40); 
-	svgContainer.append("path").attr("d", xhr.toString())
+	/* square boxes, post, canvas, store, reply */
+	var post = d3.path();
+	post.rect(560, 170, 40, 40); 
+	svgContainer.append("path").attr("d", post.toString())
 		.attr("fill", function() {
-			return inputO.xhr ? "red" : "lightgrey";
+			return inputO.post ? "red" : "lightgrey";
 		});
 
 	var canvas = d3.path();
