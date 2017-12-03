@@ -54,6 +54,11 @@ function getEvidenceAndDetails(daysago, target) {
 
 
 function rankTheWorst(m) {
+    /* this is supposed to be subjectId, I deployed testId in these days to 
+     * make it sure is different, and subjectId is based on url+day */
+    var sources = _.uniqBy(m[0], 'url');
+    if(_.size(sources) !== _.size(m[0]))
+        debug("Just remind, for some undebugged reason, /api/v1/mixed is returning duplicated 'surfaces'");
     /* the current concept of "worst" is pretty experimental, there
      * is not a scientifical measurement on which network behavior
      * causes the bigger damage to privacy/security, but this is 
@@ -73,7 +78,7 @@ function rankTheWorst(m) {
      * different sources. evidences and details, now we can get 
      * an object with merged the results
      */
-    var aggregated = _.map(m[0], function(surface) {
+    var aggregated = _.map(sources, function(surface) {
         var url = surface.url;
         var details = _.find(m[1], { href: url });
 
