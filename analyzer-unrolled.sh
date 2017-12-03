@@ -3,7 +3,7 @@ DEBUG=* bin/analyzePhantom.js --config config/analyzerProduction.json --campaign
 DEBUG=* bin/analyzeBadger.js --config config/analyzerProduction.json --campaign "irantrex"
 
 DEBUG=* bin/analyzePhantom.js --config config/analyzerProduction.json --campaign "itatopex"
-DEBUG=* bin/analyzeBadger.js --config config/analyzerProduction.json --campaign "irantrex"
+DEBUG=* bin/analyzeBadger.js --config config/analyzerProduction.json --campaign "itatopex"
 
 DEBUG=* bin/analyzePhantom.js --config config/analyzerProduction.json --campaign "clinics-BR"
 DEBUG=* bin/analyzeBadger.js --config config/analyzerProduction.json --campaign "clinics-BR"
@@ -19,9 +19,6 @@ DEBUG=* bin/analyzeBadger.js --config config/analyzerProduction.json --campaign 
 
 DEBUG=* bin/analyzePhantom.js --config config/analyzerProduction.json --campaign "gptrex"
 DEBUG=* bin/analyzeBadger.js --config config/analyzerProduction.json --campaign "gptrex"
-
-DEBUG=* bin/analyzePhantom.js --config config/analyzerProduction.json --campaign "irantrex"
-DEBUG=* bin/analyzeBadger.js --config config/analyzerProduction.json --campaign "irantrex"
 
 DEBUG=* bin/analyzePhantom.js --config config/analyzerProduction.json --campaign "culture"
 DEBUG=* bin/analyzeBadger.js --config config/analyzerProduction.json --campaign "culture"
