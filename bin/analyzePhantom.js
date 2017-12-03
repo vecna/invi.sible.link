@@ -60,8 +60,10 @@ function saveAll(retrieved) {
         .reduce(retrieved, function (memo, subject) {
 
             var target = _.find(subject.data, {target: true});
-            if(!target)
+            if(!target) {
+                debug("Missing target among the .data??");
                 return memo;
+            }
 
             target.macheteTiming = subject.timing;
 
@@ -145,10 +147,11 @@ function updateSurface(retrieved) {
                     target.cloudFlare = true;
                 }
 
-                if(rr.cookies && _.size(rr.cookies)) {
+                if(rr.cookies && _.size(rr.cookies))
                     target.cookies.push(rr.domaindottld);
-                }
 
+                if(rr.post)
+                    target.xhr = target.xhr ? target.xhr + 1 : 1;
             });
 
             return _.concat(memo, target);

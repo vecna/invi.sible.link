@@ -11,7 +11,7 @@ function getMixed(req) {
 
     var when = moment().startOf('day').subtract(daysago, 'd');
     var min = when.toISOString();
-    var max = when.add(25, 'h').toISOString();
+    var max = when.add(24, 'h').toISOString();
 
     debug("looking for 'surface' and 'details' %d days ago [%s-%s] campaign %s",
                     daysago, min, max, req.params.cname);

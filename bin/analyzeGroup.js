@@ -9,51 +9,47 @@ var nconf = require('nconf');
 var mongo = require('../lib/mongo');
 var various = require('../lib/various');
 var promises = require('../lib/promises');
+var machetils = require('../lib/machetils');
 
+nconf.argv().env();
 var tname = promises.manageOptions();
-var daysago = nconf.get('DAYSAGO') ? _.parseInt(nconf.get('DAYSAGO')) : 0;
+nconf.argv().env().file({'file': 'config/storyteller.json' });
+var daysago = nconf.get('daysago') ? _.parseInt(nconf.get('daysago')) : 0;
+var remote = nconf.get('remote') ? nconf.get('remote') : 'https://invi.sible.link';
+var MAX = 10;
 
-/* still to be decided how to clean this */
-var whenD = nconf.get('DAYSAGO') ? 
-    new Date() : 
-    new Date(moment().subtract(_.parseInt(nconf.get('DAYSAGO')), 'd'));
+var m = moment().startOf('day').add(10, 'h');
+if(_.parseInt(nconf.get('daysago')))
+    m.subtract(_.parseInt(nconf.get('daysago')), 'd');
+var whenD = new Date(m.format());
 
 /* code begin here */
 function saveAll(content) {
-    if(content) {
-        debug("Saving in results the product in 'judgment' table");
-        return machetils.statsSave(nconf.get('schema').judgment, content);
-    }
-    else
-        debug("No output produced");
+    debug("Saving in results the product in 'judgment' table");
+    return machetils.statsSave(nconf.get('schema').judgment, [ content ]);
+}
+
+function removeExisting(content) {
+    return mongo
+        .remove(nconf.get('schema').judgment, { when: content.when, campaign: content.campaign });
 }
 
 function getEvidenceAndDetails(daysago, target) {
 
-
-    return loadJSONurl(url);
-
-    nconf.argv().env();
-    nconf.file({ file: nconf.get('config') });
-    daysago = _.parseInt(daysago) || 0;
-
-    var when = moment().startOf('day').subtract(daysago, 'd');
-    var min = when.toISOString();
-    var max = when.add(25, 'h').toISOString();
-
-    debug("looking for 'surface' and 'details' %d days ago [%s-%s] campaign %s",
-        daysago, min, max, target);
-
-    var filter = {
-        "when": { "$gte": new Date( min ), 
-                  "$lt": new Date( max ) },
-        "campaign": target
-    };
-
-    return Promise.all([
-        mongo.read(nconf.get('schema').surface, filter),
-        mongo.read(nconf.get('schema').details, filter)
-    ])
+    debug("Using endpoing %s", remote);
+    var url = remote + "/api/v1/mixed/" + target + "/" + daysago;
+    /* it returns [ surface ],[details] */
+    return various
+        .loadJSONurl(url)
+        .tap(function(m) {
+            if( !_.size(m[0]) || !_.size(m[1]) ) {
+                debug("Failure in retrieve %s %d days ago, surface %d details %d",
+                    target, daysago, _.size(m[0]), _.size(m[1]));
+                process.exit(0);
+            }
+            debug("Processing %d 'surface' and %d 'details'",
+                _.size(m[0]), _.size(m[1]));
+        });
 };
 
 
@@ -73,52 +69,50 @@ function rankTheWorst(m) {
      *  - total "score" still to be done well
      * */
 
-    /* use summary as reference, extend the info there with the
-     * associated evidences */
-    var ev = _.groupBy(m[0], 'subjectId');
-    var det = _.groupBy(m[1], 'subjectId');
-
     /* this function just aggregate the results obtain from
      * different sources. evidences and details, now we can get 
-     * a complex object with all the results
+     * an object with merged the results
      */
-    var mixed = [];
+    var aggregated = _.map(m[0], function(surface) {
+        var url = surface.url;
+        var details = _.find(m[1], { href: url });
 
-    _.each(m[0], function(evidence) {
-        _.find(mixed, { name: 
-    });
-
-    debugger;
-    var rank = _.map(_.keys(det), function(sid) {
-        var e = ev[sid];
-        var d = det[sid];
-        var companies = _.countBy(_.filter(e, 'company'), 'company')
-        var traces = _.size(d);
-        debug("%d %j", traces, companies);
-        return {
-            companies: companies,
-            traces: traces,
-            subjectId: sid
+        var ret = {
+            name: surface.url,
+            description: surface.description,
+            totalNjs: surface.javascripts,
+            companies: _.size(surface.companies),
+            storage: false,
+            reply: false,
+            canvas: false,
+            post: surface.xhr,
+            cookies: _.size(surface.cookies)
         };
-    });
-    debugger;
-};
 
-function computeStatus(both) {
-    /* position 0, `today`, position 1, `today -1` */
+        /* look into details, and find 'storage', 'canvas' etc */
+        _.each(details, function(n, d) {
+            // console.log(n, d);
+        });
+
+        ret.measure = (ret.companies + ret.cookies + ret.totalNjs);
+        return ret;
+    });
+
+    return _.slice(_.reverse(_.sortBy(aggregated, 'measure')), 0, MAX);
 };
 
 return getEvidenceAndDetails(daysago, tname)
     .then(rankTheWorst)
     .then(function(fr) {
-        debugger;
-        // getEvidenceAndDetails(daysago-1, tname).then(rankTheWorst)
+        debug("worst %d for %s", MAX, tname);
+        _.each(fr, function(e, i) {
+            debug("%d\t[%d] %s", i+1, e.measure, e.name);
+        });
+        return {
+            when: whenD,
+            campaign: tname,
+            ranks: fr
+        };
     })
-/*
-Promise.all([
-    ])
-    .then(computeStatus)
-    .tap(function(result) {
-        debug("Operations completed");
-    });
-*/
+    .tap(removeExisting)
+    .tap(saveAll);

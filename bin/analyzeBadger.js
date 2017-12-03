@@ -55,16 +55,16 @@ function onePerSite(retrieved) {
 
 function saveAll(content) {
     if(_.size(content)) {
-        debug("Saving in evidences %d object", _.size(content));
+        debug("Saving in details %d object", _.size(content));
         return machetils.statsSave(nconf.get('schema').details, content);
     }
     else
-        debug("No evidences to be saved");
+        debug("No details to be saved");
 }
 
 function clean(memo, imported) {
 
-    var fields = [ "subjectId", "href", "kind", "promiseId", "version", "VP", "when"];
+    var fields = [ "testId", "href", "kind", "promiseId", "version", "VP", "when"];
 
     _.each(imported.data, function(entry) {
 
