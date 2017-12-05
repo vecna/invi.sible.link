@@ -39,6 +39,10 @@
         "name": "social-media",
         "csv": "/dev/null"
     } ],
+    "poland": [ {
+        "name": "poland",
+        "csv": "campaigns/fiftyshadesofpoland/list.csv"
+    } ],
     "ngos": [ {
         "name": "ngos",
         "csv": "ngos/crowdfunding.csv"
