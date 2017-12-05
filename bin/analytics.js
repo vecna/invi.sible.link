@@ -20,6 +20,7 @@ nconf.file({ file: cfg });
 var timeVar = {
     promises: 'start',
     accesses: 'when',
+    judgment: 'when',
     statistics: null,
     surface: 'when',
     evidences: 'when',

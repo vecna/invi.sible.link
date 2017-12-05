@@ -1,5 +1,11 @@
-function rendert() {
-	console.log("begin rendert");
+function initializeMainContent(containerId) {
+    /* look if the URL ends with 'cards' or with 'expert'
+     * in such case, render a different visualization in containerId */
+    console.log("initializeMainContent", containerId);
+};
+
+function renderSiteCard() {
+	console.log("begin renderSiteCard");
 
 	var width = 700;
 	var height = 400;

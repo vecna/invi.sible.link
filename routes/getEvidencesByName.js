@@ -1,6 +1,5 @@
 
 var _ = require('lodash');
-var Promise = require('bluebird');
 var debug = require('debug')('route:getEvidencesByName');
 var moment = require('moment');
 var nconf = require('nconf');

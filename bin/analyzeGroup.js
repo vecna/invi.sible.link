@@ -52,12 +52,27 @@ function getEvidenceAndDetails(daysago, target) {
         });
 };
 
+function campaignStats(m) {
+    var surfaces = _.uniqBy(m[0], 'url');
+
+    /* necessary fields: total, trackers, unrecognized */
+    var ret = {
+        total: _.size(surfaces)
+    };
+
+    ret.trackers = _.size(_.flatten(_.map(surfaces, 'companies')));
+    ret.unrecognized = _.size(_.flatten(_.map(surfaces, 'unrecognized')));
+    ret.includedJS = _.size(_.flatten(_.map(surfaces, 'javascripts')));
+    ret.cookies = _.size(_.flatten(_.map(surfaces, 'cookies')));
+
+    return ret;
+};
 
 function rankTheWorst(m) {
     /* this is supposed to be subjectId, I deployed testId in these days to 
      * make it sure is different, and subjectId is based on url+day */
-    var sources = _.uniqBy(m[0], 'url');
-    if(_.size(sources) !== _.size(m[0]))
+    var surfaces = _.uniqBy(m[0], 'url');
+    if(_.size(surfaces) !== _.size(m[0]))
         debug("Just remind, for some undebugged reason, /api/v1/mixed is returning duplicated 'surfaces'");
     /* the current concept of "worst" is pretty experimental, there
      * is not a scientifical measurement on which network behavior
@@ -75,10 +90,10 @@ function rankTheWorst(m) {
      * */
 
     /* this function just aggregate the results obtain from
-     * different sources. evidences and details, now we can get 
+     * different analysis (surface+details), now we can get 
      * an object with merged the results
      */
-    var aggregated = _.map(sources, function(surface) {
+    var aggregated = _.map(surfaces, function(surface) {
         var url = surface.url;
         var details = _.find(m[1], { href: url });
 
@@ -107,17 +122,19 @@ function rankTheWorst(m) {
 };
 
 return getEvidenceAndDetails(daysago, tname)
-    .then(rankTheWorst)
-    .then(function(fr) {
-        debug("worst %d for %s", MAX, tname);
-        _.each(fr, function(e, i) {
+    .then(function(mixed) {
+        return [ rankTheWorst(mixed), campaignStats(mixed) ]
+    })
+    .then(function(mixedr) {
+        debug("%s Stats: %j, Worst %d:", tname, mixedr[1], MAX);
+        _.each(mixedr[0], function(e, i) {
             debug("%d\t[%d] %s", i+1, e.measure, e.name);
         });
-        return {
+        return _.extend(mixedr[1], {
             when: whenD,
             campaign: tname,
-            ranks: fr
-        };
+            ranks: mixedr[0],
+        });
     })
     .tap(removeExisting)
     .tap(saveAll);
