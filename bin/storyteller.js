@@ -36,7 +36,6 @@ app.get('/api/v:version/raw/:column/:key/:value', function(req, res) {
 });
 
 /* API specs: dispatchPromise is in /lib/, the argument is in ./routes */
-
 app.get('/api/v:version/surface/:campaign', function(req, res) {
     return dispatchPromise('getSurface', routes, req, res);
 });
@@ -80,6 +79,7 @@ app.get('/api/v:version/stats/:hours', function(req, res) {
 app.get('/api/v:version/summary/:cname', function(req, res) {
     return dispatchPromise('getSummary', routes, req, res);
 });
+
 app.get('/api/v:version/details/:cname', function(req, res) {
     return dispatchPromise('getDetails', routes, req, res);
 });
@@ -88,8 +88,16 @@ app.get('/api/v:version/url/:check', function(req, res) {
     return dispatchPromise('getCheckURL', routes, req, res);
 });
 
-app.get('/api/v:version/mixed/:cname/:daysago', function(req, res) {
+app.get('/api/v:version/mixed/:cname/:daysago?', function(req, res) {
     return dispatchPromise('getMixed', routes, req, res);
+});
+
+app.get('/api/v:version/judgment/:cname/:daysago?', function(req, res) {
+    return dispatchPromise('getJudgment', routes, req, res);
+});
+
+app.get('/campaign/:cname/:viz?', function(req, res) {
+    return dispatchPromise('serveCampaign', routes, req, res);
 });
 
 defaultSetup(app, dispatchPromise, express, routes, 'storyteller');

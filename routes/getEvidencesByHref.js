@@ -1,5 +1,4 @@
 var _ = require('lodash');
-var Href = require('bluebird');
 var debug = require('debug')('route:getEvidencesByHref');
 var moment = require('moment');
 var nconf = require('nconf');
