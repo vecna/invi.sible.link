@@ -3,13 +3,13 @@ html
   head
     link(rel='stylesheet', href='/css/index.css')
     link(rel='stylesheet', href='/css/bootstrap.css')
-    link(rel='stylesheet', href='/css/c3.css')
 
     script(type='text/javascript', src='/js/vendor/jquery.js')
     script(type='text/javascript', src='/js/vendor/collapse.js')
     script(type='text/javascript', src='/js/vendor/lodash.min.js')
     script(type='text/javascript', src='/js/vendor/moment.min.js')
     script(type='text/javascript', src='/js/vendor/d3.min.js')
+    script(type='text/javascript', src='/js/vendor/d3-path.min.js')
     script(type='text/javascript', src='/js/vendor/c3.min.js')
 
     link(rel='stylesheet', href='/js/local/scorecard.css')
@@ -26,11 +26,28 @@ html
 
     title #{pagetitle}
 
-  body(onload="initializedMainContent('#maincontent');")
+  body(onload="init('#maincontent');")
 
     .container-fluid.text
         div(id="campaign") #{headline}
         div(id="description") #{description}
+
+    .container-fluid.text
+        table
+            thead
+                tr 
+                    th.col-sm-1 sites
+                    th.col-sm-1 trackers
+                    th.col-sm-1 not attributed 
+                    th.col-sm-1 javascrips
+                    th.col-sm-1 cookies 
+            tbody
+                tr 
+                    th.col-sm-1 #{sites}
+                    th.col-sm-1 #{trackers}
+                    th.col-sm-1 #{notattributed}
+                    th.col-sm-1 #{javascripts}
+                    th.col-sm-1 #{cookies}
 
     .container-fluid.text
         button.col-2-md
@@ -40,7 +57,15 @@ html
         button.col-4-md
             a(href="#" onclick="some();") analyst visualization
 
-        div(id="maincontent")
+        div(id="maincontent0")
+        div(id="maincontent1")
+        div(id="maincontent2")
+        div(id="maincontent3")
+        div(id="maincontent4")
+        div(id="maincontent5")
+        div(id="maincontent6")
+        div(id="maincontent7")
+        div(id="maincontent8")
 
     include footer
 

@@ -22,6 +22,7 @@ function getJudgment(req) {
         .readLimit(nconf.get('schema').judgment, filter, {
             when: -1
         }, 1, 0)
+        .then(_.first)
         .then(function(C) {
             if(!_.size(C))
                 debug("getJudgment fail for %s (%d daysago)", campaign, daysback);

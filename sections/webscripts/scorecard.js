@@ -1,18 +1,27 @@
-function initializeMainContent(containerId) {
+
+function init(containerId) {
     /* look if the URL ends with 'cards' or with 'expert'
      * in such case, render a different visualization in containerId */
-    console.log("initializeMainContent", containerId);
+    console.log("init", containerId);
+
+    d3.json("/api/v1/judgment/irantrex/1", function(data) {
+        _.each(data.ranks, function(site, i) {
+            var divId = containerId + i;
+            renderSiteCard(divId, site);
+        });
+
+    });
 };
 
-function renderSiteCard() {
-	console.log("begin renderSiteCard");
+function renderSiteCard(containerId, data) {
+	console.log("begin renderSiteCard", containerId, data);
 
 	var width = 700;
 	var height = 400;
 
 	/* svgContainer is the whole figure */
         var svgContainer = d3
-		.select("#container")
+		.select(containerId)
 	        .append("svg")
 	        .attr("width", width)
 	        .attr("height", height);
@@ -68,8 +77,7 @@ function renderSiteCard() {
 		.attr("stroke-width", 1)
 		.attr("fill", "none");
 
-	// content
-	var inputO = {
+	/* data structure {
 		name: "www.repubblica.it",
 		totalNjs: 40, // from privacy badger 
 		post: true,
@@ -77,8 +85,9 @@ function renderSiteCard() {
 		reply: false,
 		storage: true,
 		companies: 6,
-		score: 81
+		measure: 81
 	};
+    */
 
 	// big score 
 	svgContainer.append("text")
@@ -86,7 +95,7 @@ function renderSiteCard() {
 		.attr("y", 300)
 		.attr("class", "francois")
 		.style("font-size", 170)
-		.text(inputO.score);
+		.text(data.measure);
 
 	// name in the header
 	svgContainer.append("text")
@@ -95,10 +104,10 @@ function renderSiteCard() {
 		.attr("class", "francois")
 		.style("font-size", function() {
 			// improvised hand tested function to scale font based on name lenght
-			var x = (1 / inputO.name.length);
+			var x = (1 / data.name.length);
 			return x * 1050;
 		})
-		.text(inputO.name);
+		.text(data.name);
 
 	// number of scripts
 	svgContainer.append("text")
@@ -106,42 +115,42 @@ function renderSiteCard() {
 		.attr("y", 120)
 		.attr("class", "francois")
 		.style("font-size", 60)
-		.text(inputO.totalNjs);
+		.text(data.totalNjs);
 	
 	svgContainer.append("text")
 		.attr("x", 570)
 		.attr("y", 330)
 		.attr("class", "francois")
 		.style("font-size", 60)
-		.text(inputO.companies);
+		.text(data.companies);
 
 	/* square boxes, post, canvas, store, reply */
 	var post = d3.path();
 	post.rect(560, 170, 40, 40); 
 	svgContainer.append("path").attr("d", post.toString())
 		.attr("fill", function() {
-			return inputO.post ? "red" : "lightgrey";
+			return data.post ? "red" : "lightgrey";
 		});
 
 	var canvas = d3.path();
 	canvas.rect(600, 170, 40, 40); 
 	svgContainer.append("path").attr("d", canvas.toString())
 		.attr("fill", function() {
-			return inputO.canvas ? "red" : "lightgrey";
+			return data.canvas ? "red" : "lightgrey";
 		});
 
 	var storage = d3.path();
 	storage.rect(600, 210, 40, 40); 
 	svgContainer.append("path").attr("d", storage.toString())
 		.attr("fill", function() {
-			return inputO.storage ? "red" : "lightgrey";
+			return data.storage ? "red" : "lightgrey";
 		});
 
 	var reply = d3.path();
 	reply.rect(560, 210, 40, 40); 
 	svgContainer.append("path").attr("d", reply.toString())
 		.attr("fill", function() {
-			return inputO.reply ? "red" : "lightgrey";
+			return data.reply ? "red" : "lightgrey";
 		});
 
 };
