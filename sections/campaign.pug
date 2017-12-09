@@ -3,6 +3,7 @@ html
   head
     link(rel='stylesheet', href='/css/index.css')
     link(rel='stylesheet', href='/css/bootstrap.css')
+    link(rel='stylesheet', href='/js/local/scorecard.css')
 
     script(type='text/javascript', src='/js/vendor/jquery.js')
     script(type='text/javascript', src='/js/vendor/collapse.js')
@@ -12,12 +13,11 @@ html
     script(type='text/javascript', src='/js/vendor/d3-path.min.js')
     script(type='text/javascript', src='/js/vendor/c3.min.js')
 
-    link(rel='stylesheet', href='/js/local/scorecard.css')
     script(type='text/javascript', src='/js/local/scorecard.js')
 
     meta(property="og:title" content=ogtitle)
     meta(property="og:type" content="website")
-    meta(property="og:description" content=ogdescription)
+    meta(property="og:description" content="We tested " + testedSite + " websites, " + trackers + " trackers has been identify and " + notattributed + " still lack of attribution")
     meta(property="og:url" content=ogurl)
     meta(property="og:image" content=ogimageurl)
 
@@ -26,13 +26,12 @@ html
 
     title #{pagetitle}
 
-  body(onload="init('#maincontent');")
+  body
 
-    .container-fluid.text
-        div(id="campaign") #{headline}
-        div(id="description") #{description}
+    .container-fluid.headline #{headline}
+    .container-fluid.subtitle #{description}
 
-    .container-fluid.text
+    .container-fluid.statstable
         table
             thead
                 tr 
@@ -43,29 +42,35 @@ html
                     th.col-sm-1 cookies 
             tbody
                 tr 
-                    th.col-sm-1 #{sites}
+                    th.col-sm-1 #{testedSites}
                     th.col-sm-1 #{trackers}
                     th.col-sm-1 #{notattributed}
                     th.col-sm-1 #{javascripts}
                     th.col-sm-1 #{cookies}
 
-    .container-fluid.text
-        button.col-2-md
-            a(href="#" onclick="some();") scorecards 
-        button.col-3-md
-            a(href="#" onclick="details();") Javascrip details
+    .container-fluid.buttons
         button.col-4-md
-            a(href="#" onclick="some();") analyst visualization
+            a(href="#" onclick="renderScoreCards('#card');") Scorecards 
+        button.col-4-md
+            a(href="#" onclick="renderJsDetails('#lonelycontainer');") Javascript details
+        button.col-4-md
+            a(href="#" onclick="renderExpertV('#lonelycontainer');") Analyst visualization
+        button.col-4-md
+            a(onclick="explanation()" href="listURL" target=_blank) Contribute to the list
 
-        div(id="maincontent0")
-        div(id="maincontent1")
-        div(id="maincontent2")
-        div(id="maincontent3")
-        div(id="maincontent4")
-        div(id="maincontent5")
-        div(id="maincontent6")
-        div(id="maincontent7")
-        div(id="maincontent8")
+        div(id="lonelycontainer")
+        div(id="card0")
+        div(id="card1")
+        div(id="card2")
+        div(id="card3")
+        div(id="card4")
+        div(id="card5")
+        div(id="card6")
+        div(id="card7")
+        div(id="card8")
+
+    script.
+        initialize( '#card', '#{jsonsrc}' );
 
     include footer
 

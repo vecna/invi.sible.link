@@ -1,21 +1,44 @@
 @font-face {
-	font-family: 'FrancoisOne';
-	font-style: normal;
-	font-weight: 400;
-	src: local('FrancoisOne'), url("FrancoisOne.ttf") format('truetype');
+    font-family: 'FrancoisOne';
+    font-style: normal;
+    font-weight: 400;
+    src: local('FrancoisOne'), url("FrancoisOne.ttf") format('truetype');
 }
 
 @font-face {
-	font-family: 'Work Sans';
-	font-style: normal;
-	font-weight: 400;
-	src: local('Work Sans'), url("WorkSans.ttf") format('truetype');
+    font-family: 'Work Sans';
+    font-style: normal;
+    font-weight: 400;
+    src: local('Work Sans'), url("WorkSans.ttf") format('truetype');
 }
 
 .worksans {
-	font-family: 'Work Sans', sans-serif;
+    font-family: 'Work Sans', sans-serif;
 }
 
 .francois {
-	font-family: 'FrancoisOne', serif;
+    font-family: 'FrancoisOne', serif;
+}
+
+.headline {
+    font-family: 'FrancoisOne';
+    text-align: center;
+    font-size: 2em;
+    padding: 0.5em;
+}
+
+.subtitle {
+    font-family: 'Work Sans';
+    font-weight: 100;
+    padding-left: 2em;
+    padding-right: 2em;
+}
+
+.statstable {
+    font-family: 'Work Sans';
+    padding: 1em;
+}
+
+.buttons {
+    text-align: center;
 }

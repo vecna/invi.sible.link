@@ -31,18 +31,25 @@ function serveCampaign(req) {
         .then(_.first)
         .then(function(j) {
 
+            if(_.isUndefined(j)) {
+                debug("mhh... it looks broken?");
+                return {
+                    text: pug.compileFile(__dirname + '/../sections/no.pug')()
+                };
+            }
+
             var daysago = _.round(
                 moment.duration(moment() - moment(j.when).startOf('day')).asDays());
+            debug("Computed from the next API request (until cache don't get implemented, a result of %s, %d daysago", j.when, daysago);
 
             var cinfo = {
-                sites: j.total,
+                testedSites: j.total,
                 trackers: j.trackers,
                 notattributed: j.unrecognized,
                 javascripts: j.includedJS,
                 cookies: j.cookies,
                 ogtitle: "web trackers in poltical Iranian website",
                 pagetitle: "web trackers in poltical Iranian website",
-                ogdescription: "We tested " + j.total + " website, " + j.trackers + " trackers identify and " + j.notattributed + " lack of attribution",
                 ogurl: "https://invi.sible.link/campaign/" + campaign + "/" + viz,
                 ogimageurl: "wip",
                 headline: "political opposition in iran: (uninteded?) web tracking",
@@ -51,7 +58,9 @@ function serveCampaign(req) {
             };
 
             return {
-                text: pug.compileFile(__dirname + '/../sections/campaign.pug')(cinfo)
+                text: pug.compileFile(__dirname + '/../sections/campaign.pug', {
+                    pretty: true
+                })(cinfo)
             };
         });
 };

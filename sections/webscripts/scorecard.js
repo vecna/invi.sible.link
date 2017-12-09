@@ -1,15 +1,29 @@
 
-function init(containerId) {
+function initialize(cardContainer, sourceapi) {
+    console.log("renderScoreCards", cardContainer, sourceapi);
+    d3.json(sourceapi, function(data) {
+        cache = data;
+        renderScoreCards(cardContainer);
+    });
+};
+
+var cache = [];
+
+function renderJsDetail(detailsContainer) {
+};
+
+function explanation(event) {
+    console.log(event);
+};
+
+function renderScoreCards(containerRoot) {
     /* look if the URL ends with 'cards' or with 'expert'
      * in such case, render a different visualization in containerId */
-    console.log("init", containerId);
+    console.log("renderScoreCards", containerRoot);
 
-    d3.json("/api/v1/judgment/irantrex/1", function(data) {
-        _.each(data.ranks, function(site, i) {
-            var divId = containerId + i;
-            renderSiteCard(divId, site);
-        });
-
+    _.each(cache.ranks, function(site, i) {
+        var divId = containerRoot + i;
+        renderSiteCard(divId, site);
     });
 };
 
@@ -94,7 +108,7 @@ function renderSiteCard(containerId, data) {
 		.attr("x", 240)
 		.attr("y", 300)
 		.attr("class", "francois")
-		.style("font-size", 170)
+		.style("font-size", 170 / 16 + "em")
 		.text(data.measure);
 
 	// name in the header
@@ -103,9 +117,8 @@ function renderSiteCard(containerId, data) {
 		.attr("y", 120)
 		.attr("class", "francois")
 		.style("font-size", function() {
-			// improvised hand tested function to scale font based on name lenght
 			var x = (1 / data.name.length);
-			return x * 1050;
+			return (x * 1050) / 16 + "em";
 		})
 		.text(data.name);
 
@@ -114,14 +127,14 @@ function renderSiteCard(containerId, data) {
 		.attr("x", 570)
 		.attr("y", 120)
 		.attr("class", "francois")
-		.style("font-size", 60)
+		.style("font-size", 60 / 16 + "em")
 		.text(data.totalNjs);
 	
 	svgContainer.append("text")
 		.attr("x", 570)
 		.attr("y", 330)
 		.attr("class", "francois")
-		.style("font-size", 60)
+		.style("font-size", 60 / 16 + "em")
 		.text(data.companies);
 
 	/* square boxes, post, canvas, store, reply */
@@ -152,5 +165,4 @@ function renderSiteCard(containerId, data) {
 		.attr("fill", function() {
 			return data.reply ? "red" : "lightgrey";
 		});
-
 };
