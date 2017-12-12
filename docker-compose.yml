@@ -1,0 +1,7 @@
+mongodb:
+  image: mongo:latest
+  #env_file: nombredb.env
+  volumes:
+    - mongongodb:/data/db
+  net: "host"
+
