@@ -50,3 +50,8 @@ DEBUG=* bin/analyzeGroup.js --campaign poland --daysago 0
 DEBUG=* bin/analyzeBadger.js --config config/analyzerProduction.json --campaign "ngos"
 DEBUG=* bin/analyzePhantom.js --config config/analyzerProduction.json --campaign "ngos"
 DEBUG=* bin/analyzeGroup.js --campaign ngos --daysago 0
+
+
+DEBUG=* bin/analyzeBadger.js --config config/analyzerProduction.json --campaign "gobwebsecpy"
+DEBUG=* bin/analyzePhantom.js --config config/analyzerProduction.json --campaign "gobwebsecpy"
+DEBUG=* bin/analyzeGroup.js --campaign gobwebsecpy --daysago 0
