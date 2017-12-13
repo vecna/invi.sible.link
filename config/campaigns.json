@@ -50,5 +50,9 @@
     "ngos": [ {
         "name": "ngos",
         "csv": "ngos/crowdfunding.csv"
+    } ],
+    "gobwebsecpy": [ {
+        "name": "gobwebsecpy",
+        "csv": "gobwebsecpy/lista_paraguay.csv"
     } ]
 }}
