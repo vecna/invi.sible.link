@@ -45,7 +45,9 @@ function lastHours(config) {
     var fieldSet = {
         'loadavg': [ 'load-0', 'load-1'], //, 'load-2' ],
         'memory': [ 'free' ], // , 'total' ],
-        'mongo': [ 'saved', 'badger', 'accesses' ]
+        'phantom': [ 'saved' ],
+        'badger': [ 'badger' ],
+        'accesses': [ 'accesses' ]
     };
     var VPs = [ 'HK', 'WS', 'AMS' ];
     var url = '/api/v1/stats/' + config.hours;
@@ -53,19 +55,12 @@ function lastHours(config) {
     console.log("Fetching last", config.hours, "from", url);
 
     d3.json(url, function(content) {
-
-        console.log(content);
-
-        if(config.memory)
-            var memoryChart = renderStats(content.memory, config.memory, VPs, fieldSet.memory);
-
-        if(config.loadavg)
-            var loadavgChart = renderStats(content.loadavg, config.loadavg, VPs, fieldSet.loadavg);
-
-        if(config.mongo)
-            var mongoChart = renderStats(content.mongo, config.mongo, VPs, fieldSet.mongo);
+        var memoryChart = renderStats(content.memory, config.memory, VPs, fieldSet.memory);
+        var loadavgChart = renderStats(content.loadavg, config.loadavg, VPs, fieldSet.loadavg);
+        var phantomChart = renderStats(content.mongo, config.phantom, VPs, fieldSet.phantom);
+        var badgerChart = renderStats(content.mongo, config.badger, VPs, fieldSet.badger);
+        var accessesChart = renderStats(content.mongo, config.accesses, VPs, fieldSet.accesses);
     });
-
 }
 
 /* small library function used to generate stats for every campaign */

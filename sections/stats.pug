@@ -16,7 +16,7 @@ html
 
     title ⛅  invi.sible.link - Statistics
 
-    body(onload="tasksInsertion('#tasks'); lastHours({'hours': 48, 'loadavg': '#loadavg', 'memory': '#memory', 'mongo': '#database'}); localInfo('#orchestration'); ")
+    body(onload="tasksInsertion('#tasks'); lastHours({'hours': 48, 'loadavg': '#loadavg', 'memory': '#memory', 'phantom': '#phantom', 'badger': '#badger', 'accesses': '#accesses'}); localInfo('#orchestration'); ")
 
     .container-fluid
       .jumbotron
@@ -24,10 +24,6 @@ html
         h2 ⛅  invi.sible.link
 
     include navbar
-
-    p
-        b --- Warning
-        |: AMS and HK boxes are down. 
 
     .container-fluid.text
         h2 Orchestration point
@@ -46,8 +42,12 @@ html
         div(id="loadavg")
         h3 Memory
         div(id="memory")
-        h3 Database objects
-        div(id="database")
+        h3 Phantom-based crawling
+        div(id="phantom")
+        h3 Badger-based crawling 
+        div(id="badger")
+        h3 API access recorded
+        div(id="accesses")
 
     .container-fluid
         h3 Check the 
