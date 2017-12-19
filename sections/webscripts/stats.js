@@ -19,6 +19,7 @@ function renderStats(jsonData, containerId, VPs, keywords) {
 
     return c3.generate({
         bindto: containerId,
+        size: { height: 400 },
         data: {
             json: jsonData,
             keys: {
@@ -26,15 +27,33 @@ function renderStats(jsonData, containerId, VPs, keywords) {
                 value: fields
             },
             xFormat: '%Y-%m-%d %H:%M',
-            type: 'spline',
             names: _.zipObject(fields, displayName)
         },
         axis: {
             x: {
                 type: 'timeseries',
                 tick: {
-                    format: '%d %H:%M'
+                    format: '[%d] %H:%M'
                 },
+            }
+        },
+        point: {
+            r: 1.5,
+            focus: {
+               expand: { r: 5 }
+            }
+        },
+        subchart: { show: true },
+        grid: {
+            x: {
+               lines: [
+                   { value:
+                        moment().startOf('day').format("YYYY-MM-DD HH:mm"),
+                     text: 'midnight' },
+                   { value:
+                        moment().startOf('day').subtract(1, 'd').format("YYYY-MM-DD HH:mm"),
+                     text: 'midnight' }
+               ]
             }
         }
     });
