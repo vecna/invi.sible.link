@@ -1,7 +1,11 @@
-mongodb:
+db:
   image: mongo:latest
   #env_file: nombredb.env
   volumes:
-    - mongongodb:/data/db
-  net: "host"
-
+    - data:/data/db
+app:
+  build: .
+  ports:
+    - 7000:7000 
+  links:
+    - db
