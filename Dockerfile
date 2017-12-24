@@ -17,4 +17,4 @@ COPY . .
 # Corro el install
 RUN npm install
 
-CMD [ "npm", "storyteller" ]
+CMD [ "npm", "run", "storyteller" ]
