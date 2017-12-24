@@ -2,10 +2,12 @@ db:
   image: mongo:latest
   #env_file: nombredb.env
   volumes:
-    - data:/data/db
+    - invisibledata:/data/db
 app:
   build: .
   ports:
-    - 7000:7000 
+    - 7000:7000
+#  volumes:
+#    - invisibleapp:/usr/src/app 
   links:
     - db
