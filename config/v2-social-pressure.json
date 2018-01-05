@@ -1,0 +1,26 @@
+{
+    "name": "v2-social-pressure",
+    "schema": {
+        "evidences": "evidences",
+        "surface": "surface",
+        "details": "details",
+        "summary": "summary"
+    },
+    "mongodb": "mongodb://localhost/ivl",
+    "campaign": "overwritewithenvorcommandline",
+
+    "watch": [
+        "bin/v2-social-pressure.js",
+        "campaigns/**",
+        "sections/webscripts/*js",
+        "routes/*.js",
+        "lib/*.js",
+        "dist/**"
+    ],
+    "verbose": true,
+    "exitcrash": false,
+    "env": {
+        "DEBUG": "*,-ffi:*,-ref*,-send,-express:*"
+    },
+    "ext": "js css json pug"
+}

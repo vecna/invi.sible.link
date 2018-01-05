@@ -26,9 +26,9 @@ var pageMap = {
 var getCampaignIndex = function(req) {
 
     var pageName = _.get(req.params, 'page');
-    debug("page name [%s]", pageName);
+    debug("whatever page is requested, it is going to be returned pagestruct.pug [%s]", pageName);
 
-    return { 'text': pageMap[pageName]() };
+    return { 'text': pugCompiler('pugs/pagestruct')() };
 };
 
 module.exports = getCampaignIndex;
