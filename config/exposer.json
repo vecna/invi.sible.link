@@ -23,7 +23,7 @@
   "verbose": true,
   "exitcrash": false,
   "env": {
-      "DEBUG": "exposer,route:*,lib:*"
+      "DEBUG": "exposer,route:*,lib:*,-lib:mongo:read"
   },
   "ext": "js css json pug"
 }
