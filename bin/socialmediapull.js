@@ -45,7 +45,7 @@ return various
         debug("Retrieved %d urls from %s", _.size(c), url);
     })
     .map(function(block) {
-        return queue.buildDirective(testkind, now, block.link, campaign, block.putime, 0);
+        return queue.buildDirective(testkind, now, block.link, campaign, block.permaLink, 0);
     })
     .then(queue.add)
     .tap(queue.report);
