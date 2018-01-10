@@ -16,7 +16,7 @@ var tname = promises.manageOptions();
 nconf.argv().env().file({'file': 'config/storyteller.json' });
 var daysago = nconf.get('daysago') ? _.parseInt(nconf.get('daysago')) : 0;
 var remote = nconf.get('remote') ? nconf.get('remote') : 'https://invi.sible.link';
-var MAX = 10;
+var MAX = nconf.get('MAX') ? _.parseInt(nconf.get('MAX')) : 10;
 
 var m = moment().startOf('day').add(10, 'h');
 if(_.parseInt(nconf.get('daysago')))
