@@ -53,13 +53,40 @@ function onePerSite(retrieved) {
     }, []);
 };
 
+function saveSummary(content) {
+	debug("elements to be saved in `summary` are: %d", _.size(content));
+    return Promise
+        .map(content, function(e) {
+            return mongo
+                .read(nconf.get('schema').summary, { id: e.id })
+                .then(_.first)
+			    .tap(function(result) {
+        			if(_.isUndefined(result))
+                    	return mongo.writeOne(nconf.get('schema').summary, e)
+                });
+        }, {concurrency: 5})
+		.then(_.compact)
+		.tap(function(saved) {
+			debug("The elements saved in `summary` are %d", _.size(saved));
+		});
+}
+
 function saveAll(content) {
-    if(_.size(content)) {
-        debug("Saving in details %d object", _.size(content));
-        return machetils.statsSave(nconf.get('schema').details, content);
-    }
-    else
-        debug("No details to be saved");
+	debug("elements to be saved in `details` are: %d", _.size(content));
+    return Promise
+        .map(content, function(e) {
+            return mongo
+                .read(nconf.get('schema').details, { id: e.id })
+                .then(_.first)
+			    .tap(function(result) {
+        			if(_.isUndefined(result))
+                    	return mongo.writeOne(nconf.get('schema').details, e)
+                });
+        }, {concurrency: 5})
+		.then(_.compact)
+		.tap(function(saved) {
+			debug("The elements saved in `details` are %d", _.size(saved));
+		});
 }
 
 function clean(memo, imported) {
@@ -119,15 +146,6 @@ function summary(detailsL) {
         memo.push(small);
         return memo;
     }, []);
-};
-
-function saveSummary(content) {
-    if(_.size(content)) {
-        debug("Saving in summary %d object", _.size(content));
-        return machetils.statsSave(nconf.get('schema').summary, content);
-    }
-    else
-        debug("No summary to be saved");
 };
 
 return promises

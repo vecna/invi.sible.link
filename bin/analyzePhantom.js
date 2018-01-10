@@ -101,7 +101,7 @@ function saveAll(retrieved) {
                 }, {concurrency: 5})
                 .then(_.compact)
                 .tap(function(saved) {
-                    debug("The elements new were %d", _.size(saved));
+                    debug("The elements saved in `evidences` are %d", _.size(saved));
                 });
         });
 }
@@ -191,7 +191,7 @@ function updateSurface(retrieved) {
                 }, {concurrency: 5})
                 .then(_.compact)
                 .tap(function(saved) {
-                    debug("The elements new were %d", _.size(saved));
+                    debug("The elements saved in `surface` are %d", _.size(saved));
                 });
         });
 };
