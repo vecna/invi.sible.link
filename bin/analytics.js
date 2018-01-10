@@ -18,7 +18,7 @@ console.log("config file: " + cfg);
 nconf.file({ file: cfg });
 
 var timeVar = {
-    promises: 'start',
+    promises: 'when',
     accesses: 'when',
     judgment: 'when',
     statistics: null,
@@ -43,9 +43,9 @@ var mongoQlist = _.reduce(nconf.get('schema'), function(memo, column, name) {
     }
 
     var timestr = _.isUndefined(nconf.get('DAYSAGO')) ? 
-                    moment().subtract(24, 'h').format() :
-                    moment().subtract(_.parseInt(nconf.get('DAYSAGO')), 'd').format();
-    var timef = { "$gt": new Date(timestr) };
+                    moment().startOf('day').format() :
+                    moment().startOf('dat').subtract(_.parseInt(nconf.get('DAYSAGO')), 'd').format();
+    var timef = { "$gte": new Date(timestr) };
 
     var filter = _.set({}, tv, timef);
     var sort =  _.set({}, tv, -1);
@@ -58,6 +58,8 @@ var mongoQlist = _.reduce(nconf.get('schema'), function(memo, column, name) {
                     sample: _.size(e) ? _.sample(e) : null,
                     count: _.size(e),
                     name: name,
+                    first: _.size(e) ? _.get(_.first(e), tv) : "n/a",
+                    last: _.size(e) ? _.get(_.last(e), tv) : "n/a",
                     firstTimeAgo: _.size(e) ? moment.duration(moment(_.get(_.first(e), tv)) - moment()).humanize() : "n/a",
                     lastTimeAgo: _.size(e) ? moment.duration(moment(_.get(_.last(e), tv)) - moment()).humanize() : "n/a"
                 }
@@ -68,7 +70,7 @@ var mongoQlist = _.reduce(nconf.get('schema'), function(memo, column, name) {
 
 return Promise.all(mongoQlist)
     .map(function(c) {
-        debug("%s\t%d\tfirst [%s]\tlast [%s]", c.name, c.count, c.firstTimeAgo, c.lastTimeAgo);
+        debug("%s\t%d\tfirst [%s - %s]\tlast [%s - %s]", c.name, c.count, c.first, c.firstTimeAgo, c.last, c.lastTimeAgo);
         if(nconf.get('v') && c.sample)
             console.log(JSON.stringify(c.sample, undefined, 2));
     });
