@@ -99,12 +99,12 @@ function rankTheWorst(m) {
 
         var ret = {
             name: surface.url,
-            description: surface.description,
+            description: surface.description, // XXX is not really provided, it is left in the promise
             totalNjs: surface.javascripts,
             companies: _.size(surface.companies),
-            storage: false,
-            reply: false,
-            canvas: false,
+            storage: null,
+            reply: null,
+            canvas: null,
             post: surface.xhr,
             cookies: _.size(surface.cookies)
         };
