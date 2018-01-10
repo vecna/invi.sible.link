@@ -17,7 +17,7 @@
   "verbose": true,
   "exitcrash": false,
   "env": {
-        "DEBUG": "vigile,route:*,lib:*,-lib:mongo:read"
+        "DEBUG": "vigile,route:*,lib:*,-lib:dispatchPromise,-lib:mongo:read"
   },
   "ext": "js"
 }
