@@ -38,6 +38,9 @@ if(accepted.indexOf(testkind) === -1) {
 
 return various
     .loadJSONurl(url)
+    .then(function(full) {
+        return full.results;
+    })
     .tap(function(c) {
         debug("Retrieved %d urls from %s", _.size(c), url);
     })
