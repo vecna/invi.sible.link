@@ -53,10 +53,13 @@ var mongoQlist = _.reduce(nconf.get('schema'), function(memo, column, name) {
         mongo
             .read(column, filter, sort)
             .then(function(e) {
+                if(_.size(e)) debugger;
                 return {
                     sample: _.size(e) ? _.sample(e) : null,
                     count: _.size(e),
-                    name: name
+                    name: name,
+                    firstTimeAgo: _.size(e) ? moment.duration(moment(_.get(_.first(e), tv)) - moment()).humanize() : "n/a",
+                    lastTimeAgo: _.size(e) ? moment.duration(moment(_.get(_.last(e), tv)) - moment()).humanize() : "n/a"
                 }
             })
     );
@@ -65,7 +68,7 @@ var mongoQlist = _.reduce(nconf.get('schema'), function(memo, column, name) {
 
 return Promise.all(mongoQlist)
     .map(function(c) {
-        debug("%s\t%d", c.name, c.count);
+        debug("%s\t%d\tfirst [%s]\tlast [%s]", c.name, c.count, c.firstTimeAgo, c.lastTimeAgo);
         if(nconf.get('v') && c.sample)
             console.log(JSON.stringify(c.sample, undefined, 2));
     });
