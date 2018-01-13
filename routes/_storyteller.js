@@ -16,7 +16,10 @@ module.exports = {
     getCheckURL:           require('./getCheckURL'),
     getMixed:              require('./getMixed'),
     getJudgment:           require('./getJudgment'),
+    getSiteInfo:           require('./getSiteInfo'),
+
     serveCampaign:         require('./serveCampaign'),
+    serveSite:             require('./serveSite'),
 
     getRecentActivities:   require('./getRecentActivities'),
     getEvidencesByHref:    require('./getEvidencesByHref')

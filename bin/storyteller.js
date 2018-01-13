@@ -96,8 +96,22 @@ app.get('/api/v:version/judgment/:cname/:daysago?', function(req, res) {
     return dispatchPromise('getJudgment', routes, req, res);
 });
 
+app.get('/api/v:version/siteinfo/:subjectId', function(req, res) {
+    return dispatchPromise('getSiteInfo', routes, req, res);
+});
+
 app.get('/campaign/:cname/:viz?', function(req, res) {
     return dispatchPromise('serveCampaign', routes, req, res);
+});
+
+app.get('/site/:hreforid', function(req, res) {
+    req.params.pug = 'site.pug';
+    return dispatchPromise('serveSite', routes, req, res);
+});
+
+app.get('/verbose/:hreforid', function(req, res) {
+    req.params.pug = 'verbose.pug';
+    return dispatchPromise('serveSite', routes, req, res);
 });
 
 defaultSetup(app, dispatchPromise, express, routes, 'storyteller');

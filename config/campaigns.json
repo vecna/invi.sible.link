@@ -29,11 +29,13 @@
     ],
     "irantrex": [ {
         "name": "irantrex",
-        "csv": "irantrex/iran1st.csv"
+        "csv": "irantrex/iran1st.csv",
+        "communication": "irantrex/irantrex.json"
     } ],
     "itatopex": [ {
         "name": "itatopex",
-        "csv": "itatopex/lista.csv"
+        "csv": "itatopex/lista.csv",
+        "communication": "itatopex/itatopex.json"
     } ],
     "social-media": [ {
         "name": "social-media",
