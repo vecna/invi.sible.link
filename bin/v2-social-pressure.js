@@ -44,13 +44,13 @@ if(!nconf.get('port')) {
 var webappcnt = {};
 function webAppAccess(name, func, routes, req, res) {
 
-    if(_.isUndefined(webappcnt, name))
-        webappcnt.name = 1;
-    else
-        webappcnt.name += 1;
+    if(_.isUndefined(_.get(webappcnt, name)))
+        webappcnt[name] = 0;
 
-    req.randomUnicode = webappcnt.name;
-    debug("%d %s API %s (%s)", req.randomUnicode, moment().format("HH:mm:ss"), name, req.url);
+    webappcnt[name] += 1;
+    req.randomUnicode = webappcnt[name];
+
+    debug("%d %s req2[%s]: %s", webappcnt[name], moment().format("HH:mm:ss"), name, req.url);
 
     return new Promise.resolve(func(req))
       .then(function(httpresult) {
@@ -92,45 +92,25 @@ console.log( "http://" + nconf.get('interface') + ':' + nconf.get('port') + " li
 
 /* Documented API */
 
+app.get('/api/last/object/:otype', function(req, res) {
+    // This API is used in the documentation page
+    dispatchPromise('getLastObjectByType', routes, req, res);
+});
+
+app.get('/api/default/:itype', function(req, res) {
+    // This API is used to fill the default information visualizazione,
+    // the API could be more complex of 'last/object'
+    // it is returned the last available informative element per type
+    dispatchPromise('getInformativeDefault', routes, req, res);
+});
+
+// not yet implemented
+app.get('/api/last/:weekn/:infoname', function(req, res) {
+    // This API is used to fill a graph, which is 
+    dispatchPromise('getInformativeByWeek', routes, req, res);
+});
+
 /* Undocumented APIs */
-
-app.get('/api/v:version/surface/:campaign', function(req, res) {
-    return dispatchPromise('getSurface', routes, req, res);
-});
-
-app.get('/api/v:version/evidences/:sitename', function(req, res) {
-    return dispatchPromise('getEvidencesByName', routes, req, res);
-});
-
-app.get('/api/v:version/sankeys/:campaign', function(req, res) {
-    return dispatchPromise('getSankeys', routes, req, res);
-});
-
-app.get('/api/v:version/csv/:campaign', function(req, res) {
-    return dispatchPromise('getCSV', routes, req, res);
-});
-
-app.get('/api/v:version/tableau/:cname', function(req, res) {
-    return dispatchPromise('getTableauJSON', routes, req, res);
-});
-
-/* all tasks */
-app.get('/api/v:version/activeTasks', function(req, res) {
-    return dispatchPromise('activeTasks', routes, req, res);
-});
-
-/* promises by campaign name */
-app.get('/api/v:version/tasks/:cname', function(req, res) {
-    return dispatchPromise('getCampaignPromises', routes, req, res);
-});
-
-app.get('/api/v:version/subjects', function(req, res) {
-    return dispatchPromise('getSubjectsStats', routes, req, res);
-});
-
-app.get('/api/v:version/stats/:hours', function(req, res) {
-    return dispatchPromise('getStats', routes, req, res);
-});
 
 /* ----------------------------------------------------- */
 var paths = process.env.PWD.split('/');
@@ -181,5 +161,3 @@ app.get('/', function(req, res) {
     req.params.page = 'landing';
     dispatchPromise('getCampaignIndex', routes, req, res);
 });
-
-

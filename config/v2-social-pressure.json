@@ -12,10 +12,11 @@
     "watch": [
         "bin/v2-social-pressure.js",
         "campaigns/**",
-        "sections/webscripts/*js",
+        "sections/webscripts/*.js",
         "routes/*.js",
         "lib/*.js",
-        "dist/**"
+        "dist/**",
+        "config/*.json"
     ],
     "verbose": true,
     "exitcrash": false,
