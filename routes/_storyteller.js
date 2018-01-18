@@ -7,6 +7,7 @@ module.exports = {
     getCampaignSubject:    require('./getCampaignSubject'),
     getCampaignNames:      require('./getCampaignNames'),
     getSurface:            require('./getSurface'),
+    getEvidencesExtended:  require('./getEvidencesExtended'),
     getSummary:            require('./getSummary'),
     getDetails:            require('./getDetails'),
     getCSV:                require('./getCSV'),

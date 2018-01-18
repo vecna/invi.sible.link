@@ -40,6 +40,10 @@ app.get('/api/v:version/surface/:campaign', function(req, res) {
     return dispatchPromise('getSurface', routes, req, res);
 });
 
+app.get('/api/v:version/extended/:campaign', function(req, res) {
+    return dispatchPromise('getEvidencesExtended', routes, req, res);
+});
+
 app.get('/api/v:version/csv/:campaign', function(req, res) {
     return dispatchPromise('getCSV', routes, req, res);
 });
