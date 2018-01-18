@@ -49,9 +49,13 @@
         "name": "poland",
         "csv": "campaigns/fiftyshadesofpoland/list.csv"
     } ],
+    "platforms": [ {
+        "name": "platforms",
+        "csv": "platforms/crowdfunding.csv"
+    } ],
     "ngos": [ {
         "name": "ngos",
-        "csv": "ngos/crowdfunding.csv"
+        "csv": "ngos/donation.csv"
     } ],
     "gobwebsecpy": [ {
         "name": "gobwebsecpy",
