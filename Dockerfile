@@ -11,11 +11,11 @@ RUN apt-get update \
 
 WORKDIR $CODE
 
-# Corro el install
+# Run installation
 COPY package.json .
 RUN npm install
 
-# Copio todo el código al contenedor
+# Copy code to conatiner volume
 COPY . .
 
 #CMD [ "npm", "run", "storyteller" ]
