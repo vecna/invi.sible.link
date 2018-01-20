@@ -52,65 +52,65 @@ function webAppAccess(name, func, routes, req, res) {
 
     debug("%d %s req2[%s]: %s", webappcnt[name], moment().format("HH:mm:ss"), name, req.url);
 
-    return new Promise.resolve(func(req))
-      .then(function(httpresult) {
-
-          if(_.isObject(httpresult.headers))
-              _.each(httpresult.headers, function(value, key) {
-                  debug("Setting header %s: %s", key, value);
-                  res.setHeader(key, value);
-              });
-
-          if(!_.isUndefined(httpresult.json)) {
-              debug("%s API %s success・returning JSON (%d bytes)",
-                  req.randomUnicode, name,
-                  _.size(JSON.stringify(httpresult.json)) );
-              res.json(httpresult.json)
-          } else if(!_.isUndefined(httpresult.text)) {
-              debug("%s API %s success・returning text (size %d)",
-                  req.randomUnicode, name, _.size(httpresult.text));
-              res.send(httpresult.text)
-          } else {
-              httpresult.error = "Undetermined failure";
-              returnHTTPError(req, res, name, "Undetermined failure");
-          }
-
-          /* TODO fix statistics here using webappcnt 
-           * is a promise, the actual return value don't matter */
+    return new Promise
+        .resolve(func(req))
+        .then(function(httpresult) {
+            if(_.isObject(httpresult.headers)) {
+                _.each(httpresult.headers, function(value, key) {
+                    debug("Setting header %s: %s", key, value);
+                    res.setHeader(key, value);
+                });
+            }
+            if(!_.isUndefined(httpresult.json)) {
+                debug("%s API %s success・returning JSON (%d bytes)",
+                        req.randomUnicode, name, _.size(JSON.stringify(httpresult.json)) );
+                res.json(httpresult.json)
+            } else if(!_.isUndefined(httpresult.text)) {
+                debug("%s API %s success・returning text (size %d)",
+                        req.randomUnicode, name, _.size(httpresult.text));
+                res.send(httpresult.text)
+            } else {
+                debug("%s Undetermined failure in %s?", req.randomUnicode, name);
+                res.status(500);
+                res.send();
+            }
+          /* TODO fix statistics here using webappcnt  */
           // return various.accessLog(name, req, httpresult);
-      })
-      .catch(function(error) {
-          debug("%s Trigger an Exception %s: %s",
-              req.randomUnicode, name, error);
-          return returnHTTPError(req, res, name, "Exception");
-      });
+        })
+        .catch(function(error) {
+            debug("%s Trigger an Exception %s: %s",
+                    req.randomUnicode, name, error.message);
+            res.status(500);
+            res.send();
+        });
 };
 
 /* everything begin here, welcome */
 server.listen(nconf.get('port'), nconf.get('interface') );
 console.log( "http://" + nconf.get('interface') + ':' + nconf.get('port') + " listening");
 
-/* Documented API */
-
+// --------------------------------------------------------------------------
+// TODO/Think-about: move them in the campaign ?
+// not at the moment because the webapp do not support parameters in the URI string
+// it is configured to answer only one parameter. and can these fields become generic?
+// think about it --- so far is a monocampaign and probably will just remain so ..
 app.get('/api/last/object/:otype', function(req, res) {
     // This API is used in the documentation page
     dispatchPromise('getLastObjectByType', routes, req, res);
 });
-
 app.get('/api/default/:itype', function(req, res) {
     // This API is used to fill the default information visualizazione,
     // the API could be more complex of 'last/object'
     // it is returned the last available informative element per type
     dispatchPromise('getInformativeDefault', routes, req, res);
 });
-
 // not yet implemented
 app.get('/api/last/:weekn/:infoname', function(req, res) {
     // This API is used to fill a graph, which is 
     dispatchPromise('getInformativeByWeek', routes, req, res);
 });
+// --------------------------------------------------------------------------
 
-/* Undocumented APIs */
 
 /* ----------------------------------------------------- */
 var paths = process.env.PWD.split('/');
