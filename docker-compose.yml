@@ -1,21 +1,36 @@
-db:
-  image: mongo:latest
-  #env_file: nombredb.env
-  volumes:
-    - invisibledata:/data/db
-app:
-  build: .
-  ports:
-    - 7000:7000
-#  volumes:
-#    - invisibleapp:/usr/src/app 
-  links:
-    - db
-#vigile:
-#  image: node:6
-#  ports:
-#    - 7200:7200
-#exposer:
-#  image: node:6
-#  ports:
-#    - 7300:7300
+version: '2'
+
+services:
+  db:
+    image: mongo:latest
+    volumes:
+      - invisibledata:/data/db
+  storyteller:
+    build:
+      context: .
+      dockerfile: Dockerfile-story
+    ports:
+      - 7000:7000
+    depends_on:
+      - db
+  vigile:
+    build:
+      context: .
+      dockerfile: Dockerfile-vigile
+    ports:
+      - 7200:7200
+    depends_on:
+      - db
+  exposer:
+    build:
+      context: .
+      dockerfile: Dockerfile-exposer
+    ports:
+      - 7300:7300
+    depends_on:
+      - db
+  #chopsticks:
+    # image:
+
+volumes:
+  invisibledata:
