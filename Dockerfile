@@ -10,13 +10,12 @@ RUN apt-get update \
         && apt-get clean
 
 WORKDIR $CODE
-
-# Run installation
 COPY package.json .
-RUN npm install
 
 # Copy code to conatiner volume
 COPY . .
+COPY docker-entrypoint.sh /
 
-#CMD [ "npm", "run", "storyteller" ]
-CMD [ "bash" ]
+CMD ["npm","run","storyteller"]
+
+ENTRYPOINT ["/docker-entrypoint.sh"]

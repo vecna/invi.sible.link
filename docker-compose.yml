@@ -11,3 +11,11 @@ app:
 #    - invisibleapp:/usr/src/app 
   links:
     - db
+#vigile:
+#  image: node:6
+#  ports:
+#    - 7200:7200
+#exposer:
+#  image: node:6
+#  ports:
+#    - 7300:7300
