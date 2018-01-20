@@ -11,6 +11,6 @@ COPY package.json .
 COPY . .
 COPY docker-entrypoint.sh /
 
-CMD ["npm","run","expose"]
+CMD ["npm","run","exposer"]
 
 ENTRYPOINT ["/docker-entrypoint.sh"]
