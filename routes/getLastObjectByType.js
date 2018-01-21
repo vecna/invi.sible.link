@@ -7,16 +7,9 @@ var mongo = require('../lib/mongo');
 
 /* this is a link between campaign backend and 'generalized' backend,
  * still has to be clear, in design perspective, who has to influence what */
+function getLastObjectByType(req) {
 
-var supported = {
-    'fbtimpre': "impressionTime",
-    'fbtposts': "publicationTime",
-    'dibattito': "created_time",
-    'judgment': "when",
-    'entities': "publicationTime" // timestamp?
-};
-
-function validateType(requested) {
+    var requested = req.params.otype;
 
     if([ "dibattito", "fbtimpre", "fbtposts" ].indexOf(requested) !== -1) {
         mongo.forcedDBURL = 'mongodb://localhost/e18';
@@ -28,30 +21,28 @@ function validateType(requested) {
         mongo.forcedDBURL = 'mongodb://localhost/ivl';
         debug("mongoquery on %s [%s]", mongo.forcedDBURL, requested);
     } else
-        throw new Error("Invalid type requested");
+        throw new Error("Invalid type requested ", requested);
 
+    var supported = {
+        'fbtimpre': "impressionTime",
+        'fbtposts': "publicationTime",
+        'dibattito': "created_time",
+        'judgment': "when",
+        'entities': "publicationTime" // timestamp?
+    };
     var sorter = _.set({}, _.get(supported, requested), -1);
+
     return mongo
         .readLimit(requested, {}, sorter, 1, 0)
         .then(function(l) {
             var r = _.first(l);
+            debug("[+] %s got %d", requested, _.size(r));
             r.type = requested;
-            return r;
-        });
-};
-
-
-function getLastObjectByType(req) {
-
-    debug("request is: %j", req.params);
-    return validateType(req.params.otype)
-        .then(function(e) {
-            debug("Returning one element of type %s", e.type);
-            return { json: e };
+            return { json: r};
         })
-        .catch(function(error) {
-            debug("error: %s", error.message);
-            return { text: error.message };
+        .catch(function(e) {
+            debug("[+~] %s in %s", e.message, requested);
+            return { json: { type: requested, error: e.message, result: "empty" }};
         });
 };
 
