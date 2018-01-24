@@ -10,10 +10,30 @@ function initialize(cardContainer, sourceapi) {
 var cache = [];
 
 function renderJsDetail(detailsContainer) {
+
 };
 
 function explanation(event) {
+    /* this is supposed to trap a click on the 'github/upload the file' section, explaining
+     * the procedure and the requestements */
     console.log(event);
+};
+
+function fetchSiteInfo(container, subjectId, campaignName) {
+    // this is called when sections/site.pug get rendered in the browser
+
+    /* subjectId it is supposed to be part of the
+     * 'worst' 10-100 ranks. This API is used only as link to the scorecards, the
+     * website reported here are for sure part of the 'worst' list. This API do 
+     * not permit to got back in time, and is implemented in getSiteInfo route */
+    var sourceapi = '/api/v1/siteinfo/' + subjectId;
+    d3.json(sourceapi, function(data) {
+        /* data is a mixed content: judgment + details */
+
+        console.log(data);
+        cache = data;
+        return renderSiteCard(container, data.judgmentrank);
+    });
 };
 
 function renderScoreCards(containerRoot) {
@@ -28,6 +48,16 @@ function renderScoreCards(containerRoot) {
 };
 
 function renderSiteCard(containerId, data) {
+	/* data structure {
+		name: "www.repubblica.it",
+		totalNjs: 40, // from privacy badger 
+		post: true,
+		canvas: false,
+		reply: false,
+		storage: true,
+		companies: 6,
+		measure: 81
+	}; */
 	console.log("begin renderSiteCard", containerId, data);
 
 	var width = 700;
@@ -90,18 +120,6 @@ function renderSiteCard(containerId, data) {
 		.attr("stroke", "grey")
 		.attr("stroke-width", 1)
 		.attr("fill", "none");
-
-	/* data structure {
-		name: "www.repubblica.it",
-		totalNjs: 40, // from privacy badger 
-		post: true,
-		canvas: false,
-		reply: false,
-		storage: true,
-		companies: 6,
-		measure: 81
-	};
-    */
 
 	// big score 
 	svgContainer.append("text")

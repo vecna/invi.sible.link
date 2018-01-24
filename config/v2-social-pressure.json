@@ -1,9 +1,8 @@
 {
-    "name": "social-pressure",
+    "name": "v2-social-pressure",
     "schema": {
         "evidences": "evidences",
         "surface": "surface",
-        "sankeys": "sankeys",
         "details": "details",
         "summary": "summary"
     },
@@ -11,18 +10,18 @@
     "campaign": "overwritewithenvorcommandline",
 
     "watch": [
-        "bin/social-pressure.js",
-        "campaigns/*/pugs/*.pug",
-        "campaigns/*/*.js",
-        "campaigns/*/*.css",
+        "bin/v2-social-pressure.js",
+        "campaigns/**",
+        "sections/webscripts/*.js",
         "routes/*.js",
         "lib/*.js",
-        "dist/*/**"
+        "dist/**",
+        "config/*.json"
     ],
     "verbose": true,
     "exitcrash": false,
     "env": {
-        "DEBUG": "*,-ffi:*,-ref*,-send,-express:*,-lib:mongo:read"
+        "DEBUG": "*,-ffi:*,-ref*,-send,-express:*"
     },
     "ext": "js css json pug"
 }

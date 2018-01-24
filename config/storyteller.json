@@ -30,7 +30,7 @@
   "verbose": true,
   "exitcrash": false,
   "env": {
-        "DEBUG": "storyteller,route:*,lib:*,-lib:urlutils"
+        "DEBUG": "storyteller,route:*,lib:*,-lib:urlutils,-lib:mongo:read"
   },
   "ext": "js css json pug"
 }

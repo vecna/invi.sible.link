@@ -7,6 +7,7 @@ module.exports = {
     getCampaignSubject:    require('./getCampaignSubject'),
     getCampaignNames:      require('./getCampaignNames'),
     getSurface:            require('./getSurface'),
+    getEvidencesExtended:  require('./getEvidencesExtended'),
     getSummary:            require('./getSummary'),
     getDetails:            require('./getDetails'),
     getCSV:                require('./getCSV'),
@@ -16,7 +17,10 @@ module.exports = {
     getCheckURL:           require('./getCheckURL'),
     getMixed:              require('./getMixed'),
     getJudgment:           require('./getJudgment'),
+    getSiteInfo:           require('./getSiteInfo'),
+
     serveCampaign:         require('./serveCampaign'),
+    serveSite:             require('./serveSite'),
 
     getRecentActivities:   require('./getRecentActivities'),
     getEvidencesByHref:    require('./getEvidencesByHref')

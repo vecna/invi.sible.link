@@ -38,11 +38,14 @@ if(accepted.indexOf(testkind) === -1) {
 
 return various
     .loadJSONurl(url)
+    .then(function(full) {
+        return full.results;
+    })
     .tap(function(c) {
         debug("Retrieved %d urls from %s", _.size(c), url);
     })
     .map(function(block) {
-        return queue.buildDirective(testkind, now, block.link, campaign, block.putime, 0);
+        return queue.buildDirective(testkind, now, block.link, campaign, block.permaLink, 0);
     })
     .then(queue.add)
     .tap(queue.report);

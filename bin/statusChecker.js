@@ -32,7 +32,7 @@ return Promise
     })
     .then(function(cc) {
         if(_.size(cc)) {
-            debug("Saving %j", cc);
+            debug("+ %s", JSON.stringify(cc, undefined, 2));
             return machetils.statsSave(nconf.get('target'), cc);
         } else {
             debug("Network or application error: no data available!");

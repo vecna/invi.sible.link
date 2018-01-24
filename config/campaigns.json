@@ -29,26 +29,36 @@
     ],
     "irantrex": [ {
         "name": "irantrex",
-        "csv": "irantrex/iran1st.csv"
+        "csv": "irantrex/iran1st.csv",
+        "communication": "irantrex/irantrex.json"
     } ],
     "itatopex": [ {
         "name": "itatopex",
-        "csv": "itatopex/lista.csv"
+        "csv": "itatopex/lista.csv",
+        "communication": "itatopex/itatopex.json"
     } ],
     "social-media": [ {
         "name": "social-media",
         "csv": "/dev/null"
     } ],
-    "wto": [ {
-        "name": "wto",
+    "e18": [ {
+        "name": "e18",
         "csv": "/dev/null"
     } ],
     "poland": [ {
         "name": "poland",
         "csv": "campaigns/fiftyshadesofpoland/list.csv"
     } ],
+    "platforms": [ {
+        "name": "platforms",
+        "csv": "platforms/crowdfunding.csv"
+    } ],
     "ngos": [ {
         "name": "ngos",
-        "csv": "ngos/crowdfunding.csv"
+        "csv": "ngos/donation.csv"
+    } ],
+    "gobwebsecpy": [ {
+        "name": "gobwebsecpy",
+        "csv": "gobwebsecpy/lista_paraguay.csv"
     } ]
 }}

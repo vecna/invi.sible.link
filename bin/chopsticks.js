@@ -67,8 +67,8 @@ function keepPromises(N, i) {
             return plugins[p](state, direction.config);
         }, N)
         .tap(function(product) {
-            debug("%d Completed %s: state keys #%d",
-                i, N.href, _.size(_.keys(product)) );
+            debug("#%d/%d Completed %s: state keys #%d",
+                i, concValue, N.href, _.size(_.keys(product)) );
         });
 };
 

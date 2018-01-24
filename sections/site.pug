@@ -1,0 +1,52 @@
+doctype html
+html
+  head
+    link(rel='stylesheet', href='/css/index.css')
+    link(rel='stylesheet', href='/css/bootstrap.css')
+    link(rel='stylesheet', href='/js/local/scorecard.css')
+
+    script(type='text/javascript', src='/js/vendor/jquery.js')
+    script(type='text/javascript', src='/js/vendor/collapse.js')
+    script(type='text/javascript', src='/js/vendor/lodash.min.js')
+    script(type='text/javascript', src='/js/vendor/moment.min.js')
+    script(type='text/javascript', src='/js/vendor/d3.min.js')
+    script(type='text/javascript', src='/js/vendor/d3-path.min.js')
+    script(type='text/javascript', src='/js/vendor/c3.min.js')
+
+    script(type='text/javascript', src='/js/local/scorecard.js')
+
+    meta(property="og:title" content="Analysis of [" + siteName + "]")
+    meta(property="og:type" content="website")
+    meta(property="og:description" content="Trackers analysis of" + " websites, " + trackers + " trackers has been identify and " + notattributed + " still lack of attribution")
+    meta(property="og:url" content=ogurl)
+    meta(property="og:image" content=ogimageurl)
+
+    meta(property="og:image:width" content="600")
+    meta(property="og:image:height" content="300")
+
+    title #{pagetitle}
+
+  body
+
+    .container-fluid.headline #{href}
+    .container-fluid.subtitle #{sitedescription}
+
+    .container-fluid.buttons
+        button.col-4-md
+            a(href="#" onclick="scrollon('#details');") inclusion details
+        button.col-4-md
+            a(href="#" onclick="scrollon('#cookies');") tracking agents
+        button.col-4-md
+            a(href=campaignURL) campaign #{campaign}
+
+        div(id="sitecard")
+        h2 #{T_CookieAnalysis}
+        div(id="details")
+        h2 #{T_CookieAnalysis}
+        div(id="cookies")
+
+    script.
+        fetchSiteInfo( '#sitecard', '#{subjectId}', '#{campaign}');
+
+    include footer
+

@@ -87,13 +87,22 @@ function saveAll(retrieved) {
             return evidenceO;
         })
         .tap(function(content) {
-            if(_.size(content)) {
-                debug("Saving in evidences %d object", _.size(content));
-                return machetils
-                    .statsSave(nconf.get('schema').evidences, content);
-            }
-            else
-                debug("No evidences to be saved");
+            debug("saveAll (evidences) has %d objects", _.size(content) );
+
+            return Promise
+                .map(content, function(e) {
+                    return mongo
+                        .read(nconf.get('schema').evidences, { id: e.id})
+                        .then(_.first)
+                        .tap(function(result) {
+                            if(_.isUndefined(result))
+                                return mongo.writeOne(nconf.get('schema').evidences, e)
+                        });
+                }, {concurrency: 5})
+                .then(_.compact)
+                .tap(function(saved) {
+                    debug("The elements saved in `evidences` are %d", _.size(saved));
+                });
         });
 }
 
@@ -168,12 +177,22 @@ function updateSurface(retrieved) {
             return surfaceO;
         })
         .tap(function(content) {
-            debug("updateSurface has %d objects (~subjects)", _.size(content) );
+            debug("updateSurface has %d objects", _.size(content) );
 
-            if(_.size(content)) {
-                return machetils
-                    .statsSave(nconf.get('schema').surface, content);
-            }
+            return Promise
+                .map(content, function(e) {
+                    return mongo
+                        .read(nconf.get('schema').surface, { id: e.id})
+                        .then(_.first)
+                        .tap(function(result) {
+                            if(_.isUndefined(result))
+                                return mongo.writeOne(nconf.get('schema').surface, e)
+                        });
+                }, {concurrency: 5})
+                .then(_.compact)
+                .tap(function(saved) {
+                    debug("The elements saved in `surface` are %d", _.size(saved));
+                });
         });
 };
 

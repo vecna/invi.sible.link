@@ -5,6 +5,7 @@ rm -rf ./dist
 V=dist/js/vendor/
 mkdir -p dist/css && 
 mkdir -p dist/js/local 
+mkdir -p dist/fonts
 mkdir -p dist/images 
 mkdir -p $V 
 
@@ -22,6 +23,7 @@ cp node_modules/c3/c3.min.js $V
 cp node_modules/moment/min/moment.min.js $V 
 cp node_modules/c3/c3.css dist/css
 cp node_modules/bootstrap/dist/js/bootstrap.min.js $V 
+cp node_modules/bootstrap/fonts/*.*f* dist/fonts
 cp -r sections/webscripts/* dist/js/local/ 
 cp node_modules/lodash/lodash.min.js $V 
 cp node_modules/reveal.js/js/reveal.js $V 

@@ -5,6 +5,7 @@ var Promises = require('bluebird');
 var pug = require('pug');
 var nconf = require('nconf');
 
+var various = require('../lib/various');
 var mongo = require('../lib/mongo');
 
 // NOT TRUE YET: still script inclusion:
@@ -22,43 +23,60 @@ var mongo = require('../lib/mongo');
 function serveCampaign(req) {
 
     var campaign = req.params.cname;
-    var viz = ["cards", "details"].indexOf(req.params.viz) >= 0 ? req.params.viz : "cards";
+    var viz = [ "cards", "details", "javascripts" ]
+            .indexOf(req.params.viz) >= 0 ? req.params.viz : "cards";
+    var filter = { campaign: campaign };
+
     debug("requested campaign page on %s (%s)", campaign, viz);
 
-    var filter = { campaign: campaign };
-    return mongo
-        .readLimit(nconf.get('schema').judgment, filter, { when: -1 }, 1, 0)
-        .then(_.first)
-        .then(function(j) {
+    return Promises
+        .all([
+            mongo
+                .readLimit(nconf.get('schema').judgment, filter, { when: -1 }, 1, 0)
+                .then(_.first),
+            various.loadJSONfile('config/campaigns.json')
+        ])
+        .then(function(mixed) {
 
-            if(_.isUndefined(j)) {
-                debug("mhh... it looks broken?");
+            var judg = mixed[0];
+            if(_.isUndefined(judg)) {
+                debug("mhh... something looks broken?");
                 return {
                     text: pug.compileFile(__dirname + '/../sections/no.pug')()
                 };
             }
 
             var daysago = _.round(
-                moment.duration(moment() - moment(j.when).startOf('day')).asDays());
-            debug("Computed from the next API request (until cache don't get implemented, a result of %s, %d daysago", j.when, daysago);
+                moment.duration(moment() - moment(judg.when).startOf('day')).asDays());
+            debug("Computed from the next API request (until cache don't get implemented, a result of %s, %d daysago", judg.when, daysago);
+
+            var x= _.get(mixed[1].campaigns, campaign);
+            if(!x)  {
+                debug("Failed in looking for %s in %s",
+                    campaign, JSON.stringify(mixed[1].campaigns));
+                return {
+                    text: pug.compileFile(__dirname + '/../sections/no.pug')()
+                };
+            }
+            var ccfg = _.first(x);
 
             var cinfo = {
-                testedSites: j.total,
-                trackers: j.trackers,
-                notattributed: j.unrecognized,
-                javascripts: j.includedJS,
-                cookies: j.cookies,
-                ogtitle: "web trackers in poltical Iranian website",
-                pagetitle: "web trackers in poltical Iranian website",
+                testedSites: judg.total,
+                trackers: judg.trackers,
+                notattributed: judg.unrecognized,
+                javascripts: judg.includedJS,
+                cookies: judg.cookies,
                 ogurl: "https://invi.sible.link/campaign/" + campaign + "/" + viz,
-                ogimageurl: "wip",
-                headline: "political opposition in iran: (uninteded?) web tracking",
-                description: "When you access a website, you see a content but the web technology see you. During the years this has created a great market and has influenced the way in which web experiences are developed. In the same way you learn the content, the trackers learn what you are interested on, and gradually, who you are. Here you can an idea about there web trackers present in the website, and remind: it is a decision (maybe, not completely informed) of the website owner, having them installed",
                 jsonsrc: '/api/v1/judgment/' + campaign + '/' + daysago
             };
 
             return {
-                text: pug.compileFile(__dirname + '/../sections/campaign.pug', {
+                /* warning: not always true the file will be in campaigns/ 
+                 *
+                 * maybe can come from ccfg (read from config/campaigns.json ?
+                 *
+                 * */
+                text: pug.compileFile(__dirname + '/../campaigns/'+campaign+'/campaign.pug', {
                     pretty: true
                 })(cinfo)
             };

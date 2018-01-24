@@ -14,6 +14,7 @@ var pugCompiler = function(filePrefix) {
     );
 };
 
+/* LEGACY: this is used eithet by social-pressure and v2-social-pressure */
 var pageMap = {
     'home': pugCompiler('pugs/pagestruct'),
     'landing': pugCompiler('pugs/pagestruct'),
@@ -26,9 +27,10 @@ var pageMap = {
 var getCampaignIndex = function(req) {
 
     var pageName = _.get(req.params, 'page');
-    debug("page name [%s]", pageName);
+    debug("whatever page is requested, it is going to be returned pagestruct.pug [%s]", pageName);
 
-    return { 'text': pageMap[pageName]() };
+    /* pagestruct BECAUSE IS THE LEGACY NAME, also if could be index.pug */
+    return { 'text': pugCompiler('pugs/pagestruct')() };
 };
 
 module.exports = getCampaignIndex;
