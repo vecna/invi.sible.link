@@ -42,7 +42,7 @@ if(!nconf.get('port')) {
 /* utility, this is the porting of dispatchPromise for the new pattern used in
  * v2-social-pressure */
 var webappcnt = {};
-function webAppAccess(name, func, routes, req, res) {
+function webAppAccess(type, name, func, routes, req, res) {
 
     if(_.isUndefined(_.get(webappcnt, name)))
         webappcnt[name] = 0;
@@ -50,7 +50,8 @@ function webAppAccess(name, func, routes, req, res) {
     webappcnt[name] += 1;
     req.randomUnicode = webappcnt[name];
 
-    debug("%d %s req2[%s]: %s", webappcnt[name], moment().format("HH:mm:ss"), name, req.url);
+    debug("%s %s [%s]: %s",
+        JSON.stringify(webappcnt, undefined, 2), moment().format("HH:mm:ss"), name, req.url);
 
     return new Promise
         .resolve(func(req))
@@ -98,17 +99,6 @@ app.get('/api/last/object/:otype', function(req, res) {
     // This API is used in the documentation page
     dispatchPromise('getLastObjectByType', routes, req, res);
 });
-app.get('/api/default/:itype', function(req, res) {
-    // This API is used to fill the default information visualizazione,
-    // the API could be more complex of 'last/object'
-    // it is returned the last available informative element per type
-    dispatchPromise('getInformativeDefault', routes, req, res);
-});
-// not yet implemented
-app.get('/api/last/:weekn/:infoname', function(req, res) {
-    // This API is used to fill a graph, which is 
-    dispatchPromise('getInformativeByWeek', routes, req, res);
-});
 // --------------------------------------------------------------------------
 
 
@@ -152,7 +142,15 @@ app.get('/:page', function(req, res) {
         dispatchPromise('getCampaignIndex', routes, req, res);
     }
     else
-        webAppAccess(req.params.page, fname, routes, req, res);
+        webAppAccess('page', req.params.page, fname, routes, req, res);
+});
+
+app.get('/data/:weekn/:datatype', function(req, res) {
+    var zipFileDir  = path.join(__dirname, 'campaigns', campaign,
+        'archives', req.params.weekn, req.params.datatype);
+    // TODO readdir, find file name, send the file 
+    debug("Download of %s", zipFileDir);
+    res.download(zipFileDir);
 });
 
 /* This rendere the default index */
