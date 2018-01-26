@@ -90,19 +90,18 @@ function webAppAccess(type, name, func, routes, req, res) {
 server.listen(nconf.get('port'), nconf.get('interface') );
 console.log( "http://" + nconf.get('interface') + ':' + nconf.get('port') + " listening");
 
-// --------------------------------------------------------------------------
-// TODO/Think-about: move them in the campaign ?
-// not at the moment because the webapp do not support parameters in the URI string
-// it is configured to answer only one parameter. and can these fields become generic?
-// think about it --- so far is a monocampaign and probably will just remain so ..
-app.get('/api/last/object/:otype', function(req, res) {
-    // This API is used in the documentation page
+/* * ----- ------------------ -- --------------------- ----------
+ | These APIs take two argument: type of data (which internally |
+ | select a database, and ID or 'last'                          |
+ -------- -------------------------    -----  --- -------- * * */
+app.get('/api/v1/object/:otype/last', function(req, res) {
     dispatchPromise('getLastObjectByType', routes, req, res);
 });
-// --------------------------------------------------------------------------
+app.get('/api/v1/object/:otype/:id', function(req, res) {
+    dispatchPromise('getObjectByIdType', routes, req, res);
+});
 
-
-/* ----------------------------------------------------- */
+/* ------------------------------------------------------------ */
 var paths = process.env.PWD.split('/');
 paths.push('dist');
 var distPath = paths.join('/');
@@ -146,11 +145,16 @@ app.get('/:page', function(req, res) {
 });
 
 app.get('/data/:weekn/:datatype', function(req, res) {
-    var zipFileDir  = path.join(__dirname, 'campaigns', campaign,
-        'archives', req.params.weekn, req.params.datatype);
+    // ops, wrong, this belong to the initiative 
+    var supported = ["fbtimpre", "fbtposts", "dibattito", "judgment", "entities"];
+    var weekn = _.parseInt(req.params.weekn) + "";
+    var datatype = supported.indexOf(req.params.datatype) !== -1 ? req.params.datatype : "nope";
+    var zipFile  = [__dirname, 'campaigns', campaign,
+        'archives', req.params.weekn, req.params.datatype].join('/') + '.zip';
+
     // TODO readdir, find file name, send the file 
-    debug("Download of %s", zipFileDir);
-    res.download(zipFileDir);
+    debug("Download of %s", zipFile);
+    res.download(zipFile);
 });
 
 /* This rendere the default index */
