@@ -99,5 +99,6 @@ module.exports = {
             });
     },
     getLastObjectByType: getLastObjectByType,
-    getObjectByIdType: getObjectByIdType
+    getObjectByIdType: getObjectByIdType,
+    supported: supported
 };

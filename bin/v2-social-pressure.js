@@ -144,13 +144,14 @@ app.get('/:page', function(req, res) {
         webAppAccess('page', req.params.page, fname, routes, req, res);
 });
 
-app.get('/data/:weekn/:datatype', function(req, res) {
+app.get('/opendata/:weekn/:datatype', function(req, res) {
     // ops, wrong, this belong to the initiative 
+    debug("download!!");
     var supported = ["fbtimpre", "fbtposts", "dibattito", "judgment", "entities"];
     var weekn = _.parseInt(req.params.weekn) + "";
     var datatype = supported.indexOf(req.params.datatype) !== -1 ? req.params.datatype : "nope";
-    var zipFile  = [__dirname, 'campaigns', campaign,
-        'archives', req.params.weekn, req.params.datatype].join('/') + '.zip';
+    var zipFile  = [__dirname, '..', 'campaigns', campaign,
+        'opendata', req.params.weekn, req.params.datatype].join('/') + '.json';
 
     // TODO readdir, find file name, send the file 
     debug("Download of %s", zipFile);
