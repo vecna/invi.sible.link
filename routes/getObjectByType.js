@@ -20,7 +20,11 @@ var supported = {
         dburl: 'mongodb://localhost/ivl' },
     'entities': {
         timeVar: "publicationTime",
-        dburl: 'mongodb://localhost/facebook' }
+        dburl: 'mongodb://localhost/facebook' },
+    'sponsored': {
+        timeVar: "savingTime",
+        dburl: 'mongodb://localhost/e18' },
+
 };
 
 
