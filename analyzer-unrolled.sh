@@ -55,6 +55,18 @@ DEBUG=* bin/analyzeBadger.js --config config/analyzerProduction.json --campaign 
 DEBUG=* bin/analyzePhantom.js --config config/analyzerProduction.json --campaign "platforms"
 DEBUG=* bin/analyzeGroup.js --campaign platforms --daysago 0
 
-DEBUG=* bin/analyzeBadger.js --config config/analyzerProduction.json --campaign "gobwebsecpy"
-DEBUG=* bin/analyzePhantom.js --config config/analyzerProduction.json --campaign "gobwebsecpy"
-DEBUG=* bin/analyzeGroup.js --campaign gobwebsecpy --daysago 0
+DEBUG=* bin/analyzeBadger.js --config config/analyzerProduction.json --campaign "gob.colombia"
+DEBUG=* bin/analyzePhantom.js --config config/analyzerProduction.json --campaign "gob.colombia"
+DEBUG=* bin/analyzeGroup.js --campaign gob.colombia --daysago 0
+
+DEBUG=* bin/analyzeBadger.js --config config/analyzerProduction.json --campaign "gob.chile"
+DEBUG=* bin/analyzePhantom.js --config config/analyzerProduction.json --campaign "gob.chile"
+DEBUG=* bin/analyzeGroup.js --campaign gob.chile --daysago 0
+
+DEBUG=* bin/analyzeBadger.js --config config/analyzerProduction.json --campaign "gob.brasil"
+DEBUG=* bin/analyzePhantom.js --config config/analyzerProduction.json --campaign "gob.brasil"
+DEBUG=* bin/analyzeGroup.js --campaign gob.brasil --daysago 0
+
+DEBUG=* bin/analyzeBadger.js --config config/analyzerProduction.json --campaign "gob.paraguay"
+DEBUG=* bin/analyzePhantom.js --config config/analyzerProduction.json --campaign "gob.paraguay"
+DEBUG=* bin/analyzeGroup.js --campaign gob.paraguay --daysago 0
