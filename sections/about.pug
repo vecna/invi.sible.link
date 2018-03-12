@@ -2,9 +2,8 @@ doctype html
 html
   head
     link(rel='stylesheet', href='/css/index.css')
-    link(rel='stylesheet', href='/css/bootstrap.css')
-    script(type='text/javascript', src='/js/vendor/jquery.js')
-    script(type='text/javascript', src='/js/vendor/collapse.js')
+    link(rel='stylesheet', href='/js/vendor/bootstrap/css/bootstrap.min.css')
+    script(type='text/javascript', src='/js/vendor/jquery/jquery.js')
     title The project, invi.sible.link, privacy analysis and critique to the third-party surveillance system.
 
   body
@@ -19,7 +18,7 @@ html
 
   include navbar
 
-  .container-fluid
+  .container-fluid.text-block
 
     div.text
       p The
@@ -34,6 +33,7 @@ html
         i  campaign
         |  needs. 
 
+      ul
         li
           a(href='/project-plan') Project plan
         li

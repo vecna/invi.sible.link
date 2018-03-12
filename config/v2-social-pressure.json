@@ -11,8 +11,8 @@
 
     "watch": [
         "bin/v2-social-pressure.js",
-        "campaigns/**",
         "sections/webscripts/*.js",
+        "campaigns/*",
         "routes/*.js",
         "lib/*.js",
         "dist/**",

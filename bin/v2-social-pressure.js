@@ -42,7 +42,7 @@ if(!nconf.get('port')) {
 /* utility, this is the porting of dispatchPromise for the new pattern used in
  * v2-social-pressure */
 var webappcnt = {};
-function webAppAccess(name, func, routes, req, res) {
+function webAppAccess(type, name, func, routes, req, res) {
 
     if(_.isUndefined(_.get(webappcnt, name)))
         webappcnt[name] = 0;
@@ -50,7 +50,8 @@ function webAppAccess(name, func, routes, req, res) {
     webappcnt[name] += 1;
     req.randomUnicode = webappcnt[name];
 
-    debug("%d %s req2[%s]: %s", webappcnt[name], moment().format("HH:mm:ss"), name, req.url);
+    debug("%s %s [%s]: %s",
+        JSON.stringify(webappcnt, undefined, 2), moment().format("HH:mm:ss"), name, req.url);
 
     return new Promise
         .resolve(func(req))
@@ -89,30 +90,18 @@ function webAppAccess(name, func, routes, req, res) {
 server.listen(nconf.get('port'), nconf.get('interface') );
 console.log( "http://" + nconf.get('interface') + ':' + nconf.get('port') + " listening");
 
-// --------------------------------------------------------------------------
-// TODO/Think-about: move them in the campaign ?
-// not at the moment because the webapp do not support parameters in the URI string
-// it is configured to answer only one parameter. and can these fields become generic?
-// think about it --- so far is a monocampaign and probably will just remain so ..
-app.get('/api/last/object/:otype', function(req, res) {
-    // This API is used in the documentation page
+/* * ----- ------------------ -- --------------------- ----------
+ | These APIs take two argument: type of data (which internally |
+ | select a database, and ID or 'last'                          |
+ -------- -------------------------    -----  --- -------- * * */
+app.get('/api/v1/object/:otype/last', function(req, res) {
     dispatchPromise('getLastObjectByType', routes, req, res);
 });
-app.get('/api/default/:itype', function(req, res) {
-    // This API is used to fill the default information visualizazione,
-    // the API could be more complex of 'last/object'
-    // it is returned the last available informative element per type
-    dispatchPromise('getInformativeDefault', routes, req, res);
+app.get('/api/v1/object/:otype/:id', function(req, res) {
+    dispatchPromise('getObjectByIdType', routes, req, res);
 });
-// not yet implemented
-app.get('/api/last/:weekn/:infoname', function(req, res) {
-    // This API is used to fill a graph, which is 
-    dispatchPromise('getInformativeByWeek', routes, req, res);
-});
-// --------------------------------------------------------------------------
 
-
-/* ----------------------------------------------------- */
+/* ------------------------------------------------------------ */
 var paths = process.env.PWD.split('/');
 paths.push('dist');
 var distPath = paths.join('/');
@@ -152,7 +141,21 @@ app.get('/:page', function(req, res) {
         dispatchPromise('getCampaignIndex', routes, req, res);
     }
     else
-        webAppAccess(req.params.page, fname, routes, req, res);
+        webAppAccess('page', req.params.page, fname, routes, req, res);
+});
+
+app.get('/opendata/:weekn/:datatype', function(req, res) {
+    // ops, wrong, this belong to the initiative 
+    debug("download!!");
+    var supported = ["fbtimpre", "fbtposts", "dibattito", "judgment", "entities"];
+    var weekn = _.parseInt(req.params.weekn) + "";
+    var datatype = supported.indexOf(req.params.datatype) !== -1 ? req.params.datatype : "nope";
+    var zipFile  = [__dirname, '..', 'campaigns', campaign,
+        'opendata', req.params.weekn, req.params.datatype].join('/') + '.json';
+
+    // TODO readdir, find file name, send the file 
+    debug("Download of %s", zipFile);
+    res.download(zipFile);
 });
 
 /* This rendere the default index */

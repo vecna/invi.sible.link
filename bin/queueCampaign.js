@@ -10,14 +10,9 @@ nconf.argv().env().file({ file: 'config/vigile.json' });
 
 /* variable imports */
 csvfile = nconf.get('csv');
-if(!csvfile) {
-    console.log("missinfg --csv option");
-    process.exit(1);
-}
-
 campaign = nconf.get('campaign');
-if(!campaign) {
-    console.log("missinfg --campaign option");
+if(!csvfile || !campaign) {
+    console.log("required --csv and --campaign");
     process.exit(1);
 }
 

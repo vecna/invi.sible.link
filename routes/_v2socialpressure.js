@@ -1,7 +1,5 @@
-
 module.exports = {
     getCampaignIndex:       require('./getCampaignIndex'),
-    getLastObjectByType:    require('./getLastObjectByType'),
-    getInformativeDefault:  require('./getInformativeDefault'),
-//    getInformativeByWeek:   require('./getInformativeByWeek')
+    getLastObjectByType:    require('./getObjectByType').theLast,
+    getObjectByIdType:      require('./getObjectByType').byId
 };

@@ -109,6 +109,7 @@ function rankTheWorst(m) {
             subjectId: surface.subjectId,
             totalNjs: surface.javascripts,
             companies: _.size(surface.companies),
+            c: surface.companies,
             storage: null,
             reply: null,
             canvas: null,
