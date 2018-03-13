@@ -30,6 +30,12 @@ console.log( nconf.get('interface') + ':' + nconf.get('port') + " listening");
 app.use(bodyParser.json({limit: '3mb'}));
 app.use(bodyParser.urlencoded({limit: '3mb', extended: true}));
 
+app.use(function(req, res, next) {
+    res.header("Access-Control-Allow-Origin", "*");
+    res.header("Access-Control-Allow-Headers", "Origin, X-Requested-With, Content-Type, Accept");
+    next();
+});
+
 /* Special API: take everything requested: column, key, value */
 app.get('/api/v:version/raw/:column/:key/:value', function(req, res) {
     return dispatchPromise('getRaw', routes, req, res);
