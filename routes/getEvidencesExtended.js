@@ -85,9 +85,8 @@ function getEvidencesExtended(req) {
             .format("YYYY-MM-DD");
 
     debug("gte %s lt %s", min, max);
-    var filter = {  campaign : req.params.campaign,
-                    when : { '$gte': new Date(min), '$lt': new Date(max) }
-                };
+    var filter = {  when : { '$gte': new Date(min), '$lt': new Date(max) } };
+    _.set(filter, 'campaign', req.params.campaign);
 
     var omitf = [ "VP", "_id", "campaign", "urlId", 
         "id", "tld", "promiseId", "subdomain", "version", "ETag",
