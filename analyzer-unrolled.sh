@@ -70,3 +70,7 @@ DEBUG=* bin/analyzeGroup.js --campaign gob.brasil --daysago 0
 DEBUG=* bin/analyzeBadger.js --config config/analyzerProduction.json --campaign "gob.paraguay"
 DEBUG=* bin/analyzePhantom.js --config config/analyzerProduction.json --campaign "gob.paraguay"
 DEBUG=* bin/analyzeGroup.js --campaign gob.paraguay --daysago 0
+
+DEBUG=* bin/analyzeBadger.js --config config/analyzerProduction.json --campaign "kzbrg"
+DEBUG=* bin/analyzePhantom.js --config config/analyzerProduction.json --campaign "kzbrg"
+DEBUG=* bin/analyzeGroup.js --campaign kzbrg --daysago 0
