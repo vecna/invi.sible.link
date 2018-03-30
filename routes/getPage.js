@@ -29,7 +29,7 @@ var pageMap = {
     'report': pugCompiler('reportList'),
     '404': pugCompiler('404'),
 
-    'final-report': 
+//    'final-report':
 };
 
 var getPage = function(req) {
