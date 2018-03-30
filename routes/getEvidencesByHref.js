@@ -11,7 +11,7 @@ var mongo = require('../lib/mongo');
  */
 function getEvidencesByHref(req) {
 
-    var maxDays = 7;
+    var maxDays = 15;
     var filter = {};
     var MAX = 21000;
 
