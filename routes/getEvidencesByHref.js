@@ -27,33 +27,18 @@ function getEvidencesByHref(req) {
 
     debug("getEvidencesByHref with filter %j", filter);
     return mongo
-        .readLimit(nconf.get('schema').evidences, filter, {
-            when: -1
-        }, MAX, 0)
+        .readLimit(nconf.get('schema').evidences, filter, { when: -1 }, MAX, 0)
         .map(function(e) {
-            e.da = _.parseInt(moment.duration(moment() - 
-                              moment(e.when)).asDays() );
+            e.da = _.parseInt(moment.duration(moment() - moment(e.when)).asDays() );
             return _.omit(e, omitf);
-        })
-        .tap(function(l) {
-            debug("Before reduction list size %d", _.size(l));
-        })
-        .reduce(function(memo, e) {
-            if(e.target)
-                memo.push(e);
-            else if(e.domaindottld !== req.params.href)
-                memo.push(e);
-            return memo;
-        }, [])
-        .tap(function(l) {
-            debug("After reduction list size %d", _.size(l));
         })
         .then(function(C) {
             if(_.size(C) === MAX)
                 debug("Warning! reach readLimit limit of %d", MAX);
             var grouped =  _.groupBy(C, 'da');
             debug("getEvidencesByHref group %d days", _.size(grouped));
-            return { 'json': grouped };
+            /* reminder: before was returned 'grouped' but there is not sense */
+            return { 'json': C };
         });
 };
 
