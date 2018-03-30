@@ -21,9 +21,8 @@ function getEvidencesByHref(req) {
         ) };
     filter.href = new RegExp(req.params.href);
 
-    var omitf = [ "VP", "_id", "campaign", "domain",
-                  "href", "id", "kind", "tld", "promiseId",
-                  "subdomain", "subjectId", "version" ];
+    var omitf = [ "_id", "domain", "id", "kind", "tld", "domainId",
+                  "phantom", "disk", "macheteTiming", "subdomain", "version" ];
 
     debug("getEvidencesByHref with filter %j", filter);
     return mongo
