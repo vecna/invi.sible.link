@@ -13,6 +13,7 @@ function getEvidencesByHref(req) {
 
     var maxDays = 7;
     var filter = {};
+    var MAX = 21000;
 
     filter.when = { '$gt': new Date( moment()
             .subtract(maxDays, 'd')
@@ -28,7 +29,7 @@ function getEvidencesByHref(req) {
     return mongo
         .readLimit(nconf.get('schema').evidences, filter, {
             when: -1
-        }, 7000, 0)
+        }, MAX, 0)
         .map(function(e) {
             e.da = _.parseInt(moment.duration(moment() - 
                               moment(e.when)).asDays() );
@@ -48,8 +49,8 @@ function getEvidencesByHref(req) {
             debug("After reduction list size %d", _.size(l));
         })
         .then(function(C) {
-            if(_.size(C) === 5000)
-                debug("Warning! reach readLimit limit of 5k");
+            if(_.size(C) === MAX)
+                debug("Warning! reach readLimit limit of %d", MAX);
             var grouped =  _.groupBy(C, 'da');
             debug("getEvidencesByHref group %d days", _.size(grouped));
             return { 'json': grouped };
