@@ -17,10 +17,11 @@ if(!csvfile || !campaign) {
 }
 
 var testkind = nconf.get('kind');
+var accepted = [ "basic", "badger", "urlscan" ];
 
-var accepted = [ "basic", "badger", "urlscan" ] ;
 if(!testkind) {
     testkind = [ "basic", "badger" ];
+    debug("using both the kind: %s", testkind);
 } else {
     if(accepted.indexOf(testkind) === -1) {
         console.log("Error, you requested an invalid --kind", testkind, "accepted:", accepted);

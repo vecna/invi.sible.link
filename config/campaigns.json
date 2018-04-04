@@ -27,6 +27,10 @@
             "csv": "amtrex/travel-list.csv"
         }
     ],
+    "kzbrg": [ {
+        "name": "kzbrg",
+        "csv": "kzbrg/kzbrg.csv"
+    } ],
     "irantrex": [ {
         "name": "irantrex",
         "csv": "irantrex/iran1st.csv",

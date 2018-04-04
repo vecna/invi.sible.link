@@ -19,13 +19,9 @@
       "bin/storyteller.js",
       "lib/*.js",
       "sections/*.pug",
+      "sections/*/*.pug",
       "routes/*.js",
-      "dist/css/**",
-      "dist/js/**"
-  ],
-  "ignore": [
-      "node_modules/**/node_modules",
-      "sections/webscripts/*.js"
+      "dist/**"
   ],
   "verbose": true,
   "exitcrash": false,
