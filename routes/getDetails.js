@@ -7,7 +7,7 @@ var mongo = require('../lib/mongo');
  
 function getDetails(req) {
 
-    var filter = _.set({}, 'campaign' req.params.cname);
+    var filter = _.set({}, 'campaign', req.params.cname);
     /* can be useful having the number of subject per campaign, and estimate 5-15 entries per site */
     var MAXSITE = 500;
 

@@ -28,8 +28,7 @@ var pageMap = {
     'about': pugCompiler('about'),
     'report': pugCompiler('reportList'),
     '404': pugCompiler('404'),
-
-//    'final-report':
+    'final-report': pugCompiler('finalreport')
 };
 
 var getPage = function(req) {
