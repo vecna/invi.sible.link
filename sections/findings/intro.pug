@@ -1,7 +1,7 @@
 section(class="report-entry" id="intro")
-    h2 Abstract
 
     h2 Introduction
+
     p.text When our browser navigates in a website, depending on the HTML structure, we can end up to connects to many web-services. This interconnection among web-services is rock solid since the 90-ties. In this project, two implication are addressed: The impact on user privacy, because the third party service is aware of what the user is navigating on, and security, because every third party increases the attack surface which a user browser is exposed.
 
     p.text This phenomenon is under investigation by privacy researchers, security advocate, NGO for digital safety. It can't be really seen as a hot topic, because it is old enough to be named "the original sin of the internet" by one of its creators. Remain a political issue for the alleged manipulative consequences in electoral targeted advertising, for the lack of accountability, and for browser security when you implicitly
@@ -32,6 +32,101 @@ section(class="report-entry" id="intro")
         br
         | During the time of my fellowship, other projects covered some aspects I was assumed to implement, this made me reframe a bit the scope of the tool and the research.
 
-    
-
+    p.text If the reader want to explore other complementary projects, could look at:
+    ul
+        li
+            a(href="https://trackermap.evidon.com/home/live/trackermap")
+                b TrackerMap
+            |  you should manually click on "Sample trackermap [website]" because can't be directly linked. It is a develpment of the company formerly known as Ghostery, now part of Cliqz.
             
+        li
+            a(href="https://www.haystack.mobi/panopticon/index.html")
+                b ICSI Haystack Panopticon
+            |  An interactive map of tracking activity on mobile apps.
+        li
+            a(href="https://webtap.princeton.edu/")
+                b Web Transparency and Accountability project  
+            a(href="http://randomwalker.info/publications/webtap-chapter.pdf") here introduced [.pdf]
+            |  The most alike project is known as 
+            b Princeton Web Census 
+            |  described as: 
+            i We are working on a monthly, automated, web-scale measurement of tracking and privacy, comprising 1 million sites. This "web census" will detect and measure many or most of the types of known privacy violations reported by researchers so far: circumvention of cookie blocking, leakage of PII to third parties, canvas fingerprinting, and more.
+            
+        li Tim Libert (GPL licensed) 
+            a(href="https://github.com/timlib/webxray_domain_owner_list/blob/master/domain_owners.json")
+                b list of attributions between trackers and company
+            |.
+   
+    h3 Research develpment from the 2016-2017 scenario
+    p.text The mechanized analysis of the top 1 million websites contributed in to give a grasp of the phenomena for the scientific community, seldom transferred in the more mainstream news media. The report tends to get diluted, if not even banalized, as "Google is present in 80+% of the website we navigate on", which neutralize the complexity of the phenomena, and display the relevance of the communication to bring any kind of technical awareness even in the mainstream web producer-consumer loop.
+
+    
+    p.text
+        b invi.sible.link is a technological framework which enables analysis of web-trackers belonging to a selected cluster of websites.
+        | The communication effort is delegated to groups promoting the open web agenda, reducing the influence of users profiling, algorithmic driven personalized experiences. This project goal is to provide a data stream, through API or CSV data, to group able to translate the technical complexity in effective advocacy.
+
+    p.text
+        b This project has not kept in account the ad-blocking phenomena
+        |. It is, indeed, the most efficient self-defense tool available to an audience, but only an expert and the aware audience can make use of it. This project is to increase that awareness.
+        i Is my personal guess, that the victim of mass profiling is implicitly the less techy savvy clusters of the population
+        |. Has been observed the new 
+        a(href="http://randomwalker.info/publications/ad-blocking-framework-techniques.pdf") development of techniques
+        |, and some 
+        a(href="https://theintercept.com/2017/06/05/be-careful-celebrating-googles-new-ad-blocker-heres-whats-really-going-on/") new factors which try to change the narrative around it
+        |. Despite the fact that the topic is fascinating for me, it was out of scope in this.
+
+    h3 Risk scenario, when third-party trackers decrease the navigation security
+    p.text CitizenLab released a report, named "
+        a(href="https://citizenlab.ca/2018/03/bad-traffic-sandvines-packetlogic-devices-deploy-government-spyware-turkey-syria/") bad traffic
+        |." The report explain how in some regions, network devices invisible in the network topology, inject malicious code in non-encrypted web sessions. This attack pattern the target individual by discriminating internet traffic (we can't know which
+        i selectors
+        |  are used, but the vantage point is the one of network interception).
+    p.text Politecnico of Milan and Santa Barbara university describe 
+        a(href="http://www.cs.ucsb.edu/~chris/research/doc/www14_shortads.pdf") an attack model
+        |  in which third parties can take control the main browser window via javascript code injection.  In this case, the target could be selected with the advertising network capability (such as offering some money to target a set of individual profiled in with the granularity permitted by the online advertising industry).
+
+    h3 Target selection and attack deployments 
+    p.text As a human subject, we have a group of websites and concept we consume more often than others. Depict this cluster of sites as the information diet of said user. Such habit has a recurring pattern, and network tap and/or by advertising industry use it to profile users conduct. In the medium term the adversary harvest enough data points to categorize the user with a precision sufficient to judge it as a potential target or not.
+
+    p.text Techniques mentioned above imply the user can be exploited by sites, as they represent a dimension in which user interact and is exposed to. They are the attack surface for client-side attack.
+
+    p.text We can group websites or URL and categories, to build an effective communication campaign, because a said cluster of content or values likely permit to find a specific threat model, with more apparent regional conflict, or a political struggle.
+
+    p.text
+        b invi.sible.link aims to analyze a cluster of websites because the output could be more effectively linked to a concrete threat, making third-party awareness campaign compelling.
+
+
+    h3 Security evaluations, remediation and responsibilities 
+
+    p.text The most effective way used by an expert to assess their exposure to third-party trackers is monitoring, and default denies unwanted web connections.
+
+    p.text noScript is the most flexible tool available, privacy-badger is the most exciting compromise between safe default, users simplicity in training and ghostery/brave browser represent some more user-friendly, whitelist-blacklist approach.
+
+    p.text Self-defense tools are great for individuals privacy and security-aware, but if we consider an organization at the whole, the security of such depends on the weakest link. It makes clear these solutions are not viable nor scalable as organization policy:
+        ul
+            li Entrance barrier for advanced tooling is complicated, you experience videos, web apps are impaired most of the time, and a technical judgment skill is required to solve such unexpected issues.
+            li 
+                a(href="https://en.wikipedia.org/wiki/Compartmentalization_(information_security)") compartmentalization
+                |  of navigation could represent a viable solution; this approach could include a dedicated chapter, as: "one browser for the bank, only connect to few websites and keeps PayPal logged" "another browser with a script blocker set by default as default resolver of HTTP protocol." 
+            li Mobile tracking and web usage work differently.
+
+    p.text Besides the justification above, the political issue looks like "a technical self-defense tool works well only in a technocratic society where the informed is safer than the person without the means." To address the systemic issue, we should leverage on the websites: they are the ultimate enabler of third party information leakage and users exposure.  They are the website we trust, and we represent their audience. I feel only the invisibility, the abstractness of the trust violation permits such misuse. At the moment we can provide a stronger link between third parties abuses and website responsibilities, the perception, and then the technical habit deeply rooted in the web technology stack, could change. 
+
+    h3 Analysis report
+    p.text Three analysis compose this report. In the chapters below, is documented the contexts of the experiments, technology usage, and the findings. 
+
+    p.text
+        a(href="/final-findings-latam-gobierno")
+            b 1st Analysis
+        |. With the collaboration of four Latin American NGO we analyzed government websites, the chapter is also used to introduce the framework implemented. They released a detailed overview in Spanish here.
+
+    p.text
+        a(href="/final-findings-clinics")
+            b 2nd Analysis
+        |. We address the issue of users health condition leakage via third-party trackers. CodingRights, my host organization, selected website belonging to online clinics. A region in which private healthcare insurance can access the data-brokers market, can discriminate on the insurance prices. Where a data protection regulation is in place, maybe forbidden the usage of algorithmic driven decision making for task with impact in the individuals life.  Nowadays is still an issue, and likely will remain an open debate for years.
+
+    p.text
+        a(href="/final-findings-elections")
+            b 3rd Analysis
+        |. Social media links monitoring during electoral campaign (Argentinian 2017 and Italy 2018 campaigns)
+
