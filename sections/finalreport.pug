@@ -1,25 +1,4 @@
-doctype html
-html
-    head
-        link(rel='stylesheet', href='/css/index.css')
-        link(rel='stylesheet', href='/js/vendor/bootstrap/css/bootstrap.min.css')
-
-        script(type='text/javascript', src='/js/vendor/jquery/jquery.js')
-        script(type='text/javascript', src='/js/vendor/lodash.min.js')
-        script(type='text/javascript', src='/js/vendor/moment.min.js')
-
-        title invi.sible.link, final report
-
-    body
-
-        .container-fluid
-        .jumbotron
-            h1 ⛅  invi.sible.link
-
-        include navbar
-
-        .container-fluid
-
-            include findings/intro
-
-        include footer
+include findings/head
+.container-fluid
+    include findings/intro
+include footer

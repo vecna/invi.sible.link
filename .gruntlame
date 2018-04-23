@@ -15,6 +15,7 @@ node_modules/.bin/stylus styles/index.styl -o dist/css
 node_modules/.bin/gulp vendor
 
 cp pictures/*.png dist/images/
+cp pictures/F/*.png dist/images/
 cp styles/favicon.ico dist/
 cp node_modules/d3/d3.min.js $V 
 cp node_modules/d3-path/build/d3-path.min.js $V

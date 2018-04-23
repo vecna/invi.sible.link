@@ -1,0 +1,163 @@
+include head
+
+.container-fluid
+
+    h3 Abstract
+    p.text This first chapter shows how a third party monitor can analyze the third party javascript resources loaded in websites. Are observed a very different degree of fingerprinting. Considering part of the research consist in releasing a tool, and permits other researchers to do analysis, some internal components of the technology developed are explained, along with numeric results from the web privacy assessment made on some selected institutional websites.
+
+    h2 web trackers, assesment on institutional websites
+    p.text My hosting organization, CodingRights, is based in Brazil, and has among their mandate, policy advocacy and digital human rights awareness. This research has been used by 
+        a(href="https://olpe.tedic.net/seguridad/2018/03/15/graficos.html") them and partners to 
+            b produce advocacy material
+        |. This analysis looks at multiple institutions websites in Brasil, Chile, Colombia, and Paraguay
+
+    h2 Analize grouped websites
+    p.text Requirement: a Debian GNU/Linux computer in which invi.sible.link repository has been cloned and installed, as explained in the 
+        a(href="https://github.com/vecna/invi.sible.link") GitHub page
+        |.
+    p.text The government website, separated by country, 
+        a(href="https://github.com/vecna/gobwebsecpy ") are stored in CSV files
+        |, in a dedicated repository, they are available.  
+    pre.
+        user@user:~/invi.sible.link$ DEBUG=*,-lib:mongo:read bin/queueCampaign.js --csv campaigns/gobwebsecpy/lista_brasil.csv --campaign gob.brasil
+          lib:queue importSiteFromCSV: 27 entries in campaigns/gobwebsecpy/lista_brasil.csv +0ms
+          lib:queue importSiteFromCSV imported 26 sites +9ms
+          lib:queue added [gob.brasil] 26 promises +752ms
+
+    p.text The system is configured to perform analysis when they are in the queue; my configuration was causing the system to repeat the same collection every 24 hours.
+    p.text
+        b To retrieve the data
+        | from the server, are available HTTP API. For this specific campaign, you can check this 
+        a(href="https://github.com/vecna/gobwebsecpy/blob/master/API.md") dedicated page
+        |, as the example show:
+    pre.
+        user@user:~/invi.sible.link$ http https://invi.sible.link/api/v1/details/gob.brasil
+        [
+           {
+                "VP": "WS",
+                "_id": "5ab4909c98dc4f4d4f915787",
+                "acquired": "2018-03-23T03:22:54.741Z",
+                "campaign": "gob.brasil",
+                "href": "https://nfg.sefaz.rs.gov.br/Cadastro/CadastroNfg_2.aspx",
+                "id": "eb43cb853cf3fd98084981a8d89aff7e3c1efbd8",
+                "inclusion": "www.gstatic.com",
+                "navigator_userAgent": 1,
+                "promiseId": "245398e3b2ed96973ff8be7d8af566020f47dce6",
+                "scriptHash": "4e0a497e4ccac3ed718612c5b89e43c75cae4424",
+                "scriptacts": "11faf654c7f8277e94d71e65a5f31820b6f99672a",
+                "subjectId": "1faf654c7f8277e94d71e65a5f31820b6f99672a",
+                "version": 1,
+                "when": "2018-03-23T00:00:00.000Z"
+           },
+           {
+                "VP": "WS",
+                "_id": "5ab4909c98dc4f4d4f915788",
+                "acquired": "2018-03-23T03:22:54.741Z",
+                "campaign": "gob.brasil",
+                "href": "https://nfg.sefaz.rs.gov.br/Cadastro/CadastroNfg_2.aspx",
+                "id": "eb43cb853cf3fd98084981a8d89aff7e3c1efbd8",
+                "inclusion": "tag.navdmp.com",
+                "promiseId": "245398e3b2ed96973ff8be7d8af566020f47dce6",
+                "scriptHash": "7852d1c2b1ea490721538f1ff700e99bcd613964",
+                "scriptacts": "61faf654c7f8277e94d71e65a5f31820b6f99672a",
+                "subjectId": "1faf654c7f8277e94d71e65a5f31820b6f99672a",
+                "version": 1,
+                "when": "2018-03-23T00:00:00.000Z",
+                "window_localStorage": 6
+            }
+        …
+        ]
+
+    h3 Format specification of the API 
+        i details
+    p.text This API returns a number of JSON objects equal to the amount of third party inclusion which executed javascript functions. The objects comes from the last cycle of analysis; In my case, every day is a different cycle because every 24 hours a command 
+        code queueCampaign 
+        |  push the list of sites in the queue again. If you want to make a comparison between days, you should save the results separately. The JSON objects have some fixed fields, they are:
+    ul
+        li “inclusion”: Is the domain name of the third-party inclusion (such as google-analytics.com).
+        li “href”: the website tested.
+        li “campaign”: the name of the campaign, it is the same specified with the command 
+            code campaignQueue
+            |.
+        li “when”: the ISO date is in format YYYY-MM-DD, it describes the day in which the test was planned (hours is always midnight).
+        li “acquired”: the precise time, in ISO format, when the test has been performed by the testing script. Please note, if this information is public, the IP address of the invi.sible.link server could be correlated by who can look in the logs of the tested websites and their third-party inclusions. invi.sible.link activities are not anonymous if the API is publicly accessible.
+        li “scriptHash”:
+        li “scriptsacts”:
+        li “subjectId”:
+        li “id”:
+
+    h3 Non-cookie fingerprinting
+    p.text In the 2014 paper "
+        a(href="https://www.chromium.org/Home/chromium-security/client-identification-mechanisms") Technical analysis of client identification mechanisms
+        |" javascript function can be used to extract information from the browser. This information produces a certain amount of fingerprinting bits, usable to track users also without cookies or across multiple browsers. 
+
+    p.text Each of this call (with the 
+        code . 
+        | replaced by
+        code _ 
+        | in the key name, get valorized with the number of times the 
+        i potentially-profiling
+        |  javascript function has been call.
+
+    p.text
+        pre.
+            navigator.userAgent
+            navigator.language
+            window.devicePixelRatio
+            navigator.languages
+            screen.colorDepth
+            navigator.hardwareConcurrency
+            navigator.cpuClass
+            navigator.platform
+            navigator.doNotTrack
+            navigator.maxTouchPoints
+            screen.width
+            screen.availWidth
+            Date.prototype.getTimezoneOffset
+            window.sessionStorage
+            window.localStorage
+            window.indexedDB
+            window.openDatabase
+            navigator.plugins
+            window.CanvasRenderingContext2D.prototype.rect
+            window.WebGLRenderingContext.prototype.createBuffer
+
+    p.text These are variable fields of the details API (active javascript behavior analysis).
+
+    h3 Analysis and Findings
+    p.text We begin picking one website an analyzing the few things we can get/guess from the outputs; I consider for this example just the Chile and Brasil list. Every site has between one and six third-party executing javascript on it
+    img(src="/images/Number-of-Inclusion-gob.png")
+    p.text As example, picking
+        code http://www.caxia.gov.br
+    img(src="/images/caxia-example.png")
+
+    ul 
+        li We saw six inclusions are present, but you can see only five, this happens because a script inclusion with content-type 
+            code application/javascript 
+            | has not any fingerprinting call, therefore has not been reported in the spreadsheet copied. The domain name of this missing script is az416426.vo.msecnd.net;  This domain name, appears in other third-party inclusion, and in the others access four times to LocalStorage and more than 10 in SessionStorage, which are some of the primary non-cookies tracker's techniques. The JSON of this analysis can get from here to enable different analysis.
+        li Google and Facebook have put two inclusion, what can be interesting on these mainstream service, is check if everytime they execute the same script or if we can observe different fingerprint
+        li A less known third party 
+            code d.tailtarget.com 
+            | is present and the primarly domain name, caxia.gov.br, includes two propertary scripts.
+
+    p.text How often the same service perform a different execution? It happens, I pick the most well-known example (google-analytics)
+    img(src="google-analytica-diff.png")
+    p.text In which we can see how, when a javascript is included in differrent context, execute different operation. In the specific google-analytics could offer different services, and this behavior is justify in this way.
+
+    h2 Research questions
+    p.text Every time we have new data, we should gain perspective. The most important approach looks at the differences between scripts, between tested sites and between test made on different days.
+
+    p.text Observing 
+        a(href="https://public.tableau.com/profile/claudio.of.tracking.exposed#!/vizhome/gobiernoBRCL/screenWidth") tableau data visualization
+        |, more detailed questions arise.
+    ol
+        li How much is stable the acquiring method developed? I'm using seleniumHQ with privacy-badger extension, patched to spot fingerprinting calls
+        li How much frequently the third party scripts changes?
+        li How many companies, advertisers, web-farm, servers are present on average? How much the attack surface increases?
+        li On average how many fingerprinting calls comes from third-party scripts?
+        li Third party inclusion: how frequently they change?
+
+    h3 TODO put the answers of the questions above
+
+
+

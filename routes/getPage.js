@@ -28,7 +28,10 @@ var pageMap = {
     'about': pugCompiler('about'),
     'report': pugCompiler('reportList'),
     '404': pugCompiler('404'),
-    'final-report': pugCompiler('finalreport')
+    'final-report': pugCompiler('finalreport'),
+    'final-findings-latam-gobierno': pugCompiler('findings/latam-gobierno'),
+    'final-findings-clinics': pugCompiler('findings/clinics'),
+    'final-findings-elections': pugCompiler('findings/elections')
 };
 
 var getPage = function(req) {
