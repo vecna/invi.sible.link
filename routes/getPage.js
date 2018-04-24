@@ -31,7 +31,8 @@ var pageMap = {
     'final-report': pugCompiler('finalreport'),
     'final-findings-latam-gobierno': pugCompiler('findings/latam-gobierno'),
     'final-findings-clinics': pugCompiler('findings/clinics'),
-    'final-findings-elections': pugCompiler('findings/elections')
+    'final-findings-elections': pugCompiler('findings/elections'),
+    'imgs': pugCompiler('findings/alltheimgs')
 };
 
 var getPage = function(req) {
