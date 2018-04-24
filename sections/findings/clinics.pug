@@ -1,7 +1,56 @@
 include head
 
 .container-fluid
-    h2 Clinics
-    p.text Blah
+    h3 Abstract
+    p.text To test the concept of the context-targeted campaign, we tested web trackers in online clinics. They are pages with explanation of medical instruments, exam, and treatment which are available in a hospital. A website like these can leak through the navigation sequence, which is the medial issue of a user (eventually, correlated among multiple clinics, time spent in the pages)
+    p.text Third-party trackers can even don't know anything on the website in which they are running, but metadata such as the interest of a user for a cluster or web pages are metadata attributed by AI analyzing the analytics, and in the case of a medical condition, that's a protected selector.
 
+    h2 Clinics, a 
+        a(href="https://chupadados.codingrights.org/en/") Chupadados 
+        | analysis
+    p.text Beside the clear business interest in detecting users behavior and research, we should consider the leakage of users interest happen also when third party trackers are not present. In
+        a(href="https://www.freehaven.net/anonbib/papers/pets2012/paper_53.pdf") Website Detection Using Remote Traffic Analysis
+        |  is explored the condition in which: 
+        i attackers can find out which website, or which page on a website, a user is accessing simply by monitoring the packet size distribution
+        |.  This analysis has to be considered quite dangerous also because applicable to skilled users 
+        a(href="https://epub.uni-regensburg.de/11919/1/authorsversion-ccsw09.pdf") protected with PETs
+        |. This to say, the effort made by webservices offering services related to 
+        i  protected selector
+        |  should be stronger than other. This contribute can eventually begin to raise the attention, because if we can 
+        i  hope
+        |  the techniques of passive website fingerprint is an attack not massively deployed yet, we know for sure users bahvior profiling is.
 
+    p.text The CSV format used by the system, is composed by two simple fields: the URL and a description (which is optional)
+
+    pre.
+        ~/Dev/invi.sible.link/campaigns/chuptrex cat clinics-CL.csv 
+        site,description
+        http://www.clinicasantamaria.cl/,Clínica Santa María
+        https://portal.alemana.cl/wps/wcm/connect/internet/home,Clínica Alemana
+        http://www.davila.cl/,Clínica Dávila
+        http://www.clinicaservet.cl/nueva/horas.html,Clínica Servet
+        http://www.indisa.cl/indisaweb/index.php,Clínica Indisa
+        http://www.clinicabicentenario.cl/cb/reserva-de-horas/,Clínica Bicentenario
+        https://www.clinicabupasantiago.cl/,Clínica Bupa
+        http://www.clinicavespucio.cl/servicios-en-linea/reserva-de-horas/,Clínica Vespucio
+        http://redsalud.uc.cl/ucchristus/Hospital/ClinicaUC/,Clínica UC
+        https://www.clinicalascondes.cl/HOME,Clínica Las Condes
+        http://www.clinicalaslilas.cl/,Clínica Las Lilas
+        http://www.chp.cl/web-chp/reserva-hora-clinica-chp.html,Clínica Hospital del profesor
+        http://www.clinicatabancura.cl/,Clínica tabancura
+        http://www.hospitaldeltrabajador.cl/ht/Comunidad/Paginas/home.aspx,Hospital del trabajador
+        http://www.clinicalircay.cl/,Clínica Lircay
+
+    h3 Reliability of time-comparison
+    p.text The results displayed here are not considering the javascript behavior, but only the structure of the third party resources loaded. The test in this chapter of the report uses with PhantomJS. As technology entered into an unmaintained legacy phase during my research. Ideally, modern technology such as NightmareJS or Puppeteer could replace it.
+
+    p.text
+        b Why third party changes?
+    p.text The benefit of having an analysis performed every night is the comparison in the long term. It is quite disappointing to discover how frequently the third party trackers change. Three different vantage point can even perform the analysis, and the time dedicated to every session reach 1 minute each to permit every resource to load in machines, considering the loading of third-party resources 
+    p.text Some reasons could the web structure change, for the infrastructural reason, CDNs, caches or marketing agreements. This last is not expected in the clinics because their business model (should not be) advertising, but in a different context the dynamic loading of ads causes very variable inclusions links.
+    p.text Considering the dependency map of third-party loaded (courtesy of Evidon):
+    p.text It is clear if a resource doesn't load for any reason, this could prevent the loading of other third parties
+
+    p.text
+        b As rule of thumb, I attribute a third party as constant in a website when is observed more than once
+        |, also if this don't keep in account dynamic ADS loading.
