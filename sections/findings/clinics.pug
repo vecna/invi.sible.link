@@ -2,13 +2,15 @@ include head
 
 .container-fluid
     h3 Abstract
-    p.text To test the concept of the context-targeted campaign, we tested web trackers in online clinics. They are pages with explanation of medical instruments, exam, and treatment which are available in a hospital. A website like these can leak through the navigation sequence, which is the medial issue of a user (eventually, correlated among multiple clinics, time spent in the pages)
+    p.text To test the concept of the context-targeted campaign, we analyzed web trackers in online clinics. The pages of such websites contains explanation of medical treatment and exams available in a hospital. A website like these can leak through the navigation sequence, which is the medial issue of a user (eventually, correlated among multiple clinics, time spent in the pages)
     p.text Third-party trackers can even don't know anything on the website in which they are running, but metadata such as the interest of a user for a cluster or web pages are metadata attributed by AI analyzing the analytics, and in the case of a medical condition, that's a protected selector.
+    p.text
+        b Our findings show how, advanced interactive experience for the user, leak potentially much more private information through third parties. 
 
     h2 Clinics, a 
         a(href="https://chupadados.codingrights.org/en/") Chupadados 
         | analysis
-    p.text Beside the clear business interest in detecting users behavior and research, we should consider the leakage of users interest happen also when third party trackers are not present. In
+    p.text Beside the clear business interest in detecting users behavior and research, we should consider the leakage of users interest happen also when third party trackers are not present. In 
         a(href="https://www.freehaven.net/anonbib/papers/pets2012/paper_53.pdf") Website Detection Using Remote Traffic Analysis
         |  is explored the condition in which: 
         i attackers can find out which website, or which page on a website, a user is accessing simply by monitoring the packet size distribution
@@ -41,15 +43,38 @@ include head
         http://www.hospitaldeltrabajador.cl/ht/Comunidad/Paginas/home.aspx,Hospital del trabajador
         http://www.clinicalircay.cl/,Clínica Lircay
 
+    h3 Analysis
+    p.text To begin the analysis we pick in account one website, and after we observe the general phenomena. In the example below, you can watch the monitoring of 
+        code www.clinicavespucio.cl 
+        | for multiple days:
+    img(src="/images/TMP1.png")
+    p.text This first breakdown displays the map of the resources loaded. The graph display:
+        ul
+            li On the column, the consecutive day of testing
+            li On the rows, the content-type declared by the web server which provided the resource
+            li the color represents different URLs which loads the resource. 
+        | The primary graph goal is to show how much is consistent the collection day by day.
+
+    h3 Chilean clinics, third party domain loading
+    p.text we need to compare 
+
     h3 Reliability of time-comparison
     p.text The results displayed here are not considering the javascript behavior, but only the structure of the third party resources loaded. The test in this chapter of the report uses with PhantomJS. As technology entered into an unmaintained legacy phase during my research. Ideally, modern technology such as NightmareJS or Puppeteer could replace it.
+
+    p.text In the visualization below we get a numeric comparison of the consistency of the checks, it display the number of inclusion count. This assessment has little value for security purposes but helps to get a grasp on the stability of the test performed with PhantomJS
+    img(src="/images/js-included-chillean-clinics.png")
+
+    h3 TODO develop explanation of these
+    img(src="/images/third-party-domain-freq.png")
+    img(src="/images/domain-frequency-lower-ranks.png")
 
     p.text
         b Why third party changes?
     p.text The benefit of having an analysis performed every night is the comparison in the long term. It is quite disappointing to discover how frequently the third party trackers change. Three different vantage point can even perform the analysis, and the time dedicated to every session reach 1 minute each to permit every resource to load in machines, considering the loading of third-party resources 
     p.text Some reasons could the web structure change, for the infrastructural reason, CDNs, caches or marketing agreements. This last is not expected in the clinics because their business model (should not be) advertising, but in a different context the dynamic loading of ads causes very variable inclusions links.
     p.text Considering the dependency map of third-party loaded (courtesy of Evidon):
-    p.text It is clear if a resource doesn't load for any reason, this could prevent the loading of other third parties
+    img(src="/images/TMZ-analysis-EVIDON.png")
+    p.text In the image above, if we take into consideration resources such as Taboola, with additional third-parties loaded after it gets rendered, we see how hardly replicable this graph can be across multiple tests.
 
     p.text
         b As rule of thumb, I attribute a third party as constant in a website when is observed more than once

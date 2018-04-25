@@ -142,8 +142,8 @@ include head
             | is present and the primarly domain name, caxia.gov.br, includes two propertary scripts.
 
     p.text How often the same service perform a different execution? It happens, I pick the most well-known example (google-analytics)
-    img(src="google-analytica-diff.png")
-    p.text In which we can see how, when a javascript is included in differrent context, execute different operation. In the specific google-analytics could offer different services, and this behavior is justify in this way.
+    img(src="/images/google-analytica-diff.png")
+    p.text In the image above, generated with a spreadsheet visualization tools, the bar develops over the number of times in which a function, such navigator.userAgent() has been invoked by the script served from google-analytics. It is always a natural integer number (such as 2 or 3), but the tool was considering them as them as a number with the comma,00; The axis tick does not express the expected clarity visually.
 
     h2 Research questions
     p.text Every time we have new data, we should gain perspective. The most important approach looks at the differences between scripts, between tested sites and between test made on different days.
