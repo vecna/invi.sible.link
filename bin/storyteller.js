@@ -70,6 +70,10 @@ app.get('/api/v:version/history/:href', function(req, res) {
     return dispatchPromise('getEvidencesByHref', routes, req, res);
 });
 
+app.get('/api/v:version/evidences/:cname', function(req, res) {
+    return dispatchPromise('getEvidencesByCampaign', routes, req, res);
+});
+
 app.get('/api/v:version/campaignNames', function(req, res) {
     return dispatchPromise('getCampaignNames', routes, req, res);
 });
