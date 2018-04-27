@@ -70,7 +70,7 @@ app.get('/api/v:version/history/:href', function(req, res) {
     return dispatchPromise('getEvidencesByHref', routes, req, res);
 });
 
-app.get('/api/v:version/evidences/:cname', function(req, res) {
+app.get('/api/v:version/evidences/:cname/:daysago', function(req, res) {
     return dispatchPromise('getEvidencesByCampaign', routes, req, res);
 });
 
