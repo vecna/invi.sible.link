@@ -24,6 +24,18 @@ function getDetails(req) {
                 return moment(entry.when).format('DD') == lastDay;
             });
         })
+        .map(function(o) {
+            var r = _.omit(o, ['_id',
+                'scriptHash', 
+                'scriptsacts', 
+                'subjectId']);
+
+            r = _.mapValues(r, function(v, k) {
+                return _.toString(v);
+            });
+            r.version = 2;
+            return r;   
+        })
         .then(function(c) {
             debug("returning %d entries", _.size(c));
             return {
