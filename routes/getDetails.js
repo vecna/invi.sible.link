@@ -27,11 +27,13 @@ function getDetails(req) {
         .map(function(o) {
             var r = _.omit(o, ['_id',
                 'scriptHash', 
-                'scriptsacts', 
+                'scriptacts', 
                 'subjectId']);
 
             r = _.mapValues(r, function(v, k) {
-                return _.toString(v);
+                if(k.match(/_/))
+                    return _.toString(v);
+                return v;
             });
             r.version = 2;
             return r;   
