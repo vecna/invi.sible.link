@@ -22,6 +22,69 @@ include head
         i  hope
         |  the techniques of passive website fingerprint is an attack not massively deployed yet, we know for sure users bahvior profiling is.
 
+
+    h2 Recurring terminology 
+    img(src="/images/venn.png")
+
+    p.text In this report are mentioned often:
+        ul
+            li A 
+                b Connections
+                |  the HTTP connection made by the browser to compose a web-page; It could be just one connection enough but on average 
+            li B 
+                b Third-party
+                |  a resource loaded via HTTP belonging to a domain name which is not the one contacted originally by the client
+            li C 
+                b Company
+                |  is the given name of the business organization owing a third party. This association is done when a known domain name (google-analytics.com) can be linked to a company name (Google).
+            li D 
+                b Javascript
+                |  The code executed client side, which open the attack surface much more than a picture, an HTML or a CSS. a Javascript is necessary to implement advanced fingerprinting techniques used to re-link users behavior without using cookies (which are, in theory, the only legit way to perform users tracking)
+    p.text In the report the analysis is focus on B and D.
+
+    h2 Primary insight
+
+    .container
+        .row
+            .col-md-4
+                img(class="img-responsive" src="/images/Content-Type-color-code.png")
+            .col-sm-8
+                p.text In the next visualization, we'll see the 
+                    b Content-Type 
+                    | correlated to third-party resources; the class of contents have the same color and should be consistent in most of the graphs on this report, except where diversly explain. 
+                p.text Commonly analysts don't talk of third-party trackers, after all, it is a technical term often replaced by the broader acknowledge concept of "digital advertising". But this is not always true, especially in specialized websites such as healthcare, advertising is extremely rare.
+                p.text Is not my scope analyze Companies presence and behavior, but as you can see below, they represent a significant amount of the third party connections; Using Tableau is simply highlight the set of company-attributed third-party resources and 
+                    i exclude them in further analysis.
+
+    h3 Brasil
+
+    p.text
+        b Viz#1
+        |  This graph highlights the amount of third-party connections attributed to known platforms. They can be judged by the advocacy team, for our analysis the intention was to remove them before going deeper.
+    img(class="img-responsive" src="/images/BR-clinics-companies.png")
+    p.text 
+        b Viz#2
+        |  The picture below highlight which are the third party included besides the known companies.
+    img(class="img-responsive" src="/images/BR-clinics-3rd.png")
+
+    h3 Mexican
+    img(class="img-responsive" src="/images/MX-clinics-companies.png")
+    img(class="img-responsive" src="/images/MX-clinics-3rd.png")
+
+    h3 Colombian
+    img(class="img-responsive" src="/images/CO-clinics-companies.png")
+    img(class="img-responsive" src="/images/CO-clinics-3rd.png")
+
+    h3 Chilean
+    img(class="img-responsive" src="/images/CL-clinics-companies.png")
+    img(class="img-responsive" src="/images/CL-clinics-3rd.png")
+
+section(class="report-entry")
+
+    p.text On the green background, the technical chapter highlight how the system works and how can be used by other analysts.
+
+    h2 How the system works
+
     p.text The CSV format used by the system, is composed by two simple fields: the URL and a description (which is optional)
 
     pre.
@@ -43,30 +106,15 @@ include head
         http://www.hospitaldeltrabajador.cl/ht/Comunidad/Paginas/home.aspx,Hospital del trabajador
         http://www.clinicalircay.cl/,Clínica Lircay
 
-    h3 Analysis
-    p.text To begin the analysis we pick in account one website, and after we observe the general phenomena. In the example below, you can watch the monitoring of 
-        code www.clinicavespucio.cl 
-        | for multiple days:
-    img(src="/images/TMP1.png")
-    p.text This first breakdown displays the map of the resources loaded. The graph display:
-        ul
-            li On the column, the consecutive day of testing
-            li On the rows, the content-type declared by the web server which provided the resource
-            li the color represents different URLs which loads the resource. 
-        | The primary graph goal is to show how much is consistent the collection day by day.
-
-    h3 Chilean clinics, third party domain loading
-    p.text we need to compare 
-
     h3 Reliability of time-comparison
     p.text The results displayed here are not considering the javascript behavior, but only the structure of the third party resources loaded. The test in this chapter of the report uses with PhantomJS. As technology entered into an unmaintained legacy phase during my research. Ideally, modern technology such as NightmareJS or Puppeteer could replace it.
 
     p.text In the visualization below we get a numeric comparison of the consistency of the checks, it display the number of inclusion count. This assessment has little value for security purposes but helps to get a grasp on the stability of the test performed with PhantomJS
-    img(src="/images/js-included-chillean-clinics.png")
+    img.img-responsive(src="/images/js-included-chillean-clinics.png")
 
     h3 TODO develop explanation of these
-    img(src="/images/third-party-domain-freq.png")
-    img(src="/images/domain-frequency-lower-ranks.png")
+    img.img-responsive(src="/images/third-party-domain-freq.png")
+    img.img-responsive(src="/images/domain-frequency-lower-ranks.png")
 
     p.text
         b Why third party changes?

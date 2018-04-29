@@ -3,15 +3,138 @@ include head
 .container-fluid
 
     h3 Abstract
-    p.text This first chapter shows how a third party monitor can analyze the third party javascript resources loaded in websites. Are observed a very different degree of fingerprinting. Considering part of the research consist in releasing a tool, and permits other researchers to do analysis, some internal components of the technology developed are explained, along with numeric results from the web privacy assessment made on some selected institutional websites.
+    p.text This first chapter is divided in two part: elemental analysis of four counties institutional websites, they are compared by the penetration of mainstream and less known platforms profiling firm. In the second section, there is an assessment on invi.sible.link reliability; This analysis looks at Brasil, Chile, Colombia, and Paraguay. The 
+        a(href="https://github.com/vecna/gobwebsecpy") list of website analyzed can be updated at any time by Tedic
+        |, the project coordinator. The invi.sible.link system examines them every day.
 
-    h2 web trackers, assesment on institutional websites
-    p.text My hosting organization, CodingRights, is based in Brazil, and has among their mandate, policy advocacy and digital human rights awareness. This research has been used by 
-        a(href="https://olpe.tedic.net/seguridad/2018/03/15/graficos.html") them and partners to 
-            b produce advocacy material
-        |. This analysis looks at multiple institutions websites in Brasil, Chile, Colombia, and Paraguay
+    h3 Tedic
+    p.text 
+        a(href="https://www.tedic.org") Tedic
+        |  is an NGO working on civic technology and digital rights.
+    p.text They are working on the Observatorio Latinoamericano de Páginas Estatales (OLPE), an advocacy project. OLPE will be released soon but is not yet ready for the public announcement. Tedic is running their instance of invi.sible.link software. OLPE has four organizations belonging to different Latin American nations, CodingRights is among them.
 
-    h2 Analize grouped websites
+
+.container-fluid
+
+    h3 Analysis and Findings
+    p.text we begin with
+        b Viz#1
+        |  and 
+        b Viz#2
+        |, as used in the previous chapter
+
+    img.img-responsive(src="/images/PY-gob-companies.png")
+    img.img-responsive(src="/images/PY-gob-3rd.png")
+    img.img-responsive(src="/images/CL-gob-companies.png")
+    img.img-responsive(src="/images/CL-gob-3rd.png")
+
+    p.text Colombia is not reported because of the number of website analyzed, just lead to a visualization which don't scale. This is a tip to keep in account when running comparative analysis among cluster:
+    ul
+        li The number of website has to be the same
+        li Comparisong should happen between website of the same kind. Media, healthcare, or government have different monetization strategy, internet traffic challenges and accessibility duties.
+
+    p.text It is possible consult with a dedicated UX the 
+        a(href="https://public.tableau.com/profile/claudio.of.tracking.exposed#!/vizhome/Finalreport-visualizations/Gob-CO-Co") Colombian visualizations 
+        |.
+
+    h2 User's fingerprinting via Javascript execution
+
+    p.text This analysis is inspired by the 2014 paper "
+        a(href="https://www.chromium.org/Home/chromium-security/client-identification-mechanisms") Technical analysis of client identification mechanisms
+        |", and by 
+        a(href="https://panopticlick.eff.org/") Panopticlick
+        |. Javascript function can be used to extract information from the browser. This information produces a certain amount of fingerprinting bits, usable to track users also without cookies or across multiple browsers.
+
+    p.text invi.sible.link looks at the following javascript call (I'm reporting this list here because the visualization below reference the calls through the [letters]
+
+    p.small
+        pre.
+            navigator.userAgent ⟶ [uA]
+            navigator.language ⟶ [l]
+            window.devicePixelRatio ⟶ [pix]
+            navigator.languages ⟶ [L]
+            screen.colorDepth ⟶ [colorD]
+            navigator.hardwareConcurrency ⟶ [hw]
+            navigator.cpuClass ⟶ [cpu]
+            navigator.platform ⟶ [platform]
+            navigator.doNotTrack ⟶ [dNT]
+            navigator.maxTouchPoints ⟶ [maxTouch]
+            screen.width ⟶ [width]
+            screen.availWidth ⟶ [availW]
+            Date.prototype.getTimezoneOffset ⟶ [getTZ]
+            window.sessionStorage ⟶ [sessionStorage]
+            window.localStorage ⟶ [localStorage]
+            window.indexedDB ⟶ [indexDB]
+            window.openDatabase ⟶ [openDB]
+            navigator.plugins ⟶ [plugins]
+            window.CanvasRenderingContext2D.prototype.rect ⟶ [canvas2D]
+            window.WebGLRenderingContext.prototype.createBuffer ⟶ [webGL]
+
+    p.text Every website tested has included a certain number of javascript, I was researching which is the behavior of the scripts and if we can measure their "invasiveness". This was the goal of the analysis: permit a more granular judgment script, understand if and how ad-blocker can improve, understand responsibilities of third-party platforms.
+    p.text In the visualization below, 
+        b Viz#3 
+        | you can see all the [lettes] related to function the tool look for. The fist is always [cpu] and means we checked if (look the list above) 
+        code navigator.cpuClass 
+        | has been checked. If is reported [cpu ] means 0 times the function has been performed, if there is a red number, it represents the amount of time the domain name on the left has executed the function. Under the column 'href' you can see the tested website. The number of inclusion is far less than what we observe in the Viz#1 and Viz#2 because the scripts from the same domain share the same context in the browser, therefore should be aggregated. This analysis does not keep in account all the javascript inclusion which don't execute any of these functions.
+       
+    img.img-responsive(src="/images/PY-gob-fingerprint.png")
+    p.text Few technical notes and insights inspired by the Paraguaian analysis:
+    ul
+        li When the inclusion has the name 
+            code undefined  
+            | is because was not possible, from the browser extension (a modified version of
+            a(href="https://github.com/vecna/badger-claw") privacy-badger
+            |) attribute the source. It may require more investigations.
+        li 
+            code senado.gov.py 
+            |, the website of Paraguayan Senate, include 
+            code n-cdn.areyouhuman.com  
+            | which, is a captcha-like third-party service (
+            a(href="https://www.distilnetworks.com") Distil Networks
+            |). Fingerprinting from this kind of third-party is expected. In theory, they should ask an intensive human operation such a Captcha resolution only if technical analysis is inconclusive. Check your activity on the browser is one of the indicators which can be used to do such assessment. But the invi.sible.link do not even trigger any behavior, is not trying to post comments or perform an operation, is just retrieving the homepage and observing script behavior, passively. These invasive fingerprinting operation should happen when the user is expressing interest in posting a comment (such as entering text in the comment area), not when the page is open.
+        li World-known platforms like Twitter are mixed with all the others: has not beed done a company-based attribution in this analysis.
+        li This test is not checking the execution of 
+            code XMLHttpRequest 
+            | yet.
+
+    img.img-responsive(src="/images/BR-gob-fingerprint.png")
+
+    ul
+        li a platform offering specialized services are justified to execute these javascript calls. maps.google.com which has to render an interactive map, call ten times window.devicePixelRatio doesn't matter if is 10 or 1, but looks legitimate the access to that information, because is in its scope render complex graphc. The same on youtube checking the plugins available.
+        li It is interesting observing duplicated website (
+            code http://www.caxia.gov.br
+            |), looking closer, we can see the first the homepage and the second a content-page. This differencen will be extensively analyzed in the next chapter, but so far we can observe the presence of a 
+            a(href="https://en.wikipedia.org/wiki/Personalized_marketing#DMP") Data Management Platform
+            |  private firm (
+            a(href="http://www.tail.digital/") d.tailtarget.com
+            |, accessing to the browser
+            code sessionStorage
+            |.
+        li The domain triggering more fingerprinting request is cloud.tinymce.com, which redirect to a page of a full-featured rich text editing, is an HTML WYSIWYG and therefore is used in many websites as a comfortable way to compose web pages. The site analyzed, do not offer any editing capability, the rich text editor is not offering any particular feature in exchange for the complete fingerprinting. Looking more in details, in the 
+            a(href="https://www.ephox.com/legal/privacy/") privacy policy
+            |, is written:
+            ol
+                li The cookies and other technical means, termporary or persistent, are not PII 
+                li 
+                    i We, or our third party service providers, collect and store certain other information automatically whenever you interact with the Site.  For example, we collect information regarding customer traffic patterns, site usage, hits to our server, Site, page views, query date and time, and navigational patterns
+            | This seems to me one example, among others, which need further investigation from policy team.
+
+    p.text You can 
+        a(href="https://public.tableau.com/profile/claudio.of.tracking.exposed#!/vizhome/LatAminstitutionsjsfingerprintingfunctions/JS-Gob-BR") see the complete visualization
+        |; the image above do not include all the sites present on the 
+        a(href="https://github.com/vecna/gobwebsecpy/blob/master/lista_brasil.csv") Brasil CSV list
+
+    img.img-responsive(src="/images/CL-gob-fingerprint.png")
+
+    p.text Colombia list is long, the
+        a(href="https://github.com/vecna/gobwebsecpy/blob/master/lista_colombia.csv") test is composed by 148 website
+        |, follow 
+    a(href="https://public.tableau.com/profile/claudio.of.tracking.exposed#!/vizhome/LatAminstitutionsjsfingerprintingfunctions/JS-Gob-CO") this link to the interactive visualization, and see the whole Colombian report
+        |.
+
+section(class="report")
+    h2 Assessment of invi.sible.link reliability and 
+
     p.text Requirement: a Debian GNU/Linux computer in which invi.sible.link repository has been cloned and installed, as explained in the 
         a(href="https://github.com/vecna/invi.sible.link") GitHub page
         |.
@@ -86,11 +209,6 @@ include head
         li “subjectId”:
         li “id”:
 
-    h3 Non-cookie fingerprinting
-    p.text In the 2014 paper "
-        a(href="https://www.chromium.org/Home/chromium-security/client-identification-mechanisms") Technical analysis of client identification mechanisms
-        |" javascript function can be used to extract information from the browser. This information produces a certain amount of fingerprinting bits, usable to track users also without cookies or across multiple browsers. 
-
     p.text Each of this call (with the 
         code . 
         | replaced by
@@ -98,67 +216,4 @@ include head
         | in the key name, get valorized with the number of times the 
         i potentially-profiling
         |  javascript function has been call.
-
-    p.text
-        pre.
-            navigator.userAgent
-            navigator.language
-            window.devicePixelRatio
-            navigator.languages
-            screen.colorDepth
-            navigator.hardwareConcurrency
-            navigator.cpuClass
-            navigator.platform
-            navigator.doNotTrack
-            navigator.maxTouchPoints
-            screen.width
-            screen.availWidth
-            Date.prototype.getTimezoneOffset
-            window.sessionStorage
-            window.localStorage
-            window.indexedDB
-            window.openDatabase
-            navigator.plugins
-            window.CanvasRenderingContext2D.prototype.rect
-            window.WebGLRenderingContext.prototype.createBuffer
-
-    p.text These are variable fields of the details API (active javascript behavior analysis).
-
-    h3 Analysis and Findings
-    p.text We begin picking one website an analyzing the few things we can get/guess from the outputs; I consider for this example just the Chile and Brasil list. Every site has between one and six third-party executing javascript on it
-    img(src="/images/Number-of-Inclusion-gob.png")
-    p.text As example, with  
-        code http://www.caxia.gov.br
-        |:
-    img(src="/images/caxia-example.png")
-
-    ul 
-        li We saw six inclusions are present, but you can see only five, this happens because a script inclusion with content-type 
-            code application/javascript 
-            | has not any fingerprinting call, therefore has not been reported in the spreadsheet copied. The domain name of this missing script is az416426.vo.msecnd.net;  This domain name, appears in other third-party inclusion, and in the others access four times to LocalStorage and more than 10 in SessionStorage, which are some of the primary non-cookies tracker's techniques. The JSON of this analysis can get from here to enable different analysis.
-        li Google and Facebook have put two inclusion, what can be interesting on these mainstream service, is check if everytime they execute the same script or if we can observe different fingerprint
-        li A less known third party 
-            code d.tailtarget.com 
-            | is present and the primarly domain name, caxia.gov.br, includes two propertary scripts.
-
-    p.text How often the same service perform a different execution? It happens, I pick the most well-known example (google-analytics)
-    img(src="/images/google-analytica-diff.png")
-    p.text In the image above, generated with a spreadsheet visualization tools, the bar develops over the number of times in which a function, such navigator.userAgent() has been invoked by the script served from google-analytics. It is always a natural integer number (such as 2 or 3), but the tool was considering them as them as a number with the comma,00; The axis tick does not express the expected clarity visually.
-
-    h2 Research questions
-    p.text Every time we have new data, we should gain perspective. The most important approach looks at the differences between scripts, between tested sites and between test made on different days.
-
-    p.text Observing 
-        a(href="https://public.tableau.com/profile/claudio.of.tracking.exposed#!/vizhome/gobiernoBRCL/screenWidth") tableau data visualization
-        |, more detailed questions arise.
-    ol
-        li How much is stable the acquiring method developed? I'm using seleniumHQ with privacy-badger extension, patched to spot fingerprinting calls
-        li How much frequently the third party scripts changes?
-        li How many companies, advertisers, web-farm, servers are present on average? How much the attack surface increases?
-        li On average how many fingerprinting calls comes from third-party scripts?
-        li Third party inclusion: how frequently they change?
-
-    h3 TODO put the answers of the questions above
-
-
 
