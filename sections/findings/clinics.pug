@@ -24,7 +24,7 @@ include head
 
 
     h2 Recurring terminology 
-    img(src="/images/venn.png")
+    img(src="/images/Venn2.png")
 
     p.text In this report are mentioned often:
         ul
@@ -40,7 +40,7 @@ include head
             li D 
                 b Javascript
                 |  The code executed client side, which open the attack surface much more than a picture, an HTML or a CSS. a Javascript is necessary to implement advanced fingerprinting techniques used to re-link users behavior without using cookies (which are, in theory, the only legit way to perform users tracking)
-    p.text In the report the analysis is focus on B and D.
+    p.text In the report the analysis is focus on B and D, the visualizations used have a code number, the Viz#1 is on C, Viz#2 on B, Viz#3 on D.
 
     h2 Primary insight
 
@@ -67,63 +67,55 @@ include head
         |  The picture below highlight which are the third party included besides the known companies.
     img(class="img-responsive" src="/images/BR-clinics-3rd.png")
 
-    h3 Mexican
-    img(class="img-responsive" src="/images/MX-clinics-companies.png")
-    img(class="img-responsive" src="/images/MX-clinics-3rd.png")
+    p.text Considering "attack surface" the amount of javascript and resources served by a third party, the most contributors are not the well-known corporation observed in the Viz#1, but rather specialized services such as wix.com; wix.com is a technology to create websites, it serves the web app framework, and besides the traditional cookies uses localStorage in two different instances:
+    img.img-responsive(src="/images/carlos+wix.png")
 
+    p.text Although carloschagas.com.br looks like the websites with more inclusion, the invasiveness is relatively low. 
+
+    p.text 
+        code www.fleaming-lab.com.br
+        |  hospital displays a different pattern: do not include third-parties except the well-known Google+Facebook and the javascript doing more invasive operation are native to the first party domain:
+    img.img-responsive(src="/images/fleming.png")
+
+    p.text This is a logic in which a website offering a complex web app could gain more knowledge on usability locally, rather then delocalize the information. The pattern seems the one of an evercookie, a mechanism which can re-link user behavior even if the user deletes cookies, but no hardware fingerprint is involved. An open question if the system links profiles collected when the user is non-logged to the customer profile (a logged user)
+
+    h3 Mexican
+    p.text I excluded 
+        a(href="https://public.tableau.com/profile/claudio.of.tracking.exposed#!/vizhome/Finalreport-visualizations/ClinicsBR-comp") Viz#1 because not insightful
+        |, if not to confirm the penetration of Google among the other well-known platform. Below you can see the Viz#2 of Mexican Clinics, derived from the site list, in CSV format:  
+        a(href="https://github.com/vecna/chuptrex/blob/master/clinics-MX.csv") here on github
+        |.
+    img(class="img-responsive" src="/images/MX-clinics-3rd.png")
+    p.text Below the first example of Viz#3, it analyze the javascript call usable to fingerprint a device. It is explained better in the next chapter.
+    img(class="img-responsive" src="/images/MX-clinics-JS.png")
+    p.text Nothing special here, notable:
+        ul
+            li probably a programmer mistake, or the usage of an high level function, in 
+                code hospitalgalenia.com 
+                | and 
+                code www.abchospital.com 
+                | the userAgent is invoked 66 and 99 times respectively, and I can't find an explanation on this. debug the javascript code could provide an answer.
+    
     h3 Colombian
-    img(class="img-responsive" src="/images/CO-clinics-companies.png")
     img(class="img-responsive" src="/images/CO-clinics-3rd.png")
 
+    img(class="img-responsive" src="/images/MX-clinics-JS.png")
+
     h3 Chilean
-    img(class="img-responsive" src="/images/CL-clinics-companies.png")
     img(class="img-responsive" src="/images/CL-clinics-3rd.png")
-
-section(class="report-entry")
-
-    p.text On the green background, the technical chapter highlight how the system works and how can be used by other analysts.
-
-    h2 How the system works
-
-    p.text The CSV format used by the system, is composed by two simple fields: the URL and a description (which is optional)
-
-    pre.
-        ~/Dev/invi.sible.link/campaigns/chuptrex cat clinics-CL.csv 
-        site,description
-        http://www.clinicasantamaria.cl/,Clínica Santa María
-        https://portal.alemana.cl/wps/wcm/connect/internet/home,Clínica Alemana
-        http://www.davila.cl/,Clínica Dávila
-        http://www.clinicaservet.cl/nueva/horas.html,Clínica Servet
-        http://www.indisa.cl/indisaweb/index.php,Clínica Indisa
-        http://www.clinicabicentenario.cl/cb/reserva-de-horas/,Clínica Bicentenario
-        https://www.clinicabupasantiago.cl/,Clínica Bupa
-        http://www.clinicavespucio.cl/servicios-en-linea/reserva-de-horas/,Clínica Vespucio
-        http://redsalud.uc.cl/ucchristus/Hospital/ClinicaUC/,Clínica UC
-        https://www.clinicalascondes.cl/HOME,Clínica Las Condes
-        http://www.clinicalaslilas.cl/,Clínica Las Lilas
-        http://www.chp.cl/web-chp/reserva-hora-clinica-chp.html,Clínica Hospital del profesor
-        http://www.clinicatabancura.cl/,Clínica tabancura
-        http://www.hospitaldeltrabajador.cl/ht/Comunidad/Paginas/home.aspx,Hospital del trabajador
-        http://www.clinicalircay.cl/,Clínica Lircay
+    img(class="img-responsive" src="/images/MX-clinics-JS.png")
 
     h3 Reliability of time-comparison
-    p.text The results displayed here are not considering the javascript behavior, but only the structure of the third party resources loaded. The test in this chapter of the report uses with PhantomJS. As technology entered into an unmaintained legacy phase during my research. Ideally, modern technology such as NightmareJS or Puppeteer could replace it.
+    p.text One of the aspects I was intended to explore with invi.sible.link, is the possibility of monitor how third-party trackers change after updated. This is actually possible, the API implemented permits to download the results of the past, but how much can we compare the trend?
 
-    p.text In the visualization below we get a numeric comparison of the consistency of the checks, it display the number of inclusion count. This assessment has little value for security purposes but helps to get a grasp on the stability of the test performed with PhantomJS
+    p.text In the visualization below we get a numeric comparison of the consistency of the checks, it display the number of inclusion count. This assessment has little value for security purposes but helps to get a grasp on the stability of the test performed with PhantomJS. The number represent the amount of javascript loaded, every day, from all the chiliean clinics in analysis:
     img.img-responsive(src="/images/js-included-chillean-clinics.png")
 
-    h3 TODO develop explanation of these
-    img.img-responsive(src="/images/third-party-domain-freq.png")
-    img.img-responsive(src="/images/domain-frequency-lower-ranks.png")
-
     p.text
-        b Why third party changes?
+        b How explain the frequent changes?
     p.text The benefit of having an analysis performed every night is the comparison in the long term. It is quite disappointing to discover how frequently the third party trackers change. Three different vantage point can even perform the analysis, and the time dedicated to every session reach 1 minute each to permit every resource to load in machines, considering the loading of third-party resources 
     p.text Some reasons could the web structure change, for the infrastructural reason, CDNs, caches or marketing agreements. This last is not expected in the clinics because their business model (should not be) advertising, but in a different context the dynamic loading of ads causes very variable inclusions links.
     p.text Considering the dependency map of third-party loaded (courtesy of Evidon):
-    img(src="/images/TMZ-analysis-EVIDON.png")
-    p.text In the image above, if we take into consideration resources such as Taboola, with additional third-parties loaded after it gets rendered, we see how hardly replicable this graph can be across multiple tests.
+    img.img-responsive(src="/images/TMZ-analysis-EVIDON.png")
+    p.text Looking at the example above, if we take into consideration resources such as Taboola, with additional third-parties loaded after it gets rendered, we see how hardly replicable this graph can be across multiple tests.
 
-    p.text
-        b As rule of thumb, I attribute a third party as constant in a website when is observed more than once
-        |, also if this don't keep in account dynamic ADS loading.
