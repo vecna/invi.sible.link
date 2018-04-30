@@ -129,23 +129,43 @@ include head
     p.text Colombia list is long, the
         a(href="https://github.com/vecna/gobwebsecpy/blob/master/lista_colombia.csv") test is composed by 148 website
         |, follow 
-    a(href="https://public.tableau.com/profile/claudio.of.tracking.exposed#!/vizhome/LatAminstitutionsjsfingerprintingfunctions/JS-Gob-CO") this link to the interactive visualization, and see the whole Colombian report
+        a(href="https://public.tableau.com/profile/claudio.of.tracking.exposed#!/vizhome/LatAminstitutionsjsfingerprintingfunctions/JS-Gob-CO") this link to the interactive visualization, and see the whole Colombian report
         |.
 
 section(class="report")
-    h2 Assessment of invi.sible.link reliability and 
+    h2 use invi.sible.link
 
     p.text Requirement: a Debian GNU/Linux computer in which invi.sible.link repository has been cloned and installed, as explained in the 
         a(href="https://github.com/vecna/invi.sible.link") GitHub page
         |.
-    p.text The government website, separated by country, 
-        a(href="https://github.com/vecna/gobwebsecpy ") are stored in CSV files
-        |, in a dedicated repository, they are available.  
-    pre.
-        user@user:~/invi.sible.link$ DEBUG=*,-lib:mongo:read bin/queueCampaign.js --csv campaigns/gobwebsecpy/lista_brasil.csv --campaign gob.brasil
-          lib:queue importSiteFromCSV: 27 entries in campaigns/gobwebsecpy/lista_brasil.csv +0ms
-          lib:queue importSiteFromCSV imported 26 sites +9ms
-          lib:queue added [gob.brasil] 26 promises +752ms
+
+    p.text you should have:
+    ul
+        li the CSV file with the website to test, take as example, the 
+            a(href="https://github.com/vecna/gobwebsecpy ") repository used with Tedic, the CSVs are separated by country
+            |.
+        li Your campaign configured in 
+            code config/campaign.json
+            | look at the 
+            a(href="https://github.com/vecna/invi.sible.link/blob/master/config/campaigns.json") current one
+            |.
+        li
+            code npm run vigile
+            |  this start the application which dispatch the site to be tested. It may be a bit overkill, but at the beginning I was supposed to invest more effort in compare the difference between a vantage point and another. The unreliability described at the end of previous chapter explain why is not happen.
+        li
+            code $ DEBUG=*,-lib:mongo:read bin/queueCampaign.js --csv campaigns/gobwebsecpy/lista_brasil.csv --campaign gob.brasil
+            |  also, please note, all the scripts in bin/ were executed with  
+            code DEBUG=*
+            |  as environment variable, probably the communication of the toolchain is not tested enough to be without. The previous command add the sites with this kind of output:
+            pre.
+              lib:queue importSiteFromCSV: 27 entries in campaigns/gobwebsecpy/lista_brasil.csv +0ms
+              lib:queue importSiteFromCSV imported 26 sites +9ms
+              lib:queue added [gob.brasil] 26 promises +752ms
+        li
+            code npm run chopstick
+            |  this pull from vigile the webiste to test and perform the analysis. this can run in different, separated, boxes
+        li
+            code npm run
 
     p.text The system is configured to perform analysis when they are in the queue; my configuration was causing the system to repeat the same collection every 24 hours.
     p.text
@@ -157,32 +177,22 @@ section(class="report")
         user@user:~/invi.sible.link$ http https://invi.sible.link/api/v1/details/gob.brasil
         [
            {
-                "VP": "WS",
-                "_id": "5ab4909c98dc4f4d4f915787",
                 "acquired": "2018-03-23T03:22:54.741Z",
                 "campaign": "gob.brasil",
                 "href": "https://nfg.sefaz.rs.gov.br/Cadastro/CadastroNfg_2.aspx",
                 "id": "eb43cb853cf3fd98084981a8d89aff7e3c1efbd8",
                 "inclusion": "www.gstatic.com",
                 "navigator_userAgent": 1,
-                "promiseId": "245398e3b2ed96973ff8be7d8af566020f47dce6",
-                "scriptHash": "4e0a497e4ccac3ed718612c5b89e43c75cae4424",
-                "scriptacts": "11faf654c7f8277e94d71e65a5f31820b6f99672a",
                 "subjectId": "1faf654c7f8277e94d71e65a5f31820b6f99672a",
                 "version": 1,
                 "when": "2018-03-23T00:00:00.000Z"
            },
            {
-                "VP": "WS",
-                "_id": "5ab4909c98dc4f4d4f915788",
                 "acquired": "2018-03-23T03:22:54.741Z",
                 "campaign": "gob.brasil",
                 "href": "https://nfg.sefaz.rs.gov.br/Cadastro/CadastroNfg_2.aspx",
                 "id": "eb43cb853cf3fd98084981a8d89aff7e3c1efbd8",
                 "inclusion": "tag.navdmp.com",
-                "promiseId": "245398e3b2ed96973ff8be7d8af566020f47dce6",
-                "scriptHash": "7852d1c2b1ea490721538f1ff700e99bcd613964",
-                "scriptacts": "61faf654c7f8277e94d71e65a5f31820b6f99672a",
                 "subjectId": "1faf654c7f8277e94d71e65a5f31820b6f99672a",
                 "version": 1,
                 "when": "2018-03-23T00:00:00.000Z",
@@ -204,16 +214,12 @@ section(class="report")
             |.
         li “when”: the ISO date is in format YYYY-MM-DD, it describes the day in which the test was planned (hours is always midnight).
         li “acquired”: the precise time, in ISO format, when the test has been performed by the testing script. Please note, if this information is public, the IP address of the invi.sible.link server could be correlated by who can look in the logs of the tested websites and their third-party inclusions. invi.sible.link activities are not anonymous if the API is publicly accessible.
-        li “scriptHash”:
-        li “scriptsacts”:
-        li “subjectId”:
-        li “id”:
 
-    p.text Each of this call (with the 
+    p.text Each of the javascript function (with the 
         code . 
         | replaced by
         code _ 
-        | in the key name, get valorized with the number of times the 
+        | in the key name, and as value, the number of times the 
         i potentially-profiling
-        |  javascript function has been call.
+        |  javascript function has been invoked.
 
