@@ -3,12 +3,13 @@ include head
 .container-fluid
 
     h3 Abstract
-    p.text Considering the
+    p.text Considering the  
         a(href="http://webfoundation.org/docs/2017/07/Algorithms_Report_WF.pdf") 2017 WebFoundation report on Algorithm driven experiences
         |, and the analysis of 
         a(href="https://staltz.com/the-web-began-dying-in-2014-heres-how.html") Staltz
-        |, the majority of users interactions are algorithm driven. 
-The trends of deep linking lead to skip homepage and reach content directly from social media.
+        |, the majority of users interactions are algorithm driven. Also, the trend of 
+        i deep linking  
+        | lead to skip homepage and reach content directly from social media.
     p.text Most of the interaction follows a personalized flow, and can't be determined a priori. Considering this project goal is to shed transparency on the kind of third-party scripts our browser executes, it is part of the accountability issues we can face as researchers. 
     p.text To be concrete, considering the previous chapter of this report: when I analyze "the pages followed by an individual which is getting informed on medical therapy, how can I be sure the pages selected are the correct one?" 
 
@@ -27,6 +28,8 @@ The trends of deep linking lead to skip homepage and reach content directly from
         a(href="https://webfoundation.org/research/the-invisible-curation-of-content-facebooks-news-feed-and-our-information-diets/") WebFoundation in carrying on this analysis
         |, and as a side effect, I move forward in looking more with the user's unique point of view.
 
+section(class="report-intro")
+
     h3 The integration
     p.text Using a browser extension from the aforementioned 
         a(href="https://addons.mozilla.org/en-US/firefox/addon/facebook-tracking-exposed/") Argentinan experiment
@@ -34,7 +37,7 @@ The trends of deep linking lead to skip homepage and reach content directly from
     ol
         li When the browser extension is installed, it changes a bit the appearance of a Facebook interface (green-blue row, and optional control panel)
         li In the control panel you can specify your belonging to a certain group, here in the example represented with "myUniqueId"
-            img(src="/images/fbtrex-example.png")
+            img.img-responsive(src="/images/fbtrex-example.png")
         li When the user scroll on facebook.com/ the public post (only the post shared with everyone, with the world icon as privacy settings) are copied to a server as an individual copy.
         li In the server, parsing scripts extract external links
         li Using the unique ID (myUniqueId) as part of the input, it is possible to retrieve the derived links with an API (see below), and then feed with them the invi.sible.link pipeline:
@@ -78,6 +81,8 @@ The trends of deep linking lead to skip homepage and reach content directly from
                             "source": "LA NACION"
                         }]
 
+.container-fluid
+
     h3 Terminology
     ul
         li
@@ -92,99 +97,42 @@ The trends of deep linking lead to skip homepage and reach content directly from
     h3 Comparison between homepage and content URLs
     p.text To perform this comparison I took 245 links appeared on a user timeline in 2 hours, then I selected the homepage belonging to the 245 resulting in 32 unique sites.
     p.text The graph has one URL per line, and then a bar on the left representing the number of unique companies attributed, on the right the number of third-party resources loaded.
-    p.text The color code is tight to the company detected, The reason why on the right column there is a lot of blue, are the "unattributed" company. Likely the large amount is due to a private CDN.
+    p.text The color code is tight to the company detected, The reason why on the right column there is a lot of blue, are the "unattributed" third-party. Likely the large amount is due to CDN with dediated domain name.
 
-    img(src="/images/companies-third-parties-homepage.png")
-    img(src="/images/companies-third-parties-links.png")
+    img.img-responsive(src="/images/companies-third-parties-homepage.png")
 
-    p.text The number of third party inclusions, on average, looks bigger in the content pages, I zoomed with a single domain name (
+    p.text This visualization gives some takeaways compared to the previous reports:
+    p.text The URL list is a mix of different websites, (the homepages of the link appear on the Facebook experience) the first on top is all news media, and they have a more substantial number of companies embedded in the navigation than institutions and clinics. It is not the same for all the news media. 
+    p.text Below we can see the same visualization apply to the content effectively display on the Facebook experience: the size of companies and third-party content higher, but the visualization could look misleading, because the content URL was more than two hundred, and the first on top appears on average to the same company (
+        code perfil.com  
+        | and 
+        code pagina12.com.ar
+        |), I suggest looking at the complete visualization: 
+        a(href="https://public.tableau.com/profile/claudio.of.tracking.exposed#!/vizhome/Argentina-contentlinksJScontent-type/contentlinksJSonly") content URLs
+        |, and 
+        a(href="https://public.tableau.com/profile/claudio.of.tracking.exposed#!/vizhome/Argentina-homepageJScontent-type/homepagesJSonly") homepage URLs
+        |.
+
+    img.img-responsive(src="/images/companies-third-parties-links.png")
+
+    p.text To better understand a large phenomena, I zoomed with a single domain name (
         code pagina12.com.ar
         |)
 
-    img(src="/images/pagina12-home-js.png")
-    img(src="/images/pagina12-links-js.png")
+    img.img-responsive(src="/images/pagina12-home-js.png")
+    img.img-responsive(src="/images/pagina12-links-js.png")
 
-    p.text A m
+    p.text With the table below is simpler figure out there is not a clear determination. In black, the homepage numbers represent the amount I want to check, below an assessment link by link, how many javascript (D) and companies (C) are detected. 50% of the time is more, and the other is less. 
+    
+    img.img-responsive(src="/images/homepage-deeplink-comparison.png")
 
-    table.text
-      tbody
-        tr
-          td
-            p  
-          td
-              small Companies [total / JS]
-          td
-              small Third parties [total / JS]
-        tr
-          td
-              small homepage
-          td
-              small 53 / 11
-          td
-              small 488 / 55 
-        tr
-          td
-              small link1
-          td
-              small 61 / 10
-          td
-              small 989 / 115
-        tr
-          td
-              small link2
-          td
-              small 57 / 11
-          td
-              small 537 / 65
-        tr
-          td
-              small link3
-          td
-              small 61 / 10
-          td
-              small 537 / 58
-        tr
-          td
-              small link4
-          td
-              small 57 / 9
-          td
-              small 532 / 57
-        tr
-          td
-              small link5
-          td
-              small 52 / 9
-          td
-              small 454 / 56
-        tr
-          td
-              small link6
-          td
-              small 49 / 8
-          td
-              small 451 / 53
-        tr
-          td
-              small link7
-          td
-              small 49 / 8
-          td
-              small 428 / 51
-        tr
-          td
-              small link8
-          td
-              small 14 / 6 
-          td
-              small 137 / 37
+    p.text There are differences, which we can observe with the javascript fingerprinting approach (Viz#3) 
+    img.img-responsive(src="/images/goo.gl-links-webapp.png")
 
-    img(src="/images/goo.gl-home-webapp.png")
-    img(src="/images/goo.gl-links-webapp.png")
+    p.text This test and the one above are related to two URL redirect services. The question answered is: the page redirect does not inject any content on the page, just act as a passive intermediary. The content links are pointing to different services among them.
+    p.text The presence of persistent storage is an open question: how much should we as use have control of an hard disk space we give to third-parties and webapplication? how we could exert more control on these caches?
 
-    img(src="/images/diariopopular.com.ar-home-webapp.png")
-    img(src="/images/diariopopular.com.ar-links.webapp.png")
+    img.img-responsive(src="/images/bit.ly-links-webapp.png")
 
-    img(src="/images/bit.ly-home-webapp.png")
-    img(src="/images/bit.ly-links-webapp.png")
+    h3 Conclusions
 
