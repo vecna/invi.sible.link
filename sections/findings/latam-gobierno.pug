@@ -126,14 +126,17 @@ include head
 
     img.img-responsive(src="/images/CL-gob-fingerprint.png")
 
-    p.text Colombia list is long, the
+    p.text Colombia list is long, the 
         a(href="https://github.com/vecna/gobwebsecpy/blob/master/lista_colombia.csv") test is composed by 148 website
         |, follow 
-        a(href="https://public.tableau.com/profile/claudio.of.tracking.exposed#!/vizhome/LatAminstitutionsjsfingerprintingfunctions/JS-Gob-CO") this link to the interactive visualization, and see the whole Colombian report
+        a(href="https://public.tableau.com/profile/claudio.of.tracking.exposed#!/vizhome/LatAminstitutionsjsfingerprintingfunctions/JS-Gob-CO") this link to the interactive visualization, and see the whole Colombian visualization
         |.
 
+    h3 Conclusions
+    p.text In this chapter, we saw how javascript files can fingerprint a users device, and how invi.sible.link can spot such scripts. The presence of scripts of this kind even in institutional website confirm two aspects: advocacy should step up in raising awareness. website intended for a protected citizen-institution communication should reduce at the minimum their collaboration with third-party web services because it is intrinsical in the HTTP protocol a privacy leak.
+    p.text The script fingerprinting has also a secondary intention, to make ad-blocking a less polarizing topic. At the moment we can either permit scripts or block them, causing a problem to a large sector which depends on ads. I feel the invasiveness of said script should be kept in the account in judging how much is fair block a third party or not, and this judgment can lead, hopefully, to a safer web ecosystem.  
 section
-    h2 use invi.sible.link
+    h2 How to run a dedicated test with invi.sible.link
 
     p.text Requirement: a Debian GNU/Linux computer in which invi.sible.link repository has been cloned and installed, as explained in the 
         a(href="https://github.com/vecna/invi.sible.link") GitHub page
@@ -146,7 +149,7 @@ section
             |.
         li Your campaign configured in 
             code config/campaign.json
-            | look at the 
+            |  look at the 
             a(href="https://github.com/vecna/invi.sible.link/blob/master/config/campaigns.json") current one
             |.
         li
@@ -165,7 +168,14 @@ section
             code npm run chopstick
             |  this pull from vigile the webiste to test and perform the analysis. this can run in different, separated, boxes
         li
-            code npm run
+            code DEBUG=* bin/analyzeBadger.js --config config/analyzerDevelopment.json --campaign gob.brasil
+            |  this retrieve the results of javascript fingerprint analysis
+        li
+            code DEBUG=* bin/analyzePhantom.js --campaign gob.brasil --config config/analyzerDevelopment.json 
+            |  this retrieve third party analysis and company attribution
+        li
+            code DEBUG=* bin/analyzeGroup.js --campaign gob.brasil
+            |  this final command generate some high level computed result on the campaign.
 
     p.text The system is configured to perform analysis when they are in the queue; my configuration was causing the system to repeat the same collection every 24 hours.
     p.text
@@ -224,5 +234,5 @@ section
         |  javascript function has been invoked.
 
 .container-fluid
-    h3 Conclusions
+    
     include footer
