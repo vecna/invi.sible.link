@@ -97,7 +97,8 @@ function saveAll(retrieved) {
                         .tap(function(result) {
                             if(_.isUndefined(result))
                                 return mongo.writeOne(nconf.get('schema').evidences, e)
-                        });
+                        })
+                        .delay(50);
                 }, {concurrency: 5})
                 .then(_.compact)
                 .tap(function(saved) {

@@ -74,5 +74,9 @@
     }, {
         "name": "gob.paraguay",
         "csv": "gobwebsecpy/lista_paraguay.csv"
-    } ]
+    }, {
+        "name": "links"
+    }, {
+        "name": "home"
+    }]
 }}
