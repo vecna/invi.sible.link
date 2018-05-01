@@ -7,34 +7,10 @@ include head
         a(href="https://github.com/vecna/gobwebsecpy") list of website analyzed
         |. The invi.sible.link system examines them every day, but the analysis report here are based on one day of observation.
 
-    h3 Tedic
-    p.text 
-        a(href="https://www.tedic.org") Tedic
-        |  is an NGO working on civic technology and digital rights.
-    p.text They are working on the Observatorio Latinoamericano de Páginas Estatales (OLPE), an advocacy project. OLPE will be released soon but is not yet ready for the public announcement. Tedic is running their instance of invi.sible.link software. OLPE has four organizations belonging to different Latin American nations, CodingRights is among them.
+    h3 Observatório Latino Americano de Paginas Estatales - OLPE
+    p.text Fundacion Karisma (Colombia), Tedic (Paraguay), Coding Rights (Brasil) and Datos Protegido (Chile) are working together to develop the Observatório Latino Americano de Paginas Estatales. It's an advogacy project, to be launched soon, in order to measure security of governmental websites. Tedic is developing the backend and, with the indication from Coding Rights, it got to know invi.sible.link as an important tool to be integrated in the tests of the platform. It is currently running it's own instance for the partners. Which will be integrated with other security tests conceived by the group.
 
 .container-fluid
-
-    h3 Analysis and Findings
-    p.text we begin with
-        b Viz#1
-        |  and 
-        b Viz#2
-        |, as used in the previous chapter
-
-    img.img-responsive(src="/images/PY-gob-companies.png")
-    img.img-responsive(src="/images/PY-gob-3rd.png")
-    img.img-responsive(src="/images/CL-gob-companies.png")
-    img.img-responsive(src="/images/CL-gob-3rd.png")
-
-    p.text Colombia is not reported because of the number of website analyzed, just lead to a visualization which don't scale. This is a tip to keep in account when running comparative analysis among cluster:
-    ul
-        li The number of website has to be the same
-        li Comparisong should happen between website of the same kind. Media, healthcare, or government have different monetization strategy, internet traffic challenges and accessibility duties.
-
-    p.text It is possible consult with a dedicated UX the 
-        a(href="https://public.tableau.com/profile/claudio.of.tracking.exposed#!/vizhome/Finalreport-visualizations/Gob-CO-Co") Colombian visualizations 
-        |.
 
     h2 User's fingerprinting via Javascript execution
 
@@ -77,6 +53,9 @@ include head
         code navigator.cpuClass 
         | has been checked. If is reported [cpu ] means 0 times the function has been performed, if there is a red number, it represents the amount of time the domain name on the left has executed the function. Under the column 'href' you can see the tested website. The number of inclusion is far less than what we observe in the Viz#1 and Viz#2 because the scripts from the same domain share the same context in the browser, therefore should be aggregated. This analysis does not keep in account all the javascript inclusion which don't execute any of these functions.
        
+    h4 Paraguay
+    img.img-responsive(src="/images/PY-gob-companies.png")
+    img.img-responsive(src="/images/PY-gob-3rd.png")
     img.img-responsive(src="/images/PY-gob-fingerprint.png")
     p.text Few technical notes and insights inspired by the Paraguaian analysis:
     ul
@@ -97,6 +76,13 @@ include head
             code XMLHttpRequest 
             | yet.
 
+    h4 Brasil
+    p.text It is possible consult with a dedicated UX the 
+        a(href="https://public.tableau.com/profile/claudio.of.tracking.exposed#!/vizhome/Finalreport-visualizations/Gob-CO-Co") Brasil Viz#1 and Viz#2
+        |, it wasn't possible report them here because of the amount of tested sites. Certain visualization doesn't scale, that's why researcher or advocate 
+        a(href="https://github.com/vecna/gobwebsecpy/blob/master/API.md") should defer to the data available for all the four countries via API
+        |, documented in the previous chapter.
+
     img.img-responsive(src="/images/BR-gob-fingerprint.png")
 
     ul
@@ -107,9 +93,9 @@ include head
             a(href="https://en.wikipedia.org/wiki/Personalized_marketing#DMP") Data Management Platform
             |  private firm (
             a(href="http://www.tail.digital/") d.tailtarget.com
-            |, accessing to the browser
+            |, accessing to the browser 
             code sessionStorage
-            |.
+            |).
         li The domain triggering more fingerprinting request is cloud.tinymce.com, which redirect to a page of a full-featured rich text editing, is an HTML WYSIWYG and therefore is used in many websites as a comfortable way to compose web pages. The site analyzed, do not offer any editing capability, the rich text editor is not offering any particular feature in exchange for the complete fingerprinting. Looking more in details, in the 
             a(href="https://www.ephox.com/legal/privacy/") privacy policy
             |, is written:
@@ -124,13 +110,47 @@ include head
         |; the image above do not include all the sites present on the 
         a(href="https://github.com/vecna/gobwebsecpy/blob/master/lista_brasil.csv") Brasil CSV list
 
+    h4 Chile
+    img.img-responsive(src="/images/CL-gob-companies.png")
+    img.img-responsive(src="/images/CL-gob-3rd.png")
     img.img-responsive(src="/images/CL-gob-fingerprint.png")
+    p.text On the Chile institutions list, maybe for the reduced amount of site analyzed, I didn't spot any particular finding.
+
+    h4 Colombia
+    p.text Colombia is not reported because of the number of website analyzed, just lead to a visualization which don't scale. This is a tip to keep in account when running comparative analysis among cluster:
+    ul
+        li The number of website has to be the same
+        li Comparisong should happen between website of the same kind. Media, healthcare, or government have different monetization strategy, internet traffic challenges and accessibility duties.
+
+    p.text It is possible consult with a dedicated UX the 
+        a(href="https://public.tableau.com/profile/claudio.of.tracking.exposed#!/vizhome/Finalreport-visualizations/Gob-CO-Co") Colombian visualizations 
+        |.
 
     p.text Colombia list is long, the 
         a(href="https://github.com/vecna/gobwebsecpy/blob/master/lista_colombia.csv") test is composed by 148 website
         |, follow 
         a(href="https://public.tableau.com/profile/claudio.of.tracking.exposed#!/vizhome/LatAminstitutionsjsfingerprintingfunctions/JS-Gob-CO") this link to the interactive visualization, and see the whole Colombian visualization
+        |, or look the the 
+        b Gob-CO-* tabs for the Colombian 
+        a(href="https://public.tableau.com/profile/claudio.of.tracking.exposed#!/vizhome/Finalreport-visualizations/ClinicsBR-comp") Viz#1 and Viz#2
         |.
+
+    p.text
+        b Colombian findings 
+        | show some of the same pattern explored in this report, such as:
+    ul
+        li Government website doing session record (
+            code http://www.colciencias.gov.co 
+            |), with 
+            code Mouseflow
+            |, commented in the previous chapter
+        li In the javascript fingerprint analysis, an unexpected spike in 
+            code http://www.anh.gov.co
+            |, in which a Microsoft script access to sessionStorage 293 times
+        li The presence of 
+            code n-cdn.areyouhuman.com
+            |.
+        li A more frequent, compared to the others countries presence of actual advertiser on institutional websites. Again, the amount of site tested should be considered as a bias before judge a tendency.
 
     h3 Conclusions
     p.text In this chapter, we saw how javascript files can fingerprint a users device, and how invi.sible.link can spot such scripts. The presence of scripts of this kind even in institutional website confirm two aspects: advocacy should step up in raising awareness. website intended for a protected citizen-institution communication should reduce at the minimum their collaboration with third-party web services because it is intrinsical in the HTTP protocol a privacy leak.

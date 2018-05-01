@@ -64,11 +64,14 @@ include head
     h3 Brasil
     p.text
         b Viz#1
-        |  This graph highlights the amount of third-party connections attributed to known platforms. They can be judged by the advocacy team, for our analysis the intention was to remove them before going deeper.
+        |  This graph highlights the amount of third-party connections attributed to known platforms. They can be judged by the advocacy team, for our analysis the intention was to highlight these companies and remove them from the deeper analysis.
     img(class="img-responsive" src="/images/BR-clinics-companies.png")
+    p.text Using tableau has been simple select all the third-party inclusion with an 
+        i attributed company 
+        | and hide them, to generate the next visualization
     p.text 
         b Viz#2
-        |  The picture below highlight which are the third party included besides the known companies.
+        |  The picture below highlight which are the third party domain included, the bar size is proprortional to the amount of remote inclusions, the color, as always, is the same described above.
     img(class="img-responsive" src="/images/BR-clinics-3rd.png")
 
     p.text Considering "attack surface" the amount of javascript and resources served by a third party, the most contributors are not the well-known corporation observed in the Viz#1, but rather specialized services such as wix.com; wix.com is a technology to create websites, it serves the web app framework, and besides the traditional cookies uses localStorage in two different instances:
@@ -83,11 +86,13 @@ include head
     p.text This is a logic in which a website offering a complex web app could gain more knowledge on usability locally, rather then delocalize the information. The pattern seems the one of an evercookie, a mechanism which can re-link user behavior even if the user deletes cookies, but no hardware fingerprint is involved. An open question if the system links profiles collected when the user is non-logged to the customer profile (a logged user)
 
     h3 Mexican
-    p.text I excluded 
-        a(href="https://public.tableau.com/profile/claudio.of.tracking.exposed#!/vizhome/Finalreport-visualizations/ClinicsBR-comp") Viz#1 because not insightful
-        |, if not to confirm the penetration of Google among the other well-known platform. Below you can see the Viz#2 of Mexican Clinics, derived from the site list, in CSV format:  
+    p.text 
+        a(href="https://public.tableau.com/profile/claudio.of.tracking.exposed#!/vizhome/Finalreport-visualizations/ClinicsBR-comp") check out the interactive visualizations
+        |.
+    p.text Below you can see the Viz#1 and Viz#2 of Mexican Clinics, derived from the site list, in CSV format:  
         a(href="https://github.com/vecna/chuptrex/blob/master/clinics-MX.csv") here on github
         |.
+    img(class="img-responsive" src="/images/MX-clinics-companies.png")
     img(class="img-responsive" src="/images/MX-clinics-3rd.png")
     p.text Below the first example of Viz#3, it analyze the javascript call usable to fingerprint a device. It is explained better in the next chapter.
     img(class="img-responsive" src="/images/MX-clinics-JS.png")
@@ -100,6 +105,7 @@ include head
                 | the userAgent is invoked 66 and 99 times respectively, and I can't find an explanation on this. debug the javascript code could provide an answer.
     
     h3 Colombian
+    img(class="img-responsive" src="/images/CO-clinics-companies.png")
     img(class="img-responsive" src="/images/CO-clinics-3rd.png")
     img(class="img-responsive" src="/images/CO-clinics-JS.png")
 
@@ -157,7 +163,7 @@ section
         a(href="https://freedom-to-tinker.com/2017/11/15/no-boundaries-exfiltration-of-personal-data-by-session-replay-scripts/") Princeton University publication on session replay 
         |  raise the awareness on the issue, and 
         a(href="https://mouseflow.com/blog/2017/11/a-response-to-the-princeton-study-session-replay-tools/") Mouseflow issued an answer
-        |, in which they explain how compliant are to GDPR, the collection of anonymized dataset only, and even a smart way to obfuscate data inserted in a form. They also suggest, correctly, to their customer to be fully transparent. The clinics don't make any mention of it. It is interesting because, in these competing interest, the privacy of the user looks considered, but this session monitoring begins at the moment you load the webpage.
+        |, in which they explain how compliant are to GDPR (but would they give the same data protection to Chilean users?), the collection of anonymized dataset only, and even a smart way to obfuscate data inserted in a form. They also suggest, correctly, to their customer to be fully transparent. The clinics don't make any mention of it. It is interesting because, in these competing interest, the privacy of the user looks considered, but this session monitoring begins at the moment you load the webpage.
 
     img(class="img-responsive" src="/images/CL-clinics-companies.png")
     img(class="img-responsive" src="/images/CL-clinics-3rd.png")
