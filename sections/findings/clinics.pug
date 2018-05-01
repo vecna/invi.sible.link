@@ -5,7 +5,8 @@ include head
     p.text To test the concept of the context-targeted campaign, we analyzed web trackers in online clinics. The pages of such websites contains explanation of medical treatment and exams available in a hospital. A website like these can leak through the navigation sequence, which is the medial issue of a user (eventually, correlated among multiple clinics, time spent in the pages)
     p.text Third-party trackers can even don't know anything on the website in which they are running, but metadata such as the interest of a user for a cluster or web pages are metadata attributed by AI analyzing the analytics, and in the case of a medical condition, that's a protected selector.
     p.text
-        b Our findings show how, advanced interactive experience for the user, leak potentially much more private information through third parties. 
+        b Our findings show how, advanced interactive experience for the user, leak potentially sensible (medical!) information through third parties.
+        |  It is a known phenomenon, but the punctual per-site analysis provides actional input for data-driven advocacy.
 
     h2 Clinics, a 
         a(href="https://chupadados.codingrights.org/en/") Chupadados 
@@ -22,6 +23,10 @@ include head
         i  hope
         |  the techniques of passive website fingerprint is an attack not massively deployed yet, we know for sure users bahvior profiling is.
 
+    h4.smaller
+        i "It turn out it is extremely lucrative known you have diagnosed with a deasese. or you haven't even get diagnosed, but you have the a propensity to have the deases.  only your doctor and hospital would have known, but there are probably hundreds of business model looking for this information."
+    p.text -- BBC 
+        a(href="https://www.bbc.co.uk/programmes/w3cswrjv") Giving Away Data
 
     h2 Recurring terminology 
     img(src="/images/Venn2.png")
@@ -57,7 +62,6 @@ include head
                     i exclude them in further analysis.
 
     h3 Brasil
-
     p.text
         b Viz#1
         |  This graph highlights the amount of third-party connections attributed to known platforms. They can be judged by the advocacy team, for our analysis the intention was to remove them before going deeper.
@@ -71,7 +75,6 @@ include head
     img.img-responsive(src="/images/carlos+wix.png")
 
     p.text Although carloschagas.com.br looks like the websites with more inclusion, the invasiveness is relatively low. 
-
     p.text 
         code www.fleaming-lab.com.br
         |  hospital displays a different pattern: do not include third-parties except the well-known Google+Facebook and the javascript doing more invasive operation are native to the first party domain:
@@ -99,9 +102,67 @@ include head
     h3 Colombian
     img(class="img-responsive" src="/images/CO-clinics-3rd.png")
     img(class="img-responsive" src="/images/CO-clinics-JS.png")
+
+section
+    p.text APIs are available to retrieve report data. They have been developed to display visualization on advocacy websites. In the API below, in the URL, is present the variable
+        code
+            clinics-CO
+        | which is the code name of the chupadados healthcare related analysis in Colombia. The analyst can create it is campaign updating 
+        a(href="https://github.com/vecna/invi.sible.link/blob/master/config/campaigns.json") this file
+        |.
+        ul
+            li 
+                a(href="https://invi.sible.link/api/v1/surface/clinics-CO")
+                    code
+                        b surface 
+                | It contains one object per tested website, with some generic aggregated information on the third-party domain present. This is the API used to compose visualization such as the one used for a 
+                a(href="https://italian.tracking.exposed/") focus-website on Italy
+                |. 
+                i Do you know nodejs? look at the  
+                    a(href="https://github.com/vecna/invi.sible.link/blob/master/routes/getSurface.js") API implementation
+                    |.
+            li
+                a(href="https://invi.sible.link/api/v1/details/clinics-CO")
+                    code
+                        b details
+                | is explained in the next chapter with precision, it returns one object per domain offering javascript, it contains the webapp functions fingerprint. 
+                i Do you know nodejs? look at the  
+                    a(href="https://github.com/vecna/invi.sible.link/blob/master/routes/getDetails.js") API implementation
+                    |.
+            li
+                a(href="https://invi.sible.link/api/v1/extended/clinics-CO")
+                    code
+                        b extended 
+                | returns one object per third-party, and contains additional information based on the service. Has been implemented to support a research on data brokering (Not yet published), and lack of a robust way to maintain the service-company attribution. 
+                i Do you know nodejs? look at the  
+                    a(href="https://github.com/vecna/invi.sible.link/blob/master/routes/getEvidencesExtended.js") API implementation
+                    |.
+            li
+                a(href="https://invi.sible.link/api/v1/evidences/clinics-CO/0")
+                    code
+                        b evidences
+                |  are the output I used to render Viz#1 and Viz#2, it contains one object per web inclusion (group A on the Venn diagram). 
+                i Do you know nodejs? look at the  
+                    a(href="https://github.com/vecna/invi.sible.link/blob/master/routes/getEvidencesByCampaign.js") API implementation
+                    |.
+
+.container-fluid
+
     h3 Chilean
+    p.text How much can we judge if a website is protecting our data enough or not? In the Chilean list of clinics?
+
+    p.text I add the Viz#1 because it displays one of the well-known company offering the service of Session replay 
+        code Mouseflow
+        |. 
+        a(href="https://freedom-to-tinker.com/2017/11/15/no-boundaries-exfiltration-of-personal-data-by-session-replay-scripts/") Princeton University publication on session replay 
+        |  raise the awareness on the issue, and 
+        a(href="https://mouseflow.com/blog/2017/11/a-response-to-the-princeton-study-session-replay-tools/") Mouseflow issued an answer
+        |, in which they explain how compliant are to GDPR, the collection of anonymized dataset only, and even a smart way to obfuscate data inserted in a form. They also suggest, correctly, to their customer to be fully transparent. The clinics don't make any mention of it. It is interesting because, in these competing interest, the privacy of the user looks considered, but this session monitoring begins at the moment you load the webpage.
+
+    img(class="img-responsive" src="/images/CL-clinics-companies.png")
     img(class="img-responsive" src="/images/CL-clinics-3rd.png")
     img(class="img-responsive" src="/images/CL-clinics-JS.png")
+    p.text On the invasiveness of the javascript, nothing atypical looks happen, but it is insightful the only session replay caught, access to localStorage only once. Implicitly, the tool invi.sible.link cannot yet spot such behavior in a script, without doing reverse engineering of these activities and then implement a high-level selector to perform such attribution.
 
     h3 Reliability of time-comparison
     p.text One of the aspects I was intended to explore with invi.sible.link, is the possibility of monitor how third-party trackers change after updated. This is actually possible, the API implemented permits to download the results of the past, but how much can we compare the trend?
@@ -113,7 +174,14 @@ include head
         b How explain the frequent changes?
     p.text The benefit of having an analysis performed every night is the comparison in the long term. It is quite disappointing to discover how frequently the third party trackers change. Three different vantage point can even perform the analysis, and the time dedicated to every session reach 1 minute each to permit every resource to load in machines, considering the loading of third-party resources 
     p.text Some reasons could the web structure change, for the infrastructural reason, CDNs, caches or marketing agreements. This last is not expected in the clinics because their business model (should not be) advertising, but in a different context the dynamic loading of ads causes very variable inclusions links.
-    p.text Considering the dependency map of third-party loaded (courtesy of Evidon):
+    p.text Considering the dependency map of third-party loaded (courtesy of 
+        a(href="https://trackermap.evidon.com/?token=9PIUW1") Evidon Trackermap
+        |):
     img.img-responsive(src="/images/TMZ-analysis-EVIDON.png")
     p.text Looking at the example above, if we take into consideration resources such as Taboola, with additional third-parties loaded after it gets rendered, we see how hardly replicable this graph can be across multiple tests.
 
+    h3 Conclusions
+    p.text In this chapter, we saw how an advocacy group and organize a test on a selected group of websites, and via API, retrieve the result of the analysis to do a data-driven campaign. There is material to do advocacy, and the day-by-day analysis can measure improvement in the web-ecosystem. 
+    p.text The test used as the example, Latin-American healthcare companies, display an expected lack of care on the subject, at least we didn't observe a significant presence of data broker. Our analysis stops at the browser level, after, if someone sells/lose/suffer a breach of healthcare data, it is something we can spot from here.
+    
+    include footer

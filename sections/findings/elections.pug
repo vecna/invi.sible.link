@@ -28,7 +28,7 @@ include head
         a(href="https://webfoundation.org/research/the-invisible-curation-of-content-facebooks-news-feed-and-our-information-diets/") WebFoundation in carrying on this analysis
         |, and as a side effect, I move forward in looking more with the user's unique point of view.
 
-section(class="report-intro")
+section
 
     h3 The integration
     p.text Using a browser extension from the aforementioned 
@@ -129,10 +129,14 @@ section(class="report-intro")
     p.text There are differences, which we can observe with the javascript fingerprinting approach (Viz#3) 
     img.img-responsive(src="/images/goo.gl-links-webapp.png")
 
-    p.text This test and the one above are related to two URL redirect services. The question answered is: the page redirect does not inject any content on the page, just act as a passive intermediary. The content links are pointing to different services among them.
+    p.text This test and the one above are related to two URL url shortener (redirect services). The question answered is: the page redirect does not inject any content on the page, just act as a passive intermediary, this approach can follow-up, confirm or find new insights starting from the research lead by University Santa Barbara and Politecnico of Milan 
+        a(href="http://www.cs.ucsb.edu/~chris/research/doc/www14_shortads.pdf") Stranger Danger: Exploring the Ecosystem of Ad-based URL Shortening Services.
+    p.text The content links are pointing to different services among them.
     p.text The presence of persistent storage is an open question: how much should we as use have control of an hard disk space we give to third-parties and webapplication? how we could exert more control on these caches?
 
     img.img-responsive(src="/images/bit.ly-links-webapp.png")
 
     h3 Conclusions
+    p.text 
 
+    include footer
