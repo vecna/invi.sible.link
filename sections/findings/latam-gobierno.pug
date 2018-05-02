@@ -185,8 +185,10 @@ section
               lib:queue importSiteFromCSV imported 26 sites +9ms
               lib:queue added [gob.brasil] 26 promises +752ms
         li
-            code npm run chopstick
-            |  this pull from vigile the webiste to test and perform the analysis. this can run in different, separated, boxes
+            code npm run phantom
+            |  or 
+            code npm run badger
+            |  this pull from vigile the webiste to test and perform the navigation+collection. this can run in different, separated, boxes
         li
             code DEBUG=* bin/analyzeBadger.js --config config/analyzerDevelopment.json --campaign gob.brasil
             |  this retrieve the results of javascript fingerprint analysis

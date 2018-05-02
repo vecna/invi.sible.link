@@ -1,4 +1,16 @@
 # invi.sible.link
+
+how to install:
+
+  * ubuntu 16.04 or superior
+  * `git clone the repository`
+  * `apt-get install mongodb nodejs npm`
+  * `npm install` (some other dependencies will raise here, for phantomjs)
+  * `badger-scripts/1-user.sh`
+  * `sudo badger-scripts/2-root.sh`
+  * `badger-scripts/3-user.sh`
+
+
 ### Toolchain command reference
 
 ## Command scripts
@@ -72,9 +84,6 @@ on the vantage point:
     npm run exposer
 
 
-# Still need revision below
-# -------------------------
-
 ## invi.sible.link architecture design
 
 **storyteller**: web publisher of lists and results
@@ -96,37 +105,28 @@ experiments, this might imply different boxes, management, etc.
  * implement basic API
  * fetch the data from machete
 
-### scheduled collectors 
+## scheduled collectors 
 
-Some high level data and visualisation takes sense only if computed separately.
-I was thinking to generalize this sequence of tasks through the toll named
-`machete` but it is proven an unproper planning, because the reduction process
-changes too much to be generalized.
 
-Therefore, the two scheduled execution currently implemented are:
-
-### statusChecker
+**statusChecker**
+This tool is scheduled to collect status every 10 minutes.
 
 It look at the API `/api/v1/system/info` every hour, and keep track of the
-load average, disk usage, memorized object in every machine contacted.
+load average, disk usage, memorized object in every machine contacted. the
+results goes in localhost:7000/stats
+(example on https://invi.sible.link/stats )
 
-### campaingChecker
+**bin/analyzeBadger.js**
+**bin/analyzeGroup.js**
+**bin/analyzePhantom.js**
+
+This runs one per day per campaign, sequence: Group at the end.
+
+(actually, at the moment I'm using the script `analyzer-unrolled.sh` call at the end 
+of the analysis. It is not the optimal way.)
 
 It look through all the Vantage Point to get information over the subject
 of a specific investigation, and update a daily report on the subject.
-
-
-### vigile
-
-**Runs in one admin controller machine**, access restricted, 7200
-
-execute activities in user time, no scheduled tasks
-
-  * provide direction to chopsticks, it is where test list are stored
-  * receive all the results of every promises resolved (choptstick, machete, socialpressure)
-  * receive all the anomalies reported by all the components
-  * provide stats for the admin on what is happening
-  * is managed by the adminstrators and only by them
 
 ### chopsticks
 
@@ -135,43 +135,15 @@ execute activities in user time, no scheduled tasks
 perform web connection, is a pipeline, can be run in parallel, scheduled,
 it constantly execute itself and look for operation to do.
 
-composition pipeline:
-  retriveLists,
-    phantom | thug,
-    (phantomNavigator?)
-    phantomCleaner | thugCleaner,
-    reportAnomalies,
-    fullifyPromises,
-    mongo
-
+`npm run phantom` or `npm run badger`
 
 ### exposer
 
-**Runs where chopstick run**, 7300
+**Runs where chopstick run**, port 7300
 
 expose via API in a raw version what the chopsticks exectutions, can't
 be performed by chopstick itself because this is a webserver and chopstick
 has different execution pattern.
-
-### socialpressure
-
-**Runs whenever**
-
-Tooks input from scheduled resuls, generate output for the social media and
-contains the logic to automatize activities
-
-# How to setup a Vantage Point
-
-```
-git clone git@github.com:vecna/invi.sible.link.git
-mkdir bin 
-cd bin
-ln -s ../invi.sible.link/bin/ISL-scheduled 
-
-crontab -e
-
-*/2 * * * * bin/ISL-scheduled --task chopsticks
-```
 
 ## tool (queries)
 
