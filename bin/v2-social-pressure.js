@@ -158,9 +158,5 @@ app.get('/opendata/:weekn/:datatype', function(req, res) {
     res.download(zipFile);
 });
 
-/* This rendere the default index */
-
-app.get('/', function(req, res) {
-    req.params.page = 'landing';
-    dispatchPromise('getCampaignIndex', routes, req, res);
-});
+/* This render the default index */
+app.get('/', express.static(distPath + '/../campaigns/' + campaign + '/index'));
