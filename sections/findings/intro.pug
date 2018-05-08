@@ -2,47 +2,51 @@
 
     h2 Introduction
 
-    p.text When our browser navigates in a website, depending on the HTML structure, we can end up to connects to many web-services. This interconnection among web-services is rock solid since the 90-ties. In this project, two implication are addressed: The impact on user privacy, because the third party service is aware of what the user is navigating on, and security, because every third party increases the attack surface which a user browser is exposed.
+    p.text When our browser navigates on a website, depending on its HTML structure, we can end up connecting to a variety of different web-services. This interconnection among web-services is rock solid since the 90s. In this project, two issues have been investigated: (i) the impact of these interconnected elements on user privacy - because third party services know what the user is doing online, but the user is often not aware of what 
+        i they 
+        | are doing, and (ii) and security - because the more third-party webservies a user connect to, the higher the risk of a user being attacked and exposed.
 
-    p.text This phenomenon is under investigation by privacy researchers, security advocate, NGO for digital safety. It can't be really seen as a hot topic, because it is old enough to be named "the original sin of the internet" by one of its creators. Remain a political issue for the alleged manipulative consequences in electoral targeted advertising, for the lack of accountability, and for browser security when you implicitly
+    p.text Privacy researchers, security advocates, and NGOs for digital safety have been investigating this phenpmenon since few years. It can't be really seen as a recent hot topic, as it is old enough to be named "
+        a(href="https://www.theatlantic.com/technology/archive/2014/08/advertising-is-the-internets-original-sin/376041/") the original sin of the internet
+        |" by Ethan Zuckerman, one of its creators. And it remains a fundamental political issue for the alleged manipulative consequences of electoral targeted advertising, for the lack of accountability, and for browser security.
 
     h3 Interconnected elements
 
-    p.text I consider five high-level implication interconnected to interpret the finding and the tool usages. I'm also grateful to the experience made with my hosting organization, CodingRights because the interdisciplinary applied here comes from the effort we made in explaining such technical results to a non-technical audience. 
+    p.text I consider four high-level interconnected aspects to interpret the findings and the tool usages in this project. I'm also grateful for the support of my hosting organization, CodingRights because the interdisciplinary approach adopted here comes from the effort we made in explaining such technical results to a non-technical audience. 
 
     p.text 
         b Technology
-        |: specialized tools such as Google Analytics, Google fonts, Adobe fonts, Cloudflare, are intended to offer advanced functionality to people who need this product without having the ability to deploy their own. Even third-party services such as such as wordpress.com implement additional third party, and this chain of inclusion it is something we observe often. Technical specialization it is something which explains many of the third party inclusions.
+        |: specialized tools such as Google Analytics, Google fonts, Adobe fonts, Cloudflare, are intended to offer advanced functionalities to people who need these products without having the resource to deploy such services internally. Even services such as wordpress.com implement additional third party elements, and this chain of inclusion has nowadays become a spread common practice. Technical specialization it is something which explains many of the third party inclusions.
 
     p.text 
         b Security
-        |: third-party authentication (such as "login with facebook"), delegating statistics aggregation and anonymization to get insightful analytics are Specialized services. They were proven to be a key factor for the progress of web services. Third-Party inclusion is therefore both a way to offer stronger data protection, but implicitly increase the attack surface if the security of the third party is not robust enough within the thread model of the website under analysis. 
+        |: third-party authentication options (such as "login with facebook"), which delegate statistics aggregation and anonymization to get insightful analytics are specialized services. They have been proven to be a key factor for the progress of web services. On the one hand third-party inclusion is a way to offer stronger data protection, on the other hand but implicitly increase the attack surface if the security of the third party is not robust enough within the thread model of the website under analysis, it'll represent the weak ring of the chain.
 
     p.text
         b Cultural
-        |: the technical complexity and the abstractness of behavioral profiling are hard concepts to be explained. It is even harder explain impact without real-world cases such as the Cambridge-Analytica, and this confirm how is hard do advocacy of issues which are not yet exploded.
+        |: the technical complexity and the abstraction of behavioral profiling are hard concepts to explain. It is even harder to explain their impact without real-world cases such as Cambridge-Analytica. This confirms how hard is to do advocacy raising awareness on issues which are not yet exploded into a public scandal.
 
     p.text
         b Political
-        |: identify protection matter more for the many belonging to a community at risk. Selectors such as the appurtenance of a specific religious confession can be an issue in a region and a standard in another one. The risk assessment in analysis like this, need to keep in account the website and the audience. The complexity aforementioned is a key factor in the dissemination of the results. Otherwise, previous experiences display a plain, cold, technical communication without moving any change.
+        |: identifying protection methods matters more to people belonging to a minority or a community at risk. Information (technically known as selectors) such as the membership or affinity to a specific religion can be a serious issue in cerain regions but not represent a problem somewhere else. The risk assessment in analysis like this, need to keep in account the website and the audience. The complexity aforementioned is a key factor in the dissemination of the results. Otherwise, previous advocacy experiences show how a technical analysis without a political declination don't trigger any change.
 
 
     h3 Existing work and competitors successes 
-    p.text Considering the public debate among data privacy, the fairness of monetization upon massive users profiling, and HTTPS security, other researchers made valuable research and tools in my same time frame.
+    p.text Considering the public debate among data privacy, the fairness of monetization upon massive user profiling, and HTTPS security, other researchers made significant studies and developed valuable tools in my same time frame.
         br
-        | During the time of my fellowship, other projects covered some aspects I was assumed to implement, this made me reframe a bit the scope of the tool and the research.
+        | During the time of my fellowship, other projects covered some aspects I assumed to implement, this made me slightly reframe the scope of my tool and my research.
 
-    p.text If the reader want to explore other complementary projects, could look at:
+    p.text If the reader wishes to explore other related and complementary projects, you could look at:
     ul
         li
             a(href="https://trackermap.evidon.com/home/live/trackermap")
                 b TrackerMap
-            |  you should manually click on "Sample trackermap [website]" because can't be directly linked. It is a develpment of the company formerly known as Ghostery, now part of Cliqz.
+            |  you should manually click on "Sample trackermap [website]" because it can't be directly linked. It is a development of the company formerly known as Ghostery, now part of Cliqz.
             
         li
             a(href="https://www.haystack.mobi/panopticon/index.html")
                 b ICSI Haystack Panopticon
-            |  An interactive map of tracking activity on mobile apps.
+            |  an interactive map of tracking activities on mobile apps.
         li
             a(href="https://webtap.princeton.edu/")
                 b Web Transparency and Accountability project  
@@ -57,40 +61,40 @@
                 b list of attributions between trackers and company
             |.
    
-    h3 Research develpment from the 2016-2017 scenario
-    p.text The mechanized analysis of the top 1 million websites contributed in to give a grasp of the phenomena for the scientific community, seldom transferred in the more mainstream news media. The report tends to get diluted, if not even banalized, as "Google is present in 80+% of the website we navigate on", which neutralize the complexity of the phenomena, and display the relevance of the communication to bring any kind of technical awareness even in the mainstream web producer-consumer loop.
+    h3 Research development from the 2016-2017 scenario
+    p.text The automatized analysis of the top 1 million websites contributed giving a grasp of the phenomena for the scientific community, unfortunately, rarely reported in mainstream news media. The report tends to get diluted, if not even banalized, as "Google is present in 80+% of the websites we navigate on", which somehow neutralizes the complexity of the phenomena.
 
-    
     p.text
         b invi.sible.link is a technological framework which enables analysis of web-trackers belonging to a selected cluster of websites.
-        | The communication effort is delegated to groups promoting the open web agenda, reducing the influence of users profiling, algorithmic driven personalized experiences. This project goal is to provide a data stream, through API or CSV data, to group able to translate the technical complexity in effective advocacy.
+        | The communication effort is delegated to groups promoting the open web agenda, reducing the influence of users profiling, and algorithmic driven personalized experiences. This project goal is to provide a data stream, through API or CSV data, to groups able to translate the technical complexity in effective advocacy.
+
 
     p.text
-        b This project has not kept in account the ad-blocking phenomena
-        |. It is, indeed, the most efficient self-defense tool available to an audience, but only an expert and the aware audience can make use of it. This project is to increase that awareness.
-        i Is my personal guess, that the victim of mass profiling is implicitly the less techy savvy clusters of the population
-        |. Has been observed the new 
-        a(href="http://randomwalker.info/publications/ad-blocking-framework-techniques.pdf") development of techniques
-        |, and some 
+        b This project has not kept into account the ad-blocking phenomena
+        |. It is, indeed, the most efficient self-defense tool available to an audience, but only an expert and the educated audience can make use of it. This project aims at increasing such awareness.
+        i My educated guess is that victims of mass profiling are often the less tech savvy.
+        |. It has been observed in the 
+        a(href="http://randomwalker.info/publications/ad-blocking-framework-techniques.pdf") development of new techniques
+        |, and in some 
         a(href="https://theintercept.com/2017/06/05/be-careful-celebrating-googles-new-ad-blocker-heres-whats-really-going-on/") new factors which try to change the narrative around it
         |. Despite the fact that the topic is fascinating for me, it was out of scope in this.
 
     h3 Risk scenario, when third-party trackers decrease the navigation security
     p.text CitizenLab released a report, named "
         a(href="https://citizenlab.ca/2018/03/bad-traffic-sandvines-packetlogic-devices-deploy-government-spyware-turkey-syria/") bad traffic
-        |." The report explain how in some regions, network devices invisible in the network topology, inject malicious code in non-encrypted web sessions. This attack pattern the target individual by discriminating internet traffic (we can't know which
+        |." The report explain how in some regions, network devices invisible in the network topology, inject malicious code in non-encrypted web sessions. This attack pattern targets the individual by discriminating internet traffic (we can't know which
         i selectors
         |  are used, but the vantage point is the one of network interception).
-    p.text Politecnico of Milan and Santa Barbara university describe 
+    p.text Politecnico of Milan and Santa Barbara University describe 
         a(href="http://www.cs.ucsb.edu/~chris/research/doc/www14_shortads.pdf") an attack model
-        |  in which third parties can take control the main browser window via javascript code injection.  In this case, the target could be selected with the advertising network capability (such as offering some money to target a set of individual profiled in with the granularity permitted by the online advertising industry).
+        |  in which third parties can take control over the main browser window via a javascript code injection.  In this case, the target can be selected with the advertising network capability (such as offering some money to target a set of individuals profiled with the granularity permitted by the online advertising industry).
 
     h3 Target selection and attack deployments 
-    p.text As a human subject, we have a group of websites and concept we consume more often than others. Depict this cluster of sites as the information diet of said user. Such habit has a recurring pattern, and network tap and/or by advertising industry use it to profile users conduct. In the medium term the adversary harvest enough data points to categorize the user with a precision sufficient to judge it as a potential target or not.
+    p.text As a human subject, we have a group of websites and concepts we consume more often than others. Now let's depict this cluster of sites as the "information diet" of a user. Such habit has a recurring pattern, which a the network can tap and/or the advertising industry uses to profile users behaviour. In the medium term the adversary harvest enough data points to categorize the user with a precision sufficient to judge whether to targeting the user or not.
 
-    p.text Techniques mentioned above imply the user can be exploited by sites, as they represent a dimension in which user interact and is exposed to. They are the attack surface for client-side attack.
+    p.text Techniques mentioned above imply the user can be exploited by sites, as they represent a dimension in which the user interacts and is exposed to. They are the attack surface for client-side attacks.
 
-    p.text We can group websites or URL and categories, to build an effective communication campaign, because a said cluster of content or values likely permit to find a specific threat model, with more apparent regional conflict, or a political struggle.
+    p.text We can group websites or URLs and categories, to build an effective communication campaign, because a said cluster of content or values likely permit to find a specific threat model, with more apparent regional conflicts, or political struggles.
 
     p.text
         b invi.sible.link aims to analyze a cluster of websites because the output could be more effectively linked to a concrete threat, making third-party awareness campaign compelling.
@@ -98,38 +102,38 @@
 
     h3 Security evaluations, remediation and responsibilities 
 
-    p.text The most effective way used by an expert to assess their exposure to third-party trackers is monitoring, and default denies unwanted web connections.
+    p.text The most effective way used by experts to control exposure to third-party trackers is monitoring, and default deny, unwanted web connections; 
+        a(href="https://addons.mozilla.org/en-US/firefox/addon/noscript/") NoScript
+        |  is the most flexible tool available, privacy-badger is the most exciting compromise between safe default, users simplicity in training and ghostery/brave browser represent some more user-friendly, whitelist-blacklist approach.
 
-    p.text noScript is the most flexible tool available, privacy-badger is the most exciting compromise between safe default, users simplicity in training and ghostery/brave browser represent some more user-friendly, whitelist-blacklist approach.
-
-    p.text Self-defense tools are great for individuals privacy and security-aware, but if we consider an organization at the whole, the security of such depends on the weakest link. It makes clear these solutions are not viable nor scalable as organization policy:
+    p.text Self-defense tools are great for individuals' privacy and security-awareness, but if we consider an organization as a whole, its security depends on the weakest ring of the chain. It is therefore clear that these solutions are not viable nor scalable as an organization policy:
         ul
-            li Entrance barrier for advanced tooling is complicated, you experience videos, web apps are impaired most of the time, and a technical judgment skill is required to solve such unexpected issues.
+            li Entrance barriers for advanced tooling are a complicated hurdle. The UX with videos, or web apps are impaired most of the time, and a technical judgment skill is required to solve such unexpected issues.
             li 
                 a(href="https://en.wikipedia.org/wiki/Compartmentalization_(information_security)") compartmentalization
-                |  of navigation could represent a viable solution; this approach could include a dedicated chapter, as: "one browser for the bank, only connect to few websites and keeps PayPal logged" "another browser with a script blocker set by default as default resolver of HTTP protocol." 
+                |  of navigation could represent a viable solution; this approach could include a dedicated chapter, as: "one browser for the bank, only connect to few websites and keeps PayPal logged" "another browser with a script blocker set by default as resolver of HTTP protocol." 
             li Mobile tracking and web usage work differently.
 
-    p.text Besides the justification above, the political issue looks like "a technical self-defense tool works well only in a technocratic society where the informed is safer than the person without the means." To address the systemic issue, we should leverage on the websites: they are the ultimate enabler of third party information leakage and users exposure.  They are the website we trust, and we represent their audience. I feel only the invisibility, the abstractness of the trust violation permits such misuse. At the moment we can provide a stronger link between third parties abuses and website responsibilities, the perception, and then the technical habit deeply rooted in the web technology stack, could change. 
+    p.text Besides the justification above, the political issue looks like "a technical self-defense tool works well only in a technocratic society where the informed is safer than the person without the means." To address the systemic issue, we should leverage the websites: they are the ultimate enablers of third party information leakage and users exposure. They represent the website we trust, and we represent their audience. I feel that it is the invisibility, and the abstraction of such violation of trust that permits misuse of private information. This project intention is provide a re-usable tool which show evidences. Trace the link between third-parties and website responsibilities.
 
     h3 Analysis report
-    p.text Three analysis compose this report. In the chapters below, is documented the contexts of the experiments, technology usage, and the findings. 
+    p.text Three analysis compose this report. In the chapters below, it is documented the context of the experiments, technology usage, and the findings. 
 
     p.text
         a(href="/final-findings-clinics")
             b 1st Analysis
-        |. We address the issue of users health condition leakage via third-party trackers. CodingRights, my host organization, selected website belonging to online clinics. A region in which private healthcare insurance can access the data-brokers market, can discriminate on the insurance prices. Where a data protection regulation is in place, maybe forbidden the usage of algorithmic driven decision making for task with impact in the individuals life.  Nowadays is still an issue, and likely will remain an open debate for years.
+        |. We address the issue of users health data leakage via third-party trackers. CodingRights, my host organization, selected websites belonging to online clinics. A region in which private healthcare insurance can access the data-brokers market, and can discriminate on insurance prices. Where a data protection regulation is in place, it may prohibit the usage of algorithmic driven decision making for tasks impacting individuals lives. Nowadays it is still an issue, and it will likely remain an open debate for years.
     p.text
         a(href="/final-findings-latam-gobierno")
             b 2nd Analysis
-        |. With the collaboration of four Latin American NGO we analyzed government websites, the chapter is also used to introduce the framework implemented. They released a detailed overview in Spanish here.
+        |. With the collaboration of four Latin American NGOs we analyzed government websites, the chapter is also used to introduce the framework we implemented.
     p.text
         a(href="/final-findings-elections")
             b 3rd Analysis
-        |. Social media links monitoring during electoral campaign (Argentinian 2017 and Italy 2018 campaigns)
+        |. Social media links monitoring during electoral campaigns (Argentinian 2017 and Italy 2018 campaigns)
 
 
-    h3 Technical reference
+    h3 Technical references
     p.text On github, the 
         a(href="https://github.com/vecna/invi.sible.link/") project repository
         | and the campaign repository (
