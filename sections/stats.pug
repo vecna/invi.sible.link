@@ -16,7 +16,7 @@ html
 
     title ⛅  invi.sible.link - Statistics
 
-    body(onload="tasksInsertion('#tasks'); lastHours({'hours': 48, 'loadavg': '#loadavg', 'memory': '#memory', 'phantom': '#phantom', 'badger': '#badger', 'accesses': '#accesses'}); localInfo('#orchestration'); ")
+    body(onload="lastHours({'hours': 48, 'loadavg': '#loadavg', 'memory': '#memory', 'phantom': '#phantom', 'badger': '#badger', 'accesses': '#accesses'}); localInfo('#orchestration'); ")
 
     .container-fluid
       .jumbotron
@@ -28,11 +28,6 @@ html
     .container-fluid.text
         h3.hli Orchestration point
         div(id="orchestration")
-
-    .container-fluid.text
-        h3.hli Tasks: promises and solutions
-        p This is the amount of scan request issued by the orchestration point
-        div(id="tasks")
 
     .container-fluid.text
         h2 Boxes statistics
