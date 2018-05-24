@@ -23,7 +23,7 @@ var getKzbrg = function(req) {
                 }]
                 'nothing':
             }]
-                ** ** ** ** ** ** */
+             ** ** ** ** ** ** ** ** ** ** ** ** ** ** */
 
             var structured = _.map(grouped, function(l) {
                 var ret = { nothing: false};
@@ -52,6 +52,9 @@ var getKzbrg = function(req) {
                 if(!_.size(ret.googles))
                     ret.nothing = true;
 
+                if(!ret.href)
+                    return null;
+
                 return ret;
             });
 
@@ -62,7 +65,7 @@ var getKzbrg = function(req) {
                         pretty: true,
                         debug: false
                     }
-                )({ results: _.shuffle(structured) })
+                )({ results: _.shuffle(_.compact(structured)) })
             };
         });
 
