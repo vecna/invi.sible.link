@@ -49,7 +49,7 @@ function getGooglesOnly(req) {
                 return memo;
             }, []);
 
-            var promiz = _.size(mix[1]) ? mix[1] : mix[2];
+            var promiz = _.size(mix[1]) > _.size(mix[2]) ? mix[1] : mix[2];
 
             var ref = promiz[0].start;
             var stats = { targetMatch: 0, googles: 0, missing: 0 };
