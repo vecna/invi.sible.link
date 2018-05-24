@@ -50,6 +50,10 @@ app.get('/api/v:version/extended/:campaign', function(req, res) {
     return dispatchPromise('getEvidencesExtended', routes, req, res);
 });
 
+app.get('/api/v:version/google/:campaign', function(req, res) {
+    return dispatchPromise('getGooglesOnly', routes, req, res);
+});
+
 app.get('/api/v:version/csv/:campaign', function(req, res) {
     return dispatchPromise('getCSV', routes, req, res);
 });
