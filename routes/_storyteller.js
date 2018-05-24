@@ -21,6 +21,7 @@ module.exports = {
     getJudgment:           require('./getJudgment'),
     getSiteInfo:           require('./getSiteInfo'),
 
+    getKzbrg:              require('./getKzbrg'),
     serveCampaign:         require('./serveCampaign'),
     serveSite:             require('./serveSite'),
 

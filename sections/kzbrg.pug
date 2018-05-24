@@ -1,0 +1,54 @@
+doctype html
+html
+    head
+        meta(http-equiv='Content-Type', content='text/html; charset=UTF-8')
+        meta(name="viewport" content="width=device-width, initial-scale=1")
+
+        link(rel='stylesheet', href='/css/index.css')
+        link(rel='stylesheet', href='/js/vendor/bootstrap/css/bootstrap.min.css')
+
+        script(type='text/javascript', src='/js/vendor/jquery/jquery.js')
+        script(type='text/javascript', src='/js/vendor/lodash.min.js')
+        link(rel='stylesheet', href='/css/kzbrg.css')
+
+        title Kreuzberg, Google presence analysis tool
+
+    body.fontnice.core
+
+        .container-fluid.header
+            h4 Do you need a website? not an issue
+            h2 Do you need a website whitout 
+                b Google watching your users? 
+                span That's a bit harder
+                |...
+            h4 Google's products infiltrate web technologies here and there. 
+            h2 Keep Google out of Kreuzberg! But can we get rid of Google in the network too?
+
+        .container-fluid
+            table
+                thead
+                    tr
+                        th.sitehead Website tested
+                        th.traceshead Google traces caught 
+
+                tbody.entries
+                    each analyzed in results
+                        tr.entry
+                            td.site
+                                span.name #{analyzed.href}
+                                p.address #{analyzed.description}
+
+                            td.notes
+                                each gservice in analyzed.googles
+                                    .productBlock
+                                        span.product #{gservice.productName} 
+                                        span.number #{gservice.amount}
+                                if analyzed.nothing
+                                    span.clean ✔  No Google detected!
+
+
+        .container-fluid
+            h2 Then what?
+            h4 Contribute on the list
+            
+

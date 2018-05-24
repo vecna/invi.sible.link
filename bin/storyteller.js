@@ -118,6 +118,12 @@ app.get('/api/v:version/siteinfo/:subjectId', function(req, res) {
     return dispatchPromise('getSiteInfo', routes, req, res);
 });
 
+/* now this software is going be wild! mixing campaign and framework!! */
+app.get('/kzbrg', function(req, res) {
+    return dispatchPromise('getKzbrg', routes, req, res);
+});
+
+
 app.get('/campaign/:cname/:viz?', function(req, res) {
     return dispatchPromise('serveCampaign', routes, req, res);
 });

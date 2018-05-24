@@ -17,7 +17,6 @@ var pageMap = {
     'graphs': pugCompiler('exposergraph'),
     'raw': pugCompiler('raw'),
     'exposer': pugCompiler('exposer'),
-    // 'subjects': pugCompiler('subjects'),
     'subject': pugCompiler('subject'),
     'last': pugCompiler('last'),
     'details': pugCompiler('details'),
