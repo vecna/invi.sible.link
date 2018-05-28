@@ -10,9 +10,6 @@ var getKzbrg = function(req) {
     return getGooglesOnly(_.set({}, 'params.campaign', 'kzbrg'))
         .then(function(j) {
 
-            /* when they are grouped, we can sort and generate the proper lists */
-            var grouped = _.sortBy(_.groupBy(j.json, 'href'), _.size);
-
             /* this is the format required in the .pug: 
             results: [{
                 'href':
@@ -23,40 +20,45 @@ var getKzbrg = function(req) {
                 }]
                 'nothing':
             }]
+            we are getting a collection you can see from
+            https://invi.sible.link/api/v1/google/kzbrg
              ** ** ** ** ** ** ** ** ** ** ** ** ** ** */
 
-            var structured = _.map(grouped, function(l) {
-                var ret = { nothing: false};
-                var googles = {};
-                _.each(l, function(o) {
-                    if(o.target) {
-                        ret.href = o.href;
-                        ret.description = o.description;
-                    }
-                    if(o.company === 'Google') {
-                        if(_.get(googles, o.product))
-                            googles[o.product]++;
-                        else
-                            _.set(googles, o.product, 1);
-                    }
-                    if(o.missing) {
-                        ret.href = o.href;
-                        ret.description = o.description;
-                        o.nothing = true;
-                    }
-                });
+            var products = _.compact(_.uniq(_.map(j.json, 'product')));
+            var tested = _.uniq(_.map(j.json, 'href'));
+            var ret = _.reduce(j.json, function(memo, entry) {
+                _.set(memo, entry.description, entry.href);
+                return memo;
+            }, {});
 
-                ret.googles = _.map(googles, function(value, key) {
-                    return { productName: key, amount: value };
-                });
-                if(!_.size(ret.googles))
-                    ret.nothing = true;
-
-                if(!ret.href)
-                    return null;
-
-                return ret;
+            ret = _.map(ret, function(href, description) {
+                return {
+                    href: href,
+                    description: description,
+                    googles: [],
+                    nothing: false
+                };
             });
+
+            debug("%d tested site, %d unique Google services", _.size(tested), _.size(products));
+            _.each(tested, function(s) {
+                var isClean = true;
+                _.each(products, function(p) {
+                    var evidences = _.filter(j.json, { product: p, href: s });
+
+                    if(_.size(evidences)) {
+                        _.find(ret, { href: s }).googles.push({
+                            productName: p,
+                            amount: _.size(evidences)
+                        });
+                        isClean = false;
+                    }
+                });
+
+                if(isClean)
+                    _.find(ret, {href: s}).nothing = true;
+
+            }); 
 
 
             return { 'text': 
@@ -65,7 +67,7 @@ var getKzbrg = function(req) {
                         pretty: true,
                         debug: false
                     }
-                )({ results: _.shuffle(_.compact(structured)) })
+                )({ results: _.shuffle(ret) })
             };
         });
 
