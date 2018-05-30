@@ -1,0 +1,12 @@
+{
+  "name": "chopsticks",
+  "VP": "IVL",
+  "source": "http://localhost:7200",
+  "schema": {
+    "phantom": "phantom",
+    "badger": "badger"
+  },
+  "amount": 2,
+  "concurrency": 1,
+  "mongodb": "mongodb://localhost/chopsticks"
+}
