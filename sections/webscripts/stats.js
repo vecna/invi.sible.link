@@ -68,7 +68,7 @@ function lastHours(config) {
         'badger': [ 'badger' ],
         'accesses': [ 'accesses' ]
     };
-    var VPs = [ 'HK', 'WS', 'AMS' ];
+    var VPs = [ 'HK', 'WS' ];
     var url = '/api/v1/stats/' + config.hours;
 
     console.log("Fetching last", config.hours, "from", url);
