@@ -3,14 +3,14 @@
     "targets": [{
         "collection": "accesses",
         "timevar": "when",
-        "days": "30"
+        "days": "20"
     }, {
         "collection": "badger",
         "timevar": "when",
-        "days": "30"
+        "days": "20"
     }, {
         "collection": "phantom",
         "timevar": "requestTime",
-        "days": "30"
+        "days": "20"
     }]
 }
