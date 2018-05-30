@@ -9,7 +9,7 @@ var spawnCommand = require('../lib/cmdspawn');
 var plugins = require('../plugins');
 var choputils = require('../lib/choputils');
 
-var cfgFile = "config/chopsticks.json";
+var cfgFile = nconf.get('config') || "config/chopsticks.json";
 
 nconf.argv()
      .env()
