@@ -27,5 +27,4 @@ you should change:
 
 	*/2 * * * * cd invi.sible.link/bin ; config='config/HK-config.json' npm run badger >> /tmp/badger.log 2>&1 ; config='config/HK-config.json' npm run phantom >> /tmp/phantom.log 2>&1
 	0 20 * * * cd invi.sible.link ; node bin/autocleaner.js
-
-
+	*/5 * * * * cd invi.sible.link && bin/statusChecker.js
