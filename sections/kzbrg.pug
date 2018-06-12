@@ -9,11 +9,12 @@ html
 
         script(type='text/javascript', src='/js/vendor/jquery/jquery.js')
         script(type='text/javascript', src='/js/vendor/lodash.min.js')
+        script(type='text/javascript', src='/js/local/kzbrg.js')
         link(rel='stylesheet', href='/css/kzbrg.css')
 
         title Kreuzberg, Google presence analysis tool
 
-    body.fontnice.core
+    body.fontnice.core(onload="init();")
 
         h3 WELCOME! this is a PROTOTYPE in DEVELOPMENT. Suggestion? open an 
             a(href="https://github.com/vecna/kzbrg/issues") issue, 
@@ -33,9 +34,9 @@ html
             h2 Fuck off Google out of Kreuzberg, but can we get rid of Google from Kreuzberg websites?
 
         .container-fluid
-            input(type="text" id="newsite")
-            input(type="text" id="whereis")
-            button suggest!
+            input(type="text" id="newsite" placeholder="suggest a new site...")
+            input(type="text" id="whereis" placeholder="where is it?")
+            button(id="suggest") suggest!
 
         .container-fluid
             table
