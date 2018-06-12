@@ -10,7 +10,8 @@
     "evidences": "evidences",
     "details": "details",
     "summary": "summary",
-    "judgment": "judgment"
+    "judgment": "judgment",
+    "sites": "sites"
   },
   "mongodb": "mongodb://localhost/ivl",
   "expected": [ "HK", "AMS", "WS", "casa" ],

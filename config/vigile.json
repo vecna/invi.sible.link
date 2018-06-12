@@ -3,6 +3,7 @@
   "interface": "0.0.0.0",
   "name": "vigile",
   "schema": {
+    "sites": "sites",
     "promises": "promises2",
     "accesses": "accesses",
     "subjects": "subjects"
