@@ -15,13 +15,12 @@ module.exports = {
     getCSV:                require('./getCSV'),
     activeTasks:           require('./activeTasks'),
     getRaw:                require('./getRaw'),
-    getTableauJSON:	       require('./getTableauJSON'),
+    getTableauJSON:        require('./getTableauJSON'),
     getCheckURL:           require('./getCheckURL'),
     getMixed:              require('./getMixed'),
     getJudgment:           require('./getJudgment'),
     getSiteInfo:           require('./getSiteInfo'),
 
-    getKzbrg:              require('./getKzbrg'),
     serveCampaign:         require('./serveCampaign'),
     serveSite:             require('./serveSite'),
 

@@ -17,6 +17,10 @@
         "name": "kzbrg",
         "csv": "kzbrg/kzbrg.csv"
     } ],
+    "degov": [ {
+        "name": "degov",
+        "csv": "degov/degov.csv"
+    } ],
     "social-media": [ {
         "name": "social-media",
         "csv": "/dev/null"

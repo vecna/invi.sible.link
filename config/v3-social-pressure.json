@@ -1,0 +1,34 @@
+{
+    "name": "v3-social-pressure",
+    "campaign": "overwritewithenvorcommandline",
+
+    "schema": {
+        "accesses": "accesses",
+        "statistics": "statistics",
+        "promises": "promises2",
+        "surface": "surface",
+        "evidences": "evidences",
+        "details": "details",
+        "summary": "summary",
+        "judgment": "judgment",
+        "sites": "sites"
+    },
+    "mongodb": "mongodb://localhost/ivl",
+    "watch": [
+        "bin/v3-social-pressure.js",
+        "sections/webscripts/*.js",
+        "campaigns/*",
+        "routes/*.js",
+        "lib/*.js",
+        "dist/**",
+        "config/*.json"
+    ],
+    "verbose": true,
+    "exitcrash": false,
+    "env": {
+        "DEBUG": "*,-ffi:*,-ref*,-send,-express:*"
+    },
+    "ext": "js css json pug"
+}
+
+

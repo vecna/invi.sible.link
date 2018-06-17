@@ -12,6 +12,7 @@
     "storyteller": "nodemon --config config/storyteller.json bin/storyteller",
     "social-pressure": "nodemon --config config/social-pressure.json bin/social-pressure",
     "v2-social-pressure": "nodemon --config config/v2-social-pressure.json bin/v2-social-pressure",
+    "v3-social-pressure": "nodemon --config config/v3-social-pressure.json bin/v3-social-pressure",
     "vigile": "nodemon --config config/vigile.json bin/vigile",
     "exposer": "DEBUG=*:-express:* node bin/exposer",
     "badger": "type=badger DEBUG=*,-lib:urlutils,-lib:cmdspawn node bin/chopsticks",
