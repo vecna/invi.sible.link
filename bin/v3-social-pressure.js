@@ -5,7 +5,7 @@ var server = require('http').Server(app);
 var Promise = require('bluebird');
 var _ = require('lodash');
 var moment = require('moment');
-var debug = require('debug')('v2-social-pressure');
+var debug = require('debug')('v3-social-pressure');
 var nconf = require('nconf');
 var machetils = require('../lib/machetils');
 
