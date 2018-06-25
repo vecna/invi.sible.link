@@ -17,7 +17,7 @@ nconf.argv().env();
 if(!nconf.get('config')) { console.log("--config is necessary"); return }
 /* tname uses config/campaigns.json */
 var tname = promises.manageOptions();
-nconf.argv().env().file({ file: nconf.get('config') });
+nconf.argv().env().file('config/storyteller.json').file('vantages', nconf.get('config') );
 
 
 /* still to be decided how to clean this */

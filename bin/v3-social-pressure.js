@@ -46,6 +46,21 @@ if(!nconf.get('port')) {
 server.listen(nconf.get('port'), nconf.get('interface') );
 console.log( "http://" + nconf.get('interface') + ':' + nconf.get('port') + " listening");
 
+/* ------------------------------------------------------------ 
+                    IMPLEMENTED ROUTES
+   ------------------------------------------------------------ */
+app.get('/api/v:version/google/:campaign', function(req, res) {
+    return dispatchPromise('getGooglesOnly', routes, req, res);
+});
+
+app.get('/api/v:version/results/:campaign', function(req, res) {
+    return dispatchPromise('getResults', routes, req, res);
+});
+
+app.get('/api/v:version/sites/:campaign', function(req, res) {
+    return dispatchPromise('getSites', routes, req, res);
+});
+
 /* ------------------------------------------------------------ */
 var paths = process.env.PWD.split('/');
 paths.push('dist');

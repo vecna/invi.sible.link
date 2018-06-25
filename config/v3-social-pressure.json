@@ -6,12 +6,9 @@
         "accesses": "accesses",
         "statistics": "statistics",
         "promises": "promises2",
-        "surface": "surface",
         "evidences": "evidences",
-        "details": "details",
-        "summary": "summary",
-        "judgment": "judgment",
-        "sites": "sites"
+        "sites": "sites",
+        "results": "results"
     },
     "mongodb": "mongodb://localhost/ivl",
     "watch": [

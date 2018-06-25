@@ -1,13 +1,4 @@
 {
-  "schema": {
-    "promises": "promises2",
-    "sankeys": "sankeys",
-    "evidences": "evidences",
-    "surface": "surface",
-    "details": "details",
-    "summary": "summary"
-  },
-  "mongodb": "mongodb://localhost/ivl",
   "vantages": [
 	{ "name": "home", "host": "http://127.0.0.1:7300" }
   ]

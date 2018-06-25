@@ -1,13 +1,4 @@
 {
-  "schema": {
-    "promises": "promises2",
-    "sankeys": "sankeys",
-    "evidences": "evidences",
-    "surface": "surface",
-    "details": "details",
-    "summary": "summary"
-  },
-  "mongodb": "mongodb://localhost/ivl",
   "vantages": [
 	{ "name": "WS", "host": "http://ws-vp.sible.link:7300" },
 	{ "name": "HK", "host": "http://hk-vp.sible.link:7300" }

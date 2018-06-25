@@ -3,8 +3,9 @@ var _ = require('lodash');
 var debug = require('debug')('bin:queueOPush');
 var moment = require('moment');
 var nconf = require('nconf');
-var mongo = require('../lib/mongo');
 
+var mongo = require('../lib/mongo');
+var sites = require('../lib/sites');
 var queue = require('../lib/queue');
 
 nconf.argv().env().file({ file: 'config/storyteller.json' });
@@ -32,24 +33,11 @@ if(!testkind) {
     testkind = [ testkind ];
 }
 
-
-function frequencyExpired(memo, site) {
-
-    var check = !site.lastCheck || moment().isAfter(
-        moment(site.lastCheck).add(site.frequency, 'd')
-    );
-
-    if(check)
-        memo.push(site);
-
-    return memo;
-};
-
 var filter = campaign ? { campaign: campaign } : {};
 
 return mongo
     .read('sites', filter)
-    .reduce(frequencyExpired, [])
+    .reduce(sites.frequencyExpired, [])
     .tap(function(sites) {
         debug("%d sites appears to need be analyzed", _.size(sites));
         var stats = _.countBy(sites, 'campaign');

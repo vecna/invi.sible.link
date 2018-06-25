@@ -1,27 +1,22 @@
 #!/usr/bin/env nodejs
 var _ = require('lodash');
 var Promise = require('bluebird');
-var debug = require('debug')('analyzePhantom');
-
+var debug = require('debug')('computeResults');
 var moment = require('moment');
 var nconf = require('nconf');
 
+var sites = require('../lib/sites');
 var mongo = require('../lib/mongo');
 var various = require('../lib/various');
 var machetils = require('../lib/machetils');
 var company = require('../lib/company');
 var promises = require('../lib/promises');
 
-/* ENV/options init */
 nconf.argv().env();
-if(!nconf.get('config')) { console.log("--config is necessary"); return }
-/* tname uses config/campaigns.json */
-var tname = promises.manageOptions();
-nconf.argv().env().file('config/storyteller.json').file('vantages', nconf.get('config') );
-
-
-/* code begin here */
-var MISSING_NATION = 'UNKNOW';
+var cfgfile = nconf.get('config') || 'config/analyzerProduction.json';
+nconf.argv().env().file('config/storyteller.json').file('vantages', cfgfile);
+if(!nconf.get('campaign')) { console.log("--campaign is necessary"); return }
+var campaign = nconf.get('campaign');
 
 var whenD = nconf.get('DAYSAGO') ? 
     moment()
@@ -32,7 +27,6 @@ var whenD = nconf.get('DAYSAGO') ?
         .startOf('day')
         .toISOString();
 debug("This analysis will be saved as made on %s", whenD);
-
 
 function onePerSite(retrieved) {
 
@@ -79,12 +73,12 @@ function saveAll(retrieved) {
         .map(function(evidenceO, i) {
             evidenceO.id = various.hash({
                 daily: whenD,
-                campaign: tname,
+                campaign: campaign,
                 tested: evidenceO.href,
                 i: i
             });
             evidenceO.when = new Date(whenD);
-            evidenceO.campaign = tname;
+            evidenceO.campaign = campaign;
             return evidenceO;
         })
         .tap(function(content) {
@@ -108,7 +102,8 @@ function saveAll(retrieved) {
         });
 }
 
-function updateSurface(retrieved) {
+function updateResults(retrieved) {
+
     return Promise
         .reduce(retrieved, function (memo, subject, i, total) {
 
@@ -167,16 +162,16 @@ function updateSurface(retrieved) {
 
             return _.concat(memo, target);
         }, [])
-        .then(company.leaderCompanies)
-        .map(function(surfaceO) {
-            surfaceO.id = various.hash({
+        .map(function(resultsO) {
+            resultsO.id = various.hash({
                 daily: whenD,
-                campaign: tname,
-                tested: surfaceO.href
+                campaign: campaign,
+                tested: resultsO.href
             });
-            surfaceO.when = new Date(whenD);
-            surfaceO.campaign = tname;
-            return surfaceO;
+            resultsO.when = new Date(whenD);
+            resultsO.campaign = campaign;
+            return _.pick(resultsO, [ 'href', 'id', 'campaign', 'javascripts', 
+                    'requestTime', 'cookies', 'companies', 'unrecognized']);
         })
         .tap(function(content) {
             debug("updateSurface has %d objects", _.size(content) );
@@ -184,138 +179,43 @@ function updateSurface(retrieved) {
             return Promise
                 .map(content, function(e) {
                     return mongo
-                        .read(nconf.get('schema').surface, { id: e.id})
+                        .read(nconf.get('schema').results, { id: e.id})
                         .then(_.first)
                         .tap(function(result) {
                             if(_.isUndefined(result))
-                                return mongo.writeOne(nconf.get('schema').surface, e)
+                                return mongo.writeOne(nconf.get('schema').results, e)
                         });
                 }, {concurrency: 5})
                 .then(_.compact)
                 .tap(function(saved) {
-                    debug("The elements saved in `surface` are %d", _.size(saved));
+                    debug("The elements saved in `results` are %d", _.size(saved));
                 });
         });
 };
 
-function sankeys(surface) {
+function updateSite(result) {
 
-  var limit = 10;
-  debug("Generating sankeys: cutting the result %d to %d",
-      _.size(surface), limit);
-  /* it is truncated here
-   * limits are pick by graph representation issues,
-   * if you've sankey with more than 10/14 entries, get annoying */
-
-  surface = _.slice(_.reverse(_.orderBy(surface, function(e) {
-      return _.size(e.companies);
-  })), 0, limit);
-
-  return various
-    .loadJSONfile("fixtures/companyCountries.json")
-    .then(function(companyMap) {
-
-        var nodes = _.reduce(surface, function(memo, e) {
-            
-            if(!_.size(e.companies)) {
-                debug("Site %s has not trackers!", e.href);
-                return memo;
-            }
-
-            memo.push({
-                "href": e.href,
-                "name": e.href.replace(/https?:\/\//, ''),
-                "group": "site",
-                "node": _.size(memo)
-            });
-
-            _.each(e.companies, function(comp) {
-                if(!_.find(memo, {"name": comp, "group": "company" })) {
-                    memo.push({
-                        "name": comp,
-                        "group": "company",
-                        "node": _.size(memo)
-                    });
-
-                    var nation = companyMap[comp];
-                    if(!_.isString(nation)) {
-                        nation = "MISSING_NATION";
-                        companyMap[comp] = nation;
-                    }
-
-                    if(!_.find(memo, {"name": nation, "group": "country"})) {
-                        memo.push({
-                            "name": nation,
-                            "group": "country",
-                            "node": _.size(memo)
-                        });
-                    }
-                }
-            });
-            return memo;
-        }, []);
-
-        var missing = _.reduce(surface, function(memo, e) {
-            _.each(e.companies, function(comp) {
-                if(companyMap[comp] == 'MISSING_NATION') {
-                    memo.hack[comp] = "";
-                    memo.help[comp] = "<a href='https://duckduckgo.com/" +
-                                         _.replace(comp, /\ /g, '%20') +
-                                      "'>" +
-                                      comp +
-                                      "</a>";
-                }
-            });
-            return memo;
-        }, { hack: {}, help: {} });
-
-        debug("For missing companies: %s %s",
-            JSON.stringify(missing.hack, undefined, 2),
-            JSON.stringify(missing.help, undefined, 2));
-
-        var companySize = {};
-        var links = [];
-
-        _.each(_.filter(nodes, {"group": "site" }), function(sentry) {
-            var e = _.find(surface, {'href': sentry.href });
-
-            _.each(_.uniq(e.companies), function(cname) {
-                var t = _.find(nodes, {"group": "company", "name": cname});
-
-                if(!companySize[cname])
-                    companySize[cname] = 0;
-                companySize[cname] += 1;
-
-                links.push({
-                    'source': sentry.node,
-                    'target': t.node,
-                    'value': 1
-                });
-            });
+    return mongo
+        .read(nconf.get('schema').sites, { campaign: campaign, href: result.href })
+        .then(_.first)
+        .then(function(site) {
+            site.lastResultId = result.id;
+            site.lastCheckTime = result.requestTime;
+            debugger;
+            return mongo.updateOne(nconf.get('schema').sites, { id: site.id }, site);
         });
-
-        _.each(companySize, function(size, cname) {
-            var t = _.find(nodes,{group:"company",name:cname});
-            var n = _.find(nodes,{group:"country",name:companyMap[cname] });
-            links.push({source: t.node, target: n.node, value: size });
-        });
-
-        debug("sankeys: %d nodes, %d links", _.size(nodes), _.size(links));
-        return { nodes: nodes, links: links };
-    })
-    .then(function(sanflows) {
-
-        return mongo.writeOne(nconf.get('schema').sankeys, {
-            when: new Date(whenD),
-            campaign: tname,
-            nodes: sanflows.nodes,
-            links: sanflows.links
-        });
-    });
 };
 
-return promises
-    .retrieve(nconf.get('DAYSAGO'), tname, 'basic')
+return mongo
+    .read(nconf.get('schema').sites, {campaign: campaign})
+    .tap(machetils.numerize)
+    .reduce(sites.frequencyExpired, [])
+    .tap(machetils.numerize)
+    .map(function(site) {
+        return mongo
+            .readLimit(nconf.get('schema').promises, { href: site.href }, {}, 1, 0);
+    }, {concurrency: 1})
+    .then(_.flatten)
     .tap(machetils.numerize)
     .reduce(_.partial(promises.buildURLs, 'basic'), [])
     .tap(machetils.numerize)
@@ -328,9 +228,9 @@ return promises
     .map(company.countries)
     .tap(machetils.numerize)
     .tap(saveAll)
-    .then(updateSurface)
+    .then(updateResults)
+    .map(updateSite)
     .tap(machetils.numerize)
-    .then(sankeys)
     .tap(function(r) {
         debug("Operationg compeleted successfully");
     });
