@@ -11,7 +11,7 @@ var promises = require('../lib/promises');
  * it interpolate the table `evidences` with the table `sites` */
 function getGooglesOnly(req) {
 
-    var DAYSAGO = 0
+    var DAYSAGO = -1;
     var min = moment()
             .subtract(DAYSAGO +2, 'd')
             .startOf('day')
@@ -23,7 +23,7 @@ function getGooglesOnly(req) {
             .format("YYYY-MM-DD");
 
     var max = moment()
-            .subtract(DAYSAGO, 'd')
+            .add(DAYSAGO, 'd')
             .startOf('day')
             .format("YYYY-MM-DD");
 
