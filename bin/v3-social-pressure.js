@@ -49,10 +49,6 @@ console.log( "http://" + nconf.get('interface') + ':' + nconf.get('port') + " li
 /* ------------------------------------------------------------ 
                     IMPLEMENTED ROUTES
    ------------------------------------------------------------ */
-app.get('/api/v:version/google/:campaign', function(req, res) {
-    return dispatchPromise('getGooglesOnly', routes, req, res);
-});
-
 app.get('/api/v:version/results/:campaign', function(req, res) {
     return dispatchPromise('getResults', routes, req, res);
 });
