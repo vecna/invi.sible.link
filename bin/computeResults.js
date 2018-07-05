@@ -11,6 +11,7 @@ var various = require('../lib/various');
 var machetils = require('../lib/machetils');
 var company = require('../lib/company');
 var promises = require('../lib/promises');
+var google = require('../lib/google');
 
 nconf.argv().env();
 var cfgfile = nconf.get('config') || 'config/analyzerProduction.json';
@@ -122,15 +123,17 @@ function updateResults(retrieved) {
             target.companies = [];
             /* unrecognized domain */
             target.unrecognized = [];
+            /* google specific product tracking */
+            target.googles = {};
 
             _.each(_.reject(subject.data, {target: true}), function(rr, cnt) {
-                /* target.unique 
-                 * is not used, and is going to be removed when
-                 * debugging before italian.tracking.exposed release */
 
-                // if(_.isUndefined(target.unique[rr.domainId]))
-                //     _.set(target.unique, rr.domainId, 0);
-                // target.unique[rr.domainId] += 1;
+                debug(rr.product);
+                if(rr.product)
+                    if(_.get(target.googles, rr.product))
+                        target.googles[rr.product]++;
+                    else
+                        _.set(target.googles, rr.product, 1);
 
                 if(rr['Content-Type'] && rr['Content-Type'].match('script'))
                     target.javascripts += 1;
@@ -171,7 +174,7 @@ function updateResults(retrieved) {
             resultsO.when = new Date(whenD);
             resultsO.campaign = campaign;
             return _.pick(resultsO, [ 'href', 'id', 'campaign', 'javascripts', 
-                    'requestTime', 'cookies', 'companies', 'unrecognized']);
+                    'requestTime', 'googles', 'cookies', 'companies', 'unrecognized']);
         })
         .tap(function(content) {
             debug("updateSurface has %d objects", _.size(content) );
@@ -226,6 +229,7 @@ return mongo
     .tap(machetils.numerize)
     .map(company.attribution)
     .map(company.countries)
+    .map(google.valorizeGoogle)
     .tap(machetils.numerize)
     .tap(saveAll)
     .then(updateResults)

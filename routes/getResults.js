@@ -10,10 +10,21 @@ function getResults(req) {
 
     var filter = { campaign: req.params.campaign };
 
-    debug("getResults filter %j", filter);
-
     return mongo
-        .read(nconf.get('schema').results, filter)
+        .read(nconf.get('schema').sites, filter)
+        .tap(function(sites) {
+            debug("getResults filter %j found %d sites", filter, _.size(sites));
+        })
+        .map(function(site) {
+            /* we should find the last result id */
+            if(!site.lastResultId)
+                return null;
+
+            return mongo
+                .read(nconf.get('schema').results, { id: site.lastResultId })
+        }, { concurrency: 1} )
+        .then(_.flatten)
+        .then(_.compact)
         .then(function(sites) {
             debug("getResults returns: %d", _.size(sites));
             return {

@@ -51,36 +51,7 @@ function getGooglesOnly(req) {
                 return memo;
             }, []);
 
-            var stats = { targetMatch: 0, googles: 0, missing: 0 };
-
-            /* logic is:
-                - iterated on the configured `sites` from mix[2]
-                - look if any Google reference is present there
-                - look if the target:true is present there       */
-            var ret = _.reduce(mix[2], function(memo, p) {
-                var t = _.find(evidences, { href: p.href, target: true });
-                if(t) {
-                    stats.targetMatch++;
-                    t.description = p.description;
-                    memo.push(t);
-                }
-                var gugls = _.filter(evidences, { href: p.href, company: "Google" });
-                if(_.size(gugls)) {
-                    stats.googles += _.size(gugls);
-                    var ready = _.map(gugls, function(g) {
-                        g.description = p.description;
-                        return g;
-                    });
-                    return _.concat(memo, ready);
-                } else {
-                    stats.missing++;
-                    memo.push(_.extend(_.pick(p, [ "href", "description" ]), { empty: true }));
-                    return memo;
-                }
-            }, []);
-            debug("Reduction of %d sites configured with %d evidences collected, total %d: %j",
-                _.size(mix[2]), _.size(evidences), _.size(ret), stats);
-            return ret;
+            return google.composeList(mix[2], evidences);
         })
         .then(function(c) {
             debug("Mix between all the info has %d objects", _.size(c));
