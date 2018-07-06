@@ -5,6 +5,7 @@ var moment = require('moment');
 var nconf = require('nconf');
 
 var queue = require('../lib/queue');
+var accepted = [ "basic", "badger", "urlscan" ];
 
 nconf.argv().env().file({ file: 'config/vigile.json' });
 
@@ -12,12 +13,12 @@ nconf.argv().env().file({ file: 'config/vigile.json' });
 csvfile = nconf.get('csv');
 campaign = nconf.get('campaign');
 if(!csvfile || !campaign) {
-    console.log("required --csv and --campaign");
+    console.log("required --csv and --campaign, optional --kind");
+    console.log(accepted);
     process.exit(1);
 }
 
 var testkind = nconf.get('kind');
-var accepted = [ "basic", "badger", "urlscan" ];
 
 if(!testkind) {
     testkind = [ "basic", "badger" ];

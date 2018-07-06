@@ -17,9 +17,9 @@
         "name": "kzbrg",
         "csv": "kzbrg/kzbrg.csv"
     } ],
-    "degov": [ {
-        "name": "degov",
-        "csv": "degov/degov.csv"
+    "gegotrex": [ {
+        "name": "gegotrex",
+        "csv": "gegotrex/gegotrex.csv"
     } ],
     "social-media": [ {
         "name": "social-media",
