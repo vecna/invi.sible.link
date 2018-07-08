@@ -89,15 +89,9 @@ app.get('/api/v:version/tasks/:cname', function(req, res) {
     return dispatchPromise('getCampaignPromises', routes, req, res);
 });
 
-/* This render the monoPage campaign */
-var monoPage = require('../campaigns/' + campaign + '/page/controller.js');
-app.get('/', function(req, res) {
-    debugger;
-    return new Promise
-        .resolve(monoPage(req))
-        .then(function(httpresult) {
-            debug("serving /");
-            debugger;
-            res.send(httpresult.text)
-        });
+app.get('/:pageName', function(req, res) {
+    var fpath = process.env.PWD + '/campaigns/' + campaign + '/page/' + req.params.pageName;
+    debug("path %s", fpath);
+    res.sendFile(fpath);
 });
+app.get('/', express.static(process.env.PWD + '/campaigns/' + campaign + '/page/'));
