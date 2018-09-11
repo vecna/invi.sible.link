@@ -19,8 +19,8 @@ function getTasks(req) {
 
     debug("getTasks %d from %s type %s", amount, vantagePoint, type);
 
-    /* this is redundant with lib/promises, but here there is 
-     * specify the vantagePoint filter below */
+    /* this is redundant with lib/promises, but here the 
+     * vantagePoint is specify below */
     var selector = {
         "start": { $lte: new Date( moment().startOf('day').add(1, 'd').format("YYYY-MM-DD") ),
                    $gte: new Date( moment().startOf('day').format("YYYY-MM-DD") ) },

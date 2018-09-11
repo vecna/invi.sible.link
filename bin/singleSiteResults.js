@@ -1,32 +1,31 @@
-#!/usr/bin/env nodejs
+#!/usr/bin/env node
 var _ = require('lodash');
 var Promise = require('bluebird');
-var debug = require('debug')('computeResults');
+var debug = require('debug')('singleSiteResults');
 var moment = require('moment');
 var nconf = require('nconf');
 
-var sites = require('../lib/sites');
 var mongo = require('../lib/mongo');
 var various = require('../lib/various');
 var machetils = require('../lib/machetils');
-var company = require('../lib/company');
 var promises = require('../lib/promises');
+var company = require('../lib/company');
 var google = require('../lib/google');
 
 nconf.argv().env();
 var cfgfile = nconf.get('config') || 'config/analyzerProduction.json';
 nconf.argv().env().file('config/storyteller.json').file('vantages', cfgfile);
-if(!nconf.get('campaign')) { console.log("--campaign is necessary"); return }
-var campaign = nconf.get('campaign');
+if(!nconf.get('site')) { console.log("--site is necessary"); return }
+var site = nconf.get('site');
 
 var whenD = nconf.get('DAYSAGO') ? 
     moment()
         .startOf('day')
         .subtract(_.parseInt(nconf.get('DAYSAGO')), 'd')
-        .toISOString() :
+        .format("YYYY-MM-DD") :
     moment()
         .startOf('day')
-        .toISOString();
+        .format("YYYY-MM-DD");
 debug("This analysis will be saved as made on %s", whenD);
 
 function onePerSite(retrieved) {
@@ -74,12 +73,12 @@ function saveAll(retrieved) {
         .map(function(evidenceO, i) {
             evidenceO.id = various.hash({
                 daily: whenD,
-                campaign: campaign,
+                campaign: "manuallyInserted",
                 tested: evidenceO.href,
                 i: i
             });
             evidenceO.when = new Date(whenD);
-            evidenceO.campaign = campaign;
+            evidenceO.campaign = "manuallyInserted";
             return evidenceO;
         })
         .tap(function(content) {
@@ -168,11 +167,11 @@ function updateResults(retrieved) {
         .map(function(resultsO) {
             resultsO.id = various.hash({
                 daily: whenD,
-                campaign: campaign,
+                campaign: "manuallyInserted",
                 tested: resultsO.href
             });
             resultsO.when = new Date(whenD);
-            resultsO.campaign = campaign;
+            resultsO.campaign = "manuallyInserted";
             return _.pick(resultsO, [ 'href', 'id', 'campaign', 'javascripts', 
                     'requestTime', 'googles', 'cookies', 'companies', 'unrecognized']);
         })
@@ -196,31 +195,12 @@ function updateResults(retrieved) {
         });
 };
 
-function updateSite(result) {
-
-    return mongo
-        .read(nconf.get('schema').sites, { campaign: campaign, href: result.href })
-        .then(_.first)
-        .then(function(site) {
-            site.lastResultId = result.id;
-            site.lastCheckTime = result.requestTime;
-            debugger;
-            return mongo.updateOne(nconf.get('schema').sites, { id: site.id }, site);
-        });
-};
-
-function mylined(entry, notes) {
-    debug("%s elements %d", notes, _.size(entry));
-    debug("keys: 
-    debugger;
-};
-var phantom = require('../plugins').phantom;
-var phantomSaver = require('../plugins').phantomSaver;
-
-        "plugins": [ "systemState", "phantom", "phantomSaver", "confirmation" ],
-
-    return phantom()
-        .then(phantomSaver())
+return mongo
+    .readLimit(nconf.get('schema').promises, { href: site }, {}, 1, 0)
+    .then(_.flatten)
+    .tap(machetils.numerize)
+    .reduce(_.partial(promises.buildURLs, 'basic'), [])
+    .tap(machetils.numerize)
     .map(machetils.jsonFetch, {concurrency: 10})
     .tap(machetils.numerize)
     .then(_.compact)
@@ -232,125 +212,8 @@ var phantomSaver = require('../plugins').phantomSaver;
     .tap(machetils.numerize)
     .tap(saveAll)
     .then(updateResults)
-    .map(updateSite)
     .tap(machetils.numerize)
     .tap(function(r) {
-        debug("Operationg compeleted successfully");
+        debug("Operationg on %s compeleted successfully", site);
     });
 
-
-
-
-#!/usr/bin/env nodejs
-var _ = require('lodash');
-var Promise = require('bluebird');
-var debug = require('debug')('chopsticks');
-var request = Promise.promisifyAll(require('request'));
-var nconf = require('nconf');
-var spawnCommand = require('../lib/cmdspawn');
-
-var choputils = require('../lib/choputils');
-
-var cfgFile = nconf.get('config') || "config/chopsticks.json";
-
-nconf.argv()
-     .env()
-     .file({ file: cfgFile });
-
-var VP = nconf.get('VP');
-if(_.isUndefined(VP) || _.size(VP) === 0 )
-    throw new Error("Missing the Vantage Point (VP) in the config file");
-
-var mandatory = nconf.get('mandatory') ? true : false;
-var concValue = nconf.get('concurrency') || 1;
-concValue = _.parseInt(concValue);
-
-    "basic": {
-        "plugins": [ "systemState", "phantom", "phantomSaver", "confirmation" ],
-        "config": {
-            maxSeconds: 30,
-            root: "./phantomtmp",
-            VP: VP
-        }
-    },
-    "badger": {
-        "plugins": [ "systemState", "badger", "badgerSaver", "confirmation" ],
-        "config": {
-            maxSeconds: 50,
-            root: "./badgertmp",
-            VP: VP
-        }
-    },
-    "urlscan": {
-        "plugins": [ "systemState", "urlscan", "urlscanSaver", "confirmation" ],
-        "config": {
-            VP: VP
-        }
-    },
-};
-
-var type = nconf.get('type');
-/* validation of the type requested */
-if(_.keys(directionByKind).indexOf(type) === -1) {
-    console.error("Invalid --type "+type+" expected: "+
-        _.keys(directionByKind));
-    return -1;
-}
-
-        "plugins": [ "systemState", "phantom", "phantomSaver", "confirmation" ],
-        "config": {
-            maxSeconds: 30,
-            root: "./phantomtmp",
-            VP: VP
-
-
-function keepPromises(N, i) {
-    /* N is the need, the promise, the object written by lib/queue.js */
-    var direction = directionByKind[N.kind];
-    return Promise
-        .reduce(direction.plugins, function(state, p) {
-            debug("%d calling '%s' [%s] (%s): keys #%d",
-                i, p, state.href, state.campaign,
-                _.size(_.keys(state)) );
-            return plugins[p](state, direction.config);
-        }, N)
-        .tap(function(product) {
-            debug("#%d/%d Completed %s: state keys #%d",
-                i, concValue, N.href, _.size(_.keys(product)) );
-        });
-};
-
-var url = choputils
-            .composeURL(
-                choputils.getVP(nconf.get('VP')),
-                nconf.get('source'),
-                {
-                    what: mandatory ? 'getMandatory' : 'getTasks',
-                    type: type,
-                    param: nconf.get('amount')
-                }
-            );
-
-debug("Starting with concurrency %d", concValue);
-return request
-    .getAsync(url)
-    .then(function(response) {
-        return JSON.parse(response.body);
-    })
-    .then(function(needs) {
-        debug("Received %d needs", _.size(needs));
-        /* estimation of load might define concurrency and delay */
-        return needs;
-    })
-    .map(keepPromises, { concurrency: concValue })
-    .then(function(results) {
-        var e = _.filter(results, { saveError: true});
-        if(_.size(e))
-          debug("Note: %d website failed on %d", _.size(e), _.size(results));
-
-        return Promise.all([
-            spawnCommand({ binary: "/usr/bin/killall", args: [ "Xvfb" ] }),
-            spawnCommand({ binary: "/usr/bin/killall", args: [ "chromedriver" ] }),
-            spawnCommand({ binary: "/usr/bin/killall", args: [ "phantomjs" ] })
-        ]);
-    });

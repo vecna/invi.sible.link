@@ -1,4 +1,4 @@
-#!/usr/bin/env nodejs
+#!/usr/bin/env node
 var express = require('express');
 var app = express();
 var server = require('http').Server(app);

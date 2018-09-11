@@ -1,4 +1,4 @@
-#!/usr/bin/env nodejs
+#!/usr/bin/env node
 var _ = require('lodash');
 var Promise = require('bluebird');
 var debug = require('debug')('statusChecker');
@@ -22,12 +22,13 @@ return Promise
     .then(_.compact)
     .then(function(content) {
         return _.map(content, function(c) {
-            return _.extend({ name: c.name,
-                              task: 'default-stats',
-                              when: new Date(),
-                              loadavg: c.data.loadavg },
-                            c.data.columns,
-                            c.data.freespace);
+            return {
+                name: c.name,
+                task: 'default-stats',
+                when: new Date(),
+                loadavg: c.data.loadavg,
+                columns: c.data.columns
+            };
         });
     })
     .then(function(cc) {

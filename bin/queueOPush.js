@@ -1,4 +1,4 @@
-#!/usr/bin/env nodejs
+#!/usr/bin/env node
 var _ = require('lodash');
 var debug = require('debug')('bin:queueOPush');
 var moment = require('moment');
@@ -15,7 +15,7 @@ var campaign = nconf.get('campaign');
 if(campaign)
     debug("- campaign is set as %s", campaign);
 else
-    debug("- campaing not set: unfiltered query");
+    debug("- campaign not set: unfiltered query");
 
 debug("First step: looking in `sites` table");
 

@@ -1,4 +1,4 @@
-#!/usr/bin/env nodejs
+#!/usr/bin/env node
 var _ = require('lodash');
 var Promise = require('bluebird');
 var debug = require('debug')('computeResults');
@@ -23,10 +23,10 @@ var whenD = nconf.get('DAYSAGO') ?
     moment()
         .startOf('day')
         .subtract(_.parseInt(nconf.get('DAYSAGO')), 'd')
-        .toISOString() :
+        .format("YYYY-MM-DD") :
     moment()
         .startOf('day')
-        .toISOString();
+        .format("YYYY-MM-DD");
 debug("This analysis will be saved as made on %s", whenD);
 
 function onePerSite(retrieved) {

@@ -176,6 +176,9 @@ function savePhantom(gold, conf) {
 
     return fs
         .readFileAsync(gold.disk.incompath + '.json', 'utf-8')
+        .tap(function(x) {
+            debug("Read %d bytes from %s", _.size(x), gold.disk.incompath);
+        })
         .then(JSON.parse)
         .then(function(content) {
             var ioByPhids = _.reduce(content, phantomCleaning, {});
@@ -188,6 +191,10 @@ function savePhantom(gold, conf) {
             debug("Saving %d keys/value in .phantom (%s promiseId)",
                 _.size(data), data[0].promiseId);
             return mongo.writeMany(nconf.get('schema').phantom, data);
+        })
+        .catch(function(e) {
+            debug("Error: %s", e);
+            throw new Error(e);
         });
 };
 

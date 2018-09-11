@@ -1,4 +1,4 @@
-#!/usr/bin/env nodejs
+#!/usr/bin/env node
 var _ = require('lodash');
 var debug = require('debug')('bin:queueCampaign');
 var moment = require('moment');

@@ -1,4 +1,4 @@
-#!/usr/bin/env nodejs
+#!/usr/bin/env node
 var _ = require('lodash');
 var Promise = require('bluebird');
 var debug = require('debug')('chopsticks');
@@ -21,13 +21,15 @@ if(_.isUndefined(VP) || _.size(VP) === 0 )
 
 var mandatory = nconf.get('mandatory') ? true : false;
 var concValue = nconf.get('concurrency') || 1;
+var cfgtimeout = nconf.get('timeout') ? _.parseInt(nconf.get('timeout')) : null;
+
 concValue = _.parseInt(concValue);
 
 var directionByKind = {
     "basic": {
         "plugins": [ "systemState", "phantom", "phantomSaver", "confirmation" ],
         "config": {
-            maxSeconds: 30,
+            maxSeconds: cfgtimeout ? cfgtimeout : 30,
             root: "./phantomtmp",
             VP: VP
         }
@@ -35,7 +37,7 @@ var directionByKind = {
     "badger": {
         "plugins": [ "systemState", "badger", "badgerSaver", "confirmation" ],
         "config": {
-            maxSeconds: 50,
+            maxSeconds: cfgtimeout ? cfgtimeout : 50,
             root: "./badgertmp",
             VP: VP
         }
