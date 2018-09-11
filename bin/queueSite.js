@@ -33,5 +33,5 @@ var directive = queue.buildDirective(testkind, now, url, campaign, description, 
 
 return queue
     .add([ directive ])
-    .tap(queue.report);
-
+    .tap(queue.report)
+    .return(directive.id);

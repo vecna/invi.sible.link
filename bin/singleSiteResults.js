@@ -214,6 +214,6 @@ return mongo
     .then(updateResults)
     .tap(machetils.numerize)
     .tap(function(r) {
-        debug("Operationg on %s compeleted successfully", site);
+        debug("Operation on %s compeleted successfully", site);
     });
 

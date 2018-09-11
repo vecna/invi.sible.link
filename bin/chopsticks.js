@@ -4,10 +4,12 @@ var Promise = require('bluebird');
 var debug = require('debug')('chopsticks');
 var request = Promise.promisifyAll(require('request'));
 var nconf = require('nconf');
+var moment = require('moment');
 var spawnCommand = require('../lib/cmdspawn');
 
 var plugins = require('../plugins');
 var choputils = require('../lib/choputils');
+var various = require('../lib/various');
 
 var cfgFile = nconf.get('config') || "config/chopsticks.json";
 
@@ -74,20 +76,41 @@ function keepPromises(N, i) {
         });
 };
 
-var url = choputils
-            .composeURL(
-                choputils.getVP(nconf.get('VP')),
-                nconf.get('source'),
-                {
-                    what: mandatory ? 'getMandatory' : 'getTasks',
-                    type: type,
-                    param: nconf.get('amount')
-                }
-            );
+function composeUrl() {
+
+    if(nconf.get('site')) {
+
+        var id = various.hash({
+            'href': nconf.get('site'),
+            'needName': 'basic',
+            'campaign': 'manuallyInserted',
+            'start': moment().startOf('day').format("YYYY-MM-DD")
+        });
+        var rurl = choputils.composeURL(
+            choputils.getVP(nconf.get('VP')),
+            nconf.get('source'), {
+                what: 'getId',
+                type: type,
+                param: id
+            }
+        );
+        debug("composeURL, forced ID request: %s", rurl);
+        return rurl;
+    }
+
+    return choputils.composeURL(
+        choputils.getVP(nconf.get('VP')),
+        nconf.get('source'), {
+            what: mandatory ? 'getMandatory' : 'getTasks',
+            type: type,
+            param: nconf.get('amount')
+        }
+    );
+}
 
 debug("Starting with concurrency %d", concValue);
 return request
-    .getAsync(url)
+    .getAsync(composeUrl())
     .then(function(response) {
         return JSON.parse(response.body);
     })
