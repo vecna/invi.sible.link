@@ -3,7 +3,7 @@ var browserSync = require('browser-sync').create();
 var pkg = require('./package.json');
 
 // Copy third party libraries from /node_modules into /vendor
-gulp.task('vendor', function() {
+gulp.task('vendor', function(done) {
 
   // Bootstrap
   gulp.src([
@@ -20,10 +20,8 @@ gulp.task('vendor', function() {
     ])
     .pipe(gulp.dest('./dist/js/vendor/jquery'))
 
+  done();
 })
-
-// Default task
-gulp.task('default', ['vendor']);
 
 // Configure the browserSync task
 gulp.task('browserSync', function() {
@@ -32,10 +30,4 @@ gulp.task('browserSync', function() {
       baseDir: "./"
     }
   });
-});
-
-// Dev task -- not really used, I cribbed this from `startbootstrap-full-slider` 
-gulp.task('dev', ['browserSync'], function() {
-  gulp.watch('./css/*.css', browserSync.reload);
-  gulp.watch('./*.html', browserSync.reload);
 });
