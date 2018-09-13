@@ -25,7 +25,7 @@
     "env": {
         "DEBUG": "*,-ffi:*,-ref*,-send,-express:*,-lib:mongo:read"
     },
-    "ext": "js css json pug"
+    "ext": "js css json pug html"
 }
 
 

@@ -150,9 +150,17 @@ h1,h2,h3,h4,h5{
 
 .company {
     background-color: #ffd4ad;
-    background: linear-gradient(to right, #ffd4ad, #fffdad); /* Standard syntax */
-    font-weight: bold;
+    background: linear-gradient(to right, #ffd4ad, #fffdad);
     border-radius: 5px;
+    padding: 3px;
+}
+
+.cookie {
+    background-color: #ed1010;
+    background: linear-gradient(to right, #fc0404, #ea21ed);
+    color: white;
+    border-radius: 5px;
+    padding: 3px;
 }
 
 /* current ordered list of third party inclusions */
