@@ -89,6 +89,14 @@ app.get('/api/v:version/tasks/:cname', function(req, res) {
     return dispatchPromise('getCampaignPromises', routes, req, res);
 });
 
+app.get('/api/v1/monosite/:site', function(req, res) {
+    return dispatchPromise('doMonosite', routes, req, res);
+});
+app.get('/api/v1/site/:site', function(req, res) {
+    return dispatchPromise('getResult', routes, req, res);
+});
+// --- 
+
 app.get('/:pageName', function(req, res) {
     var fpath = process.env.PWD + '/campaigns/' + campaign + '/page/' + req.params.pageName;
     debug("path %s", fpath);

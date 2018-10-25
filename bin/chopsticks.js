@@ -79,7 +79,6 @@ function keepPromises(N, i) {
 function composeUrl() {
 
     if(nconf.get('site')) {
-
         var id = various.hash({
             'href': nconf.get('site'),
             'needName': 'basic',
@@ -94,10 +93,11 @@ function composeUrl() {
                 param: id
             }
         );
-        debug("composeURL, forced ID request: %s", rurl);
+        debug("composeURL: forced ID request: %s, works only for URL generated in the same day", rurl);
         return rurl;
     }
 
+    /* default */
     return choputils.composeURL(
         choputils.getVP(nconf.get('VP')),
         nconf.get('source'), {
@@ -130,4 +130,8 @@ return request
             spawnCommand({ binary: "/usr/bin/killall", args: [ "chromedriver" ] }),
             spawnCommand({ binary: "/usr/bin/killall", args: [ "phantomjs" ] })
         ]);
+    })
+    .catch(function(error) {
+        console.log(`Error: ${error.message}`);
+        process.exit(1);
     });

@@ -11,6 +11,11 @@ nconf.argv().env();
 
 module.exports = function(need, conf) {
 
+    if(nconf.get('site')) {
+        debug("Confirmation skipped: manual setting %s", nconf.get('site'));
+        return need;
+    }
+
     var type = nconf.get('type');
     var url = choputils.composeURL(
         choputils.getVP(nconf.get('VP')),

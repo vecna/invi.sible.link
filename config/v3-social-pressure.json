@@ -8,7 +8,8 @@
         "promises": "promises2",
         "evidences": "evidences",
         "sites": "sites",
-        "results": "results"
+        "results": "results",
+        "monosite": "monosite"
     },
     "mongodb": "mongodb://localhost/ivl",
     "watch": [

@@ -20,12 +20,12 @@ var campaign = nconf.get('campaign') || "manuallyInserted";
 var accepted = [ "basic", "badger", "urlscan" ] ;
 if(!url || !testkind) {
     console.log("required variables --url http://url.. --kind ", accepted);
-    return 1;
+    process.exit(1);
 }
 
 if(accepted.indexOf(testkind) === -1) {
     console.log("kind not accepted", testkind, accepted);
-    return 1;
+    process.exit(1);
 }
 
 var now = moment();
@@ -34,4 +34,6 @@ var directive = queue.buildDirective(testkind, now, url, campaign, description, 
 return queue
     .add([ directive ])
     .tap(queue.report)
-    .return(directive.id);
+    .then(function() {
+        return directive.id;
+    });
