@@ -16,7 +16,7 @@ function doMonosite(req) {
         .then(function(result) {
             return { json: {
                 result: _.omit(result, ['data']),
-                static: "/site/" + site
+                static: "/api/v1/site/" + site
             }};
         });
 };
