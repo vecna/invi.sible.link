@@ -1,4 +1,8 @@
 {
     "maxSeconds": 30,
     "root": "phantomsites",
+    "schema": {
+    	"monosite": "monosite"
+    },
+    "mongodb": "mongodb://localhost/ivl"
 }
