@@ -9,7 +9,7 @@ var mongo = require('../lib/mongo');
 function getSites(req) {
 
     var filter = { campaign: req.params.campaign };
-    var stripFields = ['_id', 'id', 'lastResultId', 'lastSurfId', 'lastChecked', 'frequency' ];
+    var stripFields = ['_id', 'lastSurfId', 'lastChecked', 'frequency' ];
 
     debug("getSites filter %j", filter);
 
