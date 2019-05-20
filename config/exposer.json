@@ -1,6 +1,6 @@
 {
   "name": "exposer",
-  "interface": "0.0.0.0",
+  "interface": "127.0.0.1",
   "port": 7300,
   "schema": {
     "phantom": "phantom",

@@ -204,7 +204,6 @@ function updateSite(result) {
         .then(function(site) {
             site.lastResultId = result.id;
             site.lastCheckTime = result.requestTime;
-            debugger;
             return mongo.updateOne(nconf.get('schema').sites, { id: site.id }, site);
         });
 };

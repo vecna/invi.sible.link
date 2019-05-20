@@ -1,6 +1,6 @@
 {
   "port": 7200,
-  "interface": "0.0.0.0",
+  "interface": "127.0.0.1",
   "name": "vigile",
   "schema": {
     "sites": "sites",
